@@ -154,6 +154,9 @@ if __name__ == '__main__':
     posts, pages, tags  = get_all_thing(BLOG_PATH)
     for page in pages:
         gen_page_html(pages, page)
+
+    sort_blogs_by_date(posts)
+
     for post in posts:
         gen_post_html(pages, post)
 
