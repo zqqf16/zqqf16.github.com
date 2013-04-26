@@ -1,0 +1,13 @@
+## -*- coding: utf-8 -*- 
+<%inherit file="base.html"/>
+
+<%block name="main">
+<ul id="post-list">
+	% for post in posts:
+	<li>
+		<span><i>${post.date.strftime('%Y-%m-%d')}</i><i class="icon-double-angle-right"></i></span>
+		<span><a href="/${post.uri}">${post.title}</a><span>
+	</li>
+	% endfor
+</ul>
+</%block>

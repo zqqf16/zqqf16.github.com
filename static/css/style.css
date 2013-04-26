@@ -1,0 +1,94 @@
+body {
+	background: #F5F5F5;
+	color: #3b3b41;
+	border: none;
+	font-family: 'Open Sans', sans-serif;
+	font-weight: 400;
+}
+
+header, footer, aside, nav, article {  
+    display: block;  
+}  
+
+#container {
+    margin: 0 auto;
+    padding: 0;
+    position: relative;
+    width: 960px;
+}
+
+h1, h2, h3, h4{
+	color: #555;
+	font-family: Futura, Helvetica, sans-serif;
+	font-weight: normal;
+}
+
+h1 a, h2 a, h3 a, h4 a {
+	color: #333;
+	text-decoration: none;
+}
+
+#post-list a, #side-bar a , .meta a {
+	color: #555;
+	text-decoration: none;
+}
+
+#post-list a:hover, #side-bar a:hover, .meta a:hover {
+	color: #111;
+}
+
+#side-bar {
+	position: fixed;
+	top: 20px;
+	width: 180px;
+	font-family: Helvetica, sans-serif;
+	text-align: right;
+	height: 100%;
+}
+
+#side-bar h1 {
+	margin-bottom: 4px;
+}
+
+#side-bar .subtitle {
+	font-style: italic;
+	font-size: 16px;
+}
+
+#side-bar nav {
+	margin-top: 100px;
+}
+
+#post-list,
+#side-bar ul {
+	list-style: none;
+}
+
+#side-bar li {
+	padding: 5px 0;
+}
+
+#main {
+	margin-left: 240px;
+	padding-top: 40px;
+}
+
+#main header h1 {
+	border-bottom: 1px solid #ddd;
+	padding-bottom: 4px;
+	margin-bottom: 0;
+}
+
+.meta {
+	padding-left: 3px;
+	font-size: 14px;
+    color: #777;
+}
+
+#post-list li {
+	line-height: 30px;
+}
+
+article>header {
+	margin-bottom: 20px;
+}
