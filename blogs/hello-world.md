@@ -37,14 +37,16 @@ tags: hello, world, haha   ,huhu
 
 A sample text here. And some code below:
     
-    import sys
-    import gobject
-    def init():
-        for i in range(0, 10):
-            print 'task %d, done' % i
+```python
+import sys
+import gobject
+def init():
+	for i in range(0, 10):
+	    print 'task %d, done' % i
 
-    if __name__ == '__main__':
-        init()
+if __name__ == '__main__':
+	init()
+```
 
 Inline code `printf()` here.
 

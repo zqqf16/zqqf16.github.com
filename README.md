@@ -3,7 +3,8 @@
 **依赖**
 
 - markdown2 将markdown文本转换成HTML
-- mako 模板引擎
+- mako		模板引擎
+- pygments	代码着色工具
  
 **目录介绍**
 

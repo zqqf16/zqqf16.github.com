@@ -93,7 +93,7 @@ class Blog():
     @property
     def content(self):
         if not self.__content:
-            self.__content = markdown(self.content_raw)
+            self.__content = markdown(self.content_raw, extras=["fenced-code-blocks"])
 
         return self.__content
 
