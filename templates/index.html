@@ -5,7 +5,7 @@
 <ul id="post-list">
 	% for post in posts:
 	<li>
-		<span><i>${post.date.strftime('%Y-%m-%d')}</i> >> </span>
+		<span><i>${post.date.strftime('%Y-%m-%d')}</i> &rsaquo;&rsaquo; </span>
 		<span><a href="/${post.uri}">${post.title}</a><span>
 	</li>
 	% endfor
