@@ -33,74 +33,39 @@ class Blog():
         self.date = None
         self.tags = None
         self.category = None
-        self.content_raw = None
+        self.html = None
         self.type = 'post'
-        self.__content = None
 
-        self.__parse_attr()
+        self.__convert_to_html()
+        self.__parse_metadata()
 
     def __repr__(self):
         return u'<date: %s, title: %s, slug: %s>' % (self.date, self.title, self.slug)
 
-    def __parse_attr(self):
-        '''
-        ---
-        title: Hello World
-        date: 2012-03-23
-        tags: tag1, tag2
-        ---
-        '''
-        flag_re = re.compile(r'^---$')
-        attr_re = re.compile(r'^(title|type|date|tags|category)\s*:\s*(.*)$')
-        _file = open(self.path, 'r')
+    def __convert_to_html(self):
+        with open(self.path, 'r') as f:
+            content = f.read().decode('utf-8')
+            self.html = markdown(content.strip(' \n'), 
+                                 extras=["fenced-code-blocks", "metadata"])
 
-        attr_start = False
-        while True:
-            line = _file.readline().decode('utf-8')
-            if not line:
-                break;
+    def __parse_metadata(self):
+        if not self.html:
+            return
 
-            if attr_start == False:
-                if flag_re.match(line):
-                    # attribute start flag
-                    attr_start = True
-                else:
-                    continue
-            else:
-                m = attr_re.match(line)
-                if m:
-                    # match
-                    key = m.group(1)
-                    val = m.group(2)
-                    if key == 'title':
-                        self.title = val
-                    elif key == 'date':
-                        self.date = datetime.strptime(val, '%Y-%m-%d')
-                    elif key == 'tags':
-                        self.tags = [t.strip(' \n') for t in val.split(',')]
-                    elif key == 'category':
-                        self.category = val
-                    elif key == 'type':
-                        self.type = val
+        for key, value in self.html.metadata.items():
+            if key == 'tags':
+                self.tags = value.split(',')
+            elif key == 'title':
+                self.title = value
+            elif key == 'date':
+                self.date = datetime.strptime(value, '%Y-%m-%d')
+            elif key == 'category':
+                self.category = value
+            elif key == 'type':
+                self.type = value
 
-                elif flag_re.match(line):
-                    # attribute end flag
-                    break
-
-        self.content_raw = _file.read().lstrip('\n')
-        _file.close()
-
-    @property
-    def content(self):
-        if not self.__content:
-            self.__content = markdown(self.content_raw, extras=["fenced-code-blocks"])
-
-        return self.__content
-
-    @property
-    def uri(self):
         path = cfg['post_path'] if self.type=='post' else cfg['page_path']
-        return path+'/'+self.slug+'.html'
+        self.uri = path + '/' + self.slug + '.html'
 
 def get_all_thing(path):
     file_name_re = re.compile(r'(.*).md')
