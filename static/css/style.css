@@ -94,6 +94,10 @@ article>header {
 	margin-bottom: 20px;
 }
 
-pre {
+.codehilite {
+	background: #272822;
+}
+
+.codehilite pre {
 	background: #272822;
 }
