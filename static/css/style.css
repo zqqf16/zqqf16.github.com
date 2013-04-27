@@ -95,6 +95,7 @@ article>header {
 }
 
 .codehilite {
+	border-radius: 4px;
 	background: #272822;
 }
 
