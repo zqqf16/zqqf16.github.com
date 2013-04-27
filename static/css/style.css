@@ -101,3 +101,9 @@ article>header {
 .codehilite pre {
 	background: #272822;
 }
+
+article {
+	padding-bottom: 20px;
+	margin-bottom: 40px;
+	border-bottom: 1px dashed #ccc;
+}
