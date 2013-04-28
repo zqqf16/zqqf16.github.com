@@ -38,32 +38,29 @@ class Tag():
 
 class Blog():
     def __init__(self, filepath, slug):
-        self.filepath = filepath
-        self.slug = slug
-        self.title = None
-        self.date = None
-        self.tags = []
-        self.category = None
-        self.html = None
-        self.type = 'post'
+        self.__filepath = filepath
+        self.__slug = slug
 
-        self.__convert_to_html()
+        self.__get_file_content()
         self.__parse_metadata()
 
-    def __repr__(self):
-        return u'<date: %s, title: %s, slug: %s>' % (self.date, self.title, self.slug)
-
-    def __convert_to_html(self):
-        with open(self.filepath, 'r') as f:
+    def __get_file_content(self):
+        with open(self.__filepath, 'r') as f:
             content = f.read().decode('utf-8')
             self.html = markdown(content.strip(' \n'), 
                                  extras=["fenced-code-blocks", "metadata"])
-
+            self.meta = self.html.metadata
     def __parse_metadata(self):
+        self.tag_names = []
+        self.title = ''
+        self.date = datetime.now()
+        self.category = None
+        self.type = 'post'
+
         try:
-            for key, value in self.html.metadata.items():
+            for key, value in self.meta.items():
                 if key == 'tags':
-                    self.tags = [t.strip(' \n') for t in value.split(',')]
+                    self.tag_names = [t.strip(' \n') for t in value.split(',')]
                 elif key == 'title':
                     self.title = value
                 elif key == 'date':
@@ -76,7 +73,7 @@ class Blog():
             pass
 
         path = cfg['post_path'] if self.type=='post' else cfg['page_path']
-        self.uri = path + self.slug + '.html'
+        self.uri = path + self.__slug + '.html'
 
 def get_all_thing(path):
     file_name_re = re.compile(r'(.*).md')
