@@ -10,28 +10,39 @@ from markdown2 import markdown
 BLOG_PATH = 'blogs'
 
 cfg = {
-    'post_path': 'posts',
-    'page_path': 'pages',
+    'post_path': 'posts/',
+    'page_path': 'pages/',
+    'tag_path': 'tags/',
 }
 
 templates = TemplateLookup(
-        directories=['templates'], 
-        input_encoding='utf-8',
-        output_encoding='utf-8', 
-        encoding_errors='replace'
+    directories=['templates'], 
+    input_encoding='utf-8',
+    output_encoding='utf-8', 
+    encoding_errors='replace'
 )
 
 post_template = templates.get_template('post.html')
 page_template = templates.get_template('page.html')
 index_template = templates.get_template('index.html')
+tag_template = templates.get_template('tag.html')
+
+class Tag():
+    def __init__(self, name):
+        self.name = name
+        self.blogs = []
+
+    @property
+    def uri(self):
+        return cfg['tag_path'] + self.name
 
 class Blog():
-    def __init__(self, path, slug):
-        self.path = path
+    def __init__(self, filepath, slug):
+        self.filepath = filepath
         self.slug = slug
         self.title = None
         self.date = None
-        self.tags = None
+        self.tags = []
         self.category = None
         self.html = None
         self.type = 'post'
@@ -43,29 +54,29 @@ class Blog():
         return u'<date: %s, title: %s, slug: %s>' % (self.date, self.title, self.slug)
 
     def __convert_to_html(self):
-        with open(self.path, 'r') as f:
+        with open(self.filepath, 'r') as f:
             content = f.read().decode('utf-8')
             self.html = markdown(content.strip(' \n'), 
                                  extras=["fenced-code-blocks", "metadata"])
 
     def __parse_metadata(self):
-        if not self.html:
-            return
-
-        for key, value in self.html.metadata.items():
-            if key == 'tags':
-                self.tags = value.split(',')
-            elif key == 'title':
-                self.title = value
-            elif key == 'date':
-                self.date = datetime.strptime(value, '%Y-%m-%d')
-            elif key == 'category':
-                self.category = value
-            elif key == 'type':
-                self.type = value
+        try:
+            for key, value in self.html.metadata.items():
+                if key == 'tags':
+                    self.tags = [t.strip(' \n') for t in value.split(',')]
+                elif key == 'title':
+                    self.title = value
+                elif key == 'date':
+                    self.date = datetime.strptime(value, '%Y-%m-%d')
+                elif key == 'category':
+                    self.category = value
+                elif key == 'type':
+                    self.type = value
+        except:
+            pass
 
         path = cfg['post_path'] if self.type=='post' else cfg['page_path']
-        self.uri = path + '/' + self.slug + '.html'
+        self.uri = path + self.slug + '.html'
 
 def get_all_thing(path):
     file_name_re = re.compile(r'(.*).md')
@@ -86,9 +97,11 @@ def get_all_thing(path):
             try:
                 for tag in blog.tags:
                     if tags.get(tag):
-                        tags[tag].append(blog)
+                        tags[tag].blogs.append(blog)
                     else:
-                        tags[tag] = [blog]
+                        t = Tag(tag)
+                        t.blogs.append(blog)
+                        tags[tag] = t
             except:
                 pass
 
@@ -104,17 +117,20 @@ def gen_page_html(pages, page):
     with open(page.uri, 'w') as f:
         html = page_template.render(pages=pages, page=page)
         f.write(html)
-        f.close()
 
 def gen_index_html(posts, pages):
     with open('index.html', 'w') as f:
         html = index_template.render(posts=posts, pages=pages)
         f.write(html)
-        f.close
-        
+
+def gen_tag_html(pages, tag):
+    with open(tag.uri, 'w') as f:
+        html = tag_template.render(pages=pages, tag=tag, posts=tag.blogs)
+        f.write(html)
+
 def sort_blogs_by_date(blogs):
     blogs.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
-    
+
 if __name__ == '__main__':
     posts, pages, tags  = get_all_thing(BLOG_PATH)
     for page in pages:
@@ -126,3 +142,6 @@ if __name__ == '__main__':
         gen_post_html(pages, post)
 
     gen_index_html(posts, pages)
+
+    for tag in tags:
+        gen_tag_html(pages, tags[tag])

@@ -1,6 +1,7 @@
 ---
 title: 使用Pygments高亮Markdown中的代码
 date: 2013-4-26
+tags: python
 ---
 
 Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于`<code class="python">`的HTML标签，显得十分Ugly。
