@@ -6,10 +6,17 @@
 - mako		模板引擎
 - pygments	代码着色工具
  
-**目录介绍**
+**步骤**
 
-1. `blogs` 所有的markdown格式的草稿都存放在这个目录
-2. `posts` 生成的post存放目录
-3. `pages` 生成的page存放目录
-4. `static` 静态文件存放目录（css，js等）
-5. `templates` 模板目录
+1. 在`blog`目录下新建文件：`example.md`
+2. 编辑`example.md`，在文件开头插入：
+
+	----------
+	title: 标题
+	date: 2013-5-7
+	tags: 标签(可选)
+	category: 分类(可选)
+	----------
+
+3. 执行`python peanut.py`生成相关文件
+4. 执行`python -m SimpleHTTPServer`，访问"0.0.0.0:8000"即可预览
