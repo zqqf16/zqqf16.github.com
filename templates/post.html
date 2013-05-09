@@ -11,7 +11,12 @@ ${post.title} |
 	<h1>${post.title}</h1>
 		<span class="meta">
 			<time>${post.date.strftime('%Y-%m-%d')}</time>
-			| Tags: <a href="#">test</a>
+			% if post.tags:
+			| Tags: 
+			% for tag in post.tags:
+			<a href="/${tag.uri}">${tag.name}</a>
+			% endfor
+			%endif
 		</span>
 	</header>
 	<section>
