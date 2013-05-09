@@ -37,7 +37,11 @@ class Tag():
     def generate(self, info):
         ''' Generate html file '''
 
-        with open(self.uri, 'w') as f: 
+        uri = self.uri
+        if not os.path.exists(uri):
+            os.mkdir(uri)
+
+        with open(uri+'/index.html', 'w') as f: 
             html = self.template.render(info=info, tag=self, posts=self.posts)
             f.write(html)
 
