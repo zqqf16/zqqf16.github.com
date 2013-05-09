@@ -21,7 +21,7 @@
 				<nav>
 					<ul>
 						<li><a href="/">所有文章</a></li>
-						% for page in pages:
+						% for page in info['pages']:
 						<li><a href="/${page.uri}">${page.title}</a></li>
 						% endfor
 					</ul>

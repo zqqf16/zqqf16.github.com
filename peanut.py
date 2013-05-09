@@ -22,49 +22,49 @@ templates = TemplateLookup(
     encoding_errors='replace'
 )
 
-post_template = templates.get_template('post.html')
-page_template = templates.get_template('page.html')
-index_template = templates.get_template('index.html')
-tag_template = templates.get_template('tag.html')
 
 class Tag():
+    template = templates.get_template('tag.html')
+
     def __init__(self, name):
         self.name = name
-        self.blogs = []
+        self.posts = []
 
     @property
     def uri(self):
         return cfg['tag_path'] + self.name
 
-META_HANDLER = {
-    'tags': lambda x: [Tag(t.strip(' \n')) for t in x.split(',')],
-    'title': lambda x: x,
-    'date': lambda x: datetime.strptime(x, '%Y-%m-%d'),
-    'category': lambda x: x,
-    'type': lambda x: x,
-}
+    def generate(self, info):
+        ''' Generate html file '''
+
+        with open(self.uri, 'w') as f: 
+            html = self.template.render(info=info, tag=self, posts=self.posts)
+            f.write(html)
 
 class Blog():
-    def __init__(self, filepath, slug):
-        self.__filepath = filepath
-        self.__slug = slug
+    template = templates.get_template('post.html')
 
-        self.__get_file_content()
-        self.__parse_metadata()
+    def __init__(self):
+        self.__slug = ''
+        self.tags = []
+        self.title = ''
+        self.date = ''
+        self.category = None
+        self.type = 'page'
 
-    def read(self, filepath):
-        with open(filepath, 'r') as f:
-            content = f.read().decode('utf-8')
-            self.html = markdown(content.strip(' \n'), 
-                                 extras=["fenced-code-blocks", "metadata"])
-            self.meta = self.html.metadata
+    def __get_meta_handler(self, meta):
+        handlers = {
+            'tags':     lambda x: [Tag(t.strip(' \n')) for t in x.split(',')],
+            'title':    lambda x: x,
+            'date':     lambda x: datetime.strptime(x, '%Y-%m-%d'),
+            'category': lambda x: x,
+            'type':     lambda x: x,
+        }
+        try:
+            return handlers[meta]
+        except:
+            return lambda x: x
 
-    def __get_file_content(self):
-        with open(self.__filepath, 'r') as f:
-            content = f.read().decode('utf-8')
-            self.html = markdown(content.strip(' \n'), 
-                                 extras=["fenced-code-blocks", "metadata"])
-            self.meta = self.html.metadata
     def __parse_metadata(self):
         self.tags = []
         self.title = ''
@@ -72,77 +72,104 @@ class Blog():
         self.category = None
         self.type = 'post'
 
-        for key, value in self.meta.items():
-            if key in META_HANDLER:
-                self.__dict__[key] = META_HANDLER[key](value)
+        for key, value in self.__meta.items():
+            self.__dict__[key] = self.__get_meta_handler(key)(value)
 
         path = cfg['post_path'] if self.type=='post' else cfg['page_path']
         self.uri = path + self.__slug + '.html'
 
-def get_all_thing(path):
-    file_name_re = re.compile(r'(.*).md')
+    def read(self, filepath):
+        ''' Read blog content and metadata from file'''
 
-    posts = []
-    pages = []
-    tags = {}
+        file_name_re = re.compile(r'([^/]+).md')
+        m = file_name_re.search(filepath)
+        if not m: 
+            return
 
-    for f in os.listdir(path):
-        m = file_name_re.match(f)
-        if m:
-            blog = Blog(path+'/'+f, m.group(1))
+        self.path = filepath
+        self.__slug = m.group(1)
+
+        with open(filepath, 'r') as f:
+            content = f.read().decode('utf-8')
+            self.content = markdown(content.strip(' \n'), 
+                                 extras=["fenced-code-blocks", "metadata"])
+            self.__meta = self.content.metadata
+            self.__parse_metadata()
+
+    def generate(self, info):
+        ''' Generate html file '''
+
+        with open(self.uri, 'w') as f: 
+            html = self.template.render(info=info, post=self)
+            f.write(html)
+
+class Peanut():
+    def __init__(self, path):
+        self.path = path
+        self.info = {
+            'posts': [],
+            'pages': [],
+            'tags': [],
+        }
+
+    def load(self, blog_path=BLOG_PATH):
+        posts = []
+        pages = []
+        tags = {}
+
+        path = self.path+'/'+blog_path
+        for f in os.listdir(path):
+            blog = Blog()
+            blog.read(path+'/'+f)
+
             if blog.type == 'post':
                 posts.append(blog)
             elif blog.type == 'page':
                 pages.append(blog)
+                continue
 
             try:
                 for tag in blog.tags:
-                    if tags.get(tag):
-                        tags[tag].blogs.append(blog)
+                    name = tag.name
+                    if tags.get(name):
+                        tags[name].posts.append(blog)
                     else:
-                        t = Tag(tag)
-                        t.blogs.append(blog)
-                        tags[tag] = t
+                        t = Tag(name)
+                        t.posts.append(blog)
+                        tags[name] = t
             except:
                 pass
 
-    return posts, pages, tags
+        posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+        self.info['posts'] = posts
+        self.info['pages'] = pages
+        self.info['tags'] = tags
 
-def gen_post_html(pages, post):
-    with open(post.uri, 'w') as f:
-        html = post_template.render(pages=pages, post=post)
-        f.write(html)
-        f.close()
+    def gen_html_posts(self):
+        for p in self.info['posts']:
+            p.generate(self.info)
 
-def gen_page_html(pages, page):
-    with open(page.uri, 'w') as f:
-        html = page_template.render(pages=pages, page=page)
-        f.write(html)
+    def gen_html_pages(self):
+        for p in self.info['pages']:
+            p.generate(self.info)
 
-def gen_index_html(posts, pages):
-    with open('index.html', 'w') as f:
-        html = index_template.render(posts=posts, pages=pages)
-        f.write(html)
+    def gen_html_tags(self):
+        for n, t in self.info['tags'].items():
+            t.generate(self.info)
 
-def gen_tag_html(pages, tag):
-    with open(tag.uri, 'w') as f:
-        html = tag_template.render(pages=pages, tag=tag, posts=tag.blogs)
-        f.write(html)
+    def gen_html_index(self):
+        template = templates.get_template('index.html')
+        with open('index.html', 'w') as f: 
+            html = template.render(info=self.info, posts=self.info['posts'])
+            f.write(html)
 
-def sort_blogs_by_date(blogs):
-    blogs.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+    def gen_html(self):
+        self.gen_html_posts()
+        self.gen_html_pages()
+        self.gen_html_tags()
+        self.gen_html_index()
 
 if __name__ == '__main__':
-    posts, pages, tags  = get_all_thing(BLOG_PATH)
-    for page in pages:
-        gen_page_html(pages, page)
-
-    sort_blogs_by_date(posts)
-
-    for post in posts:
-        gen_post_html(pages, post)
-
-    gen_index_html(posts, pages)
-
-    for tag in tags:
-        gen_tag_html(pages, tags[tag])
+    p = Peanut('.')
+    p.load()
+    p.gen_html()
