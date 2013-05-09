@@ -36,6 +36,14 @@ class Tag():
     def uri(self):
         return cfg['tag_path'] + self.name
 
+META_HANDLER = {
+    'tags': lambda x: [Tag(t.strip(' \n')) for t in x.split(',')],
+    'title': lambda x: x,
+    'date': lambda x: datetime.strptime(x, '%Y-%m-%d'),
+    'category': lambda x: x,
+    'type': lambda x: x,
+}
+
 class Blog():
     def __init__(self, filepath, slug):
         self.__filepath = filepath
@@ -44,6 +52,13 @@ class Blog():
         self.__get_file_content()
         self.__parse_metadata()
 
+    def read(self, filepath):
+        with open(filepath, 'r') as f:
+            content = f.read().decode('utf-8')
+            self.html = markdown(content.strip(' \n'), 
+                                 extras=["fenced-code-blocks", "metadata"])
+            self.meta = self.html.metadata
+
     def __get_file_content(self):
         with open(self.__filepath, 'r') as f:
             content = f.read().decode('utf-8')
@@ -51,26 +66,15 @@ class Blog():
                                  extras=["fenced-code-blocks", "metadata"])
             self.meta = self.html.metadata
     def __parse_metadata(self):
-        self.tag_names = []
+        self.tags = []
         self.title = ''
         self.date = datetime.now()
         self.category = None
         self.type = 'post'
 
-        try:
-            for key, value in self.meta.items():
-                if key == 'tags':
-                    self.tag_names = [t.strip(' \n') for t in value.split(',')]
-                elif key == 'title':
-                    self.title = value
-                elif key == 'date':
-                    self.date = datetime.strptime(value, '%Y-%m-%d')
-                elif key == 'category':
-                    self.category = value
-                elif key == 'type':
-                    self.type = value
-        except:
-            pass
+        for key, value in self.meta.items():
+            if key in META_HANDLER:
+                self.__dict__[key] = META_HANDLER[key](value)
 
         path = cfg['post_path'] if self.type=='post' else cfg['page_path']
         self.uri = path + self.__slug + '.html'
