@@ -1,5 +1,5 @@
 ---
-title: 使用Pygments高亮Markdown中的代码
+title: 高亮Markdown中的代码
 date: 2013-4-26
 tags: python
 ---
