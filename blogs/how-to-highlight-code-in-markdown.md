@@ -24,7 +24,7 @@ Markdown语法标准中并没有一种方法来标明代码语言的种类。所
 
 Markdown2提供了一个代码高亮的扩展：[fenced code blocks](https://github.com/trentm/python-markdown2/wiki/fenced-code-blocks), 它能自动匹配这样的代码，并调用Pygments进行着色。
 
-    ```
+    ```python
     print "hi"
     ```
     
