@@ -9,11 +9,13 @@ ${post.title} |
 		${post.content}
 	</section>
 	<section class="meta">
-		<span class="tags">tagged by 
+		% if post.tags:
+		<span class="tags">Tagged by 
 		% for tag in post.tags:
 			<a href="/${tag.uri}">${tag.name}</a>
 		% endfor
 		</span>
+		% endif
 
 		<span class="time">&nbsp;<time datetime="${post.date.strftime('%Y-%m-%d')}">${post.date.strftime('%Y-%m-%d')}</time></span>
 	</section>
