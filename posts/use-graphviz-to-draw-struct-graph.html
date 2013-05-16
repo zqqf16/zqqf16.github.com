@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>
+用Graphviz画数据结构图 |
+Znote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>Znote</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。</p>
+
+<p>废话不多说，上代码：</p>
+
+<pre><code>digraph g {
+    graph [ rankdir = "LR" ];
+    node [shape = record];
+
+    a [
+        label = "&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]"
+    ];
+
+    b [
+        label = "&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]"
+    ];
+
+    "b":f0 -&gt; "a":f;
+}
+</code></pre>
+
+<p>把上述代码保存到<code>example.dot</code>，然后执行：<code>dot -Tpng example.dot -o example.png</code></p>
+
+<p>绘出的图如下：
+<img src="/static/img/graphviz.png" alt="graph" /></p>
+
+<p>更多实例，请参考<a href="http://www.graphviz.org/Gallery.php">Graphviz官网</a></p>
+
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/graphviz">graphviz</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-05-16">2013-05-16</time></span>
+	</section>
+<hr/>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zqqf16';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section>
+     </article>
+         <div id="copy">&copy; Powered by Peanut | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
