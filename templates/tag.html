@@ -2,13 +2,12 @@
 <%inherit file="base.html"/>
 
 <%block name="main">
-<h1>${tag.name}</h1>
-<ul id="post-list">
+	<ul class="listing">
 	% for post in posts:
-	<li>
-		<span><i>${post.date.strftime('%Y-%m-%d')}</i> &rsaquo;&rsaquo; </span>
-		<span><a href="/${post.uri}">${post.title}</a><span>
-	</li>
+		<li class="listing-item">
+			<time datetime="${post.date.strftime('%Y-%m-%d')}">${post.date.strftime('%Y-%m-%d')}</time>
+			<a href="/${post.uri}">${post.title}</a>
+		</li>
 	% endfor
-</ul>
+	</ul>
 </%block>
