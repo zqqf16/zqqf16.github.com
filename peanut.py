@@ -114,7 +114,7 @@ class Peanut():
             'posts': [],
             'pages': [],
             'tags': [],
-            'domain': 'inzqq.info',
+            'domain': 'zqqf16.info',
         }
 
     def load(self, blog_path=BLOG_PATH):
