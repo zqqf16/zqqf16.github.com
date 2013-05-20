@@ -114,6 +114,7 @@ class Peanut():
             'posts': [],
             'pages': [],
             'tags': [],
+            'domain': 'inzqq.info',
         }
 
     def load(self, blog_path=BLOG_PATH):
@@ -167,11 +168,18 @@ class Peanut():
             html = template.render(info=self.info, posts=self.info['posts'])
             f.write(html)
 
+    def gen_xml_sitemap(self):
+        template = templates.get_template('sitemap.xml')
+        with open('sitemap.xml', 'w') as f:
+            xml = template.render(info=self.info, pages=self.info['pages'], posts=self.info['posts'])
+            f.write(xml)
+
     def gen_html(self):
         self.gen_html_posts()
         self.gen_html_pages()
         self.gen_html_tags()
         self.gen_html_index()
+        self.gen_xml_sitemap()
 
 if __name__ == '__main__':
     p = Peanut('.')
