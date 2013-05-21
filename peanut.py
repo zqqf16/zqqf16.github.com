@@ -42,6 +42,7 @@ class Tag():
             os.mkdir(uri)
 
         with open(uri+'/index.html', 'w') as f: 
+            self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
             html = self.template.render(info=info, tag=self, posts=self.posts)
             f.write(html)
 
