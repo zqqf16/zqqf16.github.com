@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>
+我的Vim配置 |
+Znote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>Znote</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>之前，我的Vim配置一直是通过Ubuntu One来保存和备份的。但是Ubuntu One的网络实在是不敢恭维，时好时坏。因此就在寻求一种比较靠谱的备份方式。</p>
+
+<p>后来有一次在看别人博客的时候，发现了一个神器“vim-pathogen”。关于它的详细介绍我就不罗嗦了，下载及查看可以到<a href="https://github.com/tpope/vim-pathogen">这里</a>。</p>
+
+<p>用一句话概括就是它是管理Vim插件的插件。用它加上Github的配合，可以完美地实现配置备份。</p>
+
+<p><strong>详细步骤</strong></p>
+
+<ul>
+<li><p>在.vim下新建文件夹bundle，以后所有的插件都放到此目录。</p></li>
+<li><p>添加pathogen插件：</p></li>
+</ul>
+
+<div class="codehilite"><pre><code>git submoudle add git://github.com/tpope/vim-pathogen.git bundle/vim-pathogen
+</code></pre></div>
+
+<ul>
+<li>修改.vimrc，在开头加上  </li>
+</ul>
+
+<div class="codehilite"><pre><code><span class="c">&quot; pathogen</span>
+runtime bundle<span class="sr">/vim-pathogen/</span>autoload/pathogen.<span class="k">vim</span>
+execute pathogen#infect<span class="p">()</span>
+</code></pre></div>
+
+<ul>
+<li>以后如果需要增加插件，只需在bundle目录下加一个git的submoudle即可。升级插件可以用</li>
+</ul>
+
+<div class="codehilite"><pre><code>git submodule foreach git pull origin master
+</code></pre></div>
+
+<ul>
+<li>可以在Github上新建个项目，把.vim目录下的所有内容提交上去，可以做到方便的更新与备份。</li>
+</ul>
+
+<p>最后，大家可以参考一下我的vim配置：<a href="https://github.com/zqqf16/zqq-vim">Github</a></p>
+
+<p>主要装了以下插件：</p>
+
+<ul>
+<li>Python的缩进插件：indent-python</li>
+<li>深色养眼的主题：lucius</li>
+<li>文件浏览插件：nerdtree</li>
+<li>看代码神器：taglist</li>
+<li>powerline插件：vim-powerline</li>
+</ul>
+
+<p>参考文章：<a href="http://liluo.org/blog/2012/05/using-git-submodule-and-vim-pathogen-for-vim-configuraction-management/">liluo.org</a></p>
+
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/vim-pathogen">vim-pathogen</a>
+			<a href="/tags/github">github</a>
+			<a href="/tags/vim">vim</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-05-22">2013-05-22</time></span>
+	</section>
+<hr/>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zqqf16';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
