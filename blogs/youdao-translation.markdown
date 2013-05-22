@@ -10,7 +10,7 @@ tags: 翻译
 
 有道的数据接口如下：
 
-```
+```html
 http://fanyi.youdao.com/openapi.do?keyfrom=<keyfrom>&key=<key>&type=data&doctype=<doctype>&version=1.1&q=要翻译的文本
 ```
 
