@@ -1,6 +1,14 @@
 ## -*- coding: utf-8 -*- 
 <%inherit file="base.html"/>
 
+<%block name="title">
+${tag.name} | 
+</%block>
+
+<%block name="page_title">
+${tag.name}
+</%block>
+
 <%block name="main">
 	<ul class="listing">
 	% for post in posts:

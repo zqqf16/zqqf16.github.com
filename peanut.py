@@ -175,7 +175,7 @@ class Peanut():
             xml = template.render(info=self.info, pages=self.info['pages'], posts=self.info['posts'])
             f.write(xml)
 
-    def gen_html(self):
+    def gen_all(self):
         self.gen_html_posts()
         self.gen_html_pages()
         self.gen_html_tags()
@@ -185,4 +185,4 @@ class Peanut():
 if __name__ == '__main__':
     p = Peanut('.')
     p.load()
-    p.gen_html()
+    p.gen_all()
