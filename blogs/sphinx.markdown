@@ -1,0 +1,101 @@
+---
+title: Sphinx入门
+date: 2013-5-23
+tags: sphinx
+---
+
+公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。
+
+.doc .docx格式也太TMD难兼容了，不能在线预览也就罢了，libreoffice打开之后就成翔了。
+
+而且对于搞计算机的来说，往Word里面粘代码简直就是糊弄人啊。就别说代码高亮了，连起码的缩进都困难。
+
+好了，吐槽完毕，切入正题。
+
+今天研究一下一个NB的文档工具[Sphinx](http://sphinx-doc.org/index.html)。它是用Python写的，可以把reStructuredText格式的文档转成各种可读格式。如果你看过Python的文档，你就会发现它们大多都是用这个来写的。
+
+安装方法：
+
+Ubuntu用户
+
+```bash
+$ sudo apt-get install python-sphinx
+```
+
+新建个目录，注意，路径上不能有中文。。。
+
+```bash
+$ mkdir doc
+$ cd doc
+$ sphinx-quickstart
+```
+
+执行上条命令后会提示一堆设置信息，简单地英语，一步步照做就行了。这些信息回报存在conf.py里面，可以直接修改文件来更改设置。
+
+设置完之后，会在当前目录下生成一些目录及文件：
+
+```bash
+$ ls
+_build  conf.py  index.rst  make.bat  Makefile  _static  _templates
+```
+
+_build是最终编译完的文件存放目录
+
+_static存放一些静态文件，比如文档中要使用的图片等。
+
+_templates存放模板，如果不需要定制样式的话，暂且用不着。
+
+新建一个文件：
+
+```bash
+$ vim hello.rst
+```
+
+写入如下内容：
+
+```restructuredtext
+
+=======================
+Hello World
+=======================
+
+标题
+========
+
+小标题
+--------
+
+1. 列表1
+
+2. 类表2
+```
+
+编辑index.rst，修改如下：
+
+```restructuredtext
+.. toctree::
+   :maxdepth: 2
+   
+   hello
+```
+
+**注意**, hello是文件名，不用写rst扩展名，hello与toctree左对齐，即左空3个空格。
+
+然后执行:
+
+```bash
+$ make html
+```
+
+如果没有错误的话，会在_build/html下生成一些HTML文件：
+
+```bash
+$ ls _build/html/
+genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js  _sources  _static
+```
+
+用浏览器打开index.html就可以看到成果了~
+
+![sphinx](/static/img/sphinx.png)
+
+PS: reStructuredText的语法可以自行Google，不是博主懒，是博主花了大半天愣是没掌握。。。在这里也吐个槽。。。这玩意还是不如用Markdown来得快。。。

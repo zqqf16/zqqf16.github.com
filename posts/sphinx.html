@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>
+Sphinx入门 |
+Znote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+Sphinx入门
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。</p>
+
+<p>.doc .docx格式也太TMD难兼容了，不能在线预览也就罢了，libreoffice打开之后就成翔了。</p>
+
+<p>而且对于搞计算机的来说，往Word里面粘代码简直就是糊弄人啊。就别说代码高亮了，连起码的缩进都困难。</p>
+
+<p>好了，吐槽完毕，切入正题。</p>
+
+<p>今天研究一下一个NB的文档工具<a href="http://sphinx-doc.org/index.html">Sphinx</a>。它是用Python写的，可以把reStructuredText格式的文档转成各种可读格式。如果你看过Python的文档，你就会发现它们大多都是用这个来写的。</p>
+
+<p>安装方法：</p>
+
+<p>Ubuntu用户</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>sudo apt-get install python-sphinx
+</code></pre></div>
+
+<p>新建个目录，注意，路径上不能有中文。。。</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>mkdir doc
+<span class="nv">$ </span><span class="nb">cd </span>doc
+<span class="nv">$ </span>sphinx-quickstart
+</code></pre></div>
+
+<p>执行上条命令后会提示一堆设置信息，简单地英语，一步步照做就行了。这些信息回报存在conf.py里面，可以直接修改文件来更改设置。</p>
+
+<p>设置完之后，会在当前目录下生成一些目录及文件：</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>ls
+_build  conf.py  index.rst  make.bat  Makefile  _static  _templates
+</code></pre></div>
+
+<p>_build是最终编译完的文件存放目录</p>
+
+<p>_static存放一些静态文件，比如文档中要使用的图片等。</p>
+
+<p>_templates存放模板，如果不需要定制样式的话，暂且用不着。</p>
+
+<p>新建一个文件：</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>vim hello.rst
+</code></pre></div>
+
+<p>写入如下内容：</p>
+
+<div class="codehilite"><pre><code><span class="gh">=======================</span>
+<span class="gh">Hello World</span>
+<span class="gh">=======================</span>
+
+<span class="gh">标题</span>
+<span class="gh">========</span>
+
+<span class="gh">小标题</span>
+<span class="gh">--------</span>
+
+<span class="m">1.</span> 列表1
+
+<span class="m">2.</span> 类表2
+</code></pre></div>
+
+<p>编辑index.rst，修改如下：</p>
+
+<div class="codehilite"><pre><code><span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+   <span class="nc">:maxdepth:</span> <span class="nf">2</span>
+
+   hello
+</code></pre></div>
+
+<p><strong>注意</strong>, hello是文件名，不用写rst扩展名，hello与toctree左对齐，即左空3个空格。</p>
+
+<p>然后执行:</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>make html
+</code></pre></div>
+
+<p>如果没有错误的话，会在_build/html下生成一些HTML文件：</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>ls _build/html/
+genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js  _sources  _static
+</code></pre></div>
+
+<p>用浏览器打开index.html就可以看到成果了~</p>
+
+<p><img src="/static/img/sphinx.png" alt="sphinx" /></p>
+
+<p>PS: reStructuredText的语法可以自行Google，不是博主懒，是博主花了大半天愣是没掌握。。。在这里也吐个槽。。。这玩意还是不如用Markdown来得快。。。</p>
+
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/sphinx">sphinx</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-05-23">2013-05-23</time></span>
+	</section>
+<hr/>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zqqf16';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
