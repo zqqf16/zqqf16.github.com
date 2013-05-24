@@ -40,23 +40,17 @@ Sphinx入门
 
 <p>Ubuntu用户</p>
 
-<div class="codehilite"><pre><code><span class="nv">$ </span>sudo apt-get install python-sphinx
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="nv">$ </span>sudo apt-get install python-sphinx<br \></code></pre></div>
 
 <p>新建个目录，注意，路径上不能有中文。。。</p>
 
-<div class="codehilite"><pre><code><span class="nv">$ </span>mkdir doc
-<span class="nv">$ </span><span class="nb">cd </span>doc
-<span class="nv">$ </span>sphinx-quickstart
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="nv">$ </span>mkdir doc<br \><span class="nv">$ </span><span class="nb">cd </span>doc<br \><span class="nv">$ </span>sphinx-quickstart<br \></code></pre></div>
 
 <p>执行上条命令后会提示一堆设置信息，简单地英语，一步步照做就行了。这些信息会保存在conf.py里面，可以直接修改文件来更改设置。</p>
 
 <p>设置完之后，会在当前目录下生成一些目录及文件：</p>
 
-<div class="codehilite"><pre><code><span class="nv">$ </span>ls
-_build  conf.py  index.rst  make.bat  Makefile  _static  _templates
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="nv">$ </span>ls<br \>_build  conf.py  index.rst  make.bat  Makefile  _static  _templates<br \></code></pre></div>
 
 <p>_build是最终编译完的文件存放目录</p>
 
@@ -66,46 +60,25 @@ _build  conf.py  index.rst  make.bat  Makefile  _static  _templates
 
 <p>新建一个文件：</p>
 
-<div class="codehilite"><pre><code><span class="nv">$ </span>vim hello.rst
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="nv">$ </span>vim hello.rst<br \></code></pre></div>
 
 <p>写入如下内容：</p>
 
-<div class="codehilite"><pre><code><span class="gh">=======================</span>
-<span class="gh">Hello World</span>
-<span class="gh">=======================</span>
-
-<span class="gh">标题</span>
-<span class="gh">========</span>
-
-<span class="gh">小标题</span>
-<span class="gh">--------</span>
-
-<span class="m">1.</span> 列表1
-
-<span class="m">2.</span> 类表2
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="gh">=======================</span><br \><span class="gh">Hello World</span><br \><span class="gh">=======================</span><br \><br \><span class="gh">标题</span><br \><span class="gh">========</span><br \><br \><span class="gh">小标题</span><br \><span class="gh">--------</span><br \><br \><span class="m">1.</span> 列表1<br \><br \><span class="m">2.</span> 类表2<br \></code></pre></div>
 
 <p>编辑index.rst，修改如下：</p>
 
-<div class="codehilite"><pre><code><span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
-   <span class="nc">:maxdepth:</span> <span class="nf">2</span>
-
-   hello
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span><br \>   <span class="nc">:maxdepth:</span> <span class="nf">2</span><br \><br \>   hello<br \></code></pre></div>
 
 <p><strong>注意</strong>, hello是文件名，不用写rst扩展名，hello与toctree左对齐，即左空3个空格。</p>
 
 <p>然后执行:</p>
 
-<div class="codehilite"><pre><code><span class="nv">$ </span>make html
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="nv">$ </span>make html<br \></code></pre></div>
 
 <p>如果没有错误的话，会在_build/html下生成一些HTML文件：</p>
 
-<div class="codehilite"><pre><code><span class="nv">$ </span>ls _build/html/
-genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js  _sources  _static
-</code></pre></div>
+<div class="codehilite"><pre><code><span class="nv">$ </span>ls _build/html/<br \>genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js  _sources  _static<br \></code></pre></div>
 
 <p>用浏览器打开index.html就可以看到成果了~</p>
 

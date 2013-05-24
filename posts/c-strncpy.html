@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>
+重拾C语言之strncpy |
+Znote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+重拾C语言之strncpy
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<div class="codehilite"><pre><code><span class="kt">char</span> <span class="o">*</span><span class="nf">strncpy</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">dest</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">src</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">);</span><br \></code></pre></div>
+
+<p>虽然加了个n，当时这个函数一点也不靠谱。它并不能保证dest的末尾一定是<code>'\0'</code>。来看看这个函数的简单实现（来自man手册）:</p>
+
+<div class="codehilite"><pre><code><span class="kt">char</span> <span class="o">*</span><br \><span class="nf">strncpy</span><span class="p">(</span><span class="kt">char</span> <span class="o">*</span><span class="n">dest</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">src</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">n</span><span class="p">)</span><br \><span class="p">{</span><br \>    <span class="kt">size_t</span> <span class="n">i</span><span class="p">;</span><br \><br \>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span> <span class="o">&amp;&amp;</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">!=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span><br \>        <span class="n">dest</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">src</span><span class="p">[</span><span class="n">i</span><span class="p">];</span> <br \><br \>    <span class="k">for</span> <span class="p">(</span> <span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <br \>        <span class="n">dest</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="sc">&#39;\0&#39;</span><span class="p">;</span> <br \><br \>    <span class="k">return</span> <span class="n">dest</span><span class="p">;</span> <br \><span class="p">}</span><br \></code></pre></div>
+
+<p>只有当n大于src的长度才会在dest的末尾填“\0”。</p>
+
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/c">c</a>
+			<a href="/tags/strncpy">strncpy</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-05-24">2013-05-24</time></span>
+	</section>
+<hr/>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zqqf16';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
