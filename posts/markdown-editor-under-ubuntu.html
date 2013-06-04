@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>
+Ubuntu下好用的Markdown编辑器 |
+Znote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+Ubuntu下好用的Markdown编辑器
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。</p>
+
+<p>后来在Ubuntu软件中心里面搜"Markdown"，发现了一个不错的编辑器——ReText。</p>
+
+<p>可以直接用apt-get来安装：</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>sudo apt-get install retext<br \></code></pre></div>
+
+<p>在某些情况下，工具栏的图标显示不出来。后来搜到了这篇<a href="http://www.e0356.com/2013/02/242">文章</a>，完美的解决了这个问题。</p>
+
+<p>在Ubuntu下直接执行：</p>
+
+<div class="codehilite"><pre><code><span class="nv">$ </span>gsettings get org.gnome.desktop.interface icon-theme<br \></code></pre></div>
+
+<p>我这显示的是'ubuntu-mono-dark'。</p>
+
+<p>打开“～/.config/ReText\ project/ReText.conf”，加入</p>
+
+<pre><code>iconThem=ubuntu-mono-dark
+</code></pre>
+
+<p>重新打开ReText就OK了~</p>
+
+<p><img src="/static/img/retext.png" alt="图片" /></p>
+
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/markdown">markdown</a>
+			<a href="/tags/ubuntu">ubuntu</a>
+			<a href="/tags/retext">retext</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-06-04">2013-06-04</time></span>
+	</section>
+<hr/>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zqqf16';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
