@@ -86,7 +86,7 @@ class Blog():
     def read(self, filepath):
         ''' Read blog content and metadata from file'''
 
-        file_name_re = re.compile(r'([^/]+).(md|markdown)')
+        file_name_re = re.compile(r'([^/]+)\.(md|markdown)')
         m = file_name_re.search(filepath)
         if not m: 
             return
