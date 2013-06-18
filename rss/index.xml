@@ -8,7 +8,7 @@
     <generator>Peanut</generator>  
     <item>  
 		<title>理解Git的暂存区</title>  
-		<link>http://imzqq.info/posts/understand-git-stage.html</link>  
+		<link>http://zqqf16.info/posts/understand-git-stage.html</link>  
 		<description>&lt;p&gt;虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。&lt;/p&gt;
 
 &lt;p&gt;在公司用的是CVS，因此用&lt;code&gt;git add&lt;/code&gt;的时候就以为和&lt;code&gt;cvs add&lt;/code&gt;的作用是一样的，把新文件加到代码库。后来学了一招&lt;code&gt;git commit -a&lt;/code&gt;，还以为-a就是--all的意思。稀里糊涂地用到现在。。。&lt;/p&gt;
@@ -43,7 +43,7 @@
     </item>  
     <item>  
 		<title>Ubuntu下好用的Markdown编辑器</title>  
-		<link>http://imzqq.info/posts/markdown-editor-under-ubuntu.html</link>  
+		<link>http://zqqf16.info/posts/markdown-editor-under-ubuntu.html</link>  
 		<description>&lt;p&gt;之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。&lt;/p&gt;
 
 &lt;p&gt;后来在Ubuntu软件中心里面搜&#34;Markdown&#34;，发现了一个不错的编辑器——ReText。&lt;/p&gt;
@@ -75,7 +75,7 @@
     </item>  
     <item>  
 		<title>重拾C语言之运算符优先级</title>  
-		<link>http://imzqq.info/posts/c-priority.html</link>  
+		<link>http://zqqf16.info/posts/c-priority.html</link>  
 		<description>&lt;p&gt;总是记不住C语言各个运算符的优先级，&lt;s&gt;每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差&lt;/s&gt;。因此，就借最近整理C语言知识点的时机恶补一下。&lt;/p&gt;
 
 &lt;p&gt;注意：下面的这段内容抄自&lt;a href=&#34;http://baike.baidu.com/view/1516130.htm&#34;&gt;百度百科&lt;/a&gt;&lt;/p&gt;
@@ -131,7 +131,7 @@
     </item>  
     <item>  
 		<title>重拾C语言之数组初始化</title>  
-		<link>http://imzqq.info/posts/c-array-initialization.html</link>  
+		<link>http://zqqf16.info/posts/c-array-initialization.html</link>  
 		<description>&lt;p&gt;记得刚工作的时候，每次用字符串数组都是小心翼翼。当时基本都是这样：&lt;/p&gt;
 
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;memset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;sizeof&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -168,7 +168,7 @@
     </item>  
     <item>  
 		<title>重拾C语言之strncpy</title>  
-		<link>http://imzqq.info/posts/c-strncpy.html</link>  
+		<link>http://zqqf16.info/posts/c-strncpy.html</link>  
 		<description>&lt;blockquote&gt;
   &lt;p&gt;前一段时间Python用惯了，冷不丁地切换回C，发现很多基础东西都有点模糊了。从今天起，我将把一些平时碰到的知识点整理起来，起名为“重拾C语言”系列。纯粹的基础知识，老鸟绕行~&lt;/p&gt;
 &lt;/blockquote&gt;
