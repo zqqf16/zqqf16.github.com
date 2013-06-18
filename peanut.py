@@ -175,12 +175,19 @@ class Peanut():
             xml = template.render(info=self.info, pages=self.info['pages'], posts=self.info['posts'])
             f.write(xml)
 
+    def gen_xml_rss(self):
+        template = templates.get_template('rss.xml')
+        with open('rss', 'w') as f:
+            xml = template.render(posts=self.info['posts'][:5])
+            f.write(xml)
+
     def gen_all(self):
         self.gen_html_posts()
         self.gen_html_pages()
         self.gen_html_tags()
         self.gen_html_index()
         self.gen_xml_sitemap()
+        self.gen_xml_rss()
 
 if __name__ == '__main__':
     p = Peanut('.')
