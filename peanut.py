@@ -177,7 +177,7 @@ class Peanut():
 
     def gen_xml_rss(self):
         template = templates.get_template('rss.xml')
-        with open('rss', 'w') as f:
+        with open('rss/index.xml', 'w') as f:
             xml = template.render(posts=self.info['posts'][:5])
             f.write(xml)
 
