@@ -7,6 +7,38 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>近期状态</title>  
+		<link>http://zqqf16.info/posts/recent-status.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;很久没写blog，都快忘了。为了不让这个来之不易的blog荒废，决定更新一下最近的状态。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;工作&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最近工作方面发生了比较大的变化，由于公司产品及人员调整，我要负责IOS客户端的开发了，也算是转行了。
+这两周一直在学Objective-C以及IOS开发相关的东西，目前算是入门了吧。以后的博客可能会写一些这方面的东西。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;生活&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;去了一趟郑州，感受了一下中原文化，吃了当地名吃“葛记焖饼”。要是郑州也靠海的话我真想过去定居～&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;其他&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Google Reader 关了，选择了Digg Reader这个做替代。 &lt;br /&gt;
+GitCafe 私有项目开始收费了，强烈支持。 &lt;br /&gt;
+尝试装黑苹果，以失败告终，决心攒钱买个Mac Mini。 &lt;br /&gt;
+北京连续大晴天，受宠若惊，喜出望外。 &lt;br /&gt;
+研究自制豆腐脑，差强人意。  &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;吐槽&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;公司的采购效率忒低。申请一台MAC设备，申请了半个月也没见到。两个周了，天天看Apple的Develop guide。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 04 Jul 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>理解Git的暂存区</title>  
 		<link>http://zqqf16.info/posts/understand-git-stage.html</link>  
 		<description>&lt;p&gt;虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。&lt;/p&gt;
@@ -165,25 +197,6 @@
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
 		<pubDate>Sun, 26 May 2013 00:00:00 +0800</pubDate>  
-    </item>  
-    <item>  
-		<title>重拾C语言之strncpy</title>  
-		<link>http://zqqf16.info/posts/c-strncpy.html</link>  
-		<description>&lt;blockquote&gt;
-  &lt;p&gt;前一段时间Python用惯了，冷不丁地切换回C，发现很多基础东西都有点模糊了。从今天起，我将把一些平时碰到的知识点整理起来，起名为“重拾C语言”系列。纯粹的基础知识，老鸟绕行~&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;strncpy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;虽然加了个n，当时这个函数一点也不靠谱。它并不能保证dest的末尾一定是&lt;code&gt;&#39;\0&#39;&lt;/code&gt;。来看看这个函数的简单实现（来自man手册）:&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;nf&#34;&gt;strncpy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;kt&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt; &lt;br \&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;br \&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;br \&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;只有当n大于src的长度才会在dest的末尾填“\0”。&lt;/p&gt;
-</description>  
-		<author>Zqqf16</author>  
-		<copyright></copyright>  
-		<pubDate>Fri, 24 May 2013 00:00:00 +0800</pubDate>  
     </item>  
 </channel>  
 </rss>  
