@@ -7,6 +7,25 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>幽门螺旋杆菌</title>  
+		<link>http://zqqf16.info/posts/helicobacter-pylori.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;每次从医院回来，就感觉没有什么比小命还重要。。。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;前一段时间感觉胃不太舒服，吃完东西就会堵得慌，得使劲揉揉才能缓解。被折磨了很久之后终于下定决心去医院看看。不看不知道，一看吓一跳。。。&lt;/p&gt;
+
+&lt;p&gt;其实病因就是消化不良，但是为了彻底了解病因，在医生的建议下，我做了一些全面的检查。结果发现我胃里的&lt;a href=&#34;http://baike.baidu.com/view/67756.htm&#34;&gt;幽门螺旋杆菌&lt;/a&gt;超标了，而且超标的比较严重。&lt;/p&gt;
+
+&lt;p&gt;第一次知道这玩意儿，还是在很同事聊天中不经意间听说的。当时也没在意，心想着反正我平时很少出去吃饭，一般不会感染。没想到这东西已经在我胃里了。看到检验结果时有一种不寒而栗的感觉，慎得慌。。。&lt;/p&gt;
+
+&lt;p&gt;从医院回来后就感觉到处都是脏的，晚上把家里的餐具什么的放在锅里煮了很长时间来消毒。还特意在淘宝上买了个紫外线灯。希望卫生的习惯能够保持下去。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 11 Jul 2013 11:37:12 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>近期状态</title>  
 		<link>http://zqqf16.info/posts/recent-status.html</link>  
 		<description>&lt;blockquote&gt;
@@ -160,43 +179,6 @@ GitCafe 私有项目开始收费了，强烈支持。 &lt;br /&gt;
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
 		<pubDate>Tue, 28 May 2013 00:00:00 +0800</pubDate>  
-    </item>  
-    <item>  
-		<title>重拾C语言之数组初始化</title>  
-		<link>http://zqqf16.info/posts/c-array-initialization.html</link>  
-		<description>&lt;p&gt;记得刚工作的时候，每次用字符串数组都是小心翼翼。当时基本都是这样：&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;memset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;sizeof&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;那时颇为自豪，自认为很少有菜鸟能像我这样注意这些问题。直到后来有一次代码review，在一老鸟面前班门弄斧，结果被他指出来了，说我这样会浪费一次函数调用，直接&lt;code&gt;char str[32] = {0}&lt;/code&gt;更好。刚开始我还以为这是一种特殊语句，是把数组的每个元素都赋0。&lt;/p&gt;
-
-&lt;p&gt;有一次我想把数组全初始化成1，就直接&lt;code&gt;int list[4] = {1}&lt;/code&gt;。结果进引起了一个bug，害得我花了很长时间才找到问题所在——list中除了第一个是1,其它的都是0。于是我决定好好研究一下，争取不再犯这样的错误。&lt;/p&gt;
-
-&lt;p&gt;其实，这玩意很简单，简单到不能再简单了，以至于研究完了我都觉得羞愧了。。。&lt;/p&gt;
-
-&lt;p&gt;首先，看下面的语句：&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;sc&#34;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;3&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;这是标准的数组初始化方法，字符串数组的每个元素都被赋上初始值（大括号内的个数等于数组长度）。&lt;/p&gt;
-
-&lt;p&gt;当大括号内的值小于数组长度的时候，比如：&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;sc&#34;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;str[0]和str[1]会被赋上相应的初始值，而剩下的元素会被初始化成0。这基本是没本C语言书里面都会讲到的。&lt;/p&gt;
-
-&lt;p&gt;所以，反过来再看看之前的例子：&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;就是把第一个元素赋1，其他的元素都被初始化成0。&lt;/p&gt;
-
-&lt;p&gt;就是这么简单。&lt;/p&gt;
-</description>  
-		<author>Zqqf16</author>  
-		<copyright></copyright>  
-		<pubDate>Sun, 26 May 2013 00:00:00 +0800</pubDate>  
     </item>  
 </channel>  
 </rss>  
