@@ -23,7 +23,56 @@
 </description>  
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
-		<pubDate>Thu, 11 Jul 2013 11:37:12 +0800</pubDate>  
+		<pubDate>Thu, 11 Jul 2013 17:16:45 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>IOS7 Beta 3体验</title>  
+		<link>http://zqqf16.info/posts/ios7.html</link>  
+		<description>&lt;p&gt;前几天想起来有台公司发的iPad mini正在闲置中，于是就心血来潮，装了个IOS 7 beta 3 来体验一番。具体的安装步骤就不多说了，Google一搜一大把。&lt;/p&gt;
+
+&lt;p&gt;IOS7特性上的东西我就不细说了，网上有很多测评，这里将着重说一下我觉得不爽的地方。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;卡顿&lt;/strong&gt; &lt;br /&gt;
+不知道是我的mini配置太低的原因还是Beta版的问题，反正使用起来明显能感觉到卡顿。画面切换卡，调出通知中心卡，卡得跟安卓似的。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;小Bug一堆&lt;/strong&gt; &lt;br /&gt;
+先来看几张图： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/background.png&#34; alt=&#34;background&#34; /&gt; &lt;br /&gt;
+在从多任务界面切换回主界面的时候，会有一定的几率出现背景消失的情况。    &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/ios7/settings.png&#34; alt=&#34;settings&#34; /&gt; &lt;br /&gt;
+在设置里有很多排版混乱的情况，文字窜行了。  &lt;/p&gt;
+
+&lt;p&gt;类似的小Bug还有很多，但我觉得这些都不是问题，毕竟是Beta版，正式版的时候会有改善。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;文字太小&lt;/strong&gt; &lt;br /&gt;
+状态栏的文字图标明显缩小，看起来有点费眼。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;设计有缺陷&lt;/strong&gt; &lt;br /&gt;
+IOS7中大量采用了半透明的设计，通知菜单、Dock栏、甚至一些应用程序比如“提醒事项”都用到了。但是这也带来了一些问题，就是背景色和前景色顺色的问题。比如下面这张图： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/dock.png&#34; alt=&#34;color&#34; /&gt; &lt;br /&gt;
+看看最下面的“邮件”和“视频”两个图标，完全和背景顺色了，更讽刺的是这张背景图片是系统自带的。     &lt;/p&gt;
+
+&lt;p&gt;再看看图标设计，大多数图标都能感受到一种“小清新”的气质，或者说所谓的扁平化风格。但有些图标，比如上图中的“备忘录”以及“提醒事项”，完全就像是个业余认识因为时间不够搞出来的半成品，个人感觉丑爆了。   &lt;/p&gt;
+
+&lt;p&gt;再看看下面这张图： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/settings2.png&#34; alt=&#34;settings&#34; /&gt; &lt;br /&gt;
+看看左侧一栏，总觉得有些乱，分隔线和滚动条看起来一点都不搭。。。   &lt;/p&gt;
+
+&lt;p&gt;通知中心： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/notification.png&#34; alt=&#34;notice&#34; /&gt; &lt;br /&gt;
+IOS7中的通知中心改动挺大，分成了“今天”、“所有通知”、“未接来电”三部分，但是这三部分不能通过左右滑动屏幕来切换，每次都得手动点上去才行。这在iPhone中无所谓，因为屏幕小，很容易点到。但是在iPad中就有点不方便了。双手拿着设备，切换的时候还得空出一只手过去点一下，实在是不方便。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;文件夹&lt;/strong&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/ios7/floder.png&#34; alt=&#34;floder&#34; /&gt; &lt;br /&gt;
+文件夹的改动也挺大，支持分页，每个文件夹内可以放N多图标。但问题也来了，当放置的图标过多的时候只能显示第一页的内容，很不直观。很有可能某些应用就这样被遗忘到角落里了。另外，文件夹的展开方式我觉得也不如IOS6中的舒服。&lt;/p&gt;
+
+&lt;p&gt;总的来说，这次IOS7中的改进还是十分令人满意的，毕竟是Beta版。希望在正式版出来的时候能够达到或者接近完美。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 11 Jul 2013 17:16:45 +0800</pubDate>  
     </item>  
     <item>  
 		<title>近期状态</title>  
@@ -123,62 +172,6 @@ GitCafe 私有项目开始收费了，强烈支持。 &lt;br /&gt;
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
 		<pubDate>Tue, 04 Jun 2013 00:00:00 +0800</pubDate>  
-    </item>  
-    <item>  
-		<title>重拾C语言之运算符优先级</title>  
-		<link>http://zqqf16.info/posts/c-priority.html</link>  
-		<description>&lt;p&gt;总是记不住C语言各个运算符的优先级，&lt;s&gt;每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差&lt;/s&gt;。因此，就借最近整理C语言知识点的时机恶补一下。&lt;/p&gt;
-
-&lt;p&gt;注意：下面的这段内容抄自&lt;a href=&#34;http://baike.baidu.com/view/1516130.htm&#34;&gt;百度百科&lt;/a&gt;&lt;/p&gt;
-
-&lt;blockquote&gt;
-  &lt;p&gt;&lt;strong&gt;1级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  ( ) 圆括号；[ ]下标运算符；-&gt;指向结构体成员运算符；. 结构体成员运算符。 &lt;br /&gt;
-  &lt;strong&gt;2级（右结合）&lt;/strong&gt; &lt;br /&gt;
-  “ ! ”逻辑非运算符；“ ~ ”按位取反运算符；“ ++ ”前缀增量运算符；“ -- ”前缀减量运算符； &lt;br /&gt;
-  “ - ”负号运算符；(类型)类型转换运算符；“ * ”指针运算符；“ &amp;amp; ”地址运算符； &lt;br /&gt;
-  “sizeof ” 长度运算符。 &lt;br /&gt;
-  &lt;strong&gt;3级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ * ” 乘法运算符；“ / ”除法运算符；“ % ” 取余运算符。 &lt;br /&gt;
-  &lt;strong&gt;4级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ + ”加法运算符；“ - ”减法运算符。 &lt;br /&gt;
-  &lt;strong&gt;5级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  &amp;lt;&amp;lt; 左移运算符；&amp;gt;&amp;gt; 右移运算符。 &lt;br /&gt;
-  &lt;strong&gt;6级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  &amp;lt;、&amp;lt;=、&amp;gt;、&amp;gt;=关系运算符。 &lt;br /&gt;
-  &lt;strong&gt;7级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ == ”等于运算符；“ != ”不等于运算符。 &lt;br /&gt;
-  &lt;strong&gt;8级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ &amp;amp; ”按位与运算符。 &lt;br /&gt;
-  &lt;strong&gt;9级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ ∧ ”按位异或运算符。 &lt;br /&gt;
-  &lt;strong&gt;10级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ | ”按位或运算符。 
-  &lt;strong&gt;11级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “&amp;amp;&amp;amp;”逻辑与运算符。 &lt;br /&gt;
-  &lt;strong&gt;12级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “ || ”逻辑或运算符。 &lt;br /&gt;
-  &lt;strong&gt;13级（右结合）&lt;/strong&gt; &lt;br /&gt;
-  ? :条件运算符。 &lt;br /&gt;
-  &lt;strong&gt;14级（右结合）&lt;/strong&gt; &lt;br /&gt;
-  =、 +=、 -=、 *=、 /=、 %=、 &amp;amp;=、 ^=、 |=、 &amp;lt;&amp;lt;=、 &amp;gt;&amp;gt;=赋值运算符。 &lt;br /&gt;
-  &lt;strong&gt;15级（左结合）&lt;/strong&gt; &lt;br /&gt;
-  “，”逗号运算符。  &lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;---抄袭结束---&lt;/p&gt;
-
-&lt;p&gt;记住“==”和“!=”的优先级高于“&amp;amp;&amp;amp;”和“||”，&lt;code&gt;if&lt;/code&gt;的时候就可以省下好几对括号了。&lt;/p&gt;
-
-&lt;p&gt;记住[ ]的优先级高于“*”, 就可以区分数组的指针和指针数组了(&lt;code&gt;char (*p)[20]&lt;/code&gt;，&lt;code&gt;char *p[20]&lt;/code&gt;)。&lt;/p&gt;
-
-&lt;p&gt;PS：如果实在记不清，还是建议乖乖地套上括号，这是最靠谱的方法。&lt;/p&gt;
-
-&lt;p&gt;PS2：“只记住两个优先级就够了：乘法和除法优先于加减法，其他操作一律加括号” —— 《C专家编程》&lt;/p&gt;
-</description>  
-		<author>Zqqf16</author>  
-		<copyright></copyright>  
-		<pubDate>Tue, 28 May 2013 00:00:00 +0800</pubDate>  
     </item>  
 </channel>  
 </rss>  
