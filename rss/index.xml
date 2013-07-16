@@ -7,23 +7,43 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
-		<title>幽门螺旋杆菌</title>  
-		<link>http://zqqf16.info/posts/helicobacter-pylori.html</link>  
-		<description>&lt;blockquote&gt;
-  &lt;p&gt;每次从医院回来，就感觉没有什么比小命还重要。。。&lt;/p&gt;
+		<title>tornado源码之Configurable类</title>  
+		<link>http://zqqf16.info/posts/tornado-configurable.html</link>  
+		<description>&lt;p&gt;最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的&lt;a href=&#34;http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html&#34;&gt;源码分析&lt;/a&gt;来作为入门。&lt;/p&gt;
+
+&lt;p&gt;第一讲是说IOLoop的，也是tornado的核心。程序中主函数通常调用&lt;code&gt;tornado.ioloop.IOLoop.instance().start()&lt;/code&gt;来启动IOLoop，但是看了一下IOLoop的实现，start方法是这样的：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;sd&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Starts the I/O loop.&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;sd&#34;&gt;        The loop will run until one of the callbacks calls `stop()`, which&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;sd&#34;&gt;        will make the loop stop after the current event iteration completes.&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;sd&#34;&gt;        &amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;raise&lt;/span&gt; &lt;span class=&#34;ne&#34;&gt;NotImplementedError&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;也就是说&lt;code&gt;IOLoop&lt;/code&gt;是个抽象的基类，具体工作是由它的子类负责的。由于是Linux平台，所以应该用&lt;code&gt;Epoll&lt;/code&gt;，对应的类是&lt;code&gt;PollIOLoop&lt;/code&gt;。&lt;code&gt;PollIOLoop&lt;/code&gt;的&lt;code&gt;start&lt;/code&gt;方法开始了事件循环。&lt;/p&gt;
+
+&lt;p&gt;问题来了，&lt;code&gt;tornado.ioloop.IOLoop.instance()&lt;/code&gt;是怎么返回&lt;code&gt;PollIOLoop&lt;/code&gt;实例的呢？刚开始有点想不明白，后来看了一下IOLoop的代码就豁然开朗了。&lt;/p&gt;
+
+&lt;p&gt;&lt;code&gt;IOLoop&lt;/code&gt;继承自&lt;code&gt;Configurable&lt;/code&gt;，后者位于&lt;code&gt;tornado/util.py&lt;/code&gt;。&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;A configurable interface is an (abstract) class whose constructor acts as a factory function for one of its implementation subclasses. The implementation subclass as well as optional keyword arguments to its initializer can be set globally at runtime with &lt;code&gt;configure&lt;/code&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;前一段时间感觉胃不太舒服，吃完东西就会堵得慌，得使劲揉揉才能缓解。被折磨了很久之后终于下定决心去医院看看。不看不知道，一看吓一跳。。。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;Configurable&lt;/code&gt;类实现了一个工厂方法，也就是设计模式中的“工厂模式”，看一下&lt;code&gt;__new__&lt;/code&gt;函数的实现：&lt;/p&gt;
 
-&lt;p&gt;其实病因就是消化不良，但是为了彻底了解病因，在医生的建议下，我做了一些全面的检查。结果发现我胃里的&lt;a href=&#34;http://baike.baidu.com/view/67756.htm&#34;&gt;幽门螺旋杆菌&lt;/a&gt;超标了，而且超标的比较严重。&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;__new__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;kwargs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;base&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;configurable_base&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;args&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{}&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;n&#34;&gt;impl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;configured_class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__impl_kwargs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;                &lt;span class=&#34;n&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__impl_kwargs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;else&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;n&#34;&gt;impl&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;update&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;kwargs&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;super&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Configurable&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__new__&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;impl&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;c&#34;&gt;# initialize vs __init__ chosen for compatiblity with AsyncHTTPClient&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;c&#34;&gt;# singleton magic.  If we get rid of that we can switch to __init__&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;c&#34;&gt;# here too.&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;initialize&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;**&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;args&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;instance&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;第一次知道这玩意儿，还是在很同事聊天中不经意间听说的。当时也没在意，心想着反正我平时很少出去吃饭，一般不会感染。没想到这东西已经在我胃里了。看到检验结果时有一种不寒而栗的感觉，慎得慌。。。&lt;/p&gt;
+&lt;p&gt;当创建一个&lt;code&gt;Configurable&lt;/code&gt;类的实例的时候，其实创建的是&lt;code&gt;configurable_class()&lt;/code&gt;返回的类的实例。&lt;/p&gt;
 
-&lt;p&gt;从医院回来后就感觉到处都是脏的，晚上把家里的餐具什么的放在锅里煮了很长时间来消毒。还特意在淘宝上买了个紫外线灯。希望卫生的习惯能够保持下去。&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;    &lt;span class=&#34;nd&#34;&gt;@classmethod&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;configured_class&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;sd&#34;&gt;&amp;quot;&amp;quot;&amp;quot;Returns the currently configured class.&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;base&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;configurable_base&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__impl_class&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;is&lt;/span&gt; &lt;span class=&#34;bp&#34;&gt;None&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__impl_class&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;configurable_default&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;base&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;__impl_class&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;最后，就是返回的&lt;code&gt;configurable_default()&lt;/code&gt;。此函数在IOLoop中的实现如下：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;    &lt;span class=&#34;nd&#34;&gt;@classmethod&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;configurable_default&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cls&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;hasattr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;select&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;epoll&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;tornado.platform.epoll&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EPollIOLoop&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EPollIOLoop&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;hasattr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;select&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;kqueue&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;c&#34;&gt;# Python 2.6+ on BSD or Mac&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;tornado.platform.kqueue&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KQueueIOLoop&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;KQueueIOLoop&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;kn&#34;&gt;from&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;tornado.platform.select&lt;/span&gt; &lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SelectIOLoop&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SelectIOLoop&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code&gt;EPollIOLoop&lt;/code&gt;是&lt;code&gt;PollIOLoop&lt;/code&gt;的子类。至此，这个流程就理清楚了。&lt;/p&gt;
+
+&lt;p&gt;第一天看tornado的代码就收获不少，&lt;strong&gt;最好的学习方式就是看别人的代码&lt;/strong&gt;这话一点都不假。&lt;/p&gt;
 </description>  
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
-		<pubDate>Thu, 11 Jul 2013 17:16:45 +0800</pubDate>  
+		<pubDate>Tue, 16 Jul 2013 00:00:00 +0800</pubDate>  
     </item>  
     <item>  
 		<title>IOS7 Beta 3体验</title>  
@@ -72,7 +92,26 @@ IOS7中的通知中心改动挺大，分成了“今天”、“所有通知”�
 </description>  
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
-		<pubDate>Thu, 11 Jul 2013 17:16:45 +0800</pubDate>  
+		<pubDate>Thu, 11 Jul 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>幽门螺旋杆菌</title>  
+		<link>http://zqqf16.info/posts/helicobacter-pylori.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;每次从医院回来，就感觉没有什么比小命还重要。。。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;前一段时间感觉胃不太舒服，吃完东西就会堵得慌，得使劲揉揉才能缓解。被折磨了很久之后终于下定决心去医院看看。不看不知道，一看吓一跳。。。&lt;/p&gt;
+
+&lt;p&gt;其实病因就是消化不良，但是为了彻底了解病因，在医生的建议下，我做了一些全面的检查。结果发现我胃里的&lt;a href=&#34;http://baike.baidu.com/view/67756.htm&#34;&gt;幽门螺旋杆菌&lt;/a&gt;超标了，而且超标的比较严重。&lt;/p&gt;
+
+&lt;p&gt;第一次知道这玩意儿，还是在很同事聊天中不经意间听说的。当时也没在意，心想着反正我平时很少出去吃饭，一般不会感染。没想到这东西已经在我胃里了。看到检验结果时有一种不寒而栗的感觉，慎得慌。。。&lt;/p&gt;
+
+&lt;p&gt;从医院回来后就感觉到处都是脏的，晚上把家里的餐具什么的放在锅里煮了很长时间来消毒。还特意在淘宝上买了个紫外线灯。希望卫生的习惯能够保持下去。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 11 Jul 2013 00:00:00 +0800</pubDate>  
     </item>  
     <item>  
 		<title>近期状态</title>  
@@ -140,38 +179,6 @@ GitCafe 私有项目开始收费了，强烈支持。 &lt;br /&gt;
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
 		<pubDate>Wed, 05 Jun 2013 00:00:00 +0800</pubDate>  
-    </item>  
-    <item>  
-		<title>Ubuntu下好用的Markdown编辑器</title>  
-		<link>http://zqqf16.info/posts/markdown-editor-under-ubuntu.html</link>  
-		<description>&lt;p&gt;之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。&lt;/p&gt;
-
-&lt;p&gt;后来在Ubuntu软件中心里面搜&#34;Markdown&#34;，发现了一个不错的编辑器——ReText。&lt;/p&gt;
-
-&lt;p&gt;可以直接用apt-get来安装：&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sudo apt-get install retext&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;在某些情况下，工具栏的图标显示不出来。后来搜到了这篇&lt;a href=&#34;http://www.e0356.com/2013/02/242&#34;&gt;文章&lt;/a&gt;，完美的解决了这个问题。&lt;/p&gt;
-
-&lt;p&gt;在Ubuntu下直接执行：&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;gsettings get org.gnome.desktop.interface icon-theme&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;我这显示的是&#39;ubuntu-mono-dark&#39;。&lt;/p&gt;
-
-&lt;p&gt;打开“～/.config/ReText\ project/ReText.conf”，加入&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;iconThem=ubuntu-mono-dark
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;p&gt;重新打开ReText就OK了~&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&#34;/static/img/retext.png&#34; alt=&#34;图片&#34; /&gt;&lt;/p&gt;
-</description>  
-		<author>Zqqf16</author>  
-		<copyright></copyright>  
-		<pubDate>Tue, 04 Jun 2013 00:00:00 +0800</pubDate>  
     </item>  
 </channel>  
 </rss>  

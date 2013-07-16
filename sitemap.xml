@@ -5,12 +5,17 @@
 		<changefreq>monthly</changefreq>
 	</url>
 	<url>
-		<loc>http://zqqf16.info/posts/helicobacter-pylori.html</loc>
-		<lastmod>2013-07-11</lastmod>
+		<loc>http://zqqf16.info/posts/tornado-configurable.html</loc>
+		<lastmod>2013-07-16</lastmod>
 		<changefreq>monthly</changefreq>
 	</url>
 	<url>
 		<loc>http://zqqf16.info/posts/ios7.html</loc>
+		<lastmod>2013-07-11</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
+		<loc>http://zqqf16.info/posts/helicobacter-pylori.html</loc>
 		<lastmod>2013-07-11</lastmod>
 		<changefreq>monthly</changefreq>
 	</url>

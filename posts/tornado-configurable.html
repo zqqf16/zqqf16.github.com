@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>
+tornado源码之Configurable类 |
+Znote</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+tornado源码之Configurable类
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的<a href="http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html">源码分析</a>来作为入门。</p>
+
+<p>第一讲是说IOLoop的，也是tornado的核心。程序中主函数通常调用<code>tornado.ioloop.IOLoop.instance().start()</code>来启动IOLoop，但是看了一下IOLoop的实现，start方法是这样的：</p>
+
+<div class="codehilite"><pre><code>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><br \>        <span class="sd">&quot;&quot;&quot;Starts the I/O loop.</span><br \><br \><span class="sd">        The loop will run until one of the callbacks calls `stop()`, which</span><br \><span class="sd">        will make the loop stop after the current event iteration completes.</span><br \><span class="sd">        &quot;&quot;&quot;</span><br \>        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span><br \></code></pre></div>
+
+<p>也就是说<code>IOLoop</code>是个抽象的基类，具体工作是由它的子类负责的。由于是Linux平台，所以应该用<code>Epoll</code>，对应的类是<code>PollIOLoop</code>。<code>PollIOLoop</code>的<code>start</code>方法开始了事件循环。</p>
+
+<p>问题来了，<code>tornado.ioloop.IOLoop.instance()</code>是怎么返回<code>PollIOLoop</code>实例的呢？刚开始有点想不明白，后来看了一下IOLoop的代码就豁然开朗了。</p>
+
+<p><code>IOLoop</code>继承自<code>Configurable</code>，后者位于<code>tornado/util.py</code>。</p>
+
+<blockquote>
+  <p>A configurable interface is an (abstract) class whose constructor acts as a factory function for one of its implementation subclasses. The implementation subclass as well as optional keyword arguments to its initializer can be set globally at runtime with <code>configure</code>.</p>
+</blockquote>
+
+<p><code>Configurable</code>类实现了一个工厂方法，也就是设计模式中的“工厂模式”，看一下<code>__new__</code>函数的实现：</p>
+
+<div class="codehilite"><pre><code>    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span><br \>        <span class="n">base</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">configurable_base</span><span class="p">()</span><br \>        <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span><br \>        <span class="k">if</span> <span class="n">cls</span> <span class="ow">is</span> <span class="n">base</span><span class="p">:</span><br \>            <span class="n">impl</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">configured_class</span><span class="p">()</span><br \>            <span class="k">if</span> <span class="n">base</span><span class="o">.</span><span class="n">__impl_kwargs</span><span class="p">:</span><br \>                <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">base</span><span class="o">.</span><span class="n">__impl_kwargs</span><span class="p">)</span><br \>        <span class="k">else</span><span class="p">:</span><br \>            <span class="n">impl</span> <span class="o">=</span> <span class="n">cls</span><br \>        <span class="n">args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span><br \>        <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Configurable</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">impl</span><span class="p">)</span><br \>        <span class="c"># initialize vs __init__ chosen for compatiblity with AsyncHTTPClient</span><br \>        <span class="c"># singleton magic.  If we get rid of that we can switch to __init__</span><br \>        <span class="c"># here too.</span><br \>        <span class="n">instance</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span><br \>        <span class="k">return</span> <span class="n">instance</span><br \></code></pre></div>
+
+<p>当创建一个<code>Configurable</code>类的实例的时候，其实创建的是<code>configurable_class()</code>返回的类的实例。</p>
+
+<div class="codehilite"><pre><code>    <span class="nd">@classmethod</span><br \>    <span class="k">def</span> <span class="nf">configured_class</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span><br \>        <span class="sd">&quot;&quot;&quot;Returns the currently configured class.&quot;&quot;&quot;</span><br \>        <span class="n">base</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">configurable_base</span><span class="p">()</span><br \>        <span class="k">if</span> <span class="n">cls</span><span class="o">.</span><span class="n">__impl_class</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span><br \>            <span class="n">base</span><span class="o">.</span><span class="n">__impl_class</span> <span class="o">=</span> <span class="n">cls</span><span class="o">.</span><span class="n">configurable_default</span><span class="p">()</span><br \>        <span class="k">return</span> <span class="n">base</span><span class="o">.</span><span class="n">__impl_class</span><br \></code></pre></div>
+
+<p>最后，就是返回的<code>configurable_default()</code>。此函数在IOLoop中的实现如下：</p>
+
+<div class="codehilite"><pre><code>    <span class="nd">@classmethod</span><br \>    <span class="k">def</span> <span class="nf">configurable_default</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span><br \>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">select</span><span class="p">,</span> <span class="s">&quot;epoll&quot;</span><span class="p">):</span><br \>            <span class="kn">from</span> <span class="nn">tornado.platform.epoll</span> <span class="kn">import</span> <span class="n">EPollIOLoop</span><br \>            <span class="k">return</span> <span class="n">EPollIOLoop</span><br \>        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">select</span><span class="p">,</span> <span class="s">&quot;kqueue&quot;</span><span class="p">):</span><br \>            <span class="c"># Python 2.6+ on BSD or Mac</span><br \>            <span class="kn">from</span> <span class="nn">tornado.platform.kqueue</span> <span class="kn">import</span> <span class="n">KQueueIOLoop</span><br \>            <span class="k">return</span> <span class="n">KQueueIOLoop</span><br \>        <span class="kn">from</span> <span class="nn">tornado.platform.select</span> <span class="kn">import</span> <span class="n">SelectIOLoop</span><br \>        <span class="k">return</span> <span class="n">SelectIOLoop</span><br \></code></pre></div>
+
+<p><code>EPollIOLoop</code>是<code>PollIOLoop</code>的子类。至此，这个流程就理清楚了。</p>
+
+<p>第一天看tornado的代码就收获不少，<strong>最好的学习方式就是看别人的代码</strong>这话一点都不假。</p>
+
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/tornado">tornado</a>
+			<a href="/tags/python">python</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-07-16">2013-07-16</time></span>
+	</section>
+<hr/>
+
+<div id="disqus_thread"></div>
+<script type="text/javascript">
+    var disqus_shortname = 'zqqf16';
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>

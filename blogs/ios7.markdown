@@ -1,6 +1,6 @@
 ---
 title: IOS7 Beta 3体验
-data: 2013-7-11
+date: 2013-7-11
 tags: IOS
 ---
 
