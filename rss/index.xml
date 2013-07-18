@@ -7,6 +7,43 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>Requests抓取网页的编码问题</title>  
+		<link>http://zqqf16.info/posts/python-requests-encoding-problems.html</link>  
+		<description>&lt;p&gt;经常在各大python论坛上看到有关爬虫的问题，实在是搞不明白这玩意儿除了对做搜索引擎还能有啥用。今天本着好奇的态度，打算试一试。&lt;/p&gt;
+
+&lt;p&gt;一番Google之后，发现了个很NB的库&lt;strong&gt;Requests&lt;/strong&gt;，比之前我用过的liburl2等http库简单多了。出于测试的目的，打算抓取一下我的博客。&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;c&#34;&gt;# -*- encoding: utf-8 -*-&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;requests&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;r&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;requests&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;get&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;http://zqqf16.info&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encoding&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;打印内容的时候一切正常，但是&lt;code&gt;encoding&lt;/code&gt;却显示的是&lt;code&gt;ISO-8859-1&lt;/code&gt;。我的页面上明明写着&lt;code&gt;&amp;lt;meta http-equiv=&#34;Content-Type&#34; content=&#34;text/html;charset=utf-8&#34;&amp;gt;&lt;/code&gt;，但结果却不是utf-8，百思不得其解，难道是我的html格式不对？&lt;/p&gt;
+
+&lt;p&gt;为了验证这个问题，我抓取了一下百度的首页，它的encoding显示的是&#39;utf-8&#39;，而他的头部写的格式和我的一样。&lt;/p&gt;
+
+&lt;p&gt;这下迷茫了，Google了很长时间也没找到答案，只能仔细翻看官方的文档了。&lt;/p&gt;
+
+&lt;p&gt;终于，在&lt;a href=&#34;http://docs.python-requests.org/en/latest/user/advanced.html#encodings&#34;&gt;文档里&lt;/a&gt;发现了这么一段：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;When you receive a response, Requests makes a guess at the encoding to use for decoding the response when you call the Response.text method. Requests will first check for an encoding in the HTTP header, and if none is present, will use charade to attempt to guess the encoding.&lt;/p&gt;
+  
+  &lt;p&gt;The only time Requests will not do this is if no explicit charset is present in the HTTP headers and the Content-Type header contains text. In this situation, RFC 2616 specifies that the default charset must be ISO-8859-1. Requests follows the specification in this case. If you require a different encoding, you can manually set the Response.encoding property, or use the raw Response.content.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;这我才明白了，原来HTTP头部也有个“Content-Type”字段，requests会先去找HTTP头部的这个字段，如果没有，就调用“charade”来猜测编码。而默认的编码格式正是“ISO-8859-1”。&lt;/p&gt;
+
+&lt;p&gt;用chrome的调试工具看了一下baidu.com的Response Header，有这样一句“Content-Type:text/html;charset=utf-8”。而我的&lt;a href=&#34;http://zqqf16.info&#34;&gt;zqqf16.info&lt;/a&gt;却没有。这就是为什么我的编码格式识别不出来的原因。&lt;/p&gt;
+
+&lt;p&gt;由于我的博客在Github上，没法控制他的HTTP server的行为。为了能让requests识别出UTF-8，我在之前的代码里加了一句，为其指定了编码格式。&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;r&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;encoding&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;utf-8&amp;#39;&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;问题搞定了，多看看官方文档还是很有帮助滴。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 18 Jul 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>tornado源码之Configurable类</title>  
 		<link>http://zqqf16.info/posts/tornado-configurable.html</link>  
 		<description>&lt;p&gt;最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的&lt;a href=&#34;http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html&#34;&gt;源码分析&lt;/a&gt;来作为入门。&lt;/p&gt;
@@ -144,41 +181,6 @@ GitCafe 私有项目开始收费了，强烈支持。 &lt;br /&gt;
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
 		<pubDate>Thu, 04 Jul 2013 00:00:00 +0800</pubDate>  
-    </item>  
-    <item>  
-		<title>理解Git的暂存区</title>  
-		<link>http://zqqf16.info/posts/understand-git-stage.html</link>  
-		<description>&lt;p&gt;虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。&lt;/p&gt;
-
-&lt;p&gt;在公司用的是CVS，因此用&lt;code&gt;git add&lt;/code&gt;的时候就以为和&lt;code&gt;cvs add&lt;/code&gt;的作用是一样的，把新文件加到代码库。后来学了一招&lt;code&gt;git commit -a&lt;/code&gt;，还以为-a就是--all的意思。稀里糊涂地用到现在。。。&lt;/p&gt;
-
-&lt;p&gt;Git中的暂存区类似于任务列表，当对工作区的文件做了修改之后，执行&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git add filename&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;就会把修改的文件加到这个任务列表中，当执行&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git commit&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;的时候，暂存区中的改动就会提交到版本库中，而在“git add”之后所做的改动就不会被提交。&lt;/p&gt;
-
-&lt;p&gt;命令&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git checkout filename&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;是用暂存区中的文件来替换工作区中的文件。&lt;/p&gt;
-
-&lt;p&gt;命令&lt;/p&gt;
-
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git checkout HEAD&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;是用HEAD指向的版本库中的文件来替换暂存区和工作区的文件。&lt;/p&gt;
-
-&lt;p&gt;好了，先这么多了。通过这件事总结出一个道理：经验有时候会形成思维定势。&lt;/p&gt;
-</description>  
-		<author>Zqqf16</author>  
-		<copyright></copyright>  
-		<pubDate>Wed, 05 Jun 2013 00:00:00 +0800</pubDate>  
     </item>  
 </channel>  
 </rss>  
