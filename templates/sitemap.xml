@@ -1,14 +1,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 % for page in pages:
 	<url>
-		<loc>http://${info['domain']}/${page.uri}</loc>
+		<loc>http://${info['domain']}/${page.url}</loc>
 		<lastmod>${page.date.strftime('%Y-%m-%d')}</lastmod>
 		<changefreq>monthly</changefreq>
 	</url>
 % endfor
 % for post in posts:
 	<url>
-		<loc>http://${info['domain']}/${post.uri}</loc>
+		<loc>http://${info['domain']}/${post.url}</loc>
 		<lastmod>${post.date.strftime('%Y-%m-%d')}</lastmod>
 		<changefreq>monthly</changefreq>
 	</url>

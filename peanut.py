@@ -7,7 +7,20 @@ from mako.lookup import TemplateLookup
 from datetime import datetime
 from markdown2 import markdown
 
-BLOG_PATH = 'blogs'
+config = {
+    'title': u'穷折腾',
+    'path': {
+        'draft': 'drafts/',
+        'post': 'posts/',
+        'page': 'pages/',
+        'tag': 'tags/',
+        'rss': 'rss.xml',
+        'sitemap': 'sitemap.xml',
+    },
+    'domain': 'http://zqqf16.info',
+}
+
+_DRAFT_PATH = config['path']['draft']
 
 cfg = {
     'post_path': 'posts/',
@@ -29,19 +42,17 @@ class Tag():
     def __init__(self, name):
         self.name = name
         self.posts = []
-
-    @property
-    def uri(self):
-        return cfg['tag_path'] + self.name
+        self.path = config['path']['tag'] + self.name
+        self.url = self.path
 
     def generate(self, info):
         ''' Generate html file '''
 
-        uri = self.uri
-        if not os.path.exists(uri):
-            os.mkdir(uri)
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
 
-        with open(uri+'/index.html', 'w') as f: 
+        filepath = os.path.join(self.path, 'index.html')
+        with open(filepath, 'w') as f: 
             self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
             html = self.template.render(info=info, tag=self, posts=self.posts)
             f.write(html)
@@ -55,7 +66,7 @@ class Blog():
         self.title = ''
         self.date = ''
         self.category = None
-        self.type = 'page'
+        self.type = 'post'
 
     def __get_meta_handler(self, meta):
         handlers = {
@@ -80,8 +91,9 @@ class Blog():
         for key, value in self.__meta.items():
             self.__dict__[key] = self.__get_meta_handler(key)(value)
 
-        path = cfg['post_path'] if self.type=='post' else cfg['page_path']
-        self.uri = path + self.__slug + '.html'
+        path = config['path']['post'] if self.type=='post' else config['path']['page']
+        self.path = path + self.__slug + '.html'
+        self.url = self.path
 
     def read(self, filepath):
         ''' Read blog content and metadata from file'''
@@ -91,7 +103,6 @@ class Blog():
         if not m: 
             return
 
-        self.path = filepath
         self.__slug = m.group(1)
 
         with open(filepath, 'r') as f:
@@ -104,7 +115,7 @@ class Blog():
     def generate(self, info):
         ''' Generate html file '''
 
-        with open(self.uri, 'w') as f: 
+        with open(self.path, 'w') as f: 
             html = self.template.render(info=info, post=self)
             f.write(html)
 
@@ -115,16 +126,18 @@ class Peanut():
             'posts': [],
             'pages': [],
             'tags': [],
-            'domain': 'zqqf16.info',
-            'title': u'穷折腾',
+            'domain': config['domain'],
+            'title': config['title'],
         }
 
-    def load(self, blog_path=BLOG_PATH):
+    def load(self, draft_path=_DRAFT_PATH):
+        '''Load blogs from files'''
+
         posts = []
         pages = []
         tags = {}
 
-        path = self.path+'/'+blog_path
+        path = self.path+'/'+draft_path
         for f in os.listdir(path):
             blog = Blog()
             blog.read(path+'/'+f)
