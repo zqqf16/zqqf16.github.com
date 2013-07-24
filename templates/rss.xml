@@ -9,7 +9,7 @@
 	% for post in posts:
     <item>  
 		<title>${post.title}</title>  
-		<link>http://zqqf16.info/${post.url}</link>  
+		<link>http://zqqf16.info/${post.path}</link>  
 		<description>${post.content | x}</description>  
 		<author>Zqqf16</author>  
 		<copyright></copyright>  

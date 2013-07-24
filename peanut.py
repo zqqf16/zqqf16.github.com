@@ -22,19 +22,12 @@ config = {
 
 _DRAFT_PATH = config['path']['draft']
 
-cfg = {
-    'post_path': 'posts/',
-    'page_path': 'pages/',
-    'tag_path': 'tags/',
-}
-
 templates = TemplateLookup(
     directories=['templates'], 
     input_encoding='utf-8',
     output_encoding='utf-8', 
     encoding_errors='replace'
 )
-
 
 class Tag():
     template = templates.get_template('tag.html')
@@ -43,7 +36,6 @@ class Tag():
         self.name = name
         self.posts = []
         self.path = config['path']['tag'] + self.name
-        self.url = self.path
 
     def generate(self, info):
         ''' Generate html file '''
@@ -93,7 +85,6 @@ class Blog():
 
         path = config['path']['post'] if self.type=='post' else config['path']['page']
         self.path = path + self.__slug + '.html'
-        self.url = self.path
 
     def read(self, filepath):
         ''' Read blog content and metadata from file'''
