@@ -116,6 +116,7 @@ class Peanut():
             'pages': [],
             'tags': [],
             'domain': 'zqqf16.info',
+            'title': u'穷折腾',
         }
 
     def load(self, blog_path=BLOG_PATH):
@@ -178,7 +179,7 @@ class Peanut():
     def gen_xml_rss(self):
         template = templates.get_template('rss.xml')
         with open('rss.xml', 'w') as f:
-            xml = template.render(posts=self.info['posts'][:5])
+            xml = template.render(info=self.info, posts=self.info['posts'][:5])
             f.write(xml)
 
     def gen_all(self):

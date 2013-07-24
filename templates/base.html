@@ -2,7 +2,7 @@
 <html lang="zh-cn">
 <head>
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title><%block name="title"></%block>Znote</title>
+	<title><%block name="title"></%block>${info['title']}</title>
 	<link rel="stylesheet" href="/static/css/style.css" />
 	<link rel="stylesheet" href="/static/css/pygments.css" />
 	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://zqqf16.info/rss.xml" />
@@ -12,7 +12,7 @@
     <div id="container">
       <div id="main" role="main">
         <header>
-		<h1><%block name="page_title">Znote</%block></h1>
+		<h1><%block name="page_title">${info['title']}</%block></h1>
 		</header>
 
      <nav>
