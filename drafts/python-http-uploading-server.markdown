@@ -8,7 +8,7 @@ tags: python
 
 但是公司的WiFi和台式机的有线不在同一个网段，这就导致了笔记本用WiFi的时候就不能用Samba。后来发现python自带的SimpleHTTPServer可以很方便的搭建HTTP服务器，用它从台式机向笔记本传文件很方便。
 
-SimpleHTTPServer太Simple了，没有上传功能，从笔记本到台式机的时候不是很方便。于是乎找来SimpleHTTPServer.py好好研究一番，就有了下面的支持上传的SimpleHTTPServer：（或者移步[Github](https://gist.github.com/zqqf16/6061322)）
+SimpleHTTPServer太Simple了，没有上传功能，从笔记本到台式机的时候不是很方便。于是乎找来SimpleHTTPServer.py好好研究一番，就有了下面的支持上传的SimpleHTTPServer：（或者移步[Github](https://github.com/zqqf16/SimpleHTTPServer)）
 
 
 ```python
