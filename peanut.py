@@ -17,7 +17,7 @@ config = {
         'rss': 'rss.xml',
         'sitemap': 'sitemap.xml',
     },
-    'domain': 'http://zqqf16.info',
+    'domain': 'zqqf16.info',
 }
 
 _DRAFT_PATH = config['path']['draft']
