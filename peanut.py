@@ -194,6 +194,122 @@ class Peanut():
         self.gen_xml_sitemap()
         self.gen_xml_rss()
 
+#MVC start
+
+'''
+    M -- post/tag/page
+    V -- template
+    C -- peanut
+
+    Usage:
+    posts = Post.find_all()
+    tags = Tag.find_all()
+    pages = Page.find_all()
+
+    for tag in post.tags:
+        pass
+    for post in tag.posts:
+        pass
+'''
+_DRAFT_DIR = 'draft'
+
+class Tag(object):
+    def __init__(self, name):
+        self.name = name
+        self.posts = []
+        self.url = 'tag_url'
+
+class Post(object):
+    def __init__(self, title, content, slug, date=None, tags=[]):
+        self.title = title
+        self.content = content
+        self.slug = slug
+        if date:
+            self.date = date
+        else:
+            self.date = datetime.now()
+
+        self.tags = []
+        for tag in tags:
+            tag.posts.append(self)
+            self.tags.append(tag)
+
+class Page(object):
+    def __init__(self, title, content, slug, date=None):
+        self.title = title
+        self.content = content
+        self.slug = slug
+        if date:
+            self.date = date
+        else:
+            self.date = datetime.now()
+
+class Database(object):
+    #TODO must singleton
+    file_name_re = re.compile(r'([^/]+)\.(md|markdown)')
+
+    def __init__(self, directory = _DRAFT_DIR):
+        self.directory = directory
+        self.posts = []
+        self.pages = []
+        self.tags = {}
+
+    _META_HANDLER = {
+        'tags':     lambda x: [t.strip(' \n') for t in x.split(',')] if x else [],
+        'title':    lambda x: x if x else '',
+        'date':     lambda x: datetime.strptime(x, '%Y-%m-%d') if x else datetime.now(),
+        'category': lambda x: x if x else None,
+        'type':     lambda x: x if x else 'post',
+    }
+
+    def __parse_metadata(self, meta):
+        res = {}
+        for name, handler in self._META_HANDLER.items():
+            value = handler(meta.get(name))
+            res[name] = value
+
+        return res
+
+    def get_tags(self, name_list):
+        tags = []
+        for name in name_list:
+            if self.tags.get(name):
+                tags.append(self.tags[name])
+            else:
+                tag = Tag(name)
+                self.tags[name] = tag
+                tags.append(tag)
+        return tags
+
+    def load(self):
+        for f in os.listdir(self.directory):
+            m = self.file_name_re.search(f)
+            if not m: 
+                continue
+            slug = m.group(1)
+
+            filepath = os.path.join(self.directory, f)
+            with open(filepath, 'r') as f:
+                content = f.read().decode('utf-8')
+                html = markdown(content.strip(' \n'), 
+                                extras=["fenced-code-blocks", "metadata"])
+                if not hasattr(html, 'metadata'):
+                    #No need to convert this draft
+                    continue
+                meta = self.__parse_metadata(html.metadata)
+                tags = self.get_tags(meta['tags'])
+
+                if meta['type'] == 'post':
+                    post = Post(meta['title'], html, slug,
+                                meta['date'], tags)
+                    self.posts.append(post)
+                elif meta['type'] == 'page':
+                    page = Page(meta['title'], html, slug,
+                                meta['date'])
+                    self.pages.append(page)
+        
+        self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+
 if __name__ == '__main__':
     p = Peanut('.')
     p.load()
