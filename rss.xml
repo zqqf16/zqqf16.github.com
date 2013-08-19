@@ -152,5 +152,625 @@
 		<copyright></copyright>  
 		<pubDate>Thu, 11 Jul 2013 00:00:00 +0800</pubDate>  
     </item>  
+    <item>  
+		<title>IOS7 Beta 3体验</title>  
+		<link>http://zqqf16.info/posts/ios7.html</link>  
+		<description>&lt;p&gt;前几天想起来有台公司发的iPad mini正在闲置中，于是就心血来潮，装了个IOS 7 beta 3 来体验一番。具体的安装步骤就不多说了，Google一搜一大把。&lt;/p&gt;
+
+&lt;p&gt;IOS7特性上的东西我就不细说了，网上有很多测评，这里将着重说一下我觉得不爽的地方。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;卡顿&lt;/strong&gt; &lt;br /&gt;
+不知道是我的mini配置太低的原因还是Beta版的问题，反正使用起来明显能感觉到卡顿。画面切换卡，调出通知中心卡，卡得跟安卓似的。。。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;小Bug一堆&lt;/strong&gt; &lt;br /&gt;
+先来看几张图： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/background.png&#34; alt=&#34;background&#34; /&gt; &lt;br /&gt;
+在从多任务界面切换回主界面的时候，会有一定的几率出现背景消失的情况。    &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/ios7/settings.png&#34; alt=&#34;settings&#34; /&gt; &lt;br /&gt;
+在设置里有很多排版混乱的情况，文字窜行了。  &lt;/p&gt;
+
+&lt;p&gt;类似的小Bug还有很多，但我觉得这些都不是问题，毕竟是Beta版，正式版的时候会有改善。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;文字太小&lt;/strong&gt; &lt;br /&gt;
+状态栏的文字图标明显缩小，看起来有点费眼。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;设计有缺陷&lt;/strong&gt; &lt;br /&gt;
+IOS7中大量采用了半透明的设计，通知菜单、Dock栏、甚至一些应用程序比如“提醒事项”都用到了。但是这也带来了一些问题，就是背景色和前景色顺色的问题。比如下面这张图： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/dock.png&#34; alt=&#34;color&#34; /&gt; &lt;br /&gt;
+看看最下面的“邮件”和“视频”两个图标，完全和背景顺色了，更讽刺的是这张背景图片是系统自带的。     &lt;/p&gt;
+
+&lt;p&gt;再看看图标设计，大多数图标都能感受到一种“小清新”的气质，或者说所谓的扁平化风格。但有些图标，比如上图中的“备忘录”以及“提醒事项”，完全就像是个业余认识因为时间不够搞出来的半成品，个人感觉丑爆了。   &lt;/p&gt;
+
+&lt;p&gt;再看看下面这张图： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/settings2.png&#34; alt=&#34;settings&#34; /&gt; &lt;br /&gt;
+看看左侧一栏，总觉得有些乱，分隔线和滚动条看起来一点都不搭。。。   &lt;/p&gt;
+
+&lt;p&gt;通知中心： &lt;br /&gt;
+&lt;img src=&#34;/static/img/ios7/notification.png&#34; alt=&#34;notice&#34; /&gt; &lt;br /&gt;
+IOS7中的通知中心改动挺大，分成了“今天”、“所有通知”、“未接来电”三部分，但是这三部分不能通过左右滑动屏幕来切换，每次都得手动点上去才行。这在iPhone中无所谓，因为屏幕小，很容易点到。但是在iPad中就有点不方便了。双手拿着设备，切换的时候还得空出一只手过去点一下，实在是不方便。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;文件夹&lt;/strong&gt;  &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/ios7/floder.png&#34; alt=&#34;floder&#34; /&gt; &lt;br /&gt;
+文件夹的改动也挺大，支持分页，每个文件夹内可以放N多图标。但问题也来了，当放置的图标过多的时候只能显示第一页的内容，很不直观。很有可能某些应用就这样被遗忘到角落里了。另外，文件夹的展开方式我觉得也不如IOS6中的舒服。&lt;/p&gt;
+
+&lt;p&gt;总的来说，这次IOS7中的改进还是十分令人满意的，毕竟是Beta版。希望在正式版出来的时候能够达到或者接近完美。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 11 Jul 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>近期状态</title>  
+		<link>http://zqqf16.info/posts/recent-status.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;很久没写blog，都快忘了。为了不让这个来之不易的blog荒废，决定更新一下最近的状态。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;工作&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;最近工作方面发生了比较大的变化，由于公司产品及人员调整，我要负责IOS客户端的开发了，也算是转行了。
+这两周一直在学Objective-C以及IOS开发相关的东西，目前算是入门了吧。以后的博客可能会写一些这方面的东西。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;生活&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;去了一趟郑州，感受了一下中原文化，吃了当地名吃“葛记焖饼”。要是郑州也靠海的话我真想过去定居～&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;其他&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Google Reader 关了，选择了Digg Reader这个做替代。 &lt;br /&gt;
+GitCafe 私有项目开始收费了，强烈支持。 &lt;br /&gt;
+尝试装黑苹果，以失败告终，决心攒钱买个Mac Mini。 &lt;br /&gt;
+北京连续大晴天，受宠若惊，喜出望外。 &lt;br /&gt;
+研究自制豆腐脑，差强人意。  &lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;吐槽&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;公司的采购效率忒低。申请一台MAC设备，申请了半个月也没见到。两个周了，天天看Apple的Develop guide。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 04 Jul 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>理解Git的暂存区</title>  
+		<link>http://zqqf16.info/posts/understand-git-stage.html</link>  
+		<description>&lt;p&gt;虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。&lt;/p&gt;
+
+&lt;p&gt;在公司用的是CVS，因此用&lt;code&gt;git add&lt;/code&gt;的时候就以为和&lt;code&gt;cvs add&lt;/code&gt;的作用是一样的，把新文件加到代码库。后来学了一招&lt;code&gt;git commit -a&lt;/code&gt;，还以为-a就是--all的意思。稀里糊涂地用到现在。。。&lt;/p&gt;
+
+&lt;p&gt;Git中的暂存区类似于任务列表，当对工作区的文件做了修改之后，执行&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git add filename&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;就会把修改的文件加到这个任务列表中，当执行&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git commit&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;的时候，暂存区中的改动就会提交到版本库中，而在“git add”之后所做的改动就不会被提交。&lt;/p&gt;
+
+&lt;p&gt;命令&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git checkout filename&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;是用暂存区中的文件来替换工作区中的文件。&lt;/p&gt;
+
+&lt;p&gt;命令&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git checkout HEAD&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;是用HEAD指向的版本库中的文件来替换暂存区和工作区的文件。&lt;/p&gt;
+
+&lt;p&gt;好了，先这么多了。通过这件事总结出一个道理：经验有时候会形成思维定势。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Wed, 05 Jun 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>Ubuntu下好用的Markdown编辑器</title>  
+		<link>http://zqqf16.info/posts/markdown-editor-under-ubuntu.html</link>  
+		<description>&lt;p&gt;之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。&lt;/p&gt;
+
+&lt;p&gt;后来在Ubuntu软件中心里面搜&#34;Markdown&#34;，发现了一个不错的编辑器——ReText。&lt;/p&gt;
+
+&lt;p&gt;可以直接用apt-get来安装：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sudo apt-get install retext&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;在某些情况下，工具栏的图标显示不出来。后来搜到了这篇&lt;a href=&#34;http://www.e0356.com/2013/02/242&#34;&gt;文章&lt;/a&gt;，完美的解决了这个问题。&lt;/p&gt;
+
+&lt;p&gt;在Ubuntu下直接执行：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;gsettings get org.gnome.desktop.interface icon-theme&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;我这显示的是&#39;ubuntu-mono-dark&#39;。&lt;/p&gt;
+
+&lt;p&gt;打开“～/.config/ReText\ project/ReText.conf”，加入&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;iconThem=ubuntu-mono-dark
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;重新打开ReText就OK了~&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/retext.png&#34; alt=&#34;图片&#34; /&gt;&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Tue, 04 Jun 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>重拾C语言之运算符优先级</title>  
+		<link>http://zqqf16.info/posts/c-priority.html</link>  
+		<description>&lt;p&gt;总是记不住C语言各个运算符的优先级，&lt;s&gt;每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差&lt;/s&gt;。因此，就借最近整理C语言知识点的时机恶补一下。&lt;/p&gt;
+
+&lt;p&gt;注意：下面的这段内容抄自&lt;a href=&#34;http://baike.baidu.com/view/1516130.htm&#34;&gt;百度百科&lt;/a&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;&lt;strong&gt;1级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  ( ) 圆括号；[ ]下标运算符；-&gt;指向结构体成员运算符；. 结构体成员运算符。 &lt;br /&gt;
+  &lt;strong&gt;2级（右结合）&lt;/strong&gt; &lt;br /&gt;
+  “ ! ”逻辑非运算符；“ ~ ”按位取反运算符；“ ++ ”前缀增量运算符；“ -- ”前缀减量运算符； &lt;br /&gt;
+  “ - ”负号运算符；(类型)类型转换运算符；“ * ”指针运算符；“ &amp;amp; ”地址运算符； &lt;br /&gt;
+  “sizeof ” 长度运算符。 &lt;br /&gt;
+  &lt;strong&gt;3级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ * ” 乘法运算符；“ / ”除法运算符；“ % ” 取余运算符。 &lt;br /&gt;
+  &lt;strong&gt;4级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ + ”加法运算符；“ - ”减法运算符。 &lt;br /&gt;
+  &lt;strong&gt;5级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  &amp;lt;&amp;lt; 左移运算符；&amp;gt;&amp;gt; 右移运算符。 &lt;br /&gt;
+  &lt;strong&gt;6级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  &amp;lt;、&amp;lt;=、&amp;gt;、&amp;gt;=关系运算符。 &lt;br /&gt;
+  &lt;strong&gt;7级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ == ”等于运算符；“ != ”不等于运算符。 &lt;br /&gt;
+  &lt;strong&gt;8级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ &amp;amp; ”按位与运算符。 &lt;br /&gt;
+  &lt;strong&gt;9级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ ∧ ”按位异或运算符。 &lt;br /&gt;
+  &lt;strong&gt;10级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ | ”按位或运算符。 
+  &lt;strong&gt;11级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “&amp;amp;&amp;amp;”逻辑与运算符。 &lt;br /&gt;
+  &lt;strong&gt;12级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “ || ”逻辑或运算符。 &lt;br /&gt;
+  &lt;strong&gt;13级（右结合）&lt;/strong&gt; &lt;br /&gt;
+  ? :条件运算符。 &lt;br /&gt;
+  &lt;strong&gt;14级（右结合）&lt;/strong&gt; &lt;br /&gt;
+  =、 +=、 -=、 *=、 /=、 %=、 &amp;amp;=、 ^=、 |=、 &amp;lt;&amp;lt;=、 &amp;gt;&amp;gt;=赋值运算符。 &lt;br /&gt;
+  &lt;strong&gt;15级（左结合）&lt;/strong&gt; &lt;br /&gt;
+  “，”逗号运算符。  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;---抄袭结束---&lt;/p&gt;
+
+&lt;p&gt;记住“==”和“!=”的优先级高于“&amp;amp;&amp;amp;”和“||”，&lt;code&gt;if&lt;/code&gt;的时候就可以省下好几对括号了。&lt;/p&gt;
+
+&lt;p&gt;记住[ ]的优先级高于“*”, 就可以区分数组的指针和指针数组了(&lt;code&gt;char (*p)[20]&lt;/code&gt;，&lt;code&gt;char *p[20]&lt;/code&gt;)。&lt;/p&gt;
+
+&lt;p&gt;PS：如果实在记不清，还是建议乖乖地套上括号，这是最靠谱的方法。&lt;/p&gt;
+
+&lt;p&gt;PS2：“只记住两个优先级就够了：乘法和除法优先于加减法，其他操作一律加括号” —— 《C专家编程》&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Tue, 28 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>重拾C语言之数组初始化</title>  
+		<link>http://zqqf16.info/posts/c-array-initialization.html</link>  
+		<description>&lt;p&gt;记得刚工作的时候，每次用字符串数组都是小心翼翼。当时基本都是这样：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;memset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;sizeof&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;那时颇为自豪，自认为很少有菜鸟能像我这样注意这些问题。直到后来有一次代码review，在一老鸟面前班门弄斧，结果被他指出来了，说我这样会浪费一次函数调用，直接&lt;code&gt;char str[32] = {0}&lt;/code&gt;更好。刚开始我还以为这是一种特殊语句，是把数组的每个元素都赋0。&lt;/p&gt;
+
+&lt;p&gt;有一次我想把数组全初始化成1，就直接&lt;code&gt;int list[4] = {1}&lt;/code&gt;。结果进引起了一个bug，害得我花了很长时间才找到问题所在——list中除了第一个是1,其它的都是0。于是我决定好好研究一下，争取不再犯这样的错误。&lt;/p&gt;
+
+&lt;p&gt;其实，这玩意很简单，简单到不能再简单了，以至于研究完了我都觉得羞愧了。。。&lt;/p&gt;
+
+&lt;p&gt;首先，看下面的语句：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;sc&#34;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;2&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;3&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;这是标准的数组初始化方法，字符串数组的每个元素都被赋上初始值（大括号内的个数等于数组长度）。&lt;/p&gt;
+
+&lt;p&gt;当大括号内的值小于数组长度的时候，比如：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;sc&#34;&gt;&amp;#39;0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;1&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;str[0]和str[1]会被赋上相应的初始值，而剩下的元素会被初始化成0。这基本是没本C语言书里面都会讲到的。&lt;/p&gt;
+
+&lt;p&gt;所以，反过来再看看之前的例子：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;int&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;list&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;4&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;就是把第一个元素赋1，其他的元素都被初始化成0。&lt;/p&gt;
+
+&lt;p&gt;就是这么简单。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Sun, 26 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>重拾C语言之strncpy</title>  
+		<link>http://zqqf16.info/posts/c-strncpy.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;前一段时间Python用惯了，冷不丁地切换回C，发现很多基础东西都有点模糊了。从今天起，我将把一些平时碰到的知识点整理起来，起名为“重拾C语言”系列。纯粹的基础知识，老鸟绕行~&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;nf&#34;&gt;strncpy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;);&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;虽然加了个n，当时这个函数一点也不靠谱。它并不能保证dest的末尾一定是&lt;code&gt;&#39;\0&#39;&lt;/code&gt;。来看看这个函数的简单实现（来自man手册）:&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;nf&#34;&gt;strncpy&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;const&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;kt&#34;&gt;size_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;!=&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt; &lt;br \&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;n&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;++&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;sc&#34;&gt;&amp;#39;\0&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;br \&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;dest&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;br \&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;只有当n大于src的长度才会在dest的末尾填“\0”。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Fri, 24 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>Sphinx入门</title>  
+		<link>http://zqqf16.info/posts/sphinx.html</link>  
+		<description>&lt;p&gt;公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。&lt;/p&gt;
+
+&lt;p&gt;.doc .docx格式也太TMD难兼容了，不能在线预览也就罢了，libreoffice打开之后就成翔了。&lt;/p&gt;
+
+&lt;p&gt;而且对于搞计算机的来说，往Word里面粘代码简直就是糊弄人啊。就别说代码高亮了，连起码的缩进都困难。&lt;/p&gt;
+
+&lt;p&gt;好了，吐槽完毕，切入正题。&lt;/p&gt;
+
+&lt;p&gt;今天研究一下一个NB的文档工具&lt;a href=&#34;http://sphinx-doc.org/index.html&#34;&gt;Sphinx&lt;/a&gt;。它是用Python写的，可以把reStructuredText格式的文档转成各种可读格式。如果你看过Python的文档，你就会发现它们大多都是用这个来写的。&lt;/p&gt;
+
+&lt;p&gt;安装方法：&lt;/p&gt;
+
+&lt;p&gt;Ubuntu用户&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sudo apt-get install python-sphinx&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;新建个目录，注意，路径上不能有中文。。。&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;mkdir doc&lt;br \&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;cd &lt;/span&gt;doc&lt;br \&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;sphinx-quickstart&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;执行上条命令后会提示一堆设置信息，简单地英语，一步步照做就行了。这些信息会保存在conf.py里面，可以直接修改文件来更改设置。&lt;/p&gt;
+
+&lt;p&gt;设置完之后，会在当前目录下生成一些目录及文件：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;ls&lt;br \&gt;_build  conf.py  index.rst  make.bat  Makefile  _static  _templates&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;_build是最终编译完的文件存放目录&lt;/p&gt;
+
+&lt;p&gt;_static存放一些静态文件，比如文档中要使用的图片等。&lt;/p&gt;
+
+&lt;p&gt;_templates存放模板，如果不需要定制样式的话，暂且用不着。&lt;/p&gt;
+
+&lt;p&gt;新建一个文件：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;vim hello.rst&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;写入如下内容：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;gh&#34;&gt;=======================&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;gh&#34;&gt;Hello World&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;gh&#34;&gt;=======================&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;gh&#34;&gt;标题&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;gh&#34;&gt;========&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;gh&#34;&gt;小标题&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;gh&#34;&gt;--------&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;m&#34;&gt;1.&lt;/span&gt; 列表1&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;m&#34;&gt;2.&lt;/span&gt; 类表2&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;编辑index.rst，修改如下：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;..&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;toctree&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;::&lt;/span&gt;&lt;br \&gt;   &lt;span class=&#34;nc&#34;&gt;:maxdepth:&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;2&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;   hello&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;, hello是文件名，不用写rst扩展名，hello与toctree左对齐，即左空3个空格。&lt;/p&gt;
+
+&lt;p&gt;然后执行:&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;make html&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;如果没有错误的话，会在_build/html下生成一些HTML文件：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;nv&#34;&gt;$ &lt;/span&gt;ls _build/html/&lt;br \&gt;genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js  _sources  _static&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;用浏览器打开index.html就可以看到成果了~&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/sphinx.png&#34; alt=&#34;sphinx&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: reStructuredText的语法可以自行Google，不是博主懒，是博主花了大半天愣是没掌握。。。在这里也吐个槽。。。这玩意还是不如用Markdown来得快。。。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 23 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>我的Vim配置</title>  
+		<link>http://zqqf16.info/posts/my-vim-configuration.html</link>  
+		<description>&lt;p&gt;之前，我的Vim配置一直是通过Ubuntu One来保存和备份的。但是Ubuntu One的网络实在是不敢恭维，时好时坏。因此就在寻求一种比较靠谱的备份方式。&lt;/p&gt;
+
+&lt;p&gt;后来有一次在看别人博客的时候，发现了一个神器“vim-pathogen”。关于它的详细介绍我就不罗嗦了，下载及查看可以到&lt;a href=&#34;https://github.com/tpope/vim-pathogen&#34;&gt;这里&lt;/a&gt;。&lt;/p&gt;
+
+&lt;p&gt;用一句话概括就是它是管理Vim插件的插件。用它加上Github的配合，可以完美地实现配置备份。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;详细步骤&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;在.vim下新建文件夹bundle，以后所有的插件都放到此目录。&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;添加pathogen插件：&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git submoudle add git://github.com/tpope/vim-pathogen.git bundle/vim-pathogen&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;修改.vimrc，在开头加上  &lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;c&#34;&gt;&amp;quot; pathogen&lt;/span&gt;&lt;br \&gt;runtime bundle&lt;span class=&#34;sr&#34;&gt;/vim-pathogen/&lt;/span&gt;autoload/pathogen.&lt;span class=&#34;k&#34;&gt;vim&lt;/span&gt;&lt;br \&gt;execute pathogen#infect&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;以后如果需要增加插件，只需在bundle目录下加一个git的submoudle即可。升级插件可以用&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;git submodule foreach git pull origin master&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+&lt;li&gt;可以在Github上新建个项目，把.vim目录下的所有内容提交上去，可以做到方便的更新与备份。&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;最后，大家可以参考一下我的vim配置：&lt;a href=&#34;https://github.com/zqqf16/zqq-vim&#34;&gt;Github&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;主要装了以下插件：&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Python的缩进插件：indent-python&lt;/li&gt;
+&lt;li&gt;深色养眼的主题：lucius&lt;/li&gt;
+&lt;li&gt;文件浏览插件：nerdtree&lt;/li&gt;
+&lt;li&gt;看代码神器：taglist&lt;/li&gt;
+&lt;li&gt;powerline插件：vim-powerline&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;上一张截图&lt;img src=&#34;/static/img/my-vim.png&#34; alt=&#34;vim&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;参考文章：&lt;a href=&#34;http://liluo.org/blog/2012/05/using-git-submodule-and-vim-pathogen-for-vim-configuraction-management/&#34;&gt;liluo.org&lt;/a&gt;&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Wed, 22 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>论自由</title>  
+		<link>http://zqqf16.info/posts/tucao-freedom.html</link>  
+		<description>&lt;p&gt;自由是个啥？自由就是我有接受你所谓的“自由”的自由，也有不接受你所谓的“自由”的自由。&lt;/p&gt;
+
+&lt;p&gt;你认为你那叫“自由”而强迫我去接受你的“自由”，这不叫自由，这只是另一种打着自由的幌子的专制。&lt;/p&gt;
+
+&lt;p&gt;我有选择我认为的“自由”的自由，你有选择你认为的“自由”的自由，这才叫自由。&lt;/p&gt;
+
+&lt;p&gt;仅以此文，献给整天叫唤着要“自由”的人们。空谈误国，实干兴邦，与君互勉。&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Tue, 21 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>命令行下的有道翻译</title>  
+		<link>http://zqqf16.info/posts/youdao-translation.html</link>  
+		<description>&lt;p&gt;像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。&lt;/p&gt;
+
+&lt;p&gt;一次偶然的机会，发现了有道这个靠谱的工具提供了十分方便的API可供调用，就花了一点时间，写了个Python版的~。&lt;/p&gt;
+
+&lt;p&gt;有道的数据接口如下：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;http://fanyi.youdao.com/openapi.do?keyfrom=&lt;span class=&#34;nt&#34;&gt;&amp;lt;keyfrom&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;amp;&lt;/span&gt;key=&lt;span class=&#34;nt&#34;&gt;&amp;lt;key&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;amp;&lt;/span&gt;type=data&lt;span class=&#34;err&#34;&gt;&amp;amp;&lt;/span&gt;doctype=&lt;span class=&#34;nt&#34;&gt;&amp;lt;doctype&amp;gt;&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;amp;&lt;/span&gt;version=1.1&lt;span class=&#34;err&#34;&gt;&amp;amp;&lt;/span&gt;q=要翻译的文本&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;版本：1.1，请求方式：get，编码方式：utf-8 &lt;br /&gt;
+  主要功能：中英互译，同时获得有道翻译结果和有道词典结果（可能没有） &lt;br /&gt;
+  参数说明： &lt;br /&gt;
+  　type - 返回结果的类型，固定为data &lt;br /&gt;
+  　doctype - 返回结果的数据格式，xml或json或jsonp &lt;br /&gt;
+  　version - 版本，当前最新版本为1.1 &lt;br /&gt;
+  　q - 要翻译的文本，不能超过200个字符，需要使用utf-8编码 &lt;br /&gt;
+  errorCode： &lt;br /&gt;
+  　0 - 正常 &lt;br /&gt;
+  　20 - 要翻译的文本过长 &lt;br /&gt;
+  　30 - 无法进行有效的翻译 &lt;br /&gt;
+  　40 - 不支持的语言类型 &lt;br /&gt;
+  　50 - 无效的key  &lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;详见&lt;a href=&#34;http://fanyi.youdao.com/openapi?path=data-mode&#34;&gt;官网&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Python实现的代码如下：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;c&#34;&gt;# -*- coding: utf-8 -*-&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;urllib2&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sys&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;json&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;green&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\033&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[0;32m&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%s&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\033&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[0m: &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\033&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[0;34m&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%s&lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\033&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;[0m&amp;#39;&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;opener&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;urllib2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;build_opener&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;msg&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;sys&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;argv&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;url_utf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&amp;amp;key=908880018&amp;amp;type=data&amp;amp;doctype=json&amp;amp;version=1.1&amp;amp;q=&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;msg&lt;/span&gt; &lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;result_json&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;opener&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;open&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;url_utf&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;read&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;json&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;loads&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;result_json&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tran&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;translation&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;green&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;u&amp;#39;翻译&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tran&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;u&amp;#39;读音: &amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;basic&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;][&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;phonetic&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;except&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;explain&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;basic&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;][&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;explains&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;u&amp;#39;解释: &amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;explain&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;except&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;try&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;web&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;web&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;n&#34;&gt;value_str&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;web&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;value&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]:&lt;/span&gt;&lt;br \&gt;            &lt;span class=&#34;n&#34;&gt;value_str&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;, &amp;#39;&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;u&amp;#39;[&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;web&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;key&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;]&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;] &amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;+&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;value_str&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;except&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;pass&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;或见&lt;a href=&#34;https://gist.github.com/zqqf16/5610235&#34;&gt;Gist&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;把上面的脚本命名为“t”，放在&lt;code&gt;~/bin&lt;/code&gt;下，需要翻译的时候打开终端输入&lt;code&gt;t 文本&lt;/code&gt;即可~&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;/static/img/youdao-translation.png&#34; alt=&#34;图片&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;PS: 用的时候最好自己去申请一个Key~&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Mon, 20 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>用Graphviz画数据结构图</title>  
+		<link>http://zqqf16.info/posts/use-graphviz-to-draw-struct-graph.html</link>  
+		<description>&lt;p&gt;近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。&lt;/p&gt;
+
+&lt;p&gt;废话不多说，上代码：&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;digraph g {
+    graph [ rankdir = &#34;LR&#34; ];
+    node [shape = record];
+
+    a [
+        label = &#34;&amp;lt;f&amp;gt; struct a|&amp;lt;f0&amp;gt; int i|&amp;lt;f1&amp;gt; char str[10]&#34;
+    ];
+
+    b [
+        label = &#34;&amp;lt;f&amp;gt; struct b|&amp;lt;f0&amp;gt; struct a *p|char name[100]&#34;
+    ];
+
+    &#34;b&#34;:f0 -&amp;gt; &#34;a&#34;:f;
+}
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;把上述代码保存到&lt;code&gt;example.dot&lt;/code&gt;，然后执行：&lt;code&gt;dot -Tpng example.dot -o example.png&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;绘出的图如下：
+&lt;img src=&#34;/static/img/graphviz.png&#34; alt=&#34;graph&#34; /&gt;&lt;/p&gt;
+
+&lt;p&gt;更多实例，请参考&lt;a href=&#34;http://www.graphviz.org/Gallery.php&#34;&gt;Graphviz官网&lt;/a&gt;&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 16 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>小饭馆与云计算</title>  
+		<link>http://zqqf16.info/posts/tucao-cloud.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;本文标题完全属于闹着玩，属于吐槽系列之一，看之前请三思。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;五一回家，去亲戚家的餐馆帮忙。收拾桌子的时候发现，供客人们吃饭用的碗筷都不用自己洗刷，只需放到一个大箱子里，过几天就会有专门的公司来收走，换上一批新的。&lt;/p&gt;
+
+&lt;p&gt;顿时颇有感慨，这不就是互联网上炒得稀烂的传说中的“云计算”么。小餐馆通过租用消毒餐具公司的服务，省了购买、洗刷、消毒的成本。规模小的时候少租点，规模大了就多租点。通过询问才知，这种模式貌似已经存在多年了。&lt;/p&gt;
+
+&lt;p&gt;反观现在的互联网，自从“云计算”这个概念出来之后，各种打着“云”为旗号的东西层出不穷，颇有当年“纳米技术”的烂大街之势。观其本质，不过就是新瓶装了个旧酒。炒啊炒啊，啥时候能静下心来好好琢磨一下呢？&lt;/p&gt;
+
+&lt;p&gt;--EOF--&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Tue, 14 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>吐槽一下专业</title>  
+		<link>http://zqqf16.info/posts/tucao-major.html</link>  
+		<description>&lt;blockquote&gt;
+  &lt;p&gt;本文吐槽为主，杂乱无章，技术含量地下，阅读前请三思。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;把专业看得太重&lt;/strong&gt;，填报志愿的时候误打误撞选了个专业，即使不太感兴趣也要对其托付终生，非此专业不干。看看一个人在人人网上的分享就能分析出他是啥专业。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;总想着用自己的专业解决所有事情&lt;/strong&gt;，学计算机的恨不能连养猫养狗都写个程序，摆个地摊都想来个客户端。用自己所学知识解决了实际生活生产问题，这叫为社会做贡献；用自己的知识成功地把简单的东西复杂化，这叫吃饱撑得。&lt;/p&gt;
+
+&lt;p&gt;--EOF--&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Mon, 13 May 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>高亮Markdown中的代码</title>  
+		<link>http://zqqf16.info/posts/how-to-highlight-code-in-markdown.html</link>  
+		<description>&lt;p&gt;Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于&lt;code&gt;&amp;lt;code class=&#34;python&#34;&amp;gt;&lt;/code&gt;的HTML标签，显得十分Ugly。&lt;/p&gt;
+
+&lt;p&gt;于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。&lt;/p&gt;
+
+&lt;p&gt;初步打算用&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```python
+print &#39;hello&#39;
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这样的方式来指明代码种类。先把代码段用正则匹配出来，根据语言种类调用Pygments进行着色。然后再把其它部分连同着色后的的代码段一起Markdown转换。&lt;/p&gt;
+
+&lt;p&gt;后来越想越觉得不太靠谱，还是有点Ugly。&lt;/p&gt;
+
+&lt;p&gt;于是乎继续Google，终于发现了一个完美的方法，并对Markdown2刮目相看。&lt;/p&gt;
+
+&lt;p&gt;一直用Markdown2这个Python写的解释器来转换Markdown脚本，之前光看名字还觉得这玩意是个山寨货。今天研究发现，这货还挺好用。&lt;/p&gt;
+
+&lt;p&gt;Markdown2提供了一个代码高亮的扩展：&lt;a href=&#34;https://github.com/trentm/python-markdown2/wiki/fenced-code-blocks&#34;&gt;fenced code blocks&lt;/a&gt;, 它能自动匹配这样的代码，并调用Pygments进行着色。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;```python
+print &#34;hi&#34;
+```
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用方法也很简单：&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;n&#34;&gt;html&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;markdown2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;markdown&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;some markdown&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;...&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;extras&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;fenced-code-blocks&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;问题圆满解决~&lt;/p&gt;
+
+&lt;p&gt;更多Markdown2扩展请参考&lt;a href=&#34;https://github.com/trentm/python-markdown2/wiki/Extras&#34;&gt;Wiki&lt;/a&gt;&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Fri, 26 Apr 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>Hello World</title>  
+		<link>http://zqqf16.info/posts/hello-world.html</link>  
+		<description>&lt;p&gt;把博客搬到了Github&lt;/p&gt;
+
+&lt;p&gt;测试一下Markdown&lt;/p&gt;
+
+&lt;h2&gt;This is an H2&lt;/h2&gt;
+
+&lt;h3&gt;This is an H3&lt;/h3&gt;
+
+&lt;h4&gt;This is an H4&lt;/h4&gt;
+
+&lt;h5&gt;This is an H5&lt;/h5&gt;
+
+&lt;h6&gt;This is an H6&lt;/h6&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;This is the first level of quoting.&lt;/p&gt;
+  
+  &lt;blockquote&gt;
+    &lt;p&gt;This is nested blockquote.&lt;/p&gt;
+  &lt;/blockquote&gt;
+  
+  &lt;p&gt;Back to the first level.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3&gt;Unordered List&lt;/h3&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Red&lt;/li&gt;
+&lt;li&gt;Green&lt;/li&gt;
+&lt;li&gt;Blue&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3&gt;Ordered List&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Red&lt;/li&gt;
+&lt;li&gt;Green&lt;/li&gt;
+&lt;li&gt;Blue&lt;/li&gt;
+&lt;li&gt;Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+Aliquam hendrerit mi posuere lectus. Vestibulum enim wisi,
+viverra nec, fringilla in, laoreet vitae, risus.&lt;/li&gt;
+&lt;li&gt;Donec sit amet nisl. Aliquam semper ipsum sit amet velit.
+Suspendisse id sem consectetuer libero luctus adipiscing.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;A sample text here. And some code below:&lt;/p&gt;
+
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;code&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;sys&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;kn&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nn&#34;&gt;gobject&lt;/span&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;():&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt; &lt;span class=&#34;ow&#34;&gt;in&lt;/span&gt; &lt;span class=&#34;nb&#34;&gt;range&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;&lt;br \&gt;        &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;task &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;%d&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;, done&amp;#39;&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;%&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;i&lt;/span&gt;&lt;br \&gt;&lt;br \&gt;&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__name__&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;==&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt;&lt;br \&gt;    &lt;span class=&#34;n&#34;&gt;init&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;br \&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Inline code &lt;code&gt;printf()&lt;/code&gt; here.&lt;/p&gt;
+
+&lt;p&gt;This is a link to &lt;a href=&#34;http://google.com&#34;&gt;Google&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;single asterisks&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;double asterisks&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please. &lt;/p&gt;
+
+&lt;p&gt;Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please.&lt;/p&gt;
+</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Wed, 24 Apr 2013 00:00:00 +0800</pubDate>  
+    </item>  
 </channel>  
 </rss>  

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-    <title>${info['title']}</title>  
+    <title>${title}</title>  
     <link>zqqf16.info</link>  
     <description>Zqqf16的个人BLog，记录我的生活、学习、以及心情。</description>  
     <language>zh-cn</language>  
@@ -9,7 +9,7 @@
 	% for post in posts:
     <item>  
 		<title>${post.title}</title>  
-		<link>http://zqqf16.info/${post.path}</link>  
+		<link>http://zqqf16.info/${post.url}</link>  
 		<description>${post.content | x}</description>  
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
