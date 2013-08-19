@@ -6,9 +6,9 @@
 - 基于Markdown  
 - 支持代码高亮
 
-	```python
-	print('Hello peanut')
-	```
+		```python
+		print('Hello peanut')
+		```
 
 - 支持标签 
 
@@ -25,7 +25,7 @@
 
 	title:	标题(必须)  
 	date:	2013-5-7  
-	tag:	标签 
+	tag:	标签   
 	tag:	标签2   
 
 3. `python peanut.py`生成相关文件
