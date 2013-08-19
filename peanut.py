@@ -5,14 +5,12 @@ import re
 import os
 from mako.lookup import TemplateLookup
 from datetime import datetime
-# from markdown2 import markdown
-# Use python-markdown to relpace markdown2
 import markdown
 
 CONFIG = {
     'domain': 'zqqf16.info',
     'title': u'穷折腾',
-    'description': u'des',
+    'description': u'Zqqf16的个人BLog，记录我的生活、学习、以及心情。',
 }
 
 PATH = {
