@@ -16,6 +16,7 @@ tags: OpenLDAP
 2. 将Schema转换成ldif格式文件
 3. 将ldif文件内容导入
 
+
 具体步骤
 -------
 

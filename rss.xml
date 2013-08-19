@@ -8,7 +8,7 @@
     <generator>Peanut</generator>  
     <item>  
 		<title>OpenLDAP添加Schema（Ubuntu）</title>  
-		<link>http://zqqf16.info/posts/schema.html</link>  
+		<link>http://zqqf16.info/posts/openldap-add-schema.html</link>  
 		<description>&lt;h2&gt;前言&lt;/h2&gt;
 
 &lt;p&gt;工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。&lt;/p&gt;
