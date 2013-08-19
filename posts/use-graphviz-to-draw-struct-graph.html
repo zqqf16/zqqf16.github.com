@@ -28,32 +28,28 @@
         <section class="post">
             
 		<p>近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。</p>
-
 <p>废话不多说，上代码：</p>
+<div class="codehilite"><pre><span class="nx">digraph</span> <span class="nx">g</span> <span class="p">{</span>
+    <span class="nx">graph</span> <span class="err">[</span> <span class="n">rankdir</span> <span class="o">=</span> <span class="s2">&quot;LR&quot;</span> <span class="cp">]</span>;
+    node <span class="cp">[</span><span class="n">shape</span> <span class="o">=</span> <span class="nx">record</span><span class="cp">]</span>;
 
-<pre><code>digraph g {
-    graph [ rankdir = "LR" ];
-    node [shape = record];
+    a <span class="cp">[</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]&quot;</span>
+    <span class="cp">]</span>;
 
-    a [
-        label = "&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]"
-    ];
+    b <span class="cp">[</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]&quot;</span>
+    <span class="cp">]</span>;
 
-    b [
-        label = "&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]"
-    ];
-
-    "b":f0 -&gt; "a":f;
+    &quot;b&quot;:f0 -&gt; &quot;a&quot;:f;
 }
-</code></pre>
+</pre></div>
+
 
 <p>把上述代码保存到<code>example.dot</code>，然后执行：<code>dot -Tpng example.dot -o example.png</code></p>
-
 <p>绘出的图如下：
-<img src="/static/img/graphviz.png" alt="graph" /></p>
-
+<img alt="graph" src="/static/img/graphviz.png" /></p>
 <p>更多实例，请参考<a href="http://www.graphviz.org/Gallery.php">Graphviz官网</a></p>
-
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 

@@ -28,112 +28,125 @@ OpenLDAP添加Schema（Ubuntu）
         <section class="post">
             
 		<h2>前言</h2>
-
 <p>工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。</p>
-
 <p>网络上很多流传的教程都太老了，不是很适用。Ubuntu8.10以及之后的系统倾向于用slapd-config的各种工具来配置sladp，而不是之前的直接修改文件的方法。</p>
-
 <p>用sldap-config来添加Schema可以总结为以下几步：</p>
-
 <ol>
 <li>创建Schema文件</li>
 <li>将Schema转换成ldif格式文件</li>
 <li>将ldif文件内容导入</li>
 </ol>
-
 <h2>具体步骤</h2>
-
 <ol>
-<li><p>编辑Schema文件，保存为<code>test.schema</code></p>
+<li>
+<p>编辑Schema文件，保存为<code>test.schema</code></p>
+<div class="codehilite"><pre><span class="n">objectIdentifier</span> <span class="n">testOID</span> <span class="mf">1.1.1.1</span>
+<span class="n">objectIdentifier</span> <span class="n">testAttr</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">1</span>
+<span class="n">objectIdentifier</span> <span class="n">testObject</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">2</span>
 
-<pre><code>objectIdentifier testOID 1.1.1.1
-objectIdentifier testAttr testOID:1
-objectIdentifier testObject testOID:2
+<span class="n">attributetype</span> <span class="p">(</span> <span class="n">testAttr</span>
+    <span class="n">NAME</span> <span class="err">&#39;</span><span class="n">testattr</span><span class="err">&#39;</span>
+    <span class="n">DESC</span> <span class="err">&#39;</span><span class="n">Test</span> <span class="n">attribute</span><span class="err">&#39;</span>
+    <span class="n">EQUALITY</span> <span class="n">caseIgnoreMatch</span>
+    <span class="n">SYNTAX</span> <span class="mf">1.3.6.1.4.1.1466.115.121.1.15</span> <span class="p">)</span>
 
-attributetype ( testAttr
-    NAME 'testattr'
-    DESC 'Test attribute'
-    EQUALITY caseIgnoreMatch
-    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+<span class="n">objectclass</span> <span class="p">(</span> <span class="n">testObject</span>
+    <span class="n">NAME</span> <span class="err">&#39;</span><span class="n">testObject</span><span class="err">&#39;</span>
+    <span class="n">DESC</span> <span class="err">&#39;</span><span class="n">Just</span> <span class="k">for</span> <span class="n">test</span><span class="err">&#39;</span>
+    <span class="n">AUXILIARY</span>
+    <span class="n">MAY</span> <span class="p">(</span><span class="n">testattr</span><span class="p">))</span>
+</pre></div>
 
-objectclass ( testObject
-    NAME 'testObject'
-    DESC 'Just for test'
-    AUXILIARY
-    MAY (testattr))
-</code></pre></li>
-<li><p>创建文件<code>tmp.conf</code>,加入以下内容</p>
 
-<pre><code>include test.schema
-</code></pre></li>
-<li><p>创建目录<code>ldif_dir</code></p>
+</li>
+<li>
+<p>创建文件<code>tmp.conf</code>,加入以下内容</p>
+<div class="codehilite"><pre><span class="n">include</span> <span class="n">test</span><span class="p">.</span><span class="n">schema</span>
+</pre></div>
 
-<pre><code>$mkdir ldif_dir
-</code></pre></li>
-<li><p>生成‘ldif’文件</p>
 
-<pre><code>$slaptest -f tmp.conf -F ldif_dir
-</code></pre>
+</li>
+<li>
+<p>创建目录<code>ldif_dir</code></p>
+<div class="codehilite"><pre><span class="err">$</span><span class="n">mkdir</span> <span class="n">ldif_dir</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>生成‘ldif’文件</p>
+<div class="codehilite"><pre><span class="err">$</span><span class="n">slaptest</span> <span class="o">-</span><span class="n">f</span> <span class="n">tmp</span><span class="p">.</span><span class="n">conf</span> <span class="o">-</span><span class="n">F</span> <span class="n">ldif_dir</span>
+</pre></div>
+
 
 <p>ldif目录结构如下：</p>
+<div class="codehilite"><pre><span class="p">.</span>
+<span class="o">|--</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="o">|</span>   <span class="o">|--</span> <span class="n">cn</span><span class="o">=</span><span class="n">schema</span>
+<span class="o">|</span>   <span class="o">|</span>   <span class="err">`</span><span class="o">--</span> <span class="n">cn</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="n">test</span><span class="p">.</span><span class="n">ldif</span>
+<span class="o">|</span>   <span class="o">|--</span> <span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="p">.</span><span class="n">ldif</span>
+<span class="o">|</span>   <span class="o">|--</span> <span class="n">olcDatabase</span><span class="o">=</span><span class="p">{</span><span class="mi">0</span><span class="p">}</span><span class="n">config</span><span class="p">.</span><span class="n">ldif</span>
+<span class="o">|</span>   <span class="err">`</span><span class="o">--</span> <span class="n">olcDatabase</span><span class="o">=</span><span class="p">{</span><span class="o">-</span><span class="mi">1</span><span class="p">}</span><span class="n">frontend</span><span class="p">.</span><span class="n">ldif</span>
+<span class="err">`</span><span class="o">--</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span><span class="p">.</span><span class="n">ldif</span>
+</pre></div>
 
-<pre><code>.
-|-- cn=config
-|   |-- cn=schema
-|   |   `-- cn={0}test.ldif
-|   |-- cn=schema.ldif
-|   |-- olcDatabase={0}config.ldif
-|   `-- olcDatabase={-1}frontend.ldif
-`-- cn=config.ldif
-</code></pre></li>
-<li><p>文件<code>cn=config/cn=schema/cn={0}test.ldif</code>就是生成的‘ldif’文件，编辑此文件：</p>
 
+</li>
+<li>
+<p>文件<code>cn=config/cn=schema/cn={0}test.ldif</code>就是生成的‘ldif’文件，编辑此文件：</p>
 <p>将</p>
+<div class="codehilite"><pre><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">={</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span>
+<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">cn</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span>
+</pre></div>
 
-<pre><code>dn: cn={0}test
-objectClass: olcSchemaConfig
-cn: {0}test
-</code></pre>
 
 <p>修改为</p>
+<div class="codehilite"><pre><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">cn</span><span class="o">:</span> <span class="n">test</span>
+</pre></div>
 
-<pre><code>dn: cn=test,cn=schema,cn=config
-objectClass: olcSchemaConfig
-cn: test
-</code></pre>
 
 <p>删除以下几行：</p>
+<div class="codehilite"><pre><span class="n">structuralObjectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">entryUUID</span><span class="o">:</span> <span class="mi">9530</span><span class="n">cb4a</span><span class="o">-</span><span class="mi">9845</span><span class="o">-</span><span class="mi">1032</span><span class="o">-</span><span class="mi">9</span><span class="n">b5c</span><span class="o">-</span><span class="mi">15</span><span class="n">d9e32663bc</span>
+<span class="n">creatorsName</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">createTimestamp</span><span class="o">:</span> <span class="mi">20130813092213</span><span class="n">Z</span>
+<span class="n">entryCSN</span><span class="o">:</span> <span class="mf">20130813092213.368308</span><span class="n">Z</span><span class="err">#</span><span class="mi">000000</span><span class="err">#</span><span class="mi">000</span><span class="err">#</span><span class="mi">000000</span>
+<span class="n">modifiersName</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">modifyTimestamp</span><span class="o">:</span> <span class="mi">20130813092213</span><span class="n">Z</span>
+</pre></div>
 
-<pre><code>structuralObjectClass: olcSchemaConfig
-entryUUID: 9530cb4a-9845-1032-9b5c-15d9e32663bc
-creatorsName: cn=config
-createTimestamp: 20130813092213Z
-entryCSN: 20130813092213.368308Z#000000#000#000000
-modifiersName: cn=config
-modifyTimestamp: 20130813092213Z
-</code></pre>
 
 <p>最终文件变为</p>
+<div class="codehilite"><pre><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">cn</span><span class="o">:</span> <span class="n">test</span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">testOID</span> <span class="mf">1.1</span><span class="o">.</span><span class="mf">1.1</span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">1</span><span class="o">}</span><span class="n">testAttr</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">1</span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">2</span><span class="o">}</span><span class="n">testObject</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">2</span>
+<span class="n">olcAttributeTypes</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}(</span> <span class="n">testAttr</span> <span class="n">NAME</span> <span class="s1">&#39;testattr&#39;</span> <span class="n">DESC</span> <span class="s1">&#39;Test attribute&#39;</span> <span class="n">E</span>    <span class="n">QUALIT</span> <span class="n">Y</span> <span class="n">caseIgnoreMatch</span> <span class="n">SYNTAX</span> <span class="mf">1.3</span><span class="o">.</span><span class="mf">6.1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">.</span><span class="mf">1466.115</span><span class="o">.</span><span class="mf">121.1</span><span class="o">.</span><span class="mi">15</span> <span class="o">)</span>
+<span class="n">olcObjectClasses</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}(</span> <span class="n">testObject</span> <span class="n">NAME</span> <span class="s1">&#39;testObject&#39;</span> <span class="n">DESC</span> <span class="s1">&#39;Just for test&#39;</span>     <span class="n">AUXILIARY</span> <span class="n">MAY</span> <span class="n">testattr</span> <span class="o">)</span>
+</pre></div>
 
-<pre><code>dn: cn=test,cn=schema,cn=config
-objectClass: olcSchemaConfig
-cn: test
-olcObjectIdentifier: {0}testOID 1.1.1.1
-olcObjectIdentifier: {1}testAttr testOID:1
-olcObjectIdentifier: {2}testObject testOID:2
-olcAttributeTypes: {0}( testAttr NAME 'testattr' DESC 'Test attribute' E    QUALIT Y caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-olcObjectClasses: {0}( testObject NAME 'testObject' DESC 'Just for test'     AUXILIARY MAY testattr )
-</code></pre></li>
-<li><p>将‘ldif’文件内容导入ldap数据库</p>
 
-<pre><code>$sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f cn\=test.ldif
-</code></pre></li>
-<li><p>检查导入结果</p>
+</li>
+<li>
+<p>将‘ldif’文件内容导入ldap数据库</p>
+<div class="codehilite"><pre><span class="err">$</span><span class="n">sudo</span> <span class="n">ldapadd</span> <span class="o">-</span><span class="n">Q</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="o">:</span><span class="c1">/// -f cn\=test.ldif</span>
+</pre></div>
 
-<pre><code>$sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b cn=schema,cn=config dn
-</code></pre></li>
+
+</li>
+<li>
+<p>检查导入结果</p>
+<div class="codehilite"><pre><span class="err">$</span><span class="n">sudo</span> <span class="n">ldapsearch</span> <span class="o">-</span><span class="n">Q</span> <span class="o">-</span><span class="n">LLL</span> <span class="o">-</span><span class="n">Y</span> <span class="n">EXTERNAL</span> <span class="o">-</span><span class="n">H</span> <span class="n">ldapi</span><span class="o">:</span><span class="c1">/// -b cn=schema,cn=config dn</span>
+</pre></div>
+
+
+</li>
 </ol>
-
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 

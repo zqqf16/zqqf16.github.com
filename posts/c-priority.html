@@ -28,54 +28,46 @@
         <section class="post">
             
 		<p>总是记不住C语言各个运算符的优先级，<s>每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差</s>。因此，就借最近整理C语言知识点的时机恶补一下。</p>
-
 <p>注意：下面的这段内容抄自<a href="http://baike.baidu.com/view/1516130.htm">百度百科</a></p>
-
 <blockquote>
-  <p><strong>1级（左结合）</strong> <br />
-  ( ) 圆括号；[ ]下标运算符；->指向结构体成员运算符；. 结构体成员运算符。 <br />
-  <strong>2级（右结合）</strong> <br />
-  “ ! ”逻辑非运算符；“ ~ ”按位取反运算符；“ ++ ”前缀增量运算符；“ -- ”前缀减量运算符； <br />
-  “ - ”负号运算符；(类型)类型转换运算符；“ * ”指针运算符；“ &amp; ”地址运算符； <br />
-  “sizeof ” 长度运算符。 <br />
-  <strong>3级（左结合）</strong> <br />
-  “ * ” 乘法运算符；“ / ”除法运算符；“ % ” 取余运算符。 <br />
-  <strong>4级（左结合）</strong> <br />
-  “ + ”加法运算符；“ - ”减法运算符。 <br />
-  <strong>5级（左结合）</strong> <br />
-  &lt;&lt; 左移运算符；&gt;&gt; 右移运算符。 <br />
-  <strong>6级（左结合）</strong> <br />
-  &lt;、&lt;=、&gt;、&gt;=关系运算符。 <br />
-  <strong>7级（左结合）</strong> <br />
-  “ == ”等于运算符；“ != ”不等于运算符。 <br />
-  <strong>8级（左结合）</strong> <br />
-  “ &amp; ”按位与运算符。 <br />
-  <strong>9级（左结合）</strong> <br />
-  “ ∧ ”按位异或运算符。 <br />
-  <strong>10级（左结合）</strong> <br />
-  “ | ”按位或运算符。 
-  <strong>11级（左结合）</strong> <br />
-  “&amp;&amp;”逻辑与运算符。 <br />
-  <strong>12级（左结合）</strong> <br />
-  “ || ”逻辑或运算符。 <br />
-  <strong>13级（右结合）</strong> <br />
-  ? :条件运算符。 <br />
-  <strong>14级（右结合）</strong> <br />
-  =、 +=、 -=、 *=、 /=、 %=、 &amp;=、 ^=、 |=、 &lt;&lt;=、 &gt;&gt;=赋值运算符。 <br />
-  <strong>15级（左结合）</strong> <br />
-  “，”逗号运算符。  </p>
+<p><strong>1级（左结合）</strong>  <br />
+( ) 圆括号；[ ]下标运算符；-&gt;指向结构体成员运算符；. 结构体成员运算符。<br />
+<strong>2级（右结合）</strong><br />
+“ ! ”逻辑非运算符；“ ~ ”按位取反运算符；“ ++ ”前缀增量运算符；“ -- ”前缀减量运算符；<br />
+“ - ”负号运算符；(类型)类型转换运算符；“ * ”指针运算符；“ &amp; ”地址运算符；<br />
+“sizeof ” 长度运算符。<br />
+<strong>3级（左结合）</strong><br />
+“ * ” 乘法运算符；“ / ”除法运算符；“ % ” 取余运算符。<br />
+<strong>4级（左结合）</strong><br />
+“ + ”加法运算符；“ - ”减法运算符。<br />
+<strong>5级（左结合）</strong>  <br />
+&lt;&lt; 左移运算符；&gt;&gt; 右移运算符。<br />
+<strong>6级（左结合）</strong><br />
+&lt;、&lt;=、&gt;、&gt;=关系运算符。<br />
+<strong>7级（左结合）</strong><br />
+“ == ”等于运算符；“ != ”不等于运算符。<br />
+<strong>8级（左结合）</strong>  <br />
+“ &amp; ”按位与运算符。<br />
+<strong>9级（左结合）</strong><br />
+“ ∧ ”按位异或运算符。<br />
+<strong>10级（左结合）</strong><br />
+“ | ”按位或运算符。 
+<strong>11级（左结合）</strong><br />
+“&amp;&amp;”逻辑与运算符。<br />
+<strong>12级（左结合）</strong><br />
+“ || ”逻辑或运算符。<br />
+<strong>13级（右结合）</strong><br />
+? :条件运算符。<br />
+<strong>14级（右结合）</strong><br />
+=、 +=、 -=、 *=、 /=、 %=、 &amp;=、 ^=、 |=、 &lt;&lt;=、 &gt;&gt;=赋值运算符。<br />
+<strong>15级（左结合）</strong><br />
+“，”逗号运算符。  </p>
 </blockquote>
-
 <p>---抄袭结束---</p>
-
 <p>记住“==”和“!=”的优先级高于“&amp;&amp;”和“||”，<code>if</code>的时候就可以省下好几对括号了。</p>
-
 <p>记住[ ]的优先级高于“*”, 就可以区分数组的指针和指针数组了(<code>char (*p)[20]</code>，<code>char *p[20]</code>)。</p>
-
 <p>PS：如果实在记不清，还是建议乖乖地套上括号，这是最靠谱的方法。</p>
-
 <p>PS2：“只记住两个优先级就够了：乘法和除法优先于加减法，其他操作一律加括号” —— 《C专家编程》</p>
-
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 

@@ -28,43 +28,73 @@
         <section class="post">
             
 		<p>像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。</p>
-
 <p>一次偶然的机会，发现了有道这个靠谱的工具提供了十分方便的API可供调用，就花了一点时间，写了个Python版的~。</p>
-
 <p>有道的数据接口如下：</p>
+<div class="codehilite"><pre>http://fanyi.youdao.com/openapi.do?keyfrom=<span class="nt">&lt;keyfrom&gt;</span><span class="err">&amp;</span>key=<span class="nt">&lt;key&gt;</span><span class="err">&amp;</span>type=data<span class="err">&amp;</span>doctype=<span class="nt">&lt;doctype&gt;</span><span class="err">&amp;</span>version=1.1<span class="err">&amp;</span>q=要翻译的文本
+</pre></div>
 
-<div class="codehilite"><pre><code>http://fanyi.youdao.com/openapi.do?keyfrom=<span class="nt">&lt;keyfrom&gt;</span><span class="err">&amp;</span>key=<span class="nt">&lt;key&gt;</span><span class="err">&amp;</span>type=data<span class="err">&amp;</span>doctype=<span class="nt">&lt;doctype&gt;</span><span class="err">&amp;</span>version=1.1<span class="err">&amp;</span>q=要翻译的文本<br \></code></pre></div>
 
 <blockquote>
-  <p>版本：1.1，请求方式：get，编码方式：utf-8 <br />
-  主要功能：中英互译，同时获得有道翻译结果和有道词典结果（可能没有） <br />
-  参数说明： <br />
-  　type - 返回结果的类型，固定为data <br />
-  　doctype - 返回结果的数据格式，xml或json或jsonp <br />
-  　version - 版本，当前最新版本为1.1 <br />
-  　q - 要翻译的文本，不能超过200个字符，需要使用utf-8编码 <br />
-  errorCode： <br />
-  　0 - 正常 <br />
-  　20 - 要翻译的文本过长 <br />
-  　30 - 无法进行有效的翻译 <br />
-  　40 - 不支持的语言类型 <br />
-  　50 - 无效的key  </p>
+<p>版本：1.1，请求方式：get，编码方式：utf-8<br />
+主要功能：中英互译，同时获得有道翻译结果和有道词典结果（可能没有）<br />
+参数说明：<br />
+　type - 返回结果的类型，固定为data<br />
+　doctype - 返回结果的数据格式，xml或json或jsonp<br />
+　version - 版本，当前最新版本为1.1<br />
+　q - 要翻译的文本，不能超过200个字符，需要使用utf-8编码<br />
+errorCode：<br />
+　0 - 正常<br />
+　20 - 要翻译的文本过长<br />
+　30 - 无法进行有效的翻译<br />
+　40 - 不支持的语言类型<br />
+　50 - 无效的key  </p>
 </blockquote>
-
 <p>详见<a href="http://fanyi.youdao.com/openapi?path=data-mode">官网</a></p>
-
 <p>Python实现的代码如下：</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- coding: utf-8 -*-</span>
 
-<div class="codehilite"><pre><code><span class="c">#!/usr/bin/env python</span><br \><span class="c"># -*- coding: utf-8 -*-</span><br \><br \><span class="kn">import</span> <span class="nn">urllib2</span><br \><span class="kn">import</span> <span class="nn">sys</span><br \><span class="kn">import</span> <span class="nn">json</span><br \><br \><span class="n">green</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\033</span><span class="s">[0;32m</span><span class="si">%s</span><span class="se">\033</span><span class="s">[0m: </span><span class="se">\033</span><span class="s">[0;34m</span><span class="si">%s</span><span class="se">\033</span><span class="s">[0m&#39;</span><br \><br \><span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">()</span><br \><span class="n">msg</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><br \><span class="n">url_utf</span> <span class="o">=</span> <span class="s">&#39;http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&amp;key=908880018&amp;type=data&amp;doctype=json&amp;version=1.1&amp;q=&#39;</span> <span class="o">+</span> <span class="n">msg</span> <br \><br \><span class="n">result_json</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url_utf</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span><br \><span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_json</span><span class="p">)</span><br \><br \><span class="k">for</span> <span class="n">tran</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;translation&#39;</span><span class="p">]:</span><br \>    <span class="k">print</span> <span class="n">green</span> <span class="o">%</span> <span class="p">(</span><span class="s">u&#39;翻译&#39;</span><span class="p">,</span> <span class="n">tran</span><span class="p">)</span><br \><br \><span class="k">try</span><span class="p">:</span><br \>    <span class="k">print</span> <span class="s">u&#39;读音: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">][</span><span class="s">&#39;phonetic&#39;</span><span class="p">]</span><br \><span class="k">except</span><span class="p">:</span><br \>    <span class="k">pass</span><br \><span class="k">try</span><span class="p">:</span><br \>    <span class="k">for</span> <span class="n">explain</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">][</span><span class="s">&#39;explains&#39;</span><span class="p">]:</span><br \>        <span class="k">print</span> <span class="s">u&#39;解释: &#39;</span> <span class="o">+</span> <span class="n">explain</span><br \><span class="k">except</span><span class="p">:</span><br \>    <span class="k">pass</span><br \><br \><span class="k">try</span><span class="p">:</span><br \>    <span class="k">for</span> <span class="n">web</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;web&#39;</span><span class="p">]:</span><br \>        <span class="n">value_str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><br \>        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">web</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]:</span><br \>            <span class="n">value_str</span> <span class="o">+=</span> <span class="n">value</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span><br \>        <span class="k">print</span> <span class="s">u&#39;[&#39;</span> <span class="o">+</span> <span class="n">web</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;] &#39;</span> <span class="o">+</span> <span class="n">value_str</span><br \><span class="k">except</span><span class="p">:</span><br \>    <span class="k">pass</span><br \></code></pre></div>
+<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">green</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\033</span><span class="s">[0;32m</span><span class="si">%s</span><span class="se">\033</span><span class="s">[0m: </span><span class="se">\033</span><span class="s">[0;34m</span><span class="si">%s</span><span class="se">\033</span><span class="s">[0m&#39;</span>
+
+<span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">()</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">url_utf</span> <span class="o">=</span> <span class="s">&#39;http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&amp;key=908880018&amp;type=data&amp;doctype=json&amp;version=1.1&amp;q=&#39;</span> <span class="o">+</span> <span class="n">msg</span> 
+
+<span class="n">result_json</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url_utf</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_json</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">tran</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;translation&#39;</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">green</span> <span class="o">%</span> <span class="p">(</span><span class="s">u&#39;翻译&#39;</span><span class="p">,</span> <span class="n">tran</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">print</span> <span class="s">u&#39;读音: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">][</span><span class="s">&#39;phonetic&#39;</span><span class="p">]</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">explain</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;basic&#39;</span><span class="p">][</span><span class="s">&#39;explains&#39;</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="s">u&#39;解释: &#39;</span> <span class="o">+</span> <span class="n">explain</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">web</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;web&#39;</span><span class="p">]:</span>
+        <span class="n">value_str</span> <span class="o">=</span> <span class="s">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">web</span><span class="p">[</span><span class="s">&#39;value&#39;</span><span class="p">]:</span>
+            <span class="n">value_str</span> <span class="o">+=</span> <span class="n">value</span> <span class="o">+</span> <span class="s">&#39;, &#39;</span>
+        <span class="k">print</span> <span class="s">u&#39;[&#39;</span> <span class="o">+</span> <span class="n">web</span><span class="p">[</span><span class="s">&#39;key&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s">&#39;] &#39;</span> <span class="o">+</span> <span class="n">value_str</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
 
 <p>或见<a href="https://gist.github.com/zqqf16/5610235">Gist</a></p>
-
 <p>把上面的脚本命名为“t”，放在<code>~/bin</code>下，需要翻译的时候打开终端输入<code>t 文本</code>即可~</p>
-
-<p><img src="/static/img/youdao-translation.png" alt="图片" /></p>
-
+<p><img alt="图片" src="/static/img/youdao-translation.png" /></p>
 <p>PS: 用的时候最好自己去申请一个Key~</p>
-
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 

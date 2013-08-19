@@ -28,35 +28,35 @@ Requests抓取网页的编码问题
         <section class="post">
             
 		<p>经常在各大python论坛上看到有关爬虫的问题，实在是搞不明白这玩意儿除了对做搜索引擎还能有啥用。今天本着好奇的态度，打算试一试。</p>
-
 <p>一番Google之后，发现了个很NB的库<strong>Requests</strong>，比之前我用过的liburl2等http库简单多了。出于测试的目的，打算抓取一下我的博客。</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+<span class="c"># -*- encoding: utf-8 -*-</span>
 
-<div class="codehilite"><pre><code><span class="c">#!/usr/bin/env python</span><br \><span class="c"># -*- encoding: utf-8 -*-</span><br \><br \><span class="kn">import</span> <span class="nn">requests</span><br \><br \><span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://zqqf16.info&#39;</span><span class="p">)</span><br \><br \><span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span><br \><span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span><br \></code></pre></div>
+<span class="kn">import</span> <span class="nn">requests</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s">&#39;http://zqqf16.info&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+</pre></div>
+
 
 <p>打印内容的时候一切正常，但是<code>encoding</code>却显示的是<code>ISO-8859-1</code>。我的页面上明明写着<code>&lt;meta http-equiv="Content-Type" content="text/html;charset=utf-8"&gt;</code>，但结果却不是utf-8，百思不得其解，难道是我的html格式不对？</p>
-
 <p>为了验证这个问题，我抓取了一下百度的首页，它的encoding显示的是'utf-8'，而他的头部写的格式和我的一样。</p>
-
 <p>这下迷茫了，Google了很长时间也没找到答案，只能仔细翻看官方的文档了。</p>
-
 <p>终于，在<a href="http://docs.python-requests.org/en/latest/user/advanced.html#encodings">文档里</a>发现了这么一段：</p>
-
 <blockquote>
-  <p>When you receive a response, Requests makes a guess at the encoding to use for decoding the response when you call the Response.text method. Requests will first check for an encoding in the HTTP header, and if none is present, will use charade to attempt to guess the encoding.</p>
-  
-  <p>The only time Requests will not do this is if no explicit charset is present in the HTTP headers and the Content-Type header contains text. In this situation, RFC 2616 specifies that the default charset must be ISO-8859-1. Requests follows the specification in this case. If you require a different encoding, you can manually set the Response.encoding property, or use the raw Response.content.</p>
+<p>When you receive a response, Requests makes a guess at the encoding to use for decoding the response when you call the Response.text method. Requests will first check for an encoding in the HTTP header, and if none is present, will use charade to attempt to guess the encoding.</p>
+<p>The only time Requests will not do this is if no explicit charset is present in the HTTP headers and the Content-Type header contains text. In this situation, RFC 2616 specifies that the default charset must be ISO-8859-1. Requests follows the specification in this case. If you require a different encoding, you can manually set the Response.encoding property, or use the raw Response.content.</p>
 </blockquote>
-
 <p>这我才明白了，原来HTTP头部也有个“Content-Type”字段，requests会先去找HTTP头部的这个字段，如果没有，就调用“charade”来猜测编码。而默认的编码格式正是“ISO-8859-1”。</p>
-
 <p>用chrome的调试工具看了一下baidu.com的Response Header，有这样一句“Content-Type:text/html;charset=utf-8”。而我的<a href="http://zqqf16.info">zqqf16.info</a>却没有。这就是为什么我的编码格式识别不出来的原因。</p>
-
 <p>由于我的博客在Github上，没法控制他的HTTP server的行为。为了能让requests识别出UTF-8，我在之前的代码里加了一句，为其指定了编码格式。</p>
+<div class="codehilite"><pre><span class="n">r</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s">&#39;utf-8&#39;</span>
+</pre></div>
 
-<div class="codehilite"><pre><code><span class="n">r</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s">&#39;utf-8&#39;</span><br \></code></pre></div>
 
 <p>问题搞定了，多看看官方文档还是很有帮助滴。</p>
-
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 

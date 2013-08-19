@@ -28,39 +28,32 @@
         <section class="post">
             
 		<p>Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于<code>&lt;code class="python"&gt;</code>的HTML标签，显得十分Ugly。</p>
-
 <p>于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。</p>
-
 <p>初步打算用</p>
+<div class="codehilite"><pre><span class="err">```</span><span class="n">python</span>
+<span class="n">print</span> <span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span>
+<span class="err">```</span>
+</pre></div>
 
-<pre><code>```python
-print 'hello'
-```
-</code></pre>
 
 <p>这样的方式来指明代码种类。先把代码段用正则匹配出来，根据语言种类调用Pygments进行着色。然后再把其它部分连同着色后的的代码段一起Markdown转换。</p>
-
 <p>后来越想越觉得不太靠谱，还是有点Ugly。</p>
-
 <p>于是乎继续Google，终于发现了一个完美的方法，并对Markdown2刮目相看。</p>
-
 <p>一直用Markdown2这个Python写的解释器来转换Markdown脚本，之前光看名字还觉得这玩意是个山寨货。今天研究发现，这货还挺好用。</p>
-
 <p>Markdown2提供了一个代码高亮的扩展：<a href="https://github.com/trentm/python-markdown2/wiki/fenced-code-blocks">fenced code blocks</a>, 它能自动匹配这样的代码，并调用Pygments进行着色。</p>
+<div class="codehilite"><pre><span class="err">```</span><span class="n">python</span>
+<span class="n">print</span> <span class="s">&quot;hi&quot;</span>
+<span class="err">```</span>
+</pre></div>
 
-<pre><code>```python
-print "hi"
-```
-</code></pre>
 
 <p>使用方法也很简单：</p>
+<div class="codehilite"><pre><span class="n">html</span> <span class="o">=</span> <span class="n">markdown2</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s">&quot;some markdown&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;fenced-code-blocks&quot;</span><span class="p">])</span>
+</pre></div>
 
-<div class="codehilite"><pre><code><span class="n">html</span> <span class="o">=</span> <span class="n">markdown2</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s">&quot;some markdown&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="p">[</span><span class="s">&quot;fenced-code-blocks&quot;</span><span class="p">])</span><br \></code></pre></div>
 
 <p>问题圆满解决~</p>
-
 <p>更多Markdown2扩展请参考<a href="https://github.com/trentm/python-markdown2/wiki/Extras">Wiki</a></p>
-
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 
