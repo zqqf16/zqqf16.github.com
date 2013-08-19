@@ -1,0 +1,21 @@
+## -*- coding: utf-8 -*- 
+<%inherit file="base.html"/>
+
+<%block name="title">
+${page.title} | 
+</%block>
+
+<%block name="page_title">
+${page.title}
+</%block>
+
+<%block name="main">
+		${page.content}
+	</section>
+	<section class="meta">
+		<span class="time">&nbsp;<time datetime="${page.date.strftime('%Y-%m-%d')}">${page.date.strftime('%Y-%m-%d')}</time></span>
+	</section>
+	<%include file="comment.html"/>
+<hr/>
+
+</%block>
