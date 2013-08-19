@@ -1,8 +1,6 @@
----
 title: IOS7 Beta 3体验
 date: 2013-7-11
-tags: IOS
----
+tag: IOS
 
 前几天想起来有台公司发的iPad mini正在闲置中，于是就心血来潮，装了个IOS 7 beta 3 来体验一番。具体的安装步骤就不多说了，Google一搜一大把。
 

@@ -1,8 +1,6 @@
----
 title: Levenshtein distance（编辑距离）算法
 date: 2013-8-2
-tags: Levenshtein distance
----
+tag: Levenshtein distance
 
 在用Git的时候，如果一不小心把命令参数输入错了，比如把`show`写成了`slow`，Git会进行有好的提示：
 

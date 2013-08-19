@@ -1,8 +1,8 @@
----
 title: Requests抓取网页的编码问题
 date: 2013-7-18
-tags: python, request, encoding
----
+tag: python
+tag: request
+tag: encoding
 
 经常在各大python论坛上看到有关爬虫的问题，实在是搞不明白这玩意儿除了对做搜索引擎还能有啥用。今天本着好奇的态度，打算试一试。
 

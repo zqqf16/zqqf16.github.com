@@ -1,8 +1,8 @@
----
 title: Ubuntu下好用的Markdown编辑器
 date: 2013-6-4
-tags: markdown, ubuntu, retext
----
+tag: markdown
+tag: ubuntu
+tag: retext
 
 之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。
 

@@ -1,8 +1,6 @@
----
 title: Hello World
 date: 2013-4-24
-tags: test  
----
+tag: test  
 
 把博客搬到了Github
 

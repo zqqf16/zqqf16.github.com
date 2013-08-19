@@ -1,8 +1,6 @@
----
 title: Sphinx入门
 date: 2013-5-23
-tags: sphinx
----
+tag: sphinx
 
 公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。
 

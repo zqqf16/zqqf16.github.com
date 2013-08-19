@@ -1,8 +1,6 @@
----
 title: OpenLDAP添加Schema（Ubuntu）
 date: 2013-8-19
-tags: OpenLDAP
----
+tag: OpenLDAP
 
 前言
 ---

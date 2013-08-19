@@ -5,7 +5,9 @@ import re
 import os
 from mako.lookup import TemplateLookup
 from datetime import datetime
-from markdown2 import markdown
+# from markdown2 import markdown
+# Use python-markdown to relpace markdown2
+import markdown
 
 CONFIG = {
     'domain': 'zqqf16.info',
@@ -78,17 +80,17 @@ class Draft(object):
 
     # metadata handlers
     _META_HANDLERS = {
-        'tags':     lambda x: [t.strip(' \n') for t in x.split(',')] if x else [],
-        'title':    lambda x: x if x else '',
-        'date':     lambda x: datetime.strptime(x, '%Y-%m-%d') if x else datetime.now(),
-        'category': lambda x: x if x else None,
-        'type':     lambda x: x if x else 'post',
+        'tag':      lambda x: x if x else [],
+        'title':    lambda x: x[0] if x else '',
+        'date':     lambda x: datetime.strptime(x[0], '%Y-%m-%d') if x else datetime.now(),
+        'category': lambda x: x[0] if x else None,
+        'type':     lambda x: x[0] if x else 'post',
     }
 
     def __parse_metadata(self, meta):
         res = {}
         for name, handler in self._META_HANDLERS.items():
-            value = handler(meta.get(name))
+            value = handler(meta.get(name, None))
             res[name] = value
 
         return res
@@ -112,6 +114,7 @@ class Draft(object):
         ''' Parse draft files to generate posts, pages and tags.
             Draft file should be named as 'xxx.md' or 'xxx.markdown'.
         '''
+        md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'])
         for f in os.listdir(self.directory):
             m = self.file_name_re.search(f)
             if not m: 
@@ -121,13 +124,13 @@ class Draft(object):
             filepath = os.path.join(self.directory, f)
             with open(filepath, 'r') as f:
                 content = f.read().decode('utf-8')
-                html = markdown(content.strip(' \n'), 
-                                extras=["fenced-code-blocks", "metadata"])
-                if not hasattr(html, 'metadata'):
+                html = md.reset().convert(content.strip(' \n'))
+                if not md.Meta:
                     #No need to convert this draft
                     continue
-                meta = self.__parse_metadata(html.metadata)
-                tags = self.__get_tags(meta['tags'])
+
+                meta = self.__parse_metadata(md.Meta)
+                tags = self.__get_tags(meta['tag'])
 
                 if meta['type'] == 'post':
                     post = Post(meta['title'], html, slug,
