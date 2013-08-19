@@ -5,6 +5,11 @@
 		<changefreq>monthly</changefreq>
 	</url>
 	<url>
+		<loc>http://zqqf16.info/posts/schema.html</loc>
+		<lastmod>2013-08-19</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>http://zqqf16.info/posts/levenshtein-distance.html</loc>
 		<lastmod>2013-08-02</lastmod>
 		<changefreq>monthly</changefreq>
