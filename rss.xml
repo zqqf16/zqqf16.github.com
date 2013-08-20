@@ -7,6 +7,41 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>高亮Markdown中的代码（续）</title>  
+		<link>http://zqqf16.info/posts/how-to-highlight-code-in-markdown-continue.html</link>  
+		<description>&lt;p&gt;之前写过一篇文章（&lt;a href=&#34;/posts/how-to-highlight-code-in-markdown.html&#34;&gt;高亮Markdown中的代码&lt;/a&gt;)，介绍了python-markdown2中高亮代码的方法。后来在使用中我发现了一个&lt;code&gt;fenced code blocks&lt;/code&gt;的bug，如果代码中间有空行，它会把换行之后的部分当成嵌套的。生成的文件中会有一堆类似这样的部分：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;k&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;class&lt;span class=&#34;nt&#34;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;nc&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;后来到其Github上一搜，发现很多人都有类似问题，比如&lt;a href=&#34;https://github.com/trentm/python-markdown2/issues/109&#34;&gt;这里&lt;/a&gt;。也有人给出了&lt;a href=&#34;https://github.com/trentm/python-markdown2/pull/117&#34;&gt;解决方案&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;但是这个Pull request已经提出4个月了，原作者至今没有通过，而且整个代码也有近1年没有动过了。Clone了一份它的代码，发现如果想自定义扩展的话比较困难。无奈之下从新研究起了曾经被我抛弃的Python-Markdown。结果发现原来它也有很多扩展，而且比Markdown2中的更多。更重要的是提供了扩展的接口，很方便地写自己的扩展。于是就在peanut中替换了markdown2，代码如下：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;md&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;markdown&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Markdown&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;extensions&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;fenced_code&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;codehilite&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;meta&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;])&lt;/span&gt;
+&lt;span class=&#34;c&#34;&gt;#do something&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;html&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;md&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;reset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;convert&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;content&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;strip&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39; &lt;/span&gt;&lt;span class=&#34;se&#34;&gt;\n&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;&lt;code&gt;fenced_code&lt;/code&gt;用来识别&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;
+&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;这样的代码段，&lt;code&gt;codehilite&lt;/code&gt;用来高亮代码，&lt;code&gt;meta&lt;/code&gt;用来识别文章信息，比如：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nl&#34;&gt;title:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;高亮&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Markdown&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;中的代码（续）&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;date:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2013&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;
+&lt;span class=&#34;nl&#34;&gt;tag:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;
+     &lt;span class=&#34;n&#34;&gt;markdown&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;过度完毕，问题搞定~&lt;/p&gt;</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Tue, 20 Aug 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>OpenLDAP添加Schema（Ubuntu）</title>  
 		<link>http://zqqf16.info/posts/openldap-add-schema.html</link>  
 		<description>&lt;h2&gt;前言&lt;/h2&gt;
