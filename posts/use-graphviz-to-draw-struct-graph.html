@@ -29,17 +29,17 @@
             
 		<p>近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。</p>
 <p>废话不多说，上代码：</p>
-<div class="codehilite"><pre><span class="nx">digraph</span> <span class="nx">g</span> <span class="p">{</span>
-    <span class="nx">graph</span> <span class="err">[</span> <span class="n">rankdir</span> <span class="o">=</span> <span class="s2">&quot;LR&quot;</span> <span class="cp">]</span>;
-    node <span class="cp">[</span><span class="n">shape</span> <span class="o">=</span> <span class="nx">record</span><span class="cp">]</span>;
+<div class="codehilite"><pre>digraph g {
+    graph [ rankdir = &quot;LR&quot; ];
+    node [shape = record];
 
-    a <span class="cp">[</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]&quot;</span>
-    <span class="cp">]</span>;
+    a [
+        label = &quot;&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]&quot;
+    ];
 
-    b <span class="cp">[</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="s2">&quot;&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]&quot;</span>
-    <span class="cp">]</span>;
+    b [
+        label = &quot;&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]&quot;
+    ];
 
     &quot;b&quot;:f0 -&gt; &quot;a&quot;:f;
 }

@@ -30,9 +30,9 @@
 		<p>Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于<code>&lt;code class="python"&gt;</code>的HTML标签，显得十分Ugly。</p>
 <p>于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。</p>
 <p>初步打算用</p>
-<div class="codehilite"><pre><span class="err">```</span><span class="n">python</span>
-<span class="n">print</span> <span class="err">&#39;</span><span class="n">hello</span><span class="err">&#39;</span>
-<span class="err">```</span>
+<div class="codehilite"><pre>```python
+print &#39;hello&#39;
+```
 </pre></div>
 
 
@@ -41,9 +41,9 @@
 <p>于是乎继续Google，终于发现了一个完美的方法，并对Markdown2刮目相看。</p>
 <p>一直用Markdown2这个Python写的解释器来转换Markdown脚本，之前光看名字还觉得这玩意是个山寨货。今天研究发现，这货还挺好用。</p>
 <p>Markdown2提供了一个代码高亮的扩展：<a href="https://github.com/trentm/python-markdown2/wiki/fenced-code-blocks">fenced code blocks</a>, 它能自动匹配这样的代码，并调用Pygments进行着色。</p>
-<div class="codehilite"><pre><span class="err">```</span><span class="n">python</span>
-<span class="n">print</span> <span class="s">&quot;hi&quot;</span>
-<span class="err">```</span>
+<div class="codehilite"><pre>```python
+print &quot;hi&quot;
+```
 </pre></div>
 
 

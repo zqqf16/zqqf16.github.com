@@ -112,7 +112,12 @@ class Draft(object):
         ''' Parse draft files to generate posts, pages and tags.
             Draft file should be named as 'xxx.md' or 'xxx.markdown'.
         '''
-        md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'])
+        md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'],
+                               extension_configs={
+                                   'codehilite': [
+                                       ('guess_lang', False),
+                                   ]
+                               })
         for f in os.listdir(self.directory):
             m = self.file_name_re.search(f)
             if not m: 

@@ -23,16 +23,16 @@
 
 
 &lt;p&gt;&lt;code&gt;fenced_code&lt;/code&gt;用来识别&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;```python
+```
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;这样的代码段，&lt;code&gt;codehilite&lt;/code&gt;用来高亮代码，&lt;code&gt;meta&lt;/code&gt;用来识别文章信息，比如：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nl&#34;&gt;title:&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;高亮&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Markdown&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;中的代码（续）&lt;/span&gt;
-&lt;span class=&#34;nl&#34;&gt;date:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;2013&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;8&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;
-&lt;span class=&#34;nl&#34;&gt;tag:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;
-     &lt;span class=&#34;n&#34;&gt;markdown&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;title: 高亮Markdown中的代码（续）
+date: 2013-8-20
+tag: python
+     markdown
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -57,54 +57,54 @@
 &lt;ol&gt;
 &lt;li&gt;
 &lt;p&gt;编辑Schema文件，保存为&lt;code&gt;test.schema&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;objectIdentifier&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testOID&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.1.1.1&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;objectIdentifier&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testAttr&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testOID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;objectIdentifier&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testObject&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testOID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;objectIdentifier testOID 1.1.1.1
+objectIdentifier testAttr testOID:1
+objectIdentifier testObject testOID:2
 
-&lt;span class=&#34;n&#34;&gt;attributetype&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testAttr&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;NAME&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;testattr&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;DESC&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Test&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;attribute&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;EQUALITY&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;caseIgnoreMatch&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;SYNTAX&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.3.6.1.4.1.1466.115.121.1.15&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+attributetype ( testAttr
+    NAME &amp;#39;testattr&amp;#39;
+    DESC &amp;#39;Test attribute&amp;#39;
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
 
-&lt;span class=&#34;n&#34;&gt;objectclass&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testObject&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;NAME&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;testObject&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;DESC&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Just&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;for&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;AUXILIARY&lt;/span&gt;
-    &lt;span class=&#34;n&#34;&gt;MAY&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;testattr&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
+objectclass ( testObject
+    NAME &amp;#39;testObject&amp;#39;
+    DESC &amp;#39;Just for test&amp;#39;
+    AUXILIARY
+    MAY (testattr))
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;创建文件&lt;code&gt;tmp.conf&lt;/code&gt;,加入以下内容&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;include&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;include test.schema
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;创建目录&lt;code&gt;ldif_dir&lt;/code&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mkdir&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ldif_dir&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;$mkdir ldif_dir
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;生成‘ldif’文件&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;slaptest&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;f&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;tmp&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;conf&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;F&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ldif_dir&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;$slaptest -f tmp.conf -F ldif_dir
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;ldif目录结构如下：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;|--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;|--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ldif&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;|--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ldif&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;o&#34;&gt;|--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;olcDatabase&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ldif&lt;/span&gt;
-&lt;span class=&#34;o&#34;&gt;|&lt;/span&gt;   &lt;span class=&#34;err&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;olcDatabase&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;frontend&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ldif&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;`&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;--&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ldif&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;.
+|-- cn=config
+|   |-- cn=schema
+|   |   `-- cn={0}test.ldif
+|   |-- cn=schema.ldif
+|   |-- olcDatabase={0}config.ldif
+|   `-- olcDatabase={-1}frontend.ldif
+`-- cn=config.ldif
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -112,53 +112,53 @@
 &lt;li&gt;
 &lt;p&gt;文件&lt;code&gt;cn=config/cn=schema/cn={0}test.ldif&lt;/code&gt;就是生成的‘ldif’文件，编辑此文件：&lt;/p&gt;
 &lt;p&gt;将&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;dn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;={&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;objectClass&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;olcSchemaConfig&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;dn: cn={0}test
+objectClass: olcSchemaConfig
+cn: {0}test
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;修改为&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;dn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;objectClass&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;olcSchemaConfig&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;dn: cn=test,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: test
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;删除以下几行：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;structuralObjectClass&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;olcSchemaConfig&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;entryUUID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;9530&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cb4a&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9845&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1032&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;9&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;b5c&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;d9e32663bc&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;creatorsName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;createTimestamp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20130813092213&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Z&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;entryCSN&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;20130813092213.368308&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Z&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;000000&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;000&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;#&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;000000&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;modifiersName&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;modifyTimestamp&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20130813092213&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Z&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;structuralObjectClass: olcSchemaConfig
+entryUUID: 9530cb4a-9845-1032-9b5c-15d9e32663bc
+creatorsName: cn=config
+createTimestamp: 20130813092213Z
+entryCSN: 20130813092213.368308Z#000000#000#000000
+modifiersName: cn=config
+modifyTimestamp: 20130813092213Z
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;p&gt;最终文件变为&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;dn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;schema&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;,&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;config&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;objectClass&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;olcSchemaConfig&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;cn&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;test&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;olcObjectIdentifier&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;testOID&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1.1&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;olcObjectIdentifier&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;testAttr&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testOID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;1&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;olcObjectIdentifier&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;testObject&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testOID&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;2&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;olcAttributeTypes&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}(&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testAttr&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;NAME&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;testattr&amp;#39;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DESC&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Test attribute&amp;#39;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;E&lt;/span&gt;    &lt;span class=&#34;n&#34;&gt;QUALIT&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Y&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;caseIgnoreMatch&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;SYNTAX&lt;/span&gt; &lt;span class=&#34;mf&#34;&gt;1.3&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;6.1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;4.1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;1466.115&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mf&#34;&gt;121.1&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;15&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;olcObjectClasses&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;{&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;}(&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testObject&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;NAME&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;testObject&amp;#39;&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;DESC&lt;/span&gt; &lt;span class=&#34;s1&#34;&gt;&amp;#39;Just for test&amp;#39;&lt;/span&gt;     &lt;span class=&#34;n&#34;&gt;AUXILIARY&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;MAY&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;testattr&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;)&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;dn: cn=test,cn=schema,cn=config
+objectClass: olcSchemaConfig
+cn: test
+olcObjectIdentifier: {0}testOID 1.1.1.1
+olcObjectIdentifier: {1}testAttr testOID:1
+olcObjectIdentifier: {2}testObject testOID:2
+olcAttributeTypes: {0}( testAttr NAME &amp;#39;testattr&amp;#39; DESC &amp;#39;Test attribute&amp;#39; E    QUALIT Y caseIgnoreMatch SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+olcObjectClasses: {0}( testObject NAME &amp;#39;testObject&amp;#39; DESC &amp;#39;Just for test&amp;#39;     AUXILIARY MAY testattr )
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;将‘ldif’文件内容导入ldap数据库&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ldapadd&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Q&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Y&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EXTERNAL&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;H&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ldapi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;/// -f cn\=test.ldif&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;$sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f cn\=test.ldif
 &lt;/pre&gt;&lt;/div&gt;
 
 
 &lt;/li&gt;
 &lt;li&gt;
 &lt;p&gt;检查导入结果&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;sudo&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ldapsearch&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Q&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;LLL&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Y&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;EXTERNAL&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;H&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;ldapi&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;:&lt;/span&gt;&lt;span class=&#34;c1&#34;&gt;/// -b cn=schema,cn=config dn&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;$sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b cn=schema,cn=config dn
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -702,7 +702,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
 
 &lt;p&gt;我这显示的是&#39;ubuntu-mono-dark&#39;。&lt;/p&gt;
 &lt;p&gt;打开“～/.config/ReText\ project/ReText.conf”，加入&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;iconThem&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ubuntu&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;mono&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;-&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dark&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;iconThem=ubuntu-mono-dark
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1051,17 +1051,17 @@ errorCode：&lt;br /&gt;
 		<link>http://zqqf16.info/posts/use-graphviz-to-draw-struct-graph.html</link>  
 		<description>&lt;p&gt;近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。&lt;/p&gt;
 &lt;p&gt;废话不多说，上代码：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nx&#34;&gt;digraph&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;g&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
-    &lt;span class=&#34;nx&#34;&gt;graph&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;rankdir&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;LR&amp;quot;&lt;/span&gt; &lt;span class=&#34;cp&#34;&gt;]&lt;/span&gt;;
-    node &lt;span class=&#34;cp&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;shape&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;nx&#34;&gt;record&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;]&lt;/span&gt;;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;digraph g {
+    graph [ rankdir = &amp;quot;LR&amp;quot; ];
+    node [shape = record];
 
-    a &lt;span class=&#34;cp&#34;&gt;[&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;label&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&amp;lt;f&amp;gt; struct a|&amp;lt;f0&amp;gt; int i|&amp;lt;f1&amp;gt; char str[10]&amp;quot;&lt;/span&gt;
-    &lt;span class=&#34;cp&#34;&gt;]&lt;/span&gt;;
+    a [
+        label = &amp;quot;&amp;lt;f&amp;gt; struct a|&amp;lt;f0&amp;gt; int i|&amp;lt;f1&amp;gt; char str[10]&amp;quot;
+    ];
 
-    b &lt;span class=&#34;cp&#34;&gt;[&lt;/span&gt;
-        &lt;span class=&#34;n&#34;&gt;label&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;&amp;lt;f&amp;gt; struct b|&amp;lt;f0&amp;gt; struct a *p|char name[100]&amp;quot;&lt;/span&gt;
-    &lt;span class=&#34;cp&#34;&gt;]&lt;/span&gt;;
+    b [
+        label = &amp;quot;&amp;lt;f&amp;gt; struct b|&amp;lt;f0&amp;gt; struct a *p|char name[100]&amp;quot;
+    ];
 
     &amp;quot;b&amp;quot;:f0 -&amp;gt; &amp;quot;a&amp;quot;:f;
 }
@@ -1109,9 +1109,9 @@ errorCode：&lt;br /&gt;
 		<description>&lt;p&gt;Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于&lt;code&gt;&amp;lt;code class=&#34;python&#34;&amp;gt;&lt;/code&gt;的HTML标签，显得十分Ugly。&lt;/p&gt;
 &lt;p&gt;于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。&lt;/p&gt;
 &lt;p&gt;初步打算用&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;hello&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;&amp;#39;&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;```python
+print &amp;#39;hello&amp;#39;
+```
 &lt;/pre&gt;&lt;/div&gt;
 
 
@@ -1120,9 +1120,9 @@ errorCode：&lt;br /&gt;
 &lt;p&gt;于是乎继续Google，终于发现了一个完美的方法，并对Markdown2刮目相看。&lt;/p&gt;
 &lt;p&gt;一直用Markdown2这个Python写的解释器来转换Markdown脚本，之前光看名字还觉得这玩意是个山寨货。今天研究发现，这货还挺好用。&lt;/p&gt;
 &lt;p&gt;Markdown2提供了一个代码高亮的扩展：&lt;a href=&#34;https://github.com/trentm/python-markdown2/wiki/fenced-code-blocks&#34;&gt;fenced code blocks&lt;/a&gt;, 它能自动匹配这样的代码，并调用Pygments进行着色。&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;python&lt;/span&gt;
-&lt;span class=&#34;n&#34;&gt;print&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;hi&amp;quot;&lt;/span&gt;
-&lt;span class=&#34;err&#34;&gt;```&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;```python
+print &amp;quot;hi&amp;quot;
+```
 &lt;/pre&gt;&lt;/div&gt;
 
 
