@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>
+Python命令行参数解析工具——argparse | 
+穷折腾</title>
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://zqqf16.info/rss.xml" />
+	
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+Python命令行参数解析工具——argparse
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。</p>
+<p>之前用Python写了一个解析工具，可以从Diff文件中提取出修改过的文件列表，很方便的就可以找出不相关的文件，提交代码的时候也能省去很多麻烦。原理十分简单，主要是用正则表达式<code>^Index: (.*)$</code>来找出所有以“Index”开头的行。</p>
+<p>前几天在用着个工具的时候想用一下管道，结果发现当时写的太简单了，不支持……趁着空闲就花了点时间改造了一下，让它既支持从文件中读取，又支持stdin读取。既可以返回文件列表，又可以方便CVS操作的文件名串。</p>
+<p>刚开始打算用命令行解析的传统方法<code>getopt</code>来搞定，用了一会发现getopt有些弱，帮助啥的还得自己写。于是乎进行一番搜索，发现了argparse，一个更好的命令行参数解析工具。</p>
+<p>使用方法很简单，以我的小工具为例：</p>
+<div class="codehilite"><pre><span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Get changed files from diff&#39;</span><span class="p">)</span>
+
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;Diff file&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-i&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;input&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s">&#39;Read diff string from stdin&#39;</span><span class="p">)</span>
+<span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-l&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;list&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+                    <span class="n">help</span><span class="o">=</span><span class="s">&#39;List all files&#39;</span><span class="p">)</span>
+
+<span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+</pre></div>
+
+
+<p>它会自动生成一个很好看的帮助信息：</p>
+<div class="codehilite"><pre><span class="nv">$getfile</span>
+usage: getfile <span class="o">[</span>-h<span class="o">]</span> <span class="o">[</span>-i<span class="o">]</span> <span class="o">[</span>-l<span class="o">]</span> <span class="o">[</span>file<span class="o">]</span>
+
+Get changed files from diff
+
+positional arguments:
+  file        Diff file
+
+optional arguments:
+  -h, --help  show this <span class="nb">help </span>message and <span class="nb">exit</span>
+  -i          Read diff string from stdin
+  -l          List all files
+</pre></div>
+
+
+<p>完整的代码如下：</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+
+<span class="kn">import</span> <span class="nn">re</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">argparse</span>
+
+<span class="n">FILE_RE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s">r&#39;^Index: (.*)$&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">get_files_from_diff</span><span class="p">(</span><span class="n">diff</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">diff</span><span class="p">:</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">FILE_RE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span><span class="p">:</span>
+            <span class="n">res</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span> 
+
+    <span class="k">return</span> <span class="n">res</span>
+
+<span class="k">def</span> <span class="nf">main</span><span class="p">():</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">argparse</span><span class="o">.</span><span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Get changed files from diff&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;file&#39;</span><span class="p">,</span> <span class="n">nargs</span><span class="o">=</span><span class="s">&#39;?&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;Diff file&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-i&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&#39;input&#39;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span> 
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;Read diff string from stdin&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;-l&#39;</span><span class="p">,</span> <span class="n">dest</span><span class="o">=</span><span class="s">&quot;list&quot;</span><span class="p">,</span> <span class="n">action</span><span class="o">=</span><span class="s">&#39;store_true&#39;</span><span class="p">,</span>
+                        <span class="n">help</span><span class="o">=</span><span class="s">&#39;List all files&#39;</span><span class="p">)</span>
+
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">input</span><span class="p">:</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">get_files_from_diff</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">stdin</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">,</span> <span class="s">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">ret</span> <span class="o">=</span> <span class="n">get_files_from_diff</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\033</span><span class="s">[;31m[ERROR!] </span><span class="se">\033</span><span class="s">[0mFail to open &quot;{0}&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">file</span><span class="p">))</span>
+            <span class="nb">exit</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">print_help</span><span class="p">()</span>
+        <span class="nb">exit</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">list</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">text</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ret</span><span class="p">):</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">&#39;</span><span class="se">\033</span><span class="s">[;33m[{0}] </span><span class="se">\033</span><span class="s">[;32m{1}</span><span class="se">\033</span><span class="s">[0m&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">index</span><span class="p">,</span> <span class="n">text</span><span class="p">))</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">ret</span><span class="p">))</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">main</span><span class="p">()</span>
+</pre></div>
+
+
+<p>或者<a href="https://gist.github.com/zqqf16/7094628">Gist</a></p>
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/argparse.html">argparse</a>
+			<a href="/tags/python.html">python</a>
+			<a href="/tags/diff.html">diff</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-10-22">2013-10-22</time></span>
+	</section>
+	<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zqqf16"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END -->
+
+<hr/>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+  </body>
+</html>
