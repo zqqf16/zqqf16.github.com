@@ -3,6 +3,7 @@
 
 import re
 import os
+from mako.template import Template
 from mako.lookup import TemplateLookup
 from datetime import datetime
 import markdown
@@ -20,64 +21,106 @@ PATH = {
     'tag':      'tags',
 }
 
-def get_url(type, name):
-    return PATH[type]+'/'+name+'.html'
+TEMPLATES = TemplateLookup(
+    directories=['templates'], 
+    input_encoding='utf-8',
+    output_encoding='utf-8', 
+    encoding_errors='replace'
+)
 
-class Tag(object):
-    def __init__(self, name):
-        self.name = name
+class Entry(object):
+    template = None
+    type = ''
+    title = ''
+    slug = ''
+
+    def __init__(self, **kargs):
+        self.title = kargs.get('title', '')
+        self.slug = kargs.get('slug', '')
+        self.static_url = kargs.get('url', '')
+        template_file = kargs.get('template', '')
+        if template_file:
+            self.template = TEMPLATES.get_template(template_file)
+
+    @property
+    def url(self):
+        if self.static_url:
+            return self.static_url
+        return PATH[self.type]+'/'+self.slug+'.html'
+
+    def generate(self, **kargv):
+        if not isinstance(self.template, Template):
+            return
+
+        kargv[self.type] = self
+
+        with open(self.url, 'w') as f: 
+            html = self.template.render(**kargv)
+            f.write(html)
+
+class Tag(Entry):
+    template = TEMPLATES.get_template('tag.html')
+    type = 'tag'
+
+    _pool = dict()
+    def __new__(cls, title):
+        if cls._pool.has_key(title):
+            return cls._pool[title]
+
+        self = Entry.__new__(cls)
+        cls._pool[title] = self
         self.posts = []
-        self.url = get_url('tag', self.name)
 
-class Post(object):
-    def __init__(self, title, content, slug, date=None, tags=[]):
-        self.title = title
+        return self
+
+    @classmethod
+    def all(cls):
+        return cls._pool
+    
+    def __init__(self, title):
+        super(Tag, self).__init__(title=title, slug=title)
+
+    def generate(self, **kargv):
+        self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+        kargv['posts'] = self.posts
+
+        super(Tag, self).generate(**kargv)
+
+class Page(Entry):
+    template = TEMPLATES.get_template('page.html')
+    type = 'page'
+
+    def __init__(self, title, content, slug, date=None):
+        super(Page, self).__init__(title=title, slug=slug)
+
         self.content = content
-        self.slug = slug
-        if date:
-            self.date = date
-        else:
-            self.date = datetime.now()
 
+        if not date:
+            date = datetime.now()
+
+        self.date = date
+
+class Post(Page):
+    template = TEMPLATES.get_template('post.html')
+    type = 'post'
+
+    def __init__(self, title, content, slug, date=None, tags=[]):
+        super(Post, self).__init__(title, content, slug, date=date)
         self.tags = []
-        for tag in tags:
+        for t in tags:
+            tag = Tag(t)
             tag.posts.append(self)
             self.tags.append(tag)
 
-        self.url = get_url('post', self.slug)
-
-class Page(object):
-    def __init__(self, title, content, slug, date=None):
-        self.title = title
-        self.content = content
-        self.slug = slug
-        if date:
-            self.date = date
-        else:
-            self.date = datetime.now()
-
-        self.url = get_url('page', self.slug)
-
 class Draft(object):
-    file_name_re = re.compile(r'([^/]+)\.(md|markdown)')
-    _instance = None
+    regex = re.compile(r'([^/]+)\.(md|markdown)')
 
-    def __new__(cls, *args, **kwargs):
-        #singleton
-        if not isinstance(cls._instance, Draft):
-            cls._instance = super(Draft, cls).__new__(cls, *args, **kwargs)
-        return cls._instance
-        
-    def __init__(self, directory = PATH['draft']):
-        self.directory = directory
-        self._data = {
-            'posts': [],
-            'pages': [],
-            'tags':  {},
-        }
+    def __init__(self, path, slug):
+        self.path = path
+        self.slug = slug
 
     # metadata handlers
-    _META_HANDLERS = {
+    meta_handlers = {
         'tag':      lambda x: x if x else [],
         'title':    lambda x: x[0] if x else '',
         'date':     lambda x: datetime.strptime(x[0], '%Y-%m-%d') if x else datetime.now(),
@@ -85,110 +128,75 @@ class Draft(object):
         'type':     lambda x: x[0] if x else 'post',
     }
 
-    def __parse_metadata(self, meta):
+    def parse_metadata(self, meta):
         res = {}
-        for name, handler in self._META_HANDLERS.items():
+        for name, handler in self.meta_handlers.items():
             value = handler(meta.get(name, None))
             res[name] = value
 
         return res
 
-    def __get_tags(self, name_list):
-        ''' If tag name exists in self._data['tags'], return it.
-            Else create a new tag and return it.
-        '''
-        tags = []
-        for name in name_list:
-            tag = self._data['tags'].get(name)
-            if tag:
-                tags.append(tag)
-            else:
-                tag = Tag(name)
-                self._data['tags'][name] = tag
-                tags.append(tag)
-        return tags
-
-    def load(self):
+    md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'],
+                           extension_configs={
+                               'codehilite': [
+                                   ('guess_lang', False),
+                               ]
+                           })
+    def convert(self):
         ''' Parse draft files to generate posts, pages and tags.
             Draft file should be named as 'xxx.md' or 'xxx.markdown'.
         '''
-        md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'],
-                               extension_configs={
-                                   'codehilite': [
-                                       ('guess_lang', False),
-                                   ]
-                               })
-        for f in os.listdir(self.directory):
-            m = self.file_name_re.search(f)
-            if not m: 
-                continue
-            slug = m.group(1)
+        entry = None
+        with open(self.path, 'r') as f:
+            content = f.read().decode('utf-8')
+            html = self.md.reset().convert(content.strip(' \n'))
+            if not self.md.Meta:
+                #No need to convert this draft
+                return None
 
-            filepath = os.path.join(self.directory, f)
-            with open(filepath, 'r') as f:
-                content = f.read().decode('utf-8')
-                html = md.reset().convert(content.strip(' \n'))
-                if not md.Meta:
-                    #No need to convert this draft
-                    continue
+            meta = self.parse_metadata(self.md.Meta)
 
-                meta = self.__parse_metadata(md.Meta)
-                tags = self.__get_tags(meta['tag'])
+            if meta['type'] == 'post':
+                entry = Post(meta['title'], html, self.slug,
+                            date=meta['date'], tags=meta['tag'])
+            elif meta['type'] == 'page':
+                entry = Page(meta['title'], html, self.slug,
+                            date=meta['date'])
 
-                if meta['type'] == 'post':
-                    post = Post(meta['title'], html, slug,
-                                meta['date'], tags)
-                    self._data['posts'].append(post)
-                elif meta['type'] == 'page':
-                    page = Page(meta['title'], html, slug,
-                                meta['date'])
-                    self._data['pages'].append(page)
+        return entry
 
-        self._sort_posts_by_date()
-    
-    def _sort_posts_by_date(self):
-        self._data['posts'].sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+def get_drafts(path):
+    drafts = []
+    for f in os.listdir(path):
+        m = Draft.regex.match(f)
+        if not m:
+            continue
 
-    @property
-    def posts(self):
-        return self._data['posts']
+        slug = m.group(1)
+        draft = Draft(os.path.join(path, f), slug)
+        drafts.append(draft)
 
-    @property
-    def pages(self):
-        return self._data['pages']
-
-    @property
-    def tags(self):
-        return [value for name,value in self._data['tags'].items()]
-
-_TEMPLATES = TemplateLookup(
-    directories=['templates'], 
-    input_encoding='utf-8',
-    output_encoding='utf-8', 
-    encoding_errors='replace'
-)
-
-def generate_file(template, path, **namespace):
-    with open(path, 'w') as f: 
-        html = template.render(**namespace)
-        f.write(html)
+    return drafts
 
 def peanut():
-    drafts = Draft()
-    drafts.load()
-    tags = drafts.tags
-    posts = drafts.posts
-    pages = drafts.pages
+    drafts = get_drafts(PATH['draft'])
 
-    post_temp = _TEMPLATES.get_template('post.html')
-    page_temp = _TEMPLATES.get_template('page.html')
-    tag_temp =  _TEMPLATES.get_template('tag.html')
-    index_temp = _TEMPLATES.get_template('index.html')
-    rss_temp = _TEMPLATES.get_template('rss.xml')
-    sitemap_temp = _TEMPLATES.get_template('sitemap.xml')
-    
+    posts = []
+    pages = []
+
+    for d in drafts:
+        p = d.convert()
+        if p.type == 'post':
+            posts.append(p)
+        elif p.type == 'page':
+            pages.append(p)
+
+    posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+    pages.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+
+    tags = [value for name,value in Tag.all().items()]
+
     namespace = {
-        'tags': tags,
         'posts': posts,
         'pages': pages,
     }
@@ -196,15 +204,16 @@ def peanut():
     namespace.update(CONFIG)
 
     for tag in tags:
-        generate_file(tag_temp, tag.url, tag=tag, **namespace)
+        tag.generate(**namespace)
     for post in posts:
-        generate_file(post_temp, post.url, post=post, **namespace)
+        post.generate(**namespace)
     for page in pages:
-        generate_file(page_temp, page.url, page=page, **namespace)
+        page.generate(**namespace)
 
-    generate_file(index_temp, 'index.html', **namespace)
-    generate_file(rss_temp, 'rss.xml', **namespace)
-    generate_file(sitemap_temp, 'sitemap.xml', **namespace)
+    static_files = ['index.html', 'rss.xml', 'sitemap.xml']
+    for f in static_files:
+        e = Entry(url=f, template=f)
+        e.generate(**namespace)
 
 if __name__ == '__main__':
     peanut()
