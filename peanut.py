@@ -63,22 +63,22 @@ class Tag(Entry):
     type = 'tag'
 
     _pool = dict()
-    def __new__(cls, title):
-        if cls._pool.has_key(title):
-            return cls._pool[title]
-
-        self = Entry.__new__(cls)
-        cls._pool[title] = self
-        self.posts = []
-
-        return self
+    @classmethod
+    def create(cls, title):
+        t = cls._pool.get(title)
+        if t:
+            return t
+        t = cls(title)
+        cls._pool[title] = t
+        return t
 
     @classmethod
     def all(cls):
-        return cls._pool
+        return cls._pool.values()
     
     def __init__(self, title):
         super(Tag, self).__init__(title=title, slug=title)
+        self.posts = []
 
     def generate(self, **kargv):
         self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
@@ -108,7 +108,7 @@ class Post(Page):
         super(Post, self).__init__(title, content, slug, date=date)
         self.tags = []
         for t in tags:
-            tag = Tag(t)
+            tag = Tag.create(t)
             tag.posts.append(self)
             self.tags.append(tag)
 
@@ -194,7 +194,7 @@ def peanut():
     posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
     pages.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
 
-    tags = [value for name,value in Tag.all().items()]
+    tags = Tag.all()
 
     namespace = {
         'posts': posts,
