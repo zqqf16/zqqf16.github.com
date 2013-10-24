@@ -7,6 +7,20 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>照片两张</title>  
+		<link>http://zqqf16.info/posts/just-photo.html</link>  
+		<description>&lt;p&gt;&lt;strong&gt;上周末去了趟天坛公园。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;tiantan&#34; src=&#34;/static/img/tiantan.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;空气不错，就是时间有点晚，光线不足。趁着还在帝都，把著名景点都逛一逛，等哪天离开了，也不留遗憾。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;买了个移动电源，台电T100E。&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;taidian&#34; src=&#34;/static/img/taidian.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;虽然一直想自己diy一个，但是总是想不出外壳该怎么弄。趁着京东特价，看着还过得去就入手了。虽然体积和重量都超过了预期，目测里面是4节18650电池。不管怎样，妈妈再也不用担心我出去玩手机没电了。&lt;/p&gt;
+&lt;p&gt;另外，当插上iPhone数据线的时候，电量指示灯会自动亮起，其它品牌的数据线就不亮。看来iPhone的数据线里面是有电路的。&lt;/p&gt;</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 24 Oct 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>Python命令行参数解析工具——argparse</title>  
 		<link>http://zqqf16.info/posts/argparse.html</link>  
 		<description>&lt;p&gt;鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。&lt;/p&gt;
