@@ -48,14 +48,14 @@ class Entry(object):
             return self.static_url
         return PATH[self.type]+'/'+self.slug+'.html'
 
-    def generate(self, **kargv):
+    def generate(self, **kwargv):
         if not isinstance(self.template, Template):
             return
 
-        kargv[self.type] = self
+        kwargv[self.type] = self
 
         with open(self.url, 'w') as f: 
-            html = self.template.render(**kargv)
+            html = self.template.render(**kwargv)
             f.write(html)
 
 class Tag(Entry):
@@ -80,17 +80,17 @@ class Tag(Entry):
         super(Tag, self).__init__(title=title, slug=title)
         self.posts = []
 
-    def generate(self, **kargv):
+    def generate(self, **kwargv):
         self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
-        kargv['posts'] = self.posts
+        kwargv['posts'] = self.posts
 
-        super(Tag, self).generate(**kargv)
+        super(Tag, self).generate(**kwargv)
 
 class Page(Entry):
     template = TEMPLATES.get_template('page.html')
     type = 'page'
 
-    def __init__(self, title, content, slug, date=None):
+    def __init__(self, title, content, slug, date=None, publish='yes'):
         super(Page, self).__init__(title=title, slug=slug)
 
         self.content = content
@@ -99,13 +99,22 @@ class Page(Entry):
             date = datetime.now()
 
         self.date = date
+        if publish.lower() == 'yes':
+            self.publish = True
+        else:
+            self.publish = False
+
+    def generate(self, **kwargv):
+        if not self.publish:
+            return
+        super(Page, self).generate(**kwargv)
 
 class Post(Page):
     template = TEMPLATES.get_template('post.html')
     type = 'post'
 
-    def __init__(self, title, content, slug, date=None, tags=[]):
-        super(Post, self).__init__(title, content, slug, date=date)
+    def __init__(self, title, content, slug, date=None, publish='yes', tags=[]):
+        super(Post, self).__init__(title, content, slug, date=date, publish=publish)
         self.tags = []
         for t in tags:
             tag = Tag.create(t)
@@ -126,6 +135,7 @@ class Draft(object):
         'date':     lambda x: datetime.strptime(x[0], '%Y-%m-%d') if x else datetime.now(),
         'category': lambda x: x[0] if x else None,
         'type':     lambda x: x[0] if x else 'post',
+        'publish':  lambda x: x[0] if x else 'yes',
     }
 
     def parse_metadata(self, meta):
@@ -158,10 +168,12 @@ class Draft(object):
 
             if meta['type'] == 'post':
                 entry = Post(meta['title'], html, self.slug,
-                            date=meta['date'], tags=meta['tag'])
+                             date=meta['date'], tags=meta['tag'], 
+                             publish=meta['publish'])
             elif meta['type'] == 'page':
                 entry = Page(meta['title'], html, self.slug,
-                            date=meta['date'])
+                             date=meta['date'],
+                             publish=meta['publish'])
 
         return entry
 
