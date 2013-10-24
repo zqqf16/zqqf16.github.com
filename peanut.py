@@ -64,7 +64,7 @@ class Tag(Entry):
 
     _pool = dict()
     @classmethod
-    def create(cls, title):
+    def get(cls, title):
         t = cls._pool.get(title)
         if t:
             return t
@@ -117,7 +117,7 @@ class Post(Page):
         super(Post, self).__init__(title, content, slug, date=date, publish=publish)
         self.tags = []
         for t in tags:
-            tag = Tag.create(t)
+            tag = Tag.get(t)
             tag.posts.append(self)
             self.tags.append(tag)
 
