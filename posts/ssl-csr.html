@@ -4,7 +4,7 @@
 	
 	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
 	<title>
-SSL证书——CSR | 
+SSL证书研究之CSR | 
 穷折腾</title>
 	<link rel="stylesheet" href="/static/css/style.css" />
 	<link rel="stylesheet" href="/static/css/pygments.css" />
@@ -15,7 +15,7 @@ SSL证书——CSR |
       <div id="main" role="main">
         <header>
 		<h1>
-SSL证书——CSR
+SSL证书研究之CSR
 </h1>
 		</header>
 
@@ -28,7 +28,7 @@ SSL证书——CSR
         <section class="post">
             
 		<blockquote>
-<p>以前用SSL证书的时候对一些概念了解比较模糊，没有一个整体的认识。于是下决心仔细研究一番，接下来会写一系列文章，这是第一篇，先介绍一下CSR。</p>
+<p>以前用SSL证书的时候对一些概念了解比较模糊，对x.509、pem、csr等一大堆概念没有一个整体的认识。于是下决心仔细研究一番，接下来会写一系列文章，这是第一篇，先介绍一下CSR。</p>
 </blockquote>
 <h2>基本概念</h2>
 <p>CSR全称Certificate Signing Request（证书请求文件），是证书申请者向证书颁发机构（CA）申请证书时需要提供的文件。里面包含了一些申请者的基本信息，比如Common Name、 Organization等。同时也包含了申请者的公钥。</p>
@@ -129,9 +129,6 @@ BgNVBAMMC3pxcWYxNi5p.....
          a2:f5:e9:9a:11:ad:2a:31:d6:72:59:7e:e0:78:9f:b4:3f:af:
          c7:94:34:7f
 </pre></div>
-
-
-<p>就可以看到里面的CN、公钥等信息。</p>
 	</section>
 	<section class="meta">
 		<span class="tags">Tagged by 
