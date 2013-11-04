@@ -28,6 +28,14 @@ TEMPLATES = TemplateLookup(
     encoding_errors='replace'
 )
 
+SINGLE_FILES = (
+    #(template, path)
+    ('index.html', 'index.html'),
+    ('sitemap.xml', 'sitemap.xml'),
+    ('tags.html', 'tags/index.html'),
+    ('rss.xml', 'rss.xml'),
+)
+
 class Entry(object):
     template = None
     type = ''
@@ -211,6 +219,7 @@ def peanut():
     namespace = {
         'posts': posts,
         'pages': pages,
+        'tags': tags,
     }
 
     namespace.update(CONFIG)
@@ -222,9 +231,8 @@ def peanut():
     for page in pages:
         page.generate(**namespace)
 
-    static_files = ['index.html', 'rss.xml', 'sitemap.xml']
-    for f in static_files:
-        e = Entry(url=f, template=f)
+    for f in SINGLE_FILES:
+        e = Entry(url=f[1], template=f[0])
         e.generate(**namespace)
 
 if __name__ == '__main__':
