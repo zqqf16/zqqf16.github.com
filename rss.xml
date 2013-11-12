@@ -54,13 +54,13 @@
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;比如输出字体为绿色，北京为黄色的文字：&lt;/p&gt;
+&lt;p&gt;比如输出字体为绿色，背景为黄色的文字：&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;paint&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;green&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;#39;yellow&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;p&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;#39;Hello World&amp;#39;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;))&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 
 
-&lt;p&gt;完整代码，可以访问我的&lt;a href=&#34;https://github.com/zqqf16/colorit&#34;&gt;Github&lt;/a&gt;。&lt;/p&gt;
+&lt;p&gt;可以访问我的&lt;a href=&#34;https://github.com/zqqf16/colorit&#34;&gt;Github&lt;/a&gt;查看完整代码。&lt;/p&gt;
 &lt;p&gt;最后，附一张完整的颜色图（&lt;code&gt;python colorit.py&lt;/code&gt;）：&lt;/p&gt;
 &lt;p&gt;&lt;img alt=&#34;colors&#34; src=&#34;https://raw.github.com/zqqf16/colorit/master/examples/all.png&#34; /&gt;&lt;/p&gt;</description>  
 		<author>Zqqf16</author>  

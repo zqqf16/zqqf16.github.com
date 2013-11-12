@@ -50,14 +50,14 @@ p = paint(foreground, background=None, attribute=None)
 p(string)
 ```
 
-比如输出字体为绿色，北京为黄色的文字：
+比如输出字体为绿色，背景为黄色的文字：
 
 ```python
 p = paint('green', 'yellow')
 print(p('Hello World'))
 ```
 
-完整代码，可以访问我的[Github](https://github.com/zqqf16/colorit)。
+可以访问我的[Github](https://github.com/zqqf16/colorit)查看完整代码。
 
 最后，附一张完整的颜色图（`python colorit.py`）：
 
