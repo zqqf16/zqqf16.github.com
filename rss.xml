@@ -1074,6 +1074,14 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
 		<pubDate>Thu, 04 Jul 2013 00:00:00 +0800</pubDate>  
     </item>  
     <item>  
+		<title>近期状态</title>  
+		<link>http://zqqf16.info/posts/shell-redirect-pipe.html</link>  
+		<description></description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 04 Jul 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>理解Git的暂存区</title>  
 		<link>http://zqqf16.info/posts/understand-git-stage.html</link>  
 		<description>&lt;p&gt;虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。&lt;/p&gt;
