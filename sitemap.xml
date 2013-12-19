@@ -5,6 +5,11 @@
 		<changefreq>monthly</changefreq>
 	</url>
 	<url>
+		<loc>http://zqqf16.info/posts/web-clipboard.html</loc>
+		<lastmod>2013-12-19</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>http://zqqf16.info/posts/tornado-template.html</loc>
 		<lastmod>2013-11-21</lastmod>
 		<changefreq>monthly</changefreq>
@@ -71,11 +76,6 @@
 	</url>
 	<url>
 		<loc>http://zqqf16.info/posts/recent-status.html</loc>
-		<lastmod>2013-07-04</lastmod>
-		<changefreq>monthly</changefreq>
-	</url>
-	<url>
-		<loc>http://zqqf16.info/posts/shell-redirect-pipe.html</loc>
 		<lastmod>2013-07-04</lastmod>
 		<changefreq>monthly</changefreq>
 	</url>

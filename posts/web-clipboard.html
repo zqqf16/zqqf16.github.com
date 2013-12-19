@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>
+写了一个简单的Web剪切板-Clipboard | 
+穷折腾</title>
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://zqqf16.info/rss.xml" />
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+写了一个简单的Web剪切板-Clipboard
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+		<span><a title="标签" class="" href="/tags/index.html">标签</a></span>
+		<span><a title="订阅" class="" href="/rss.xml">订阅</a></span>
+        <span><a href="/pages/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>平时由于工作的关系需要用到多台电脑，Mac和Windows来回切换。有时候想把一些信息复制到另一台电脑上，只能打开文件共享，然后把内容保存到文件里，再到另一台电脑里打开。时间一长，就积累了很多垃圾文件。于是乎就花了点时间，写了个简单的基于Web的内容共享程序，我叫它Clipboard。</p>
+<p>源码在此：<a href="https://github.com/zqqf16/clipboard">github</a></p>
+<p>我是把它当作一个练手项目来写的，尝试了很多新东西，也学到了很多。</p>
+<p><strong>数据库</strong></p>
+<p>一开始我把所有内容以JSON格式存储到文件里，为此写了一个简单的JSON-DB以及相应的ORM。（<a href="https://github.com/zqqf16/clipboard/blob/0eceea61e3d2e49fdafc73b88b5b42722a8ab192/clipboard/model.py">View History</a>）在这个过程中充分的学习了Meta class以及Descriptor的相关知识。</p>
+<p>后来考虑到以后可能会有更多功能，自己维护一套类似数据库有点不现实，所以就转向了Sqlite，并采用了一个比较小巧的ORM - Peewee。也就有了当前的版本。</p>
+<p><strong>Unit Test</strong></p>
+<p>从写JSON-DB的时候就仔仔细细的写了Unit Test，虽然最后还是发现了一些纰漏，但是还算成功。后来又加了Web层的Unit Test，学会了用Tornado的HTTPClient来测试，也算收获不小。</p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">TestModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">application</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">App</span><span class="p">()</span>
+        <span class="n">http_server</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">httpserver</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+        <span class="n">http_server</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="n">tornado</span><span class="o">.</span><span class="n">ioloop</span><span class="o">.</span><span class="n">IOLoop</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">http_client</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">httpclient</span><span class="o">.</span><span class="n">AsyncHTTPClient</span><span class="p">()</span>
+        <span class="n">http_client</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s">&#39;http://0.0.0.0:8888&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_request</span><span class="p">)</span>
+        <span class="n">tornado</span><span class="o">.</span><span class="n">ioloop</span><span class="o">.</span><span class="n">IOLoop</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">body</span>
+</pre></div>
+
+
+<p><strong>XMLHTTPRequest</strong></p>
+<p>尝试了一把RESTful，但由于原生的HTML Form不支持DELETE方法，我又不想引入JQuery这样的牛刀。经过一番搜索，找着了XMLHTTPRequest。就照着网上的例子画了个瓢~</p>
+<div class="codehilite"><pre>function delete_entry(id) {
+        var form = new FormData();
+        form.append(&quot;id&quot;, id);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open(&quot;DELETE&quot;, &quot;/c/&quot;+id, true);
+        xhr.responseType = &quot;json&quot;;
+        xhr.onload = function(e) {
+                if (this.status == 200) {
+                        var data = JSON.parse(this.response);
+                        if (data.status == &#39;success&#39;){
+                                window.location.reload();
+                        } else {
+                                alert(data.status);
+                        }
+                } else {
+                        alert(&#39;Connection error!&#39;);
+                }
+        };
+
+        xhr.send(form);
+};
+</pre></div>
+
+
+<p><strong>Others</strong></p>
+<p>为了使开发的过程更加规范，我强制自己用了Github的issue功能，成功的解决了仅有的两个issue~</p>
+<p>用了Yahoo的CSS框架 - Pure。Bootstrap太大了，而且默认的界面看疲劳了。所以就尝试了这个小清新的Pure。抄了不少官网的代码。最后的界面还凑合，不难看。</p>
+<p>最后，上一张效果图~</p>
+<p><img alt="Clipboard" src="/static/img/clipboard.png" /></p>
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/Clipboard.html">Clipboard</a>
+			<a href="/tags/tornado.html">tornado</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2013-12-19">2013-12-19</time></span>
+	</section>
+	<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zqqf16"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END -->
+
+<hr/>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+	<script>
+	  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	  ga('create', 'UA-41282906-1', 'zqqf16.info');
+	  ga('send', 'pageview');
+	</script>
+</body>
+</html>
