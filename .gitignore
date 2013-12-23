@@ -38,3 +38,4 @@ nosetests.xml
 # Temporary files
 *.md~
 *.markdown~
+.DS_Store
