@@ -3,10 +3,11 @@
 
 import re
 import os
+import markdown
+
+from datetime import datetime
 from mako.template import Template
 from mako.lookup import TemplateLookup
-from datetime import datetime
-import markdown
 
 CONFIG = {
     'domain': 'zqqf16.info',
@@ -39,8 +40,6 @@ SINGLE_FILES = (
 class Entry(object):
     template = None
     type = ''
-    title = ''
-    slug = ''
 
     def __init__(self, **kargs):
         self.title = kargs.get('title', '')
@@ -67,11 +66,16 @@ class Entry(object):
             f.write(html)
 
 class Pool(type):
+    '''Meta class to implement a simple "object pool".
+    '''
     def __new__(self, name, bases, attrs):
-        attrs['_pool'] = {}
+        '''Add an attribute "_pool" and a classmethod "all".
+        '''
 
         def all(cls):
             return cls._pool.values()
+
+        attrs['_pool'] = {}
         attrs['all'] = classmethod(all)
 
         return super(Pool, self).__new__(self, name, bases, attrs)
@@ -79,9 +83,13 @@ class Pool(type):
     def __call__(cls, *args, **kwargs):
         identity = tuple(*args, **kwargs)
         if identity in cls._pool:
+            #Get from pool
             return cls._pool[identity]
+
+        #Generate a new one
         instance = super(Pool, cls).__call__(*args, **kwargs)
         cls._pool[identity] = instance
+
         return instance
 
 class Tag(Entry):
@@ -111,8 +119,8 @@ class Page(Entry):
 
         if not date:
             date = datetime.now()
-
         self.date = date
+
         if publish.lower() == 'yes':
             self.publish = True
         else:
@@ -129,6 +137,7 @@ class Post(Page):
 
     def __init__(self, title, content, slug, date=None, publish='yes', tags=[]):
         super(Post, self).__init__(title, content, slug, date=date, publish=publish)
+
         self.tags = []
         for t in tags:
             tag = Tag(t)
@@ -167,8 +176,8 @@ class Draft(object):
                                ]
                            })
     def convert(self):
-        ''' Parse draft files to generate posts, pages and tags.
-            Draft file should be named as 'xxx.md' or 'xxx.markdown'.
+        '''Parse draft files to generate posts, pages and tags.
+           Draft file should be named as 'xxx.md' or 'xxx.markdown'.
         '''
         entry = None
         with open(self.path, 'r') as f:
@@ -227,7 +236,6 @@ def peanut():
         'pages': pages,
         'tags': tags,
     }
-
     namespace.update(CONFIG)
 
     for tag in tags:
