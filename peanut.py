@@ -77,11 +77,11 @@ class Pool(type):
         return super(Pool, self).__new__(self, name, bases, attrs)
 
     def __call__(cls, *args, **kwargs):
-        identify = tuple(*args, **kwargs)
-        if identify in cls._pool:
-            return cls._pool[identify]
+        identity = tuple(*args, **kwargs)
+        if identity in cls._pool:
+            return cls._pool[identity]
         instance = super(Pool, cls).__call__(*args, **kwargs)
-        cls._pool[identify] = instance
+        cls._pool[identity] = instance
         return instance
 
 class Tag(Entry):
