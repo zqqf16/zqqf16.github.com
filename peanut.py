@@ -66,24 +66,30 @@ class Entry(object):
             html = self.template.render(**kwargv)
             f.write(html)
 
+class Pool(type):
+    def __new__(self, name, bases, attrs):
+        attrs['_pool'] = {}
+
+        def all(cls):
+            return cls._pool.values()
+        attrs['all'] = classmethod(all)
+
+        return super(Pool, self).__new__(self, name, bases, attrs)
+
+    def __call__(cls, *args, **kwargs):
+        identify = tuple(*args, **kwargs)
+        if identify in cls._pool:
+            return cls._pool[identify]
+        instance = super(Pool, cls).__call__(*args, **kwargs)
+        cls._pool[identify] = instance
+        return instance
+
 class Tag(Entry):
     template = TEMPLATES.get_template('tag.html')
     type = 'tag'
 
-    _pool = dict()
-    @classmethod
-    def get(cls, title):
-        t = cls._pool.get(title)
-        if t:
-            return t
-        t = cls(title)
-        cls._pool[title] = t
-        return t
+    __metaclass__ = Pool
 
-    @classmethod
-    def all(cls):
-        return cls._pool.values()
-    
     def __init__(self, title):
         super(Tag, self).__init__(title=title, slug=title)
         self.posts = []
@@ -125,7 +131,7 @@ class Post(Page):
         super(Post, self).__init__(title, content, slug, date=date, publish=publish)
         self.tags = []
         for t in tags:
-            tag = Tag.get(t)
+            tag = Tag(t)
             tag.posts.append(self)
             self.tags.append(tag)
 
