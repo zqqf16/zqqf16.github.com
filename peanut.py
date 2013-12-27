@@ -10,7 +10,7 @@ from mako.template import Template
 from mako.lookup import TemplateLookup
 
 CONFIG = {
-    'domain': 'zqqf16.info',
+    'domain': 'blog.zorro.im',
     'title': u'穷折腾',
     'description': u'Zqqf16的个人BLog，记录我的生活、学习、以及心情。',
 }

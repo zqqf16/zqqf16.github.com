@@ -8,7 +8,7 @@
     <generator>Peanut</generator>  
     <item>  
 		<title>关于iOS越狱</title>  
-		<link>http://zqqf16.info/posts/tucao-jailbreak.html</link>  
+		<link>http://blog.zorro.im/posts/tucao-jailbreak.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;本文隶属吐槽系列之一，没啥营养，各位看官（如果有的话）请自便～&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -27,7 +27,7 @@
     </item>  
     <item>  
 		<title>写了一个简单的Web剪切板-Clipboard</title>  
-		<link>http://zqqf16.info/posts/web-clipboard.html</link>  
+		<link>http://blog.zorro.im/posts/web-clipboard.html</link>  
 		<description>&lt;p&gt;平时由于工作的关系需要用到多台电脑，Mac和Windows来回切换。有时候想把一些信息复制到另一台电脑上，只能打开文件共享，然后把内容保存到文件里，再到另一台电脑里打开。时间一长，就积累了很多垃圾文件。于是乎就花了点时间，写了个简单的基于Web的内容共享程序，我叫它Clipboard。&lt;/p&gt;
 &lt;p&gt;源码在此：&lt;a href=&#34;https://github.com/zqqf16/clipboard&#34;&gt;github&lt;/a&gt;&lt;/p&gt;
 &lt;p&gt;我是把它当作一个练手项目来写的，尝试了很多新东西，也学到了很多。&lt;/p&gt;
@@ -93,7 +93,7 @@
     </item>  
     <item>  
 		<title>Tornado源码之Template</title>  
-		<link>http://zqqf16.info/posts/tornado-template.html</link>  
+		<link>http://blog.zorro.im/posts/tornado-template.html</link>  
 		<description>&lt;p&gt;Tornado底层的源码分析已经有很多人写过了，他们的水平都在我之上，写的也比我好，所以我就不再重复了。打算剑走偏锋，研究一下tornado周边的东西。这篇就研究一下之前一直很感兴趣的Template。&lt;/p&gt;
 &lt;p&gt;Template的工作流程如下：&lt;/p&gt;
 &lt;ol&gt;
@@ -235,7 +235,7 @@
     </item>  
     <item>  
 		<title>Colorit——一个给终端输出上色的工具</title>  
-		<link>http://zqqf16.info/posts/colorit.html</link>  
+		<link>http://blog.zorro.im/posts/colorit.html</link>  
 		<description>&lt;p&gt;平时自己写脚本的时候总喜欢给输出信息加点颜色，比如之前写的查找CVS diff中改动文件的&lt;a href=&#34;https://gist.github.com/zqqf16/7094628&#34;&gt;脚本&lt;/a&gt;。方法很简单，就是输出一些ASCII控制码，比如&lt;code&gt;\033[;31m&lt;/code&gt;代表红色之类的。&lt;/p&gt;
 &lt;p&gt;用的多了，感觉老是拼字符串也不是个办法，索性规整了一下，写了人生中第一个正经的python模块。。。&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
@@ -296,7 +296,7 @@
     </item>  
     <item>  
 		<title>SSL证书研究之CSR</title>  
-		<link>http://zqqf16.info/posts/ssl-csr.html</link>  
+		<link>http://blog.zorro.im/posts/ssl-csr.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;以前用SSL证书的时候对一些概念了解比较模糊，对x.509、pem、csr等一大堆概念没有一个整体的认识。于是下决心仔细研究一番，接下来会写一系列文章，这是第一篇，先介绍一下CSR。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -405,7 +405,7 @@ BgNVBAMMC3pxcWYxNi5p.....
     </item>  
     <item>  
 		<title>照片两张</title>  
-		<link>http://zqqf16.info/posts/just-photo.html</link>  
+		<link>http://blog.zorro.im/posts/just-photo.html</link>  
 		<description>&lt;p&gt;&lt;strong&gt;上周末去了趟天坛公园。&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;&lt;img alt=&#34;tiantan&#34; src=&#34;/static/img/tiantan.jpg&#34; /&gt;&lt;/p&gt;
 &lt;p&gt;空气不错，就是时间有点晚，光线不足。趁着还在帝都，把著名景点都逛一逛，等哪天离开了，也不留遗憾。&lt;/p&gt;
@@ -419,7 +419,7 @@ BgNVBAMMC3pxcWYxNi5p.....
     </item>  
     <item>  
 		<title>Python命令行参数解析工具——argparse</title>  
-		<link>http://zqqf16.info/posts/argparse.html</link>  
+		<link>http://blog.zorro.im/posts/argparse.html</link>  
 		<description>&lt;p&gt;鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。&lt;/p&gt;
 &lt;p&gt;之前用Python写了一个解析工具，可以从Diff文件中提取出修改过的文件列表，很方便的就可以找出不相关的文件，提交代码的时候也能省去很多麻烦。原理十分简单，主要是用正则表达式&lt;code&gt;^Index: (.*)$&lt;/code&gt;来找出所有以“Index”开头的行。&lt;/p&gt;
 &lt;p&gt;前几天在用着个工具的时候想用一下管道，结果发现当时写的太简单了，不支持……趁着空闲就花了点时间改造了一下，让它既支持从文件中读取，又支持stdin读取。既可以返回文件列表，又可以方便CVS操作的文件名串。&lt;/p&gt;
@@ -515,7 +515,7 @@ optional arguments:
     </item>  
     <item>  
 		<title>高亮Markdown中的代码（续）</title>  
-		<link>http://zqqf16.info/posts/how-to-highlight-code-in-markdown-continue.html</link>  
+		<link>http://blog.zorro.im/posts/how-to-highlight-code-in-markdown-continue.html</link>  
 		<description>&lt;p&gt;之前写过一篇文章（&lt;a href=&#34;/posts/how-to-highlight-code-in-markdown.html&#34;&gt;高亮Markdown中的代码&lt;/a&gt;)，介绍了python-markdown2中高亮代码的方法。后来在使用中我发现了一个&lt;code&gt;fenced code blocks&lt;/code&gt;的bug，如果代码中间有空行，它会把换行之后的部分当成嵌套的。生成的文件中会有一堆类似这样的部分：&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nt&#34;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;k&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;class&lt;span class=&#34;nt&#34;&gt;&amp;lt;/span&amp;gt;&lt;/span&gt; &lt;span class=&#34;nt&#34;&gt;&amp;lt;span&lt;/span&gt; &lt;span class=&#34;na&#34;&gt;class=&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;nc&amp;quot;&lt;/span&gt;&lt;span class=&#34;nt&#34;&gt;&amp;gt;&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -550,7 +550,7 @@ tag: python
     </item>  
     <item>  
 		<title>OpenLDAP添加Schema（Ubuntu）</title>  
-		<link>http://zqqf16.info/posts/openldap-add-schema.html</link>  
+		<link>http://blog.zorro.im/posts/openldap-add-schema.html</link>  
 		<description>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。&lt;/p&gt;
 &lt;p&gt;网络上很多流传的教程都太老了，不是很适用。Ubuntu8.10以及之后的系统倾向于用slapd-config的各种工具来配置sladp，而不是之前的直接修改文件的方法。&lt;/p&gt;
@@ -677,7 +677,7 @@ olcObjectClasses: {0}( testObject NAME &amp;#39;testObject&amp;#39; DESC &amp;#3
     </item>  
     <item>  
 		<title>Levenshtein distance（编辑距离）算法</title>  
-		<link>http://zqqf16.info/posts/levenshtein-distance.html</link>  
+		<link>http://blog.zorro.im/posts/levenshtein-distance.html</link>  
 		<description>&lt;p&gt;在用Git的时候，如果一不小心把命令参数输入错了，比如把&lt;code&gt;show&lt;/code&gt;写成了&lt;code&gt;slow&lt;/code&gt;，Git会进行有好的提示：&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;nv&#34;&gt;$git&lt;/span&gt; slow
 git: &lt;span class=&#34;s1&#34;&gt;&amp;#39;slow&amp;#39;&lt;/span&gt; is not a git command. See &lt;span class=&#34;s1&#34;&gt;&amp;#39;git --help&amp;#39;&lt;/span&gt;.
@@ -700,7 +700,7 @@ Did you mean this?
     </item>  
     <item>  
 		<title>支持上传的SimpleHTTPServer</title>  
-		<link>http://zqqf16.info/posts/python-http-uploading-server.html</link>  
+		<link>http://blog.zorro.im/posts/python-http-uploading-server.html</link>  
 		<description>&lt;p&gt;办公室有两台电脑，一个台式机，装着Ubuntu，主要用来开发。另一台笔记本，装着Windows，用来收发邮件，读写文档。为了方便两台机器的文件共享，在Ubuntu上装了Samba服务器。&lt;/p&gt;
 &lt;p&gt;但是公司的WiFi和台式机的有线不在同一个网段，这就导致了笔记本用WiFi的时候就不能用Samba。后来发现python自带的SimpleHTTPServer可以很方便的搭建HTTP服务器，用它从台式机向笔记本传文件很方便。&lt;/p&gt;
 &lt;p&gt;SimpleHTTPServer太Simple了，没有上传功能，从笔记本到台式机的时候不是很方便。于是乎找来SimpleHTTPServer.py好好研究一番，就有了下面的支持上传的SimpleHTTPServer：（或者移步&lt;a href=&#34;https://github.com/zqqf16/SimpleHTTPServer&#34;&gt;Github&lt;/a&gt;）&lt;/p&gt;
@@ -978,7 +978,7 @@ Did you mean this?
     </item>  
     <item>  
 		<title>Requests抓取网页的编码问题</title>  
-		<link>http://zqqf16.info/posts/python-requests-encoding-problems.html</link>  
+		<link>http://blog.zorro.im/posts/python-requests-encoding-problems.html</link>  
 		<description>&lt;p&gt;经常在各大python论坛上看到有关爬虫的问题，实在是搞不明白这玩意儿除了对做搜索引擎还能有啥用。今天本着好奇的态度，打算试一试。&lt;/p&gt;
 &lt;p&gt;一番Google之后，发现了个很NB的库&lt;strong&gt;Requests&lt;/strong&gt;，比之前我用过的liburl2等http库简单多了。出于测试的目的，打算抓取一下我的博客。&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;c&#34;&gt;#!/usr/bin/env python&lt;/span&gt;
@@ -1015,7 +1015,7 @@ Did you mean this?
     </item>  
     <item>  
 		<title>tornado源码之Configurable类</title>  
-		<link>http://zqqf16.info/posts/tornado-configurable.html</link>  
+		<link>http://blog.zorro.im/posts/tornado-configurable.html</link>  
 		<description>&lt;p&gt;最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的&lt;a href=&#34;http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html&#34;&gt;源码分析&lt;/a&gt;来作为入门。&lt;/p&gt;
 &lt;p&gt;第一讲是说IOLoop的，也是tornado的核心。程序中主函数通常调用&lt;code&gt;tornado.ioloop.IOLoop.instance().start()&lt;/code&gt;来启动IOLoop，但是看了一下IOLoop的实现，start方法是这样的：&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;    &lt;span class=&#34;k&#34;&gt;def&lt;/span&gt; &lt;span class=&#34;nf&#34;&gt;start&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;bp&#34;&gt;self&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;):&lt;/span&gt;
@@ -1088,7 +1088,7 @@ Did you mean this?
     </item>  
     <item>  
 		<title>幽门螺旋杆菌</title>  
-		<link>http://zqqf16.info/posts/helicobacter-pylori.html</link>  
+		<link>http://blog.zorro.im/posts/helicobacter-pylori.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;每次从医院回来，就感觉没有什么比小命还重要。。。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1102,7 +1102,7 @@ Did you mean this?
     </item>  
     <item>  
 		<title>IOS7 Beta 3体验</title>  
-		<link>http://zqqf16.info/posts/ios7.html</link>  
+		<link>http://blog.zorro.im/posts/ios7.html</link>  
 		<description>&lt;p&gt;前几天想起来有台公司发的iPad mini正在闲置中，于是就心血来潮，装了个IOS 7 beta 3 来体验一番。具体的安装步骤就不多说了，Google一搜一大把。&lt;/p&gt;
 &lt;p&gt;IOS7特性上的东西我就不细说了，网上有很多测评，这里将着重说一下我觉得不爽的地方。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;卡顿&lt;/strong&gt;&lt;br /&gt;
@@ -1137,7 +1137,7 @@ IOS7中的通知中心改动挺大，分成了“今天”、“所有通知”�
     </item>  
     <item>  
 		<title>近期状态</title>  
-		<link>http://zqqf16.info/posts/recent-status.html</link>  
+		<link>http://blog.zorro.im/posts/recent-status.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;很久没写blog，都快忘了。为了不让这个来之不易的blog荒废，决定更新一下最近的状态。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1160,7 +1160,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
     </item>  
     <item>  
 		<title>理解Git的暂存区</title>  
-		<link>http://zqqf16.info/posts/understand-git-stage.html</link>  
+		<link>http://blog.zorro.im/posts/understand-git-stage.html</link>  
 		<description>&lt;p&gt;虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。&lt;/p&gt;
 &lt;p&gt;在公司用的是CVS，因此用&lt;code&gt;git add&lt;/code&gt;的时候就以为和&lt;code&gt;cvs add&lt;/code&gt;的作用是一样的，把新文件加到代码库。后来学了一招&lt;code&gt;git commit -a&lt;/code&gt;，还以为-a就是--all的意思。稀里糊涂地用到现在。。。&lt;/p&gt;
 &lt;p&gt;Git中的暂存区类似于任务列表，当对工作区的文件做了修改之后，执行&lt;/p&gt;
@@ -1193,7 +1193,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
     </item>  
     <item>  
 		<title>Ubuntu下好用的Markdown编辑器</title>  
-		<link>http://zqqf16.info/posts/markdown-editor-under-ubuntu.html</link>  
+		<link>http://blog.zorro.im/posts/markdown-editor-under-ubuntu.html</link>  
 		<description>&lt;p&gt;之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。&lt;/p&gt;
 &lt;p&gt;后来在Ubuntu软件中心里面搜&#34;Markdown&#34;，发现了一个不错的编辑器——ReText。&lt;/p&gt;
 &lt;p&gt;可以直接用apt-get来安装：&lt;/p&gt;
@@ -1221,7 +1221,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
     </item>  
     <item>  
 		<title>重拾C语言之运算符优先级</title>  
-		<link>http://zqqf16.info/posts/c-priority.html</link>  
+		<link>http://blog.zorro.im/posts/c-priority.html</link>  
 		<description>&lt;p&gt;总是记不住C语言各个运算符的优先级，&lt;s&gt;每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差&lt;/s&gt;。因此，就借最近整理C语言知识点的时机恶补一下。&lt;/p&gt;
 &lt;p&gt;注意：下面的这段内容抄自&lt;a href=&#34;http://baike.baidu.com/view/1516130.htm&#34;&gt;百度百科&lt;/a&gt;&lt;/p&gt;
 &lt;blockquote&gt;
@@ -1269,7 +1269,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
     </item>  
     <item>  
 		<title>重拾C语言之数组初始化</title>  
-		<link>http://zqqf16.info/posts/c-array-initialization.html</link>  
+		<link>http://blog.zorro.im/posts/c-array-initialization.html</link>  
 		<description>&lt;p&gt;记得刚工作的时候，每次用字符串数组都是小心翼翼。当时基本都是这样：&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;kt&#34;&gt;char&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;[&lt;/span&gt;&lt;span class=&#34;mi&#34;&gt;32&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;];&lt;/span&gt;
 &lt;span class=&#34;n&#34;&gt;memset&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;str&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;sizeof&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;src&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;));&lt;/span&gt;
@@ -1304,7 +1304,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
     </item>  
     <item>  
 		<title>重拾C语言之strncpy</title>  
-		<link>http://zqqf16.info/posts/c-strncpy.html</link>  
+		<link>http://blog.zorro.im/posts/c-strncpy.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;前一段时间Python用惯了，冷不丁地切换回C，发现很多基础东西都有点模糊了。从今天起，我将把一些平时碰到的知识点整理起来，起名为“重拾C语言”系列。纯粹的基础知识，老鸟绕行~&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1336,7 +1336,7 @@ GitCafe 私有项目开始收费了，强烈支持。&lt;br /&gt;
     </item>  
     <item>  
 		<title>Sphinx入门</title>  
-		<link>http://zqqf16.info/posts/sphinx.html</link>  
+		<link>http://blog.zorro.im/posts/sphinx.html</link>  
 		<description>&lt;p&gt;公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。&lt;/p&gt;
 &lt;p&gt;.doc .docx格式也太TMD难兼容了，不能在线预览也就罢了，libreoffice打开之后就成翔了。&lt;/p&gt;
 &lt;p&gt;而且对于搞计算机的来说，往Word里面粘代码简直就是糊弄人啊。就别说代码高亮了，连起码的缩进都困难。&lt;/p&gt;
@@ -1416,7 +1416,7 @@ genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js 
     </item>  
     <item>  
 		<title>我的Vim配置</title>  
-		<link>http://zqqf16.info/posts/my-vim-configuration.html</link>  
+		<link>http://blog.zorro.im/posts/my-vim-configuration.html</link>  
 		<description>&lt;p&gt;之前，我的Vim配置一直是通过Ubuntu One来保存和备份的。但是Ubuntu One的网络实在是不敢恭维，时好时坏。因此就在寻求一种比较靠谱的备份方式。&lt;/p&gt;
 &lt;p&gt;后来有一次在看别人博客的时候，发现了一个神器“vim-pathogen”。关于它的详细介绍我就不罗嗦了，下载及查看可以到&lt;a href=&#34;https://github.com/tpope/vim-pathogen&#34;&gt;这里&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;用一句话概括就是它是管理Vim插件的插件。用它加上Github的配合，可以完美地实现配置备份。&lt;/p&gt;
@@ -1469,7 +1469,7 @@ execute pathogen#infect&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
     </item>  
     <item>  
 		<title>论自由</title>  
-		<link>http://zqqf16.info/posts/tucao-freedom.html</link>  
+		<link>http://blog.zorro.im/posts/tucao-freedom.html</link>  
 		<description>&lt;p&gt;自由是个啥？自由就是我有接受你所谓的“自由”的自由，也有不接受你所谓的“自由”的自由。&lt;/p&gt;
 &lt;p&gt;你认为你那叫“自由”而强迫我去接受你的“自由”，这不叫自由，这只是另一种打着自由的幌子的专制。&lt;/p&gt;
 &lt;p&gt;我有选择我认为的“自由”的自由，你有选择你认为的“自由”的自由，这才叫自由。&lt;/p&gt;
@@ -1480,7 +1480,7 @@ execute pathogen#infect&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
     </item>  
     <item>  
 		<title>命令行下的有道翻译</title>  
-		<link>http://zqqf16.info/posts/youdao-translation.html</link>  
+		<link>http://blog.zorro.im/posts/youdao-translation.html</link>  
 		<description>&lt;p&gt;像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。&lt;/p&gt;
 &lt;p&gt;一次偶然的机会，发现了有道这个靠谱的工具提供了十分方便的API可供调用，就花了一点时间，写了个Python版的~。&lt;/p&gt;
 &lt;p&gt;有道的数据接口如下：&lt;/p&gt;
@@ -1555,7 +1555,7 @@ errorCode：&lt;br /&gt;
     </item>  
     <item>  
 		<title>用Graphviz画数据结构图</title>  
-		<link>http://zqqf16.info/posts/use-graphviz-to-draw-struct-graph.html</link>  
+		<link>http://blog.zorro.im/posts/use-graphviz-to-draw-struct-graph.html</link>  
 		<description>&lt;p&gt;近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。&lt;/p&gt;
 &lt;p&gt;废话不多说，上代码：&lt;/p&gt;
 &lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;digraph g {
@@ -1585,7 +1585,7 @@ errorCode：&lt;br /&gt;
     </item>  
     <item>  
 		<title>小饭馆与云计算</title>  
-		<link>http://zqqf16.info/posts/tucao-cloud.html</link>  
+		<link>http://blog.zorro.im/posts/tucao-cloud.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;本文标题完全属于闹着玩，属于吐槽系列之一，看之前请三思。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1599,7 +1599,7 @@ errorCode：&lt;br /&gt;
     </item>  
     <item>  
 		<title>吐槽一下专业</title>  
-		<link>http://zqqf16.info/posts/tucao-major.html</link>  
+		<link>http://blog.zorro.im/posts/tucao-major.html</link>  
 		<description>&lt;blockquote&gt;
 &lt;p&gt;本文吐槽为主，杂乱无章，技术含量地下，阅读前请三思。&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -1612,7 +1612,7 @@ errorCode：&lt;br /&gt;
     </item>  
     <item>  
 		<title>高亮Markdown中的代码</title>  
-		<link>http://zqqf16.info/posts/how-to-highlight-code-in-markdown.html</link>  
+		<link>http://blog.zorro.im/posts/how-to-highlight-code-in-markdown.html</link>  
 		<description>&lt;p&gt;Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于&lt;code&gt;&amp;lt;code class=&#34;python&#34;&amp;gt;&lt;/code&gt;的HTML标签，显得十分Ugly。&lt;/p&gt;
 &lt;p&gt;于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。&lt;/p&gt;
 &lt;p&gt;初步打算用&lt;/p&gt;
@@ -1646,7 +1646,7 @@ print &amp;quot;hi&amp;quot;
     </item>  
     <item>  
 		<title>Hello World</title>  
-		<link>http://zqqf16.info/posts/hello-world.html</link>  
+		<link>http://blog.zorro.im/posts/hello-world.html</link>  
 		<description>&lt;p&gt;把博客搬到了Github&lt;/p&gt;
 &lt;p&gt;测试一下Markdown&lt;/p&gt;
 &lt;h2&gt;This is an H2&lt;/h2&gt;
