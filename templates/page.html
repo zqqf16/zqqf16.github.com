@@ -2,18 +2,18 @@
 <%inherit file="base.html"/>
 
 <%block name="header">
-${page.title} | 
+${this.title} | 
 </%block>
 
 <%block name="page_title">
-${page.title}
+${this.title}
 </%block>
 
 <%block name="main">
-		${page.content}
+		${this.content}
 	</section>
 	<section class="meta">
-		<span class="time">&nbsp;<time datetime="${page.date.strftime('%Y-%m-%d')}">${page.date.strftime('%Y-%m-%d')}</time></span>
+		<span class="time">&nbsp;<time datetime="${this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time></span>
 	</section>
 	<%include file="comment.html"/>
 <hr/>

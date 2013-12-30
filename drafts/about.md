@@ -1,6 +1,6 @@
 title: 关于
 date: 2013-4-25
-type: page
+top: yes
 
 **我**
 

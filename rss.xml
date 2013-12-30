@@ -2,7 +2,7 @@
 <rss version="2.0">
 <channel>
     <title>穷折腾</title>  
-    <link>zqqf16.info</link>  
+    <link>blog.zorro.im</link>  
 	<description>Zqqf16的个人BLog，记录我的生活、学习、以及心情。</description>  
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
@@ -1654,6 +1654,34 @@ print &amp;quot;hi&amp;quot;
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
 		<pubDate>Fri, 26 Apr 2013 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
+		<title>关于</title>  
+		<link>http://blog.zorro.im/posts/about.html</link>  
+		<description>&lt;p&gt;&lt;strong&gt;我&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;80后IT男，现混迹于帝都，在一个不大的公司当着一个多用途的螺丝钉。&lt;/p&gt;
+&lt;p&gt;白天用&lt;s&gt;C（工作需要，正在转向Objective-c）&lt;/s&gt;Objective-c，晚上用Python。白天CVS，晚上Git。白天Xcode，晚上Vim。&lt;/p&gt;
+&lt;p&gt;工作两年半，做过Web，研究过AAA，搞过IPsec，正在入门iOS。&lt;/p&gt;
+&lt;p&gt;曾经的Ubuntu桌面系统使用者，目前正在习惯Win+Ubuntu Server与Mac OS。&lt;/p&gt;
+&lt;p&gt;不懂云计算，不会大数据，也不懂O2O。&lt;/p&gt;
+&lt;p&gt;爱好广泛，硬件、机械、电子、木工，都爱伸一脚。&lt;/p&gt;
+&lt;p&gt;会修自来水、热水器，也会修家电、自行车、防盗门……自则就是自己能干的就不求别人。&lt;/p&gt;
+&lt;p&gt;不是五毛，也不是美分。爱生活，不反社会。崇尚实事求是。&lt;/p&gt;
+&lt;p&gt;正在入门的摄影爱好者，不会PS，反唯器材论。 &lt;/p&gt;
+&lt;p&gt;智商中等偏下，玩不明白三国杀以及各种复杂游戏，水平仅限于和邻居小孩斗地主。&lt;/p&gt;
+&lt;p&gt;对电脑游戏有着天生的认知障碍，仅对CS、红警等少数老掉牙游戏有着特殊爱好。&lt;/p&gt;
+&lt;p&gt;联系方式：zqqf16[at]gmail[dot]com&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;博客&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;为了写博客前前后后换了多次阵地，用过主机，买过VPS，现在来到Github。希望能够坚持下去，争取每周都有更新。&lt;/p&gt;
+&lt;p&gt;本博客是由本人写的一个非常Ugly的Python脚本生成的、纯天然、无公害的、静态博客。如有兴趣，欢迎&lt;a href=&#34;https://github.com/zqqf16/zqqf16.github.com&#34;&gt;fork&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;若无强调，本博客所有文章均属本人原创，转载时请注明出处。如有问题，欢迎留言。&lt;/p&gt;
+&lt;p&gt;另外，本人水平有限，表达能力底下，各位看官见谅。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;广告&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;如果你正在找科学上网的方法，不妨试一下&lt;a href=&#34;http://refyunti.com/?r=65dd573aab9f2f10&#34;&gt;云梯&lt;/a&gt;。我已经用了1年多了，稳定，速度快，多国机房随意选择。&lt;/p&gt;
+&lt;p&gt;如果点击我的推广&lt;a href=&#34;http://refyunti.com/?r=65dd573aab9f2f10&#34;&gt;链接&lt;/a&gt;购买，你将节省10块大洋～&lt;/p&gt;</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Thu, 25 Apr 2013 00:00:00 +0800</pubDate>  
     </item>  
     <item>  
 		<title>Hello World</title>  
