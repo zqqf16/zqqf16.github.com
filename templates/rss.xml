@@ -2,7 +2,7 @@
 <rss version="2.0">
 <channel>
     <title>${title}</title>  
-    <link>zqqf16.info</link>  
+    <link>blog.zorro.im</link>  
 	<description>${description}</description>  
     <language>zh-cn</language>  
     <generator>Peanut</generator>  

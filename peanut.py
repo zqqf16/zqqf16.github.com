@@ -3,6 +3,7 @@
 
 import re
 import os
+import weakref
 import markdown
 
 from datetime import datetime
@@ -22,48 +23,13 @@ PATH = {
     'tag':      'tags',
 }
 
-TEMPLATES = TemplateLookup(
-    directories=['templates'], 
-    input_encoding='utf-8',
-    output_encoding='utf-8', 
-    encoding_errors='replace'
-)
-
 SINGLE_FILES = (
-    #(template, path)
-    ('index.html', 'index.html'),
-    ('sitemap.xml', 'sitemap.xml'),
-    ('tags.html', 'tags/index.html'),
-    ('rss.xml', 'rss.xml'),
+    #layout, url, dest
+    ('index.html', 'index.html', 'index.html'),
+    ('sitemap.xml', 'sitemap.xml', 'sitemap.xml'),
+    ('tags.html', 'tags/index.html', os.path.join('tags', 'index.html')),
+    ('rss.xml', 'rss.xml', 'rss.xml'),
 )
-
-class Entry(object):
-    template = None
-    type = ''
-
-    def __init__(self, **kargs):
-        self.title = kargs.get('title', '')
-        self.slug = kargs.get('slug', '')
-        self.static_url = kargs.get('url', '')
-        template_file = kargs.get('template', '')
-        if template_file:
-            self.template = TEMPLATES.get_template(template_file)
-
-    @property
-    def url(self):
-        if self.static_url:
-            return self.static_url
-        return PATH[self.type]+'/'+self.slug+'.html'
-
-    def generate(self, **kwargv):
-        if not isinstance(self.template, Template):
-            return
-
-        kwargv[self.type] = self
-
-        with open(self.url, 'w') as f: 
-            html = self.template.render(**kwargv)
-            f.write(html)
 
 class Pool(type):
     '''Meta class to implement a simple "object pool".
@@ -71,12 +37,15 @@ class Pool(type):
     def __new__(self, name, bases, attrs):
         '''Add an attribute "_pool" and a classmethod "all".
         '''
-
         def all(cls):
             return cls._pool.values()
 
+        def get(cls, id):
+            return cls._pool.get(id)
+
         attrs['_pool'] = {}
         attrs['all'] = classmethod(all)
+        attrs['get'] = classmethod(get)
 
         return super(Pool, self).__new__(self, name, bases, attrs)
 
@@ -89,76 +58,86 @@ class Pool(type):
         #Generate a new one
         instance = super(Pool, cls).__call__(*args, **kwargs)
         cls._pool[identity] = instance
+        setattr(instance, 'id', identity)
 
         return instance
 
-class Tag(Entry):
-    template = TEMPLATES.get_template('tag.html')
-    type = 'tag'
+class HTMLPage(object):
+    '''Base class for HTML Page'''
 
+    def __init__(self, title, url, layout, dest):
+        self.title = title
+        self.url = url
+        self.layout = layout
+        self.dest = dest
+
+class Post(HTMLPage):
+    def __init__(self, title, content, slug, date, layout='post.html', top=False, publish=True, tag=[]):
+        url = 'posts/'+slug+'.html' 
+        dest = os.path.join('posts', slug+'.html')
+
+        super(Post, self).__init__(title, url, layout, dest)
+
+        self.top = top
+        self.publish = publish
+        self.content = content
+        self.date = date
+
+        self.tags = tag
+        for t in tag:
+            t.add_post(self)
+ 
+class Tag(HTMLPage):
     __metaclass__ = Pool
 
     def __init__(self, title):
-        super(Tag, self).__init__(title=title, slug=title)
-        self.posts = []
+        url = 'tags/'+title+'.html'
+        dest = os.path.join('tags', title+'.html')
 
-    def generate(self, **kwargv):
-        self.posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
-        kwargv['posts'] = self.posts
+        super(Tag, self).__init__(title, url, 'tag.html', dest)
 
-        super(Tag, self).generate(**kwargv)
+        self._posts = {}
 
-class Page(Entry):
-    template = TEMPLATES.get_template('page.html')
-    type = 'page'
+    def add_post(self, post):
+        self._posts[post.title] = weakref.ref(post)
 
-    def __init__(self, title, content, slug, date=None, publish='yes'):
-        super(Page, self).__init__(title=title, slug=slug)
+    @property
+    def posts(self):
+        return filter(None, [p() for p in self._posts.values()])
 
-        self.content = content
+class Writer(object):
+    '''HTML file writer'''
 
-        if not date:
-            date = datetime.now()
-        self.date = date
+    _TEMPLATE = TemplateLookup(
+        directories=['templates'], 
+        input_encoding='utf-8',
+        output_encoding='utf-8', 
+        encoding_errors='replace'
+    )    
 
-        if publish.lower() == 'yes':
-            self.publish = True
-        else:
-            self.publish = False
+    def __init__(self, namespace={}):
+        self.namespace = namespace
 
-    def generate(self, **kwargv):
-        if not self.publish:
-            return
-        super(Page, self).generate(**kwargv)
+    def write(self, page):
+        '''Write entry to files'''
+        temp = self._TEMPLATE.get_template(page.layout)
 
-class Post(Page):
-    template = TEMPLATES.get_template('post.html')
-    type = 'post'
+        with open(page.url, 'w') as f:
+            p = temp.render(this=page, **self.namespace)
+            f.write(p)
 
-    def __init__(self, title, content, slug, date=None, publish='yes', tags=[]):
-        super(Post, self).__init__(title, content, slug, date=date, publish=publish)
+class Reader(object):
+    '''Markdown reader'''
 
-        self.tags = []
-        for t in tags:
-            tag = Tag(t)
-            tag.posts.append(self)
-            self.tags.append(tag)
-
-class Draft(object):
     regex = re.compile(r'([^/]+)\.(md|markdown)')
-
-    def __init__(self, path, slug):
-        self.path = path
-        self.slug = slug
 
     # metadata handlers
     meta_handlers = {
-        'tag':      lambda x: x if x else [],
+        'tag':      lambda x: [Tag(t) for t in x] if x else [],
         'title':    lambda x: x[0] if x else '',
         'date':     lambda x: datetime.strptime(x[0], '%Y-%m-%d') if x else datetime.now(),
-        'category': lambda x: x[0] if x else None,
-        'type':     lambda x: x[0] if x else 'post',
-        'publish':  lambda x: x[0] if x else 'yes',
+        'top':      lambda x: True if x and x[0]=='yes' else False,
+        'publish':  lambda x: False if x and x[0]=='no' else True,
     }
 
     def parse_metadata(self, meta):
@@ -169,85 +148,74 @@ class Draft(object):
 
         return res
 
-    md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'],
-                           extension_configs={
-                               'codehilite': [
-                                   ('guess_lang', False),
-                               ]
-                           })
-    def convert(self):
-        '''Parse draft files to generate posts, pages and tags.
-           Draft file should be named as 'xxx.md' or 'xxx.markdown'.
-        '''
-        entry = None
-        with open(self.path, 'r') as f:
+    def __init__(self):
+        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'], 
+                                    extension_configs={'codehilite': [ ('guess_lang', False) ]})
+ 
+    def get_slug(self, file_name):
+        m = self.regex.match(file_name)
+        if not m:
+            return None
+        return m.group(1)
+
+    def read(self, file_name, slug=None):
+        '''Read markdown file and get the HTML and META data.'''
+
+        if not slug:
+            slug = self.get_slug(file_name)
+
+        if not slug:
+            return None
+
+        with open(file_name, 'r') as f:
             content = f.read().decode('utf-8')
             html = self.md.reset().convert(content.strip(' \n'))
             if not self.md.Meta:
-                #No need to convert this draft
                 return None
 
             meta = self.parse_metadata(self.md.Meta)
+            return Post(content=html, slug=slug, **meta)
 
-            if meta['type'] == 'post':
-                entry = Post(meta['title'], html, self.slug,
-                             date=meta['date'], tags=meta['tag'], 
-                             publish=meta['publish'])
-            elif meta['type'] == 'page':
-                entry = Page(meta['title'], html, self.slug,
-                             date=meta['date'],
-                             publish=meta['publish'])
+    def read_all(self, directory):
+        '''Read all markdown files in the directory'''
 
-        return entry
+        posts = []
+        for f in os.listdir(directory):
+            slug = self.get_slug(f)
+            p = self.read(os.path.join(directory, f), slug)
 
-def get_drafts(path):
-    drafts = []
-    for f in os.listdir(path):
-        m = Draft.regex.match(f)
-        if not m:
-            continue
+            if p:
+                posts.append(p)
 
-        slug = m.group(1)
-        draft = Draft(os.path.join(path, f), slug)
-        drafts.append(draft)
-
-    return drafts
+        return posts
 
 def peanut():
-    drafts = get_drafts(PATH['draft'])
+    reader = Reader()
 
-    posts = []
-    pages = []
-
-    for d in drafts:
-        p = d.convert()
-        if p.type == 'post':
-            posts.append(p)
-        elif p.type == 'page':
-            pages.append(p)
-
+    posts = reader.read_all(PATH['draft'])
     posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
-    pages.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
-
     tags = Tag.all()
+    tops = filter(lambda x: x.top, posts)
 
     namespace = {
         'posts': posts,
-        'pages': pages,
         'tags': tags,
+        'tops': tops,
     }
     namespace.update(CONFIG)
 
-    for tag in tags:
-        tag.generate(**namespace)
-    for post in posts:
-        post.generate(**namespace)
-    for page in pages:
-        page.generate(**namespace)
+    writer = Writer(namespace)
 
-    for f in SINGLE_FILES:
-        e = Entry(url=f[1], template=f[0])
-        e.generate(**namespace)
+    map(writer.write, tags)
+    map(writer.write, posts)
+
+    singles = []
+    for layout, url, dest in SINGLE_FILES:
+        singles.append(HTMLPage('', url, layout, dest))
+
+    map(writer.write, singles)
+
+
 
 if __name__ == '__main__':
     peanut()

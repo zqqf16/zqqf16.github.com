@@ -2,26 +2,26 @@
 <%inherit file="base.html"/>
 
 <%block name="header">
-${post.title} | 
+${this.title} | 
 </%block>
 
 <%block name="page_title">
-${post.title}
+${this.title}
 </%block>
 
 <%block name="main">
-		${post.content}
+		${this.content}
 	</section>
 	<section class="meta">
-		% if post.tags:
+		% if this.tags:
 		<span class="tags">Tagged by 
-		% for tag in post.tags:
+		% for tag in this.tags:
 			<a href="/${tag.url}">${tag.title}</a>
 		% endfor
 		</span>
 		% endif
 
-		<span class="time">&nbsp;<time datetime="${post.date.strftime('%Y-%m-%d')}">${post.date.strftime('%Y-%m-%d')}</time></span>
+		<span class="time">&nbsp;<time datetime="${this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time></span>
 	</section>
 	<%include file="comment.html"/>
 <hr/>
