@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+	
+	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+	<title>
+Python中关于__new__和__init__的坑 | 
+穷折腾</title>
+	<link rel="stylesheet" href="/static/css/style.css" />
+	<link rel="stylesheet" href="/static/css/pygments.css" />
+	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+</head>
+<body>
+    <div id="container">
+      <div id="main" role="main">
+        <header>
+		<h1>
+Python中关于__new__和__init__的坑
+</h1>
+		</header>
+
+     <nav>
+		<span><a title="home page" class="" href="/">home</a></span>
+		<span><a title="标签" class="" href="/tags/index.html">标签</a></span>
+		<span><a title="订阅" class="" href="/rss.xml">订阅</a></span>
+        <span><a href="/posts/about.html" title="关于">关于</a></span>
+     </nav>
+
+     <article class="content">
+        <section class="post">
+            
+		<p>前几天在重构Peanut的时候，想实现一个扩展的单实例模式。即每个同名的Tag在内存中只有一份，这样方便Tag与Post的关联。然后想起了之前在网上看的Python单实例方法，重写了<code>__new__</code>:</p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">Tag</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">_pool</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">identity</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">identity</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">identity</span><span class="p">]</span>
+
+        <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Tag</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">identity</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span>
+        <span class="k">return</span> <span class="n">instance</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">title</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="n">title</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">posts</span> <span class="o">=</span> <span class="p">[]</span>
+</pre></div>
+
+
+<p>当我高兴地以为问题解决了的时候，发现程序运行的结果不太对。在有多个Post对应着同一个Tag的时候，<code>tag.posts</code>里面的内容只有最后一个Post。</p>
+<p>后来一顿Google后发现了问题所在，在调用<code>Tag('title')</code>的时候，总是会先执行<code>__new__</code>，然后再执行<code>__init__</code>。所以每次posts都会被初始化为空。</p>
+<p>想要改变<code>Tag()</code>的行为，单纯地重写本类的<code>__new__</code>已经满足不了需求了，需要引入元类，重写元类的<code>__call__</code>方法：</p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">Pool</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Meta class to implement a simple &quot;object pool&quot;.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;Add an attribute &quot;_pool&quot; and a classmethod &quot;all&quot;.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">def</span> <span class="nf">all</span><span class="p">(</span><span class="n">cls</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+
+        <span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+
+        <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;_pool&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;all&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="nb">all</span><span class="p">)</span>
+        <span class="n">attrs</span><span class="p">[</span><span class="s">&#39;get&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">get</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Pool</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">identity</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">identity</span> <span class="ow">in</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">:</span>
+            <span class="c">#Get from pool</span>
+            <span class="k">return</span> <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">identity</span><span class="p">]</span>
+
+        <span class="c">#Generate a new one</span>
+        <span class="n">instance</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">Pool</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">cls</span><span class="o">.</span><span class="n">_pool</span><span class="p">[</span><span class="n">identity</span><span class="p">]</span> <span class="o">=</span> <span class="n">instance</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">instance</span><span class="p">,</span> <span class="s">&#39;id&#39;</span><span class="p">,</span> <span class="n">identity</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">instance</span>
+</pre></div>
+
+
+<p>在定义Tag的时候需要指定元类：</p>
+<div class="codehilite"><pre><span class="k">class</span> <span class="nc">Tag</span><span class="p">(</span><span class="n">HTMLPage</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Pool</span>
+</pre></div>
+
+
+<p>在执行<code>Tag('title')</code>的时候，先执行了元类中的<code>__call__</code>方法。</p>
+<p>至此，问题圆满解决~</p>
+<p>另外，为了研究元类中的<code>__new__</code>、<code>__init__</code>、<code>__call__</code>，我写了一个小脚本：</p>
+<div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
+
+<span class="k">class</span> <span class="nc">Meta</span><span class="p">(</span><span class="nb">type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Meta: __new__: {} | {} | {} | {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Meta</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Meta: __init__: {} | {} | {} | {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Meta</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">bases</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Meta: __call__: {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Meta</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<span class="k">class</span> <span class="nc">Tmp</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="n">__metaclass__</span> <span class="o">=</span> <span class="n">Meta</span>
+
+    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Tmp: __new__: {} | {} | {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Tmp</span><span class="p">,</span> <span class="n">cls</span><span class="p">)</span><span class="o">.</span><span class="n">__new__</span><span class="p">(</span><span class="n">cls</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Tmp: __init__: {} | {} | {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Tmp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s">&#39;Tmp: __call__: {} | {} | {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Tmp</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">__call__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+
+<p>通过这个，可以很清楚的了解元类的流程。</p>
+<p>完</p>
+	</section>
+	<section class="meta">
+		<span class="tags">Tagged by 
+			<a href="/tags/python.html">python</a>
+		</span>
+
+		<span class="time">&nbsp;<time datetime="2014-01-06">2014-01-06</time></span>
+	</section>
+	<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zqqf16"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END -->
+
+<hr/>
+
+
+        </section>
+     </article>
+	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
+      </div>
+    </div> <!--! end of #container -->
+	<script>
+  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  		 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  		ga('create', 'UA-41282906-2', 'zorro.im');
+  		ga('send', 'pageview');
+	</script>
+</body>
+</html>
