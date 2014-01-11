@@ -9,23 +9,34 @@
     <item>  
 		<title>我的2013</title>  
 		<link>http://blog.zorro.im/posts/my-2013.html</link>  
-		<description>&lt;p&gt;这篇文章本来打算在2013年的最后一天发的，因为某些事耽误了，就到了今天。&lt;/p&gt;
-&lt;p&gt;2013不知不觉就过去了，回头看看，这一年我过得还挺充实的。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Apple&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;年初一咬牙一跺脚买了iPhone5，开始了iOS之旅。后来搞了一段时间的IPsec，慢慢喜欢上了iOS开发。再后来工作方向就从Server端转到了iOS。到年底又入了rMBP，算是彻底走上了这条路，也不知是明是暗。。。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;学习&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;从学Python到现在，今年算是真正入门了。写了一打小工具，以及现在生成博客用的Peanut。重写又放弃了Znote，研究了Tornado。总之收获不少。&lt;/p&gt;
-&lt;p&gt;在折腾Znote和Peanut的过程中学了不少Web的东西，虽然至今也没把Angulagur-js搞明白，至少会了一些js；虽然不能从头设计出一个漂亮页面，但起码会Copy了~&lt;/p&gt;
-&lt;p&gt;今年开始利用Github了，一开始只是当做一个代码备份工具来用的，Push和Commit几乎一样多。。。后来慢慢地用它来管理项目，我的代码也有人Fork和Star了~&lt;/p&gt;
-&lt;p&gt;还有，今年学了一门新语言Objective-c，虽然仍在入门中。。。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;工作&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;2013年的工作状态像是做了过山车，起起伏伏。年初加班加点，忙忙碌碌，曾有连上20多天班的辉煌。8、9月份转向iOS之后碌碌无为，整天无所事事。再到年末为了Release拼命地修Bug。头脑时而清醒，时而迷茫。看着一起来公司的同学们纷纷跳槽，不免有些春心荡漾。。。也不知2014是走，是留？&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;家&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;十一的时候请了4天假，于是就有了上班以来最长的假期。回家帮父母干了自高中毕业以来最多的农活，和他们在一起的感觉熟悉又陌生，倍感压力。&lt;/p&gt;
-&lt;p&gt;整个2013年总共回家3次，共20天左右，希望2014继续保持。&lt;/p&gt;</description>  
+		<description>&lt;blockquote&gt;
+&lt;p&gt;这篇文章本来是打算在2014年春节前完成的，但是由于要准备回老家就耽误了。前几天匆匆写了一篇算不上总结的总结，写完之后总觉得不太满意，所以就决定重写一篇了。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;我的2013年还挺充实的，丰富多彩~&lt;/p&gt;
+&lt;h3&gt;生活篇&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;租房&lt;/strong&gt; —— 年初和女友不堪酒忍受仙桥附近又脏又破又贵的房子，一气之下远走常营，开始了每天坐地铁来回俩小时上班的生活。每天挤6号线转挤10号，见了各种各样的人，闻了各种各样的味儿，痛并快乐着。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;做饭&lt;/strong&gt; —— 周末有时间就会尝试自己做饭。学会了炖鱼、炖肉，还学会了和面、包饺子。现在如果自己生活是肯定饿不死了~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;游玩&lt;/strong&gt; —— 今年我决定改变周末宅的状态，连续几个周，每周末都去一个北京的著名景点逛逛。小时候课本里面见过的基本都去过了，也算是实现了小时候的梦想~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;爱好&lt;/strong&gt; —— 今年生日的时候买了个单反，宾得K-30。看了很多摄影有关的东西，学着拍了挺多照片，算是入门了~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Apple&lt;/strong&gt; —— 年初换了三星9300买了iPhone5，年末入手rMBP。虽然下了血本，但是并不后悔，算是物有所值吧~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;家&lt;/strong&gt; —— 十一的时候请了4天年假，于是就有了上班以来最长的假期。回家帮父母干了自高中毕业以来最多的农活。和他们在一起的感觉熟悉又陌生，看着他们一天天老去，很是伤感。&lt;/p&gt;
+&lt;h3&gt;工作骗&lt;/h3&gt;
+&lt;p&gt;今年工作的主题就是iOS了，年初搞IPSec的时候有机会接触了iOS部门，在和他们一起工作的过程中了解了iOS开发相关的东西，然后下半年就转岗搞这个了。开始的时候一头雾水，现在随着修的Bug越来越多，慢慢的入门了。希望2014年在这方面能有长足的进步。&lt;/p&gt;
+&lt;h3&gt;学习骗&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Web&lt;/strong&gt; —— 年初的时候一心一意地想写个Blog程序——znote，从零开始学了很多Web开发相关的东西。学了Tornado、数据库、CSS、JS以及美工。&lt;/p&gt;
+&lt;p&gt;开始的时候总想着追求完美，开发缺乏经验，经常是顾此失彼。很多时候为了构思一个界面，让整个项目停滞很久。前后断断续续，最终成了一个能凑合用的半成品。买了VPS上线运行了1个多月，写了三两篇博客就放弃了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Python&lt;/strong&gt; —— 今年只要有时间就会看一些Python相关的东西，用它写了很多小工具，包括现在生成博客用的Peanut。虽然没指望将来找一份Python的工作，仅仅把它当做爱好。掌握这样的工具，工作中能减少很多体力劳动~&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Git&lt;/strong&gt; —— 今年开始正式地使用git，一开始只是把Github当做一个代码备份的工具，后来慢慢地在上面寻找优秀的代码，开始用Github Page写博客，开始认认真真地写自己的代码。前几天在Git@oschina托管的一份Peanut被推荐并且有了7、8个fork，顿感受宠若惊，倍感荣幸与压力~&lt;/p&gt;
+&lt;h3&gt;展望2014&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;锻炼身体，争取每周都有运动。&lt;/li&gt;
+&lt;li&gt;多出门，少在家宅。争取多出去旅旅游，争取出一次国门。&lt;/li&gt;
+&lt;li&gt;发布一个iOS应用，不为赚钱，学习为主。&lt;/li&gt;
+&lt;li&gt;多挣钱，不乱花钱。&lt;/li&gt;
+&lt;/ol&gt;</description>  
 		<author>Zqqf16</author>  
 		<copyright></copyright>  
-		<pubDate>Mon, 06 Jan 2014 00:00:00 +0800</pubDate>  
+		<pubDate>Sun, 12 Jan 2014 00:00:00 +0800</pubDate>  
     </item>  
     <item>  
 		<title>Python中关于__new__和__init__的坑</title>  
