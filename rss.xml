@@ -7,6 +7,37 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>笔记本屏幕改造</title>  
+		<link>http://blog.zorro.im/posts/laptop-screen-diy.html</link>  
+		<description>&lt;p&gt;前几天收拾东西，发现了被我遗忘在旮旯里的跟了我大学4年的笔记本。当年惠普的明星——V3000系列，1.8G双核AMD CPU，1G（后来扩充到2G）DDR2内存，整体配置连现在的智能手机都赶不上。当时没钱，买的是乞丐版，用料配件能省则省，甚至连麦克风都没有。在这样的条件下我养成了良（cao）好（dan）的电脑使用习惯，那就是尽可能的单任务：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;任何时候只开一个程序&lt;/li&gt;
+&lt;li&gt;浏览器不能多于5个Tab页&lt;/li&gt;
+&lt;li&gt;开机自启的程序能少则少&lt;/li&gt;
+&lt;li&gt;杀毒软件只在插优盘的时候开&lt;/li&gt;
+&lt;li&gt;只玩红警2和CS1.6&lt;/li&gt;
+&lt;li&gt;夏天或者玩游戏的时候一定要吹风扇&lt;/li&gt;
+&lt;li&gt;。。。。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;因为有了这些好习惯，当第一次接触配备I3处理器的台式机的时候，简直就是飞一般的感觉；当第一次听有人说8G内存都不够的时候，心中犹如万只草泥马奔腾。&lt;/p&gt;
+&lt;p&gt;也正是由于这些习惯，让它在有着先天散热缺陷的条件下挺过了4年。后来在一次不经意间主板驾鹤西去了，它的替代者——一块购自淘宝的主板也在一年后挂了。再后来主板就买不到了。。。&lt;/p&gt;
+&lt;p&gt;由于新住处的桌子太小，基本放不开23存显示器，我的台式机器从搬家之后就没怎么开过。于是就打算把笔记本的屏幕改造一下，让它做个台式机显示器。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;以下是屏幕的改造过程&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;先去淘宝买了一块驱动板，就是这样：
+&lt;img alt=&#34;image&#34; src=&#34;http://ww2.sinaimg.cn/large/62707ca0gw1edkju61h29j20qo0hl79e.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;然后把笔记本屏幕拆下来
+&lt;img alt=&#34;image&#34; src=&#34;http://ww1.sinaimg.cn/large/62707ca0gw1edkjmaquq8j21kw16oaqe.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;连上驱动板，屏幕上高压条的接线太短，而驱动板套件里面的高压板太大，放不进屏幕的转轴里面，就只能在后面打了个孔穿出来。后来嫌乱七八糟的接线太难看，就把手机盒改造了一下，粘在了屏幕后面，还能当个支架用~&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;image&#34; src=&#34;http://ww2.sinaimg.cn/large/62707ca0gw1edkjmzo8nij21kw16o7l7.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;image&#34; src=&#34;http://ww4.sinaimg.cn/large/62707ca0gw1edkjnnf8uqj21kw16o1d3.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;最后上一张最终图片：新老两代~
+&lt;img alt=&#34;效果图&#34; src=&#34;http://ww2.sinaimg.cn/large/62707ca0gw1edkjk0sbe5j21kw16oavg.jpg&#34; /&gt;&lt;/p&gt;
+&lt;p&gt;和rMBP一对比，老屏幕简直不忍直视。。。&lt;/p&gt;</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Sun, 16 Feb 2014 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>我的2013</title>  
 		<link>http://blog.zorro.im/posts/my-2013.html</link>  
 		<description>&lt;blockquote&gt;
