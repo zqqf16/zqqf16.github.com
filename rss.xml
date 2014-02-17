@@ -7,6 +7,25 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>尝试一下七牛云存储</title>  
+		<link>http://blog.zorro.im/posts/qiniu.html</link>  
+		<description>&lt;p&gt;最近一直在研究百度网盘的API，打算做个自动同步的工具,这样就可以把自己在硬盘里保存的珍贵资料在云里做个备份。但是仔细研究了两天之后发现百度网盘现在有点太火爆了，各种&lt;em&gt;你懂的&lt;/em&gt;资源。我觉得它在打政策的擦边球，万一哪天上面要求严格了，指不定能干出啥事。所以就把目光转向了云存储，参考了几家，发现七牛貌似最靠谱。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;七牛的服务很用心。从管理后台，到各种API、工具、插件，可以看出来他们是很用心的在做。&lt;/li&gt;
+&lt;li&gt;提供的服务很丰富。比如自动给照片加水印，外链限制等。&lt;/li&gt;
+&lt;li&gt;技术很强大，各种CDN加速。&lt;/li&gt;
+&lt;li&gt;好评很多。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;唯一不太爽的地方是只有10G免费空间，如果超出了，每月需要缴纳一定的费用。虽然比较便宜，但是不太适合我这样的用途。。。&lt;/p&gt;
+&lt;p&gt;好了，虽然做不成网盘，做个图床还是很不错的~免费空间以及流量足够支撑我的博客了。&lt;/p&gt;
+&lt;p&gt;下面这张图片就存储在七牛~&lt;/p&gt;
+&lt;p&gt;&lt;img alt=&#34;&#34; src=&#34;http://zorro-blog.qiniudn.com/solana.jpg&#34; /&gt;
+2013年12月27日，拍摄于蓝色港湾。&lt;/p&gt;</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Mon, 17 Feb 2014 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>笔记本屏幕改造</title>  
 		<link>http://blog.zorro.im/posts/laptop-screen-diy.html</link>  
 		<description>&lt;p&gt;前几天收拾东西，发现了被我遗忘在旮旯里的跟了我大学4年的笔记本。当年惠普的明星——V3000系列，1.8G双核AMD CPU，1G（后来扩充到2G）DDR2内存，整体配置连现在的智能手机都赶不上。当时没钱，买的是乞丐版，用料配件能省则省，甚至连麦克风都没有。在这样的条件下我养成了良（cao）好（dan）的电脑使用习惯，那就是尽可能的单任务：&lt;/p&gt;
