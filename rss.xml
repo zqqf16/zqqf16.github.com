@@ -7,6 +7,113 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
+		<title>Objective-C对象模型——初探</title>  
+		<link>http://blog.zorro.im/posts/objective-c-ojbect-1.html</link>  
+		<description>&lt;h2&gt;前言&lt;/h2&gt;
+&lt;p&gt;刚接触Objective-C的时候，曾被一个bug折磨得很痛苦，后来才发现是我对Category理解错了，不知道它对所有该类的实例都会起作用。当时就决定要好好研究一下Objective-C的对象模型。正好最近手头的活忙完了，可以有时间做个总结。&lt;/p&gt;
+&lt;p&gt;本文所参照的代码是clang rewrite之后的C++代码，以及Apple开源的Runtime代码，地址&lt;a href=&#34;http://www.opensource.apple.com/source/objc4/&#34;&gt;在这&lt;/a&gt;。Apple官方貌似没有提供一个打包下载的地址，我在Github上fork了一份别人整理过的437.1版本的，可以到&lt;a href=&#34;https://github.com/zqqf16/OBJC4-437.1-Runtime&#34;&gt;这里&lt;/a&gt;查看。&lt;/p&gt;
+&lt;h2&gt;基本概念&lt;/h2&gt;
+&lt;p&gt;对于Objective-C有关对象、类、元类的基本概念，我就不细说了，和Python很像。这里有三篇文章，对我当时研究的启发很大，大家可以参考一下。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.csdn.net/wzzvictory/article/details/8592492&#34;&gt;Objective-C对象之类对象和元类对象（一）&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://blog.devtang.com/blog/2013/10/15/objective-c-object-model/&#34;&gt;Objective-C对象模型及应用&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&#34;http://www.cnblogs.com/kesalin/archive/2012/01/19/objc_class_object.html&#34;&gt;深入浅出Cocoa之类与对象&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;这里只做个总结：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;所有对象都是一个结构体，它的第一个成员是一个指向&lt;code&gt;objc_class&lt;/code&gt;类型的指针——&lt;code&gt;isa&lt;/code&gt;。或者说所有第一个成员是&lt;code&gt;objc_class&lt;/code&gt;指针类型的结构体都是对象。&lt;/li&gt;
+&lt;li&gt;实例对象的&lt;code&gt;isa&lt;/code&gt;指向它的类对象，类对象的&lt;code&gt;isa&lt;/code&gt;指向元类，元类的&lt;code&gt;isa&lt;/code&gt;指向根元类，根元类的指向它自己。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;实例、类、元类初探&lt;/h2&gt;
+&lt;p&gt;新建一个NSObject的子类，如下：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;cm&#34;&gt;/* FirstClass.h */&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;#import &amp;lt;Foundation/Foundation.h&amp;gt;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;@interface&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;FirstClass&lt;/span&gt; : &lt;span class=&#34;nc&#34;&gt;NSObject&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;NSString&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;className&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;k&#34;&gt;@end&lt;/span&gt;
+
+&lt;span class=&#34;cm&#34;&gt;/* FirstClass.m */&lt;/span&gt;
+&lt;span class=&#34;cp&#34;&gt;#import &amp;quot;FirstClass.h&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;@implementation&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;FirstClass&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;@end&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;然后执行&lt;code&gt;clang -rewrite-objc FirstClass.m&lt;/code&gt;，这样就会在当前目录生成一个名叫&lt;code&gt;FirstClass.cpp&lt;/code&gt;的文件，打开文件（注意，因为包含了&lt;code&gt;Foundation.h&lt;/code&gt;，所以生成的cpp文件巨大，可以忽略前1W行）可以看到，FirstClass被改写成了这样：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;typedef&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objc_object&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;成了&lt;code&gt;objc_object&lt;/code&gt;类型的结构体。&lt;code&gt;objc_object&lt;/code&gt;的声明如下：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;objc_object&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;Class&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;isa&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;也就是说，当我们用&lt;code&gt;FirstClass *fc;&lt;/code&gt;这样的形式去声明一个变量的时候，其实这个变量就是一个指向&lt;code&gt;objc_object&lt;/code&gt;类型的指针，也就是上面我总结的，他指向的是一个对象。&lt;/p&gt;
+&lt;p&gt;接着往下看，会发现以下这样的代码：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;extern&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;C&amp;quot;&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;__declspec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dllimport&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_NSObject&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;extern&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;C&amp;quot;&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;__declspec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dllexport&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__attribute__&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;used&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;section&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;__DATA,__objc_data&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// &amp;amp;OBJC_METACLASS_$_NSObject,&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// &amp;amp;OBJC_METACLASS_$_NSObject,&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// (void *)&amp;amp;_objc_empty_cache,&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// unused, was (void *)&amp;amp;_objc_empty_vtable,&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_OBJC_METACLASS_RO_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;extern&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;C&amp;quot;&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;__declspec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dllimport&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OBJC_CLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_NSObject&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+
+&lt;span class=&#34;k&#34;&gt;extern&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;C&amp;quot;&lt;/span&gt; &lt;span class=&#34;kr&#34;&gt;__declspec&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;dllexport&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OBJC_CLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;__attribute__&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;((&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;used&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;section&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;__DATA,__objc_data&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)))&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// &amp;amp;OBJC_METACLASS_$_FirstClass,&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// &amp;amp;OBJC_CLASS_$_NSObject,&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// (void *)&amp;amp;_objc_empty_cache,&lt;/span&gt;
+    &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;// unused, was (void *)&amp;amp;_objc_empty_vtable,&lt;/span&gt;
+    &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_OBJC_CLASS_RO_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;根据字面意思就可以看明白了，分别定义了两个变量，&lt;code&gt;OBJC_METACLASS_$_FirstClass&lt;/code&gt;和&lt;code&gt;OBJC_CLASS_$_FirstClass&lt;/code&gt;，前者是元类，后者是类。他们都是&lt;code&gt;_class_t&lt;/code&gt;类型的，都是对象。因为是自动改写的，所以变量名都有些奇怪，但并不影响阅读。&lt;/p&gt;
+&lt;p&gt;这里简单介绍一下&lt;code&gt;__declspec(dllimport)&lt;/code&gt;、&lt;code&gt;__declspec(dllexport)&lt;/code&gt; 以及 &lt;code&gt;__attribute__ ((used, section (&#34;__DATA,__objc_data&#34;)))&lt;/code&gt;。前两个分别声明导入和导出函数，一般用于动态链接库，后面的是一个GNU C的扩展，&lt;code&gt;used&lt;/code&gt;告诉编译器即使后面没有引用也要编译这段代码，&lt;code&gt;section (&#34;__DATA,__objc_data&#34;)&lt;/code&gt;是说把这段代码编译到&lt;code&gt;__DATA,__objc_data&lt;/code&gt;段，而不是默认的代码段。至于为啥要这样，我也不太明白，有待进一步研究。&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;_class_t&lt;/code&gt;的声明如下：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;isa&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;superclass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cache&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;vtable&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;k&#34;&gt;struct&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;_class_ro_t&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;*&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;ro&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;};&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;基本可以当成&lt;code&gt;runtime.h&lt;/code&gt;中的&lt;code&gt;objc_class&lt;/code&gt;类型。&lt;/p&gt;
+&lt;p&gt;后面还有一段代码，定义了一个初始化函数：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span class=&#34;k&#34;&gt;static&lt;/span&gt; &lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;OBJC_CLASS_SETUP_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;kt&#34;&gt;void&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;isa&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_NSObject&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;superclass&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_NSObject&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cache&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_objc_empty_cache&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OBJC_CLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;isa&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OBJC_METACLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OBJC_CLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;superclass&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;OBJC_CLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_NSObject&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;OBJC_CLASS_&lt;/span&gt;&lt;span class=&#34;err&#34;&gt;$&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_FirstClass&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;cache&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;_objc_empty_cache&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+
+&lt;p&gt;可以看到元类的&lt;code&gt;isa&lt;/code&gt;、&lt;code&gt;superclass&lt;/code&gt;都指向了NSOBject，而类的&lt;code&gt;isa&lt;/code&gt;指向了元类、&lt;code&gt;superclass&lt;/code&gt;指向了NSObject。&lt;/p&gt;
+&lt;p&gt;看到这就明白了，类对象以及元类对象是编译时就会创建好的。那么实例对象是怎么创建的，实例变量是怎么保存的呢？且看下一篇分解~&lt;/p&gt;
+&lt;p&gt;--未完待续--&lt;/p&gt;</description>  
+		<author>Zqqf16</author>  
+		<copyright></copyright>  
+		<pubDate>Wed, 05 Mar 2014 00:00:00 +0800</pubDate>  
+    </item>  
+    <item>  
 		<title>尝试一下七牛云存储</title>  
 		<link>http://blog.zorro.im/posts/qiniu.html</link>  
 		<description>&lt;p&gt;最近一直在研究百度网盘的API，打算做个自动同步的工具,这样就可以把自己在硬盘里保存的珍贵资料在云里做个备份。但是仔细研究了两天之后发现百度网盘现在有点太火爆了，各种&lt;em&gt;你懂的&lt;/em&gt;资源。我觉得它在打政策的擦边球，万一哪天上面要求严格了，指不定能干出啥事。所以就把目光转向了云存储，参考了几家，发现七牛貌似最靠谱。&lt;/p&gt;
