@@ -4,19 +4,19 @@ top: yes
 
 **我**
 
-80后IT男，现混迹于帝都，在一个不大的公司当着一个多用途的螺丝钉。
+80末IT男，现混迹于帝都，在一个不大的公司当着一个多用途的螺丝钉。
 
-白天用<s>C（工作需要，正在转向Objective-c）</s>Objective-c，晚上用Python。白天CVS，晚上Git。白天Xcode，晚上Vim。
+工作三年，做过Web，研究过AAA，搞过IPsec，正在做iOS。
 
-工作两年半，做过Web，研究过AAA，搞过IPsec，正在入门iOS。
+主力开发语言是Objective-c/C，Python辅助。工作中用CVS，私人项目用Git。
 
-曾经的Ubuntu桌面系统使用者，目前正在习惯Win+Ubuntu Server与Mac OS。
+同时用着OSX，Windows以及Ubuntu。
 
 不懂云计算，不会大数据，也不懂O2O。
 
 爱好广泛，硬件、机械、电子、木工，都爱伸一脚。
 
-会修自来水、热水器，也会修家电、自行车、防盗门……自则就是自己能干的就不求别人。
+会修自来水、热水器，也会修家电、自行车、防盗门……原则就是自己能干的就不求别人。
 
 不是五毛，也不是美分。爱生活，不反社会。崇尚实事求是。
 
@@ -26,13 +26,15 @@ top: yes
 
 对电脑游戏有着天生的认知障碍，仅对CS、红警等少数老掉牙游戏有着特殊爱好。
 
+目前持有rMBP、台式机、iPad2、iPhone5、Arduino、宾得K-30、电钻、电烙铁……
+
 联系方式：zqqf16[at]gmail[dot]com
 
 **博客**
 
 为了写博客前前后后换了多次阵地，用过主机，买过VPS，现在来到Github。希望能够坚持下去，争取每周都有更新。
 
-本博客是由本人写的一个非常Ugly的Python脚本生成的、纯天然、无公害的、静态博客。如有兴趣，欢迎[fork](https://github.com/zqqf16/zqqf16.github.com)
+本博客是由本人写的一个非常Ugly的Python脚本生成的、纯天然、无公害的、静态博客。如有兴趣，欢迎Fork：[Github](https://github.com/zqqf16/zqqf16.github.com) | [oschina](http://git.oschina.net/zqqf16/peanut)
 
 若无强调，本博客所有文章均属本人原创，转载时请注明出处。如有问题，欢迎留言。
 
