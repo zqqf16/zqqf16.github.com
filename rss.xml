@@ -7,7 +7,7 @@
     <language>zh-cn</language>  
     <generator>Peanut</generator>  
     <item>  
-		<title>Objective-C对象模型——初探</title>  
+		<title>从源码来看Objective-C的对象模型——初探</title>  
 		<link>http://blog.zorro.im/posts/objective-c-ojbect-1.html</link>  
 		<description>&lt;h2&gt;前言&lt;/h2&gt;
 &lt;p&gt;刚接触Objective-C的时候，曾被一个bug折磨得很痛苦，后来才发现是我对Category理解错了，不知道它对所有该类的实例都会起作用。当时就决定要好好研究一下Objective-C的对象模型。正好最近手头的活忙完了，可以有时间做个总结。&lt;/p&gt;
