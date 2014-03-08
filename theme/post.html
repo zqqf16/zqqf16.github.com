@@ -1,0 +1,19 @@
+## -*- coding: utf-8 -*- 
+<%inherit file="base.html"/>
+
+<%block name="header">
+${this.title} | 
+</%block>
+
+<%block name="main">
+	<article>
+		<header>
+			<h2>${this.title}</h2>
+			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time></span>
+		</header>
+		<section>
+      ${this.content}
+		</section>				
+	</article>
+  <%include file="comment.html"/>
+</%block>

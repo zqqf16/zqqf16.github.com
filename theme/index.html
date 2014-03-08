@@ -1,0 +1,17 @@
+## -*- coding: utf-8 -*- 
+<%inherit file="base.html"/>
+
+<%block name="head">
+	<meta name="google-site-verification" content="FW_F-Ez0TldaAzvGUQ2kioxNpne-KbKCiSu1y_5bXTU" />
+</%block>
+
+<%block name="main">
+	<ul class="post-list">
+		% for post in posts:
+		<li>
+			<span class="post-meta"><time datetime="${post.date.strftime('%Y-%m-%d')}">${post.date.strftime('%Y-%m-%d')}</time></span>
+			<h2 class="post-title"><a href="/${post.url}">${post.title}</a></h2>
+		</li>
+		% endfor
+	</ul>
+</%block>

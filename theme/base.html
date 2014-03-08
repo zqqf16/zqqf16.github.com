@@ -1,11 +1,9 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-  
+  <%block name="head"></%block>
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>
-吐槽一下专业 | 
-穷折腾</title>
+  <title><%block name="header"></%block>${title}</title>
   <link rel="stylesheet" href="/static/css/pure-min.css">
   <link rel="stylesheet" href="/static/css/style.css" />
   <link rel="stylesheet" href="/static/css/pygments.css" />
@@ -16,7 +14,7 @@
   <div id="main" class="pure-g">
     <header class="sidebar pure-u-7-24">
       <div class="top">
-        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
+        <a class="blog-title" href="/">${title}<span class="blog-desc">zorro的个人博客</span></a>
         <ul class="menu contact">
           <li><a href="https://github.com/zqqf16">Github</a></li>
         </ul>         
@@ -24,43 +22,15 @@
       <div class="bottom">
         <ul class="menu nav">
           <li><a href="/">主页</a></li>
-          <li><a href="/posts/about.html" title="关于">关于</a></li>
+          % for post in tops:
+          <li><a href="/${post.url}" title="${post.title}">${post.title}</a></li>
+          % endfor
         </ul>
       </div>
     </header>
     <section class="content pure-u-17-24">
       <div class="content-inner">
-      
-	<article>
-		<header>
-			<h2>吐槽一下专业</h2>
-			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-05-13</time></span>
-		</header>
-		<section>
-      <blockquote>
-<p>本文吐槽为主，杂乱无章，技术含量地下，阅读前请三思。</p>
-</blockquote>
-<p><strong>把专业看得太重</strong>，填报志愿的时候误打误撞选了个专业，即使不太感兴趣也要对其托付终生，非此专业不干。看看一个人在人人网上的分享就能分析出他是啥专业。</p>
-<p><strong>总想着用自己的专业解决所有事情</strong>，学计算机的恨不能连养猫养狗都写个程序，摆个地摊都想来个客户端。用自己所学知识解决了实际生活生产问题，这叫为社会做贡献；用自己的知识成功地把简单的东西复杂化，这叫吃饱撑得。</p>
-<p>--EOF--</p>
-		</section>				
-	</article>
-  <!-- Duoshuo Comment BEGIN -->
-<div class="ds-thread"></div>
-<script type="text/javascript">
-	var duoshuoQuery = {short_name:"zqqf16"};
-	(function() {
-		var ds = document.createElement('script');
-		ds.type = 'text/javascript';ds.async = true;
-		ds.src = 'http://static.duoshuo.com/embed.js';
-		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
-		|| document.getElementsByTagName('body')[0]).appendChild(ds);
-	})();
-</script>
-<!-- Duoshuo Comment END -->
-
-
+      <%block name="main"></%block>
       <footer>
         <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
         <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>

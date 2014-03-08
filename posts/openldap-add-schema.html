@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-	
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>
+  
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>
 OpenLDAP添加Schema（Ubuntu） | 
 穷折腾</title>
-	<link rel="stylesheet" href="/static/css/style.css" />
-	<link rel="stylesheet" href="/static/css/pygments.css" />
-	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
-	<link rel="icon" type="image/png" href="/static/img/favicon.png">
+  <link rel="stylesheet" href="/static/css/pure-min.css">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/pygments.css" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div id="container">
-      <div id="main" role="main">
-        <header>
-		<h1>
-OpenLDAP添加Schema（Ubuntu）
-</h1>
+  <div id="main" class="pure-g">
+    <header class="sidebar pure-u-7-24">
+      <div class="top">
+        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
+        <ul class="menu contact">
+          <li><a href="https://github.com/zqqf16">Github</a></li>
+        </ul>         
+      </div>
+      <div class="bottom">
+        <ul class="menu nav">
+          <li><a href="/">主页</a></li>
+          <li><a href="/posts/about.html" title="关于">关于</a></li>
+        </ul>
+      </div>
+    </header>
+    <section class="content pure-u-17-24">
+      <div class="content-inner">
+      
+	<article>
+		<header>
+			<h2>OpenLDAP添加Schema（Ubuntu）</h2>
+			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-08-19</time></span>
 		</header>
-
-     <nav>
-		<span><a title="home page" class="" href="/">home</a></span>
-		<span><a title="标签" class="" href="/tags/index.html">标签</a></span>
-		<span><a title="订阅" class="" href="/rss.xml">订阅</a></span>
-        <span><a href="/posts/about.html" title="关于">关于</a></span>
-     </nav>
-
-     <article class="content">
-        <section class="post">
-            
-		<h2>前言</h2>
+		<section>
+      <h2>前言</h2>
 <p>工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。</p>
 <p>网络上很多流传的教程都太老了，不是很适用。Ubuntu8.10以及之后的系统倾向于用slapd-config的各种工具来配置sladp，而不是之前的直接修改文件的方法。</p>
 <p>用sldap-config来添加Schema可以总结为以下几步：</p>
@@ -150,15 +157,9 @@ olcObjectClasses: {0}( testObject NAME &#39;testObject&#39; DESC &#39;Just for t
 
 </li>
 </ol>
-	</section>
-	<section class="meta">
-		<span class="tags">Tagged by 
-			<a href="/tags/OpenLDAP.html">OpenLDAP</a>
-		</span>
-
-		<span class="time">&nbsp;<time datetime="2013-08-19">2013-08-19</time></span>
-	</section>
-	<!-- Duoshuo Comment BEGIN -->
+		</section>				
+	</article>
+  <!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
 <script type="text/javascript">
 	var duoshuoQuery = {short_name:"zqqf16"};
@@ -173,22 +174,20 @@ olcObjectClasses: {0}( testObject NAME &#39;testObject&#39; DESC &#39;Just for t
 </script>
 <!-- Duoshuo Comment END -->
 
-<hr/>
 
-
-        </section>
-     </article>
-	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
-      </div>
-    </div> <!--! end of #container -->
-	<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  		ga('create', 'UA-41282906-2', 'zorro.im');
-  		ga('send', 'pageview');
-	</script>
+      <footer>
+        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
+        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
+      </footer>
+      <div>
+    </section>
+  </div>
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-41282906-2', 'zorro.im');
+      ga('send', 'pageview');
+  </script>
 </body>
-</html>

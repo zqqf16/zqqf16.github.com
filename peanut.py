@@ -13,7 +13,7 @@ from mako.lookup import TemplateLookup
 CONFIG = {
     'domain': 'blog.zorro.im',
     'title': u'穷折腾',
-    'description': u'Zqqf16的个人BLog，记录我的生活、学习、以及心情。',
+    'description': u'Zorro的个人博客',
 }
 
 PATH = {
@@ -27,8 +27,8 @@ SINGLE_FILES = (
     #layout, url, dest
     ('index.html', 'index.html', 'index.html'),
     ('sitemap.xml', 'sitemap.xml', 'sitemap.xml'),
-    ('tags.html', 'tags/index.html', os.path.join('tags', 'index.html')),
-    ('rss.xml', 'rss.xml', 'rss.xml'),
+#    ('tags.html', 'tags/index.html', os.path.join('tags', 'index.html')),
+#    ('rss.xml', 'rss.xml', 'rss.xml'),
 )
 
 class Pool(type):
@@ -109,7 +109,7 @@ class Writer(object):
     '''HTML file writer'''
 
     _TEMPLATE = TemplateLookup(
-        directories=['templates'], 
+        directories=['theme'], 
         input_encoding='utf-8',
         output_encoding='utf-8', 
         encoding_errors='replace'
@@ -206,7 +206,7 @@ def peanut():
 
     writer = Writer(namespace)
 
-    map(writer.write, tags)
+    #map(writer.write, tags)
     map(writer.write, posts)
 
     singles = []

@@ -1,36 +1,43 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
 <head>
-	
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-	<title>
+  
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>
 tornado源码之Configurable类 | 
 穷折腾</title>
-	<link rel="stylesheet" href="/static/css/style.css" />
-	<link rel="stylesheet" href="/static/css/pygments.css" />
-	<link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
-	<link rel="icon" type="image/png" href="/static/img/favicon.png">
+  <link rel="stylesheet" href="/static/css/pure-min.css">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/pygments.css" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div id="container">
-      <div id="main" role="main">
-        <header>
-		<h1>
-tornado源码之Configurable类
-</h1>
+  <div id="main" class="pure-g">
+    <header class="sidebar pure-u-7-24">
+      <div class="top">
+        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
+        <ul class="menu contact">
+          <li><a href="https://github.com/zqqf16">Github</a></li>
+        </ul>         
+      </div>
+      <div class="bottom">
+        <ul class="menu nav">
+          <li><a href="/">主页</a></li>
+          <li><a href="/posts/about.html" title="关于">关于</a></li>
+        </ul>
+      </div>
+    </header>
+    <section class="content pure-u-17-24">
+      <div class="content-inner">
+      
+	<article>
+		<header>
+			<h2>tornado源码之Configurable类</h2>
+			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-07-16</time></span>
 		</header>
-
-     <nav>
-		<span><a title="home page" class="" href="/">home</a></span>
-		<span><a title="标签" class="" href="/tags/index.html">标签</a></span>
-		<span><a title="订阅" class="" href="/rss.xml">订阅</a></span>
-        <span><a href="/posts/about.html" title="关于">关于</a></span>
-     </nav>
-
-     <article class="content">
-        <section class="post">
-            
-		<p>最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的<a href="http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html">源码分析</a>来作为入门。</p>
+		<section>
+      <p>最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的<a href="http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html">源码分析</a>来作为入门。</p>
 <p>第一讲是说IOLoop的，也是tornado的核心。程序中主函数通常调用<code>tornado.ioloop.IOLoop.instance().start()</code>来启动IOLoop，但是看了一下IOLoop的实现，start方法是这样的：</p>
 <div class="codehilite"><pre>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Starts the I/O loop.</span>
@@ -96,16 +103,9 @@ tornado源码之Configurable类
 
 <p><code>EPollIOLoop</code>是<code>PollIOLoop</code>的子类。至此，这个流程就理清楚了。</p>
 <p>第一天看tornado的代码就收获不少，<strong>最好的学习方式就是看别人的代码</strong>这话一点都不假。</p>
-	</section>
-	<section class="meta">
-		<span class="tags">Tagged by 
-			<a href="/tags/tornado.html">tornado</a>
-			<a href="/tags/python.html">python</a>
-		</span>
-
-		<span class="time">&nbsp;<time datetime="2013-07-16">2013-07-16</time></span>
-	</section>
-	<!-- Duoshuo Comment BEGIN -->
+		</section>				
+	</article>
+  <!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
 <script type="text/javascript">
 	var duoshuoQuery = {short_name:"zqqf16"};
@@ -120,22 +120,20 @@ tornado源码之Configurable类
 </script>
 <!-- Duoshuo Comment END -->
 
-<hr/>
 
-
-        </section>
-     </article>
-	 <div id="copy">&copy; Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a> | Themed by <a href="http://lhzhang.com" title="sext ii">sext ii</a></div>
-      </div>
-    </div> <!--! end of #container -->
-	<script>
-  		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  			(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  		 m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  			})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-  		ga('create', 'UA-41282906-2', 'zorro.im');
-  		ga('send', 'pageview');
-	</script>
+      <footer>
+        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
+        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
+      </footer>
+      <div>
+    </section>
+  </div>
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-41282906-2', 'zorro.im');
+      ga('send', 'pageview');
+  </script>
 </body>
-</html>
