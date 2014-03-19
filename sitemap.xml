@@ -1,5 +1,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
+		<loc>http://blog.zorro.im/posts/objective-c-ojbect-2.html</loc>
+		<lastmod>2014-03-17</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>http://blog.zorro.im/posts/objective-c-ojbect-1.html</loc>
 		<lastmod>2014-03-05</lastmod>
 		<changefreq>monthly</changefreq>

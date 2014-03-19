@@ -1,5 +1,5 @@
 body {
-    font-family: 'Georgia', Georgia, Times, serif;
+    font-family: 'Georgia', Georgia, Microsoft Yahei,Hiragino Sans GB,WenQuanYi Micro Hei,sans-serif;
     line-height: 1.5;
     text-rendering: optimizeLegibility;
 }
@@ -124,7 +124,7 @@ ul.menu {
 }
 
 .content-inner {
-	padding-left: 5%;
+	padding: 0 5%;
 }
 
 .post-meta {
