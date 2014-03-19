@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>
+从源码看Objective-C的对象模型（二） | 
+穷折腾</title>
+  <link rel="stylesheet" href="/static/css/pure-min.css">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/pygments.css" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+</head>
+<body>
+  <div id="main" class="pure-g">
+    <header class="sidebar pure-u-7-24">
+      <div class="top">
+        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
+        <ul class="menu contact">
+          <li><a href="https://github.com/zqqf16">Github</a></li>
+        </ul>         
+      </div>
+      <div class="bottom">
+        <ul class="menu nav">
+          <li><a href="/">主页</a></li>
+          <li><a href="/posts/about.html" title="关于">关于</a></li>
+        </ul>
+      </div>
+    </header>
+    <section class="content pure-u-17-24">
+      <div class="content-inner">
+      
+	<article>
+		<header>
+			<h2>从源码看Objective-C的对象模型（二）</h2>
+			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2014-03-17</time></span>
+		</header>
+		<section>
+      <h2>前言</h2>
+<blockquote>
+<p>最近由于工作比较忙，所以这篇文章比预期的时间来的晚了。  </p>
+</blockquote>
+<p>这几天找时间仔细研究了一下上一篇文章里提到的Runtime代码，发现新旧版本之间有一些差别，数据结构有点对不上。另外，<code>Clang</code>这个“rewrite”也不是很靠谱，也不支持Objective-c 2.0。所以这里所说的“源码”只是个大概，并不完全准确。</p>
+<p>这篇文章主要写一下实例变量的存储与访问。</p>
+<h2>一、运行时实例对象的结构</h2>
+<p>接着上一篇文章里讲的，为类FirstClass加一个方法：</p>
+<div class="codehilite"><pre><span class="k">@interface</span> <span class="nc">FirstClass</span> : <span class="nc">NSObject</span>
+<span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">className</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">@end</span>
+<span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">accessClassName</span><span class="p">;</span>
+</pre></div>
+
+
+<p><code>accessClassName</code>定义如下：</p>
+<div class="codehilite"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">accessClassName</span>
+<span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">a</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">className</span><span class="p">;</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">;</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="n">className</span><span class="p">;</span>
+
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, %@, %@&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>在函数内的任意位置加断点，在<code>main</code>函数里面调用它。在lldb里执行<code>p *self</code>，可以得到这样的输出：</p>
+<div class="codehilite"><pre>(lldb) p *self
+(FirstClass) $0 = {
+  NSObject = {
+    isa = FirstClass
+  }
+  className = nil
+}
+</pre></div>
+
+
+<p>这里要注意，不要被NSObject欺骗住了，结构体本身在内存中是不占空间的。上面的输出就等价于：</p>
+<div class="codehilite"><pre>$0 = {
+    isa = FirstClass
+    className = nil
+}
+</pre></div>
+
+
+<p>可以看到在运行时self的实例变量“className”是在实例对象的结构体里的。</p>
+<h2>二、编译时期的声明与定义</h2>
+<p>看Clang改写过的这段代码，其中有这样的描述：</p>
+<div class="codehilite"><pre><span class="k">struct</span> <span class="n">FirstClass_IMPL</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="n">NSObject_IMPL</span> <span class="n">NSObject_IVARS</span><span class="p">;</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">className</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>其中，NSObject_IMPL是这样声明的：</p>
+<div class="codehilite"><pre><span class="k">struct</span> <span class="n">NSObject_IMPL</span> <span class="p">{</span>
+    <span class="n">Class</span> <span class="n">isa</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>正好和上面lldb输出的信息吻合。但是有一点需要说明一下，<code>FirstClass_IMPL</code>貌似只是个内部结构（几乎没起什么作用，可能只是为了标明一下FirstClass的结构？）。而且在上一篇文章里可以看到，<code>FirstClass</code>是这样被声明的：</p>
+<div class="codehilite"><pre><span class="k">typedef</span> <span class="k">struct</span> <span class="n">objc_object</span> <span class="n">FirstClass</span><span class="p">;</span>
+</pre></div>
+
+
+<p>在声明中，FirstClass只是个<code>objc_object</code>类型（里面只有<code>isa</code>）的结构体，也就是说在它的声明里并没有提及<code>className</code>成员变量。那么最终是怎么变成Runtime里面所描述的那样的呢？</p>
+<p>为了弄懂这个问题，需要先回顾一下类对象的结构，<code>_class_t</code>中有个<code>_class_ro_t</code>类型的成员<code>ro</code>(Runtime代码里还有个叫<code>_class_wo_t</code>的结构，“r”和“w”没有搜索到准确的意思，好像是编译期间指定了的叫“r”，Runtime能够改变的叫“w”)，它是这样声明的：</p>
+<div class="codehilite"><pre><span class="k">struct</span> <span class="kt">_class_ro_t</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">flags</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">instanceStart</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">instanceSize</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">reserved</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">ivarLayout</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="kt">_method_list_t</span> <span class="o">*</span><span class="n">baseMethods</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="n">_objc_protocol_list</span> <span class="o">*</span><span class="n">baseProtocols</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="kt">_ivar_list_t</span> <span class="o">*</span><span class="n">ivars</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">unsigned</span> <span class="kt">char</span> <span class="o">*</span><span class="n">weakIvarLayout</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="kt">_prop_list_t</span> <span class="o">*</span><span class="n">properties</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>通过阅读代码可以知道，这其中名叫的<code>ivars</code>（instance vars?）就存放着实例变量的信息。也就是说，实例变量的信息存放在类对象里。</p>
+<p><code>_ivar_list_t</code>的声明与<code>FirstClass</code>中的<code>ivars</code>定义如下：</p>
+<div class="codehilite"><pre><span class="k">static</span> <span class="k">struct</span> <span class="cm">/*_ivar_list_t*/</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">entsize</span><span class="p">;</span>  <span class="c1">// sizeof(struct _prop_t)</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">count</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="kt">_ivar_t</span> <span class="n">ivar_list</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">_OBJC_</span><span class="err">$</span><span class="n">_INSTANCE_VARIABLES_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_const&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="k">sizeof</span><span class="p">(</span><span class="kt">_ivar_t</span><span class="p">),</span>
+    <span class="mi">1</span><span class="p">,</span>
+    <span class="p">{{(</span><span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">OBJC_IVAR_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="err">$</span><span class="n">className</span><span class="p">,</span> <span class="s">&quot;className&quot;</span><span class="p">,</span> <span class="s">&quot;@</span><span class="se">\&quot;</span><span class="s">NSString</span><span class="se">\&quot;</span><span class="s">&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">}}</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p><code>_ivar_t</code>的声明：</p>
+<div class="codehilite"><pre><span class="k">struct</span> <span class="kt">_ivar_t</span> <span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="kt">int</span> <span class="o">*</span><span class="n">offset</span><span class="p">;</span>  <span class="c1">// pointer to ivar offset location</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">name</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">type</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">alignment</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span>  <span class="n">size</span><span class="p">;</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>这里面包括了实例变量的偏移量、名称、类型等信息。（注：改写后文件里的结构体声明与runtime.h里的有一定出入，但大体结构一致。目前尚不知是Runtime版本问题，还是Clang改写的问题，或者也有可能本身就是这样实现的。在这里就暂且忽略吧- -!）</p>
+<h2>三、运行时实例变量的初始化</h2>
+<p>接下来再对比一下Runtime的代码，看看在<code>alloc</code>的时候，实例对象所占的内存是怎么被分配的。</p>
+<p><code>NSOjbect</code>的<code>alloc</code>方法会调用<code>_internal_class_createInstanceFromZone</code>函数，而后者又会调用<code>_class_getInstanceSize</code>来获取实例变量的大小。<code>_class_getInstanceSize</code>定义如下：(注：runtime这部分的代码有些乱，新旧版本里函数的实现有所差别，这里只摘取部分代码)</p>
+<div class="codehilite"><pre><span class="c1">//objc-runtime-new.m</span>
+
+<span class="n">__private_extern__</span> <span class="kt">size_t</span>
+<span class="nf">_class_getInstanceSize</span><span class="p">(</span><span class="n">Class</span> <span class="n">cls</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">cls</span><span class="p">)</span> <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">return</span> <span class="n">instanceSize</span><span class="p">(</span><span class="n">newcls</span><span class="p">(</span><span class="n">cls</span><span class="p">));</span>
+<span class="p">}</span>
+
+<span class="k">static</span> <span class="kt">uint32_t</span>
+<span class="nf">instanceSize</span><span class="p">(</span><span class="k">struct</span> <span class="kt">class_t</span> <span class="o">*</span><span class="n">cls</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
+    <span class="n">assert</span><span class="p">(</span><span class="n">isRealized</span><span class="p">(</span><span class="n">cls</span><span class="p">));</span>
+    <span class="c1">// fixme rdar://5244378</span>
+    <span class="k">return</span> <span class="p">(</span><span class="kt">uint32_t</span><span class="p">)((</span><span class="n">cls</span><span class="o">-&gt;</span><span class="n">data</span><span class="o">-&gt;</span><span class="n">ro</span><span class="o">-&gt;</span><span class="n">instanceSize</span> <span class="o">+</span> <span class="n">WORD_MASK</span><span class="p">)</span> <span class="o">&amp;</span> <span class="o">~</span><span class="n">WORD_MASK</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><code>cls-&gt;data-&gt;ro-&gt;instanceSize</code>这个数值在编译时就被算好了，就是（或者可以看成）<code>FirstClass_IMPL</code>的大小。</p>
+<p>到这里就清晰了，<code>FirstClass</code>被声明为<code>objc_object</code>类型只是个障眼法，它实际的结构应该是<code>FirstClass_IMPL</code>描述的那样。</p>
+<h2>四、实例对象的访问</h2>
+<p>内存分配搞明白了，但是对象的声明中并没有包含实例变量的信息，那么他们是怎么被访问的呢？</p>
+<p>再回过头来看上面提到的<code>accessClassName</code>方法，在其中故意用了“点语法”、指针和直接访问的方式来访问<code>className</code>，下面来看看这三种方法的改写结果：</p>
+<div class="codehilite"><pre><span class="k">static</span> <span class="kt">void</span> <span class="nf">_I_FirstClass_accessClassName</span><span class="p">(</span><span class="n">FirstClass</span> <span class="o">*</span> <span class="n">self</span><span class="p">,</span> <span class="n">SEL</span> <span class="n">_cmd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">a</span> <span class="o">=</span> <span class="p">((</span><span class="n">NSString</span> <span class="o">*</span><span class="p">(</span><span class="o">*</span><span class="p">)(</span><span class="n">id</span><span class="p">,</span> <span class="n">SEL</span><span class="p">))(</span><span class="kt">void</span> <span class="o">*</span><span class="p">)</span><span class="n">objc_msgSend</span><span class="p">)((</span><span class="n">id</span><span class="p">)</span><span class="n">self</span><span class="p">,</span> <span class="n">sel_registerName</span><span class="p">(</span><span class="s">&quot;className&quot;</span><span class="p">));</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">NSString</span> <span class="o">**</span><span class="p">)((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">self</span> <span class="o">+</span> <span class="n">OBJC_IVAR_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="err">$</span><span class="n">className</span><span class="p">));</span>
+    <span class="n">NSString</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">NSString</span> <span class="o">**</span><span class="p">)((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">self</span> <span class="o">+</span> <span class="n">OBJC_IVAR_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="err">$</span><span class="n">className</span><span class="p">));</span>
+
+    <span class="n">NSLog</span><span class="p">((</span><span class="n">NSString</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">__NSConstantStringImpl__var_folders_fy_6ckx65gn39198bs5ydlgfk800000gn_T_FirstClass_c4b878_mi_0</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>（关于方法的实现将在在下一篇文章研究，在这里只需注意一下这个函数的第一个形参：<code>self</code>，我们在实例方法里面用到的“self”其实只不过是个形参而已，当函数被调用的时候会把实例对象自身传进来。）</p>
+<p>在这个函数里面可以看到，除了“点语法”用到了消息机制（了解KVC的都知道吧……），后面两种方法在实现上是一样的，都是通过指针+偏移量来访问的。不知道对象的结构没关系，知道了偏移量就行了~</p>
+<h2>总结</h2>
+<ul>
+<li>运行时实例对象的结构中包含了实例变量</li>
+<li>实例变量的信息保存在类对象里，运行时类对象会根据这些信息来完成实例化</li>
+<li>在方法中通过指针或者变量名访问实例变量，是通过self指针加上偏移量来实现的</li>
+</ul>
+		</section>				
+	</article>
+  <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zqqf16"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END -->
+
+
+      <footer>
+        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
+        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
+      </footer>
+      <div>
+    </section>
+  </div>
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-41282906-2', 'zorro.im');
+      ga('send', 'pageview');
+  </script>
+</body>
