@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>
+一个方便无线发布iOS应用的工具——WAD | 
+穷折腾</title>
+  <link rel="stylesheet" href="/static/css/pure-min.css">
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/pygments.css" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+</head>
+<body>
+  <div id="main" class="pure-g">
+    <header class="sidebar pure-u-7-24">
+      <div class="top">
+        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
+        <ul class="menu contact">
+          <li><a href="https://github.com/zqqf16">Github</a></li>
+        </ul>         
+      </div>
+      <div class="bottom">
+        <ul class="menu nav">
+          <li><a href="/">主页</a></li>
+          <li><a href="/posts/about.html" title="关于">关于</a></li>
+        </ul>
+      </div>
+    </header>
+    <section class="content pure-u-17-24">
+      <div class="content-inner">
+      
+	<article>
+		<header>
+			<h2>一个方便无线发布iOS应用的工具——WAD</h2>
+			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2014-04-09</time></span>
+		</header>
+		<section>
+      <h3>前言</h3>
+<p>鄙司目前还在用CVS来管理代码，这就导致了Xcode Bot这样的持续集成工具没有用武之地。再加上搞iOS的就我自己，上班时间基本都修Bug了，暂时还木有时间搞自动化。</p>
+<p>我的前辈写了一个Shell脚本，放在在一台专门的机器上完成打包发布的工作。但是这个工具是半自动的，每次发布都得改一些参数。再加上里面有太多的Hard Code，随着iOS7 SDK等变化，需要改的太多了，经常会发生各种错误，实在是耽误时间。真不如在自己电脑上用Xcode打包来的快。</p>
+<p>为了方便应用发布，花了点业余时间捣鼓出了这个小工具。</p>
+<blockquote>
+<p>WAD — Wireless AdHoc Distributer （请原谅这个老土的名字）</p>
+</blockquote>
+<h3>简介</h3>
+<p>WAD其实就是很多shell脚本的Web化，是用Python基于Tornado实现的。主要工作是：</p>
+<ol>
+<li>解析上传的IPA文件中的Info.plist</li>
+<li>获取Display name、Version、以及Build等信息，生成manifest.plist</li>
+<li>创建或更新index.html中的相关信息</li>
+<li>把IPA保存到指定目录</li>
+</ol>
+<p>详细内容可以移步我的<a href="https://github.com/zqqf16/wad">Github</a>，在此就不赘述了。</p>
+<h3>体会</h3>
+<p>这个小工具看似简单，但却花了我很长时间。做之前没有明确到底想要实现什么，一开始只想要一个简单的上传、自动发布的工作。但是在做的过程中就有点刹不住了，一度想加上这些东西：</p>
+<ul>
+<li>查看历史版本</li>
+<li>同时发布多个应用</li>
+<li>支持命令行工具</li>
+<li>方便和其他工具集成</li>
+<li>NB的发布以及后台管理界面</li>
+<li>拖拽上传</li>
+<li>……</li>
+</ul>
+<p>就这样代码改来改去，拖了很长时间没有进展。后来突然醒悟了，我真是想得太多了，其中大部分估计没人能用上。最后下决心砍掉了多余的部分，成了现在这样~</p>
+<p>其实仔细想想，似乎每次捣鼓小玩意的时候都会范这样的错误，Unix哲学真是白学了。希望以后能有所进步吧~</p>
+<h3>截图</h3>
+<p>用Evernote做示范~</p>
+<p><img alt="WAD" src="http://zorro-blog.qiniudn.com/wad.png" /></p>
+		</section>				
+	</article>
+  <!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zqqf16"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0] 
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END -->
+
+
+      <footer>
+        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
+        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
+      </footer>
+      <div>
+    </section>
+  </div>
+  <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-41282906-2', 'zorro.im');
+      ga('send', 'pageview');
+  </script>
+</body>
