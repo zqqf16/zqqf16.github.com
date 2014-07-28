@@ -46,7 +46,7 @@ Tornado源码之Template |
 <li>执行字节码，返回结果</li>
 </ol>
 <p>（这其中还会有一些编码转换、特殊字符转义等工作，本文中不做研究。）</p>
-<h2>模板解析与代码生成</h2>
+<h2 id="_1">模板解析与代码生成</h2>
 <p>步骤1-3主要由Template类的<strong>init</strong>方法完成，关键代码如下：</p>
 <div class="codehilite"><pre><span class="n">reader</span> <span class="o">=</span> <span class="n">_TemplateReader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">escape</span><span class="o">.</span><span class="n">native_str</span><span class="p">(</span><span class="n">template_string</span><span class="p">))</span>
 <span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">_File</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_parse</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
@@ -133,7 +133,7 @@ Tornado源码之Template |
 
 <p>生成的每条语句后都会有该条语句在模板文件中的行号。</p>
 <p>代码生成之后，就调用python的<code>compile</code>函数，将代码编译成了字节码。</p>
-<h2>模板渲染</h2>
+<h2 id="_2">模板渲染</h2>
 <p>当执行Template的<code>generate</code>方法时，首先会把一些常用函数比如<code>datetime</code>等以及用户输入的参数放到namespace中，作为执行字节码时的全局命名空间。</p>
 <p>这是执行字节码的代码：</p>
 <div class="codehilite"><pre><span class="n">exec_in</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compiled</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>

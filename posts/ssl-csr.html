@@ -40,12 +40,12 @@ SSL证书研究之CSR |
       <blockquote>
 <p>以前用SSL证书的时候对一些概念了解比较模糊，对x.509、pem、csr等一大堆概念没有一个整体的认识。于是下决心仔细研究一番，接下来会写一系列文章，这是第一篇，先介绍一下CSR。</p>
 </blockquote>
-<h2>基本概念</h2>
+<h2 id="_1">基本概念</h2>
 <p>CSR全称Certificate Signing Request（证书请求文件），是证书申请者向证书颁发机构（CA）申请证书时需要提供的文件。里面包含了一些申请者的基本信息，比如Common Name、 Organization等。同时也包含了申请者的公钥。</p>
 <p>生成CSR的时候一般也会同时生成一个私钥，和csr是配对生效的，如果私钥丢失，那么这个CSR将不会再起作用。</p>
 <p>CA收到申请者的CSR之后会进行一系列操作，比如确认申请者信息之类的。然后用自己的私钥给CSR签名，生成证书文件，颁发给申请者。</p>
 <p>CSR需要满足pkcs#10语法标准，详情可以参考<a href="http://tools.ietf.org/html/rfc2986">RFC2986</a>。</p>
-<h2>生成方法</h2>
+<h2 id="_2">生成方法</h2>
 <p>首先需要安装openssl，然后：</p>
 <div class="codehilite"><pre>openssl req -new -keyout z.key -out z.csr
 </pre></div>

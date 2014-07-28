@@ -37,7 +37,7 @@ OpenLDAP添加Schema（Ubuntu） |
 			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-08-19</time></span>
 		</header>
 		<section>
-      <h2>前言</h2>
+      <h2 id="_1">前言</h2>
 <p>工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。</p>
 <p>网络上很多流传的教程都太老了，不是很适用。Ubuntu8.10以及之后的系统倾向于用slapd-config的各种工具来配置sladp，而不是之前的直接修改文件的方法。</p>
 <p>用sldap-config来添加Schema可以总结为以下几步：</p>
@@ -46,7 +46,7 @@ OpenLDAP添加Schema（Ubuntu） |
 <li>将Schema转换成ldif格式文件</li>
 <li>将ldif文件内容导入</li>
 </ol>
-<h2>具体步骤</h2>
+<h2 id="_2">具体步骤</h2>
 <ol>
 <li>
 <p>编辑Schema文件，保存为<code>test.schema</code></p>

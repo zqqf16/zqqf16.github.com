@@ -149,7 +149,7 @@ class Reader(object):
         return res
 
     def __init__(self):
-        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta'], 
+        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta', 'footnotes', 'tables', 'headerid'], 
                                     extension_configs={'codehilite': [ ('guess_lang', False) ]})
  
     def get_slug(self, file_name):

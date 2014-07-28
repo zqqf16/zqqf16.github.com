@@ -37,10 +37,10 @@
 			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2014-03-05</time></span>
 		</header>
 		<section>
-      <h2>前言</h2>
+      <h2 id="_1">前言</h2>
 <p>刚接触Objective-C的时候，曾被一个bug折磨得很痛苦，后来才发现是我对Category理解错了，不知道它对所有该类的实例都会起作用。当时就决定要好好研究一下Objective-C的对象模型。正好最近手头的活忙完了，可以有时间做个总结。</p>
 <p>本文所参照的代码是clang rewrite之后的C++代码，以及Apple开源的Runtime代码，地址<a href="http://www.opensource.apple.com/source/objc4/">在这</a>。Apple官方貌似没有提供一个打包下载的地址，我在Github上fork了一份别人整理过的437.1版本的，可以到<a href="https://github.com/zqqf16/OBJC4-437.1-Runtime">这里</a>查看。</p>
-<h2>基本概念</h2>
+<h2 id="_2">基本概念</h2>
 <p>对于Objective-C有关对象、类、元类的基本概念，我就不细说了，和Python很像。这里有三篇文章，对我当时研究的启发很大，大家可以参考一下。</p>
 <ul>
 <li><a href="http://blog.csdn.net/wzzvictory/article/details/8592492">Objective-C对象之类对象和元类对象（一）</a></li>
@@ -52,7 +52,7 @@
 <li>所有对象都是一个结构体，它的第一个成员是一个指向<code>objc_class</code>类型的指针——<code>isa</code>。或者说所有第一个成员是<code>objc_class</code>指针类型的结构体都是对象。</li>
 <li>实例对象的<code>isa</code>指向它的类对象，类对象的<code>isa</code>指向元类，元类的<code>isa</code>指向根元类，根元类的指向它自己。</li>
 </ol>
-<h2>实例、类、元类初探</h2>
+<h2 id="_3">实例、类、元类初探</h2>
 <p>新建一个NSObject的子类，如下：</p>
 <div class="codehilite"><pre><span class="cm">/* FirstClass.h */</span>
 <span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>

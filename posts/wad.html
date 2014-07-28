@@ -37,14 +37,14 @@
 			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2014-04-09</time></span>
 		</header>
 		<section>
-      <h3>前言</h3>
+      <h3 id="_1">前言</h3>
 <p>鄙司目前还在用CVS来管理代码，这就导致了Xcode Bot这样的持续集成工具没有用武之地。再加上搞iOS的就我自己，上班时间基本都修Bug了，暂时还木有时间搞自动化。</p>
 <p>我的前辈写了一个Shell脚本，放在在一台专门的机器上完成打包发布的工作。但是这个工具是半自动的，每次发布都得改一些参数。再加上里面有太多的Hard Code，随着iOS7 SDK等变化，需要改的太多了，经常会发生各种错误，实在是耽误时间。真不如在自己电脑上用Xcode打包来的快。</p>
 <p>为了方便应用发布，花了点业余时间捣鼓出了这个小工具。</p>
 <blockquote>
 <p>WAD — Wireless AdHoc Distributer （请原谅这个老土的名字）</p>
 </blockquote>
-<h3>简介</h3>
+<h3 id="_2">简介</h3>
 <p>WAD其实就是很多shell脚本的Web化，是用Python基于Tornado实现的。主要工作是：</p>
 <ol>
 <li>解析上传的IPA文件中的Info.plist</li>
@@ -53,7 +53,7 @@
 <li>把IPA保存到指定目录</li>
 </ol>
 <p>详细内容可以移步我的<a href="https://github.com/zqqf16/wad">Github</a>，在此就不赘述了。</p>
-<h3>体会</h3>
+<h3 id="_3">体会</h3>
 <p>这个小工具看似简单，但却花了我很长时间。做之前没有明确到底想要实现什么，一开始只想要一个简单的上传、自动发布的工作。但是在做的过程中就有点刹不住了，一度想加上这些东西：</p>
 <ul>
 <li>查看历史版本</li>
@@ -66,7 +66,7 @@
 </ul>
 <p>就这样代码改来改去，拖了很长时间没有进展。后来突然醒悟了，我真是想得太多了，其中大部分估计没人能用上。最后下决心砍掉了多余的部分，成了现在这样~</p>
 <p>其实仔细想想，似乎每次捣鼓小玩意的时候都会范这样的错误，Unix哲学真是白学了。希望以后能有所进步吧~</p>
-<h3>截图</h3>
+<h3 id="_4">截图</h3>
 <p>用Evernote做示范~</p>
 <p><img alt="WAD" src="http://zorro-blog.qiniudn.com/wad.png" /></p>
 		</section>				
