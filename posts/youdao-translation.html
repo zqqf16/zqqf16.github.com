@@ -71,11 +71,14 @@ errorCode：<br />
 <span class="n">green</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\033</span><span class="s">[0;32m</span><span class="si">%s</span><span class="se">\033</span><span class="s">[0m: </span><span class="se">\033</span><span class="s">[0;34m</span><span class="si">%s</span><span class="se">\033</span><span class="s">[0m&#39;</span>
 
 <span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">()</span>
-<span class="n">msg</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
 <span class="n">url_utf</span> <span class="o">=</span> <span class="s">&#39;http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&amp;key=908880018&amp;type=data&amp;doctype=json&amp;version=1.1&amp;q=&#39;</span> <span class="o">+</span> <span class="n">msg</span> 
 
-<span class="n">result_json</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url_utf</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
-<span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_json</span><span class="p">)</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">result_json</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url_utf</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_json</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">exit</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">tran</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s">&#39;translation&#39;</span><span class="p">]:</span>
     <span class="k">print</span> <span class="n">green</span> <span class="o">%</span> <span class="p">(</span><span class="s">u&#39;翻译&#39;</span><span class="p">,</span> <span class="n">tran</span><span class="p">)</span>

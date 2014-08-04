@@ -41,11 +41,14 @@ import json
 green = '\033[0;32m%s\033[0m: \033[0;34m%s\033[0m'
 
 opener = urllib2.build_opener()
-msg = sys.argv[1]
+msg = (' '.join(sys.argv[1:]))
 url_utf = 'http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&key=908880018&type=data&doctype=json&version=1.1&q=' + msg 
 
-result_json = opener.open(url_utf).read()
-result = json.loads(result_json)
+try:
+	result_json = opener.open(url_utf).read()
+	result = json.loads(result_json)
+except:
+	exit()
 
 for tran in result['translation']:
     print green % (u'翻译', tran)
