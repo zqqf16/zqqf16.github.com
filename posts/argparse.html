@@ -2,9 +2,10 @@
 <html lang="zh-cn">
 <head>
   
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <title>
-Python命令行参数解析工具——argparse | 
+Python命令行参数解析工具——argparse |
 穷折腾</title>
   <link rel="stylesheet" href="/static/css/pure-min.css">
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -13,31 +14,34 @@ Python命令行参数解析工具——argparse |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-  <div id="main" class="pure-g">
-    <header class="sidebar pure-u-7-24">
-      <div class="top">
-        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
-        <ul class="menu contact">
-          <li><a href="https://github.com/zqqf16">Github</a></li>
-        </ul>         
-      </div>
-      <div class="bottom">
-        <ul class="menu nav">
-          <li><a href="/">主页</a></li>
-          <li><a href="/posts/about.html" title="关于">关于</a></li>
-        </ul>
-      </div>
-    </header>
-    <section class="content pure-u-17-24">
-      <div class="content-inner">
-      
-	<article>
-		<header>
-			<h2>Python命令行参数解析工具——argparse</h2>
-			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-10-22</time></span>
-		</header>
-		<section>
-      <p>鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。</p>
+    <div class="page-wrap">
+        <section class="main-header regular">
+            <div class="vertical-container">
+                <div class="wrapper clearfix">
+                    <header>
+                        <a href="/">
+                            <h1 id="main-title">穷折腾</h1>
+                            <h2 id="main-subtitle">Zorro的个人博客</h2>
+                        </a>
+                    </header>
+                    <nav id="main-nav" role="navigation">
+                        <a href="/" class="selected">主页</a>
+                        <a href="/posts/about.html" class="">关于</a>
+                        <a href="https://github.com/zqqf16">Github</a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            
+<article class="main-content">
+    <div class="wrapper">
+        <header class="section-header">
+            <h1 class="section-title">Python命令行参数解析工具——argparse</h1>
+            <span class="section-subtitle"><time datetime="2013-10-22" pubdate="">2013-10-22</time></span>
+        </header>
+        <section class="post-content">
+        	<p>鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。</p>
 <p>之前用Python写了一个解析工具，可以从Diff文件中提取出修改过的文件列表，很方便的就可以找出不相关的文件，提交代码的时候也能省去很多麻烦。原理十分简单，主要是用正则表达式<code>^Index: (.*)$</code>来找出所有以“Index”开头的行。</p>
 <p>前几天在用着个工具的时候想用一下管道，结果发现当时写的太简单了，不支持……趁着空闲就花了点时间改造了一下，让它既支持从文件中读取，又支持stdin读取。既可以返回文件列表，又可以方便CVS操作的文件名串。</p>
 <p>刚开始打算用命令行解析的传统方法<code>getopt</code>来搞定，用了一会发现getopt有些弱，帮助啥的还得自己写。于是乎进行一番搜索，发现了argparse，一个更好的命令行参数解析工具。</p>
@@ -126,9 +130,9 @@ optional arguments:
 
 
 <p>或者<a href="https://gist.github.com/zqqf16/7094628">Gist</a></p>
-		</section>				
-	</article>
-  <!-- Duoshuo Comment BEGIN -->
+        </section>
+        <div class="post-nav">
+    		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
 <script type="text/javascript">
 	var duoshuoQuery = {short_name:"zqqf16"};
@@ -137,27 +141,25 @@ optional arguments:
 		ds.type = 'text/javascript';ds.async = true;
 		ds.src = 'http://static.duoshuo.com/embed.js';
 		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
+		(document.getElementsByTagName('head')[0]
 		|| document.getElementsByTagName('body')[0]).appendChild(ds);
 	})();
 </script>
 <!-- Duoshuo Comment END -->
 
+    	</div>
+    </div>
 
-      <footer>
-        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
-        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
-      </footer>
-      <div>
-    </section>
-  </div>
-  <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-41282906-2', 'zorro.im');
-	  ga('require', 'displayfeatures');
-      ga('send', 'pageview');
-  </script>
+</article>
+
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="vertical-container">
+            <div class="wrapper">
+                <p class="copy">&copy; zqqf16</p>
+            </div>
+        </div>
+    </footer>
 </body>
+</html>

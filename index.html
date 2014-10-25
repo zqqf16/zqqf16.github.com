@@ -4,6 +4,7 @@
   
 	<meta name="google-site-verification" content="Bo7_aC1Q71qdTTVLoWDBqcl-AX_58zdxjGpkpXbVCNY" />
 
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <title>穷折腾</title>
   <link rel="stylesheet" href="/static/css/pure-min.css">
@@ -13,217 +14,219 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-  <div id="main" class="pure-g">
-    <header class="sidebar pure-u-7-24">
-      <div class="top">
-        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
-        <ul class="menu contact">
-          <li><a href="https://github.com/zqqf16">Github</a></li>
-        </ul>         
-      </div>
-      <div class="bottom">
-        <ul class="menu nav">
-          <li><a href="/">主页</a></li>
-          <li><a href="/posts/about.html" title="关于">关于</a></li>
+    <div class="page-wrap">
+        <section class="main-header regular">
+            <div class="vertical-container">
+                <div class="wrapper clearfix">
+                    <header>
+                        <a href="/">
+                            <h1 id="main-title">穷折腾</h1>
+                            <h2 id="main-subtitle">Zorro的个人博客</h2>
+                        </a>
+                    </header>
+                    <nav id="main-nav" role="navigation">
+                        <a href="/" class="selected">主页</a>
+                        <a href="/posts/about.html" class="">关于</a>
+                        <a href="https://github.com/zqqf16">Github</a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            
+    <div class="wrapper">
+        <header class="section-header">
+            <h4 class="section-title">欢迎来到我的个人博客</h4>
+            <span class="section-subtitle">这里记录着我的学习、想法</span>
+        </header>
+        <ul id="posts-list">
+            <li class="clearfix">
+                <time datetime="2014-10-14" pubdate>2014-10-14</time>
+                <a href="/posts/iOS8-Network-Extension.html"><h3>谈谈 iOS8 中的 Network Extension</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-09-01" pubdate>2014-09-01</time>
+                <a href="/posts/ibeacon.html"><h3>初识 iBeacon</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-07-28" pubdate>2014-07-28</time>
+                <a href="/posts/raspberry_model_b_plus.html"><h3>树莓派 Model B+ 入手小记</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-07-07" pubdate>2014-07-07</time>
+                <a href="/posts/mvvm.html"><h3>谈谈 iOS 中的 MVVM</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-04-09" pubdate>2014-04-09</time>
+                <a href="/posts/wad.html"><h3>一个方便无线发布iOS应用的工具——WAD</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-03-20" pubdate>2014-03-20</time>
+                <a href="/posts/smart-device.html"><h3>你真的需要一台这样的“智能”设备？</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-03-17" pubdate>2014-03-17</time>
+                <a href="/posts/objective-c-ojbect-2.html"><h3>从源码看Objective-C的对象模型（二）</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-03-05" pubdate>2014-03-05</time>
+                <a href="/posts/objective-c-ojbect-1.html"><h3>从源码看Objective-C的对象模型（一）</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-02-17" pubdate>2014-02-17</time>
+                <a href="/posts/qiniu.html"><h3>尝试一下七牛云存储</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-02-16" pubdate>2014-02-16</time>
+                <a href="/posts/laptop-screen-diy.html"><h3>笔记本屏幕改造</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-01-12" pubdate>2014-01-12</time>
+                <a href="/posts/my-2013.html"><h3>我的2013</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2014-01-06" pubdate>2014-01-06</time>
+                <a href="/posts/python-new-init.html"><h3>Python中关于__new__和__init__的坑</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-12-27" pubdate>2013-12-27</time>
+                <a href="/posts/change-domain.html"><h3>换域名了</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-12-23" pubdate>2013-12-23</time>
+                <a href="/posts/tucao-jailbreak.html"><h3>关于iOS越狱</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-12-19" pubdate>2013-12-19</time>
+                <a href="/posts/web-clipboard.html"><h3>写了一个简单的Web剪切板-Clipboard</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-11-21" pubdate>2013-11-21</time>
+                <a href="/posts/tornado-template.html"><h3>Tornado源码之Template</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-11-12" pubdate>2013-11-12</time>
+                <a href="/posts/colorit.html"><h3>Colorit——一个给终端输出上色的工具</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-11-01" pubdate>2013-11-01</time>
+                <a href="/posts/ssl-csr.html"><h3>SSL证书研究之CSR</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-10-24" pubdate>2013-10-24</time>
+                <a href="/posts/just-photo.html"><h3>照片两张</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-10-22" pubdate>2013-10-22</time>
+                <a href="/posts/argparse.html"><h3>Python命令行参数解析工具——argparse</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-08-20" pubdate>2013-08-20</time>
+                <a href="/posts/how-to-highlight-code-in-markdown-continue.html"><h3>高亮Markdown中的代码（续）</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-08-19" pubdate>2013-08-19</time>
+                <a href="/posts/openldap-add-schema.html"><h3>OpenLDAP添加Schema（Ubuntu）</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-08-02" pubdate>2013-08-02</time>
+                <a href="/posts/levenshtein-distance.html"><h3>Levenshtein distance（编辑距离）算法</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-07-24" pubdate>2013-07-24</time>
+                <a href="/posts/python-http-uploading-server.html"><h3>支持上传的SimpleHTTPServer</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-07-18" pubdate>2013-07-18</time>
+                <a href="/posts/python-requests-encoding-problems.html"><h3>Requests抓取网页的编码问题</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-07-16" pubdate>2013-07-16</time>
+                <a href="/posts/tornado-configurable.html"><h3>tornado源码之Configurable类</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-07-11" pubdate>2013-07-11</time>
+                <a href="/posts/helicobacter-pylori.html"><h3>幽门螺旋杆菌</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-07-11" pubdate>2013-07-11</time>
+                <a href="/posts/ios7.html"><h3>IOS7 Beta 3体验</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-07-04" pubdate>2013-07-04</time>
+                <a href="/posts/recent-status.html"><h3>近期状态</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-06-05" pubdate>2013-06-05</time>
+                <a href="/posts/understand-git-stage.html"><h3>理解Git的暂存区</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-06-04" pubdate>2013-06-04</time>
+                <a href="/posts/markdown-editor-under-ubuntu.html"><h3>Ubuntu下好用的Markdown编辑器</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-28" pubdate>2013-05-28</time>
+                <a href="/posts/c-priority.html"><h3>重拾C语言之运算符优先级</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-26" pubdate>2013-05-26</time>
+                <a href="/posts/c-array-initialization.html"><h3>重拾C语言之数组初始化</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-24" pubdate>2013-05-24</time>
+                <a href="/posts/c-strncpy.html"><h3>重拾C语言之strncpy</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-23" pubdate>2013-05-23</time>
+                <a href="/posts/sphinx.html"><h3>Sphinx入门</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-22" pubdate>2013-05-22</time>
+                <a href="/posts/my-vim-configuration.html"><h3>我的Vim配置</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-21" pubdate>2013-05-21</time>
+                <a href="/posts/tucao-freedom.html"><h3>论自由</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-20" pubdate>2013-05-20</time>
+                <a href="/posts/youdao-translation.html"><h3>命令行下的有道翻译</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-16" pubdate>2013-05-16</time>
+                <a href="/posts/use-graphviz-to-draw-struct-graph.html"><h3>用Graphviz画数据结构图</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-14" pubdate>2013-05-14</time>
+                <a href="/posts/tucao-cloud.html"><h3>小饭馆与云计算</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-05-13" pubdate>2013-05-13</time>
+                <a href="/posts/tucao-major.html"><h3>吐槽一下专业</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-04-26" pubdate>2013-04-26</time>
+                <a href="/posts/how-to-highlight-code-in-markdown.html"><h3>高亮Markdown中的代码</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-04-25" pubdate>2013-04-25</time>
+                <a href="/posts/about.html"><h3>关于</h3></a>
+            </li>
+            <li class="clearfix">
+                <time datetime="2013-04-24" pubdate>2013-04-24</time>
+                <a href="/posts/hello-world.html"><h3>Hello World</h3></a>
+            </li>
         </ul>
-      </div>
-    </header>
-    <section class="content pure-u-17-24">
-      <div class="content-inner">
-      
-	<ul class="post-list">
-		<li>
-			<span class="post-meta"><time datetime="2014-10-14">2014-10-14</time></span>
-			<h2 class="post-title"><a href="/posts/iOS8-Network-Extension.html">谈谈 iOS8 中的 Network Extension</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-09-01">2014-09-01</time></span>
-			<h2 class="post-title"><a href="/posts/ibeacon.html">初识 iBeacon</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-07-28">2014-07-28</time></span>
-			<h2 class="post-title"><a href="/posts/raspberry_model_b_plus.html">树莓派 Model B+ 入手小记</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-07-07">2014-07-07</time></span>
-			<h2 class="post-title"><a href="/posts/mvvm.html">谈谈 iOS 中的 MVVM</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-04-09">2014-04-09</time></span>
-			<h2 class="post-title"><a href="/posts/wad.html">一个方便无线发布iOS应用的工具——WAD</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-03-20">2014-03-20</time></span>
-			<h2 class="post-title"><a href="/posts/smart-device.html">你真的需要一台这样的“智能”设备？</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-03-17">2014-03-17</time></span>
-			<h2 class="post-title"><a href="/posts/objective-c-ojbect-2.html">从源码看Objective-C的对象模型（二）</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-03-05">2014-03-05</time></span>
-			<h2 class="post-title"><a href="/posts/objective-c-ojbect-1.html">从源码看Objective-C的对象模型（一）</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-02-17">2014-02-17</time></span>
-			<h2 class="post-title"><a href="/posts/qiniu.html">尝试一下七牛云存储</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-02-16">2014-02-16</time></span>
-			<h2 class="post-title"><a href="/posts/laptop-screen-diy.html">笔记本屏幕改造</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-01-12">2014-01-12</time></span>
-			<h2 class="post-title"><a href="/posts/my-2013.html">我的2013</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2014-01-06">2014-01-06</time></span>
-			<h2 class="post-title"><a href="/posts/python-new-init.html">Python中关于__new__和__init__的坑</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-12-27">2013-12-27</time></span>
-			<h2 class="post-title"><a href="/posts/change-domain.html">换域名了</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-12-23">2013-12-23</time></span>
-			<h2 class="post-title"><a href="/posts/tucao-jailbreak.html">关于iOS越狱</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-12-19">2013-12-19</time></span>
-			<h2 class="post-title"><a href="/posts/web-clipboard.html">写了一个简单的Web剪切板-Clipboard</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-11-21">2013-11-21</time></span>
-			<h2 class="post-title"><a href="/posts/tornado-template.html">Tornado源码之Template</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-11-12">2013-11-12</time></span>
-			<h2 class="post-title"><a href="/posts/colorit.html">Colorit——一个给终端输出上色的工具</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-11-01">2013-11-01</time></span>
-			<h2 class="post-title"><a href="/posts/ssl-csr.html">SSL证书研究之CSR</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-10-24">2013-10-24</time></span>
-			<h2 class="post-title"><a href="/posts/just-photo.html">照片两张</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-10-22">2013-10-22</time></span>
-			<h2 class="post-title"><a href="/posts/argparse.html">Python命令行参数解析工具——argparse</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-08-20">2013-08-20</time></span>
-			<h2 class="post-title"><a href="/posts/how-to-highlight-code-in-markdown-continue.html">高亮Markdown中的代码（续）</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-08-19">2013-08-19</time></span>
-			<h2 class="post-title"><a href="/posts/openldap-add-schema.html">OpenLDAP添加Schema（Ubuntu）</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-08-02">2013-08-02</time></span>
-			<h2 class="post-title"><a href="/posts/levenshtein-distance.html">Levenshtein distance（编辑距离）算法</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-07-24">2013-07-24</time></span>
-			<h2 class="post-title"><a href="/posts/python-http-uploading-server.html">支持上传的SimpleHTTPServer</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-07-18">2013-07-18</time></span>
-			<h2 class="post-title"><a href="/posts/python-requests-encoding-problems.html">Requests抓取网页的编码问题</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-07-16">2013-07-16</time></span>
-			<h2 class="post-title"><a href="/posts/tornado-configurable.html">tornado源码之Configurable类</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-07-11">2013-07-11</time></span>
-			<h2 class="post-title"><a href="/posts/helicobacter-pylori.html">幽门螺旋杆菌</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-07-11">2013-07-11</time></span>
-			<h2 class="post-title"><a href="/posts/ios7.html">IOS7 Beta 3体验</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-07-04">2013-07-04</time></span>
-			<h2 class="post-title"><a href="/posts/recent-status.html">近期状态</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-06-05">2013-06-05</time></span>
-			<h2 class="post-title"><a href="/posts/understand-git-stage.html">理解Git的暂存区</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-06-04">2013-06-04</time></span>
-			<h2 class="post-title"><a href="/posts/markdown-editor-under-ubuntu.html">Ubuntu下好用的Markdown编辑器</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-28">2013-05-28</time></span>
-			<h2 class="post-title"><a href="/posts/c-priority.html">重拾C语言之运算符优先级</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-26">2013-05-26</time></span>
-			<h2 class="post-title"><a href="/posts/c-array-initialization.html">重拾C语言之数组初始化</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-24">2013-05-24</time></span>
-			<h2 class="post-title"><a href="/posts/c-strncpy.html">重拾C语言之strncpy</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-23">2013-05-23</time></span>
-			<h2 class="post-title"><a href="/posts/sphinx.html">Sphinx入门</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-22">2013-05-22</time></span>
-			<h2 class="post-title"><a href="/posts/my-vim-configuration.html">我的Vim配置</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-21">2013-05-21</time></span>
-			<h2 class="post-title"><a href="/posts/tucao-freedom.html">论自由</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-20">2013-05-20</time></span>
-			<h2 class="post-title"><a href="/posts/youdao-translation.html">命令行下的有道翻译</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-16">2013-05-16</time></span>
-			<h2 class="post-title"><a href="/posts/use-graphviz-to-draw-struct-graph.html">用Graphviz画数据结构图</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-14">2013-05-14</time></span>
-			<h2 class="post-title"><a href="/posts/tucao-cloud.html">小饭馆与云计算</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-05-13">2013-05-13</time></span>
-			<h2 class="post-title"><a href="/posts/tucao-major.html">吐槽一下专业</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-04-26">2013-04-26</time></span>
-			<h2 class="post-title"><a href="/posts/how-to-highlight-code-in-markdown.html">高亮Markdown中的代码</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-04-25">2013-04-25</time></span>
-			<h2 class="post-title"><a href="/posts/about.html">关于</a></h2>
-		</li>
-		<li>
-			<span class="post-meta"><time datetime="2013-04-24">2013-04-24</time></span>
-			<h2 class="post-title"><a href="/posts/hello-world.html">Hello World</a></h2>
-		</li>
-	</ul>
+    </div>
 
-      <footer>
-        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
-        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
-      </footer>
-      <div>
-    </section>
-  </div>
-  <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-41282906-2', 'zorro.im');
-	  ga('require', 'displayfeatures');
-      ga('send', 'pageview');
-  </script>
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="vertical-container">
+            <div class="wrapper">
+                <p class="copy">&copy; zqqf16</p>
+            </div>
+        </div>
+    </footer>
 </body>
+</html>

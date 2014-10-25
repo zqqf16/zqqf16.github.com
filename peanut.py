@@ -73,7 +73,7 @@ class HTMLPage(object):
 
 class Post(HTMLPage):
     def __init__(self, title, content, slug, date, layout='post.html', top=False, publish=True, tag=[]):
-        url = 'posts/'+slug+'.html' 
+        url = 'posts/'+slug+'.html'
         dest = os.path.join('posts', slug+'.html')
 
         super(Post, self).__init__(title, url, layout, dest)
@@ -86,7 +86,7 @@ class Post(HTMLPage):
         self.tags = tag
         for t in tag:
             t.add_post(self)
- 
+
 class Tag(HTMLPage):
     __metaclass__ = Pool
 
@@ -109,11 +109,11 @@ class Writer(object):
     '''HTML file writer'''
 
     _TEMPLATE = TemplateLookup(
-        directories=['theme'], 
+        directories=['theme'],
         input_encoding='utf-8',
-        output_encoding='utf-8', 
+        output_encoding='utf-8',
         encoding_errors='replace'
-    )    
+    )
 
     def __init__(self, namespace={}):
         self.namespace = namespace
@@ -149,9 +149,9 @@ class Reader(object):
         return res
 
     def __init__(self):
-        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta', 'footnotes', 'tables', 'toc', 'headerid'], 
+        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta', 'footnotes', 'tables', 'toc', 'headerid'],
                                     extension_configs={'codehilite': [ ('guess_lang', False) ]})
- 
+
     def get_slug(self, file_name):
         m = self.regex.match(file_name)
         if not m:

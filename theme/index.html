@@ -1,4 +1,4 @@
-## -*- coding: utf-8 -*- 
+## -*- coding: utf-8 -*-
 <%inherit file="base.html"/>
 
 <%block name="head">
@@ -6,12 +6,18 @@
 </%block>
 
 <%block name="main">
-	<ul class="post-list">
-		% for post in posts:
-		<li>
-			<span class="post-meta"><time datetime="${post.date.strftime('%Y-%m-%d')}">${post.date.strftime('%Y-%m-%d')}</time></span>
-			<h2 class="post-title"><a href="/${post.url}">${post.title}</a></h2>
-		</li>
-		% endfor
-	</ul>
+    <div class="wrapper">
+        <header class="section-header">
+            <h4 class="section-title">欢迎来到我的个人博客</h4>
+            <span class="section-subtitle">这里记录着我的学习、想法</span>
+        </header>
+        <ul id="posts-list">
+            % for post in posts:
+            <li class="clearfix">
+                <time datetime="${post.date.strftime('%Y-%m-%d')}" pubdate>${post.date.strftime('%Y-%m-%d')}</time>
+                <a href="/${post.url}"><h3>${post.title}</h3></a>
+            </li>
+            % endfor
+        </ul>
+    </div>
 </%block>

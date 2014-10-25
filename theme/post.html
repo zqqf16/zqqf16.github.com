@@ -1,19 +1,24 @@
-## -*- coding: utf-8 -*- 
+## -*- coding: utf-8 -*-
 <%inherit file="base.html"/>
 
 <%block name="header">
-${this.title} | 
+${this.title} |
 </%block>
 
 <%block name="main">
-	<article>
-		<header>
-			<h2>${this.title}</h2>
-			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time></span>
-		</header>
-		<section>
-      ${this.content}
-		</section>				
-	</article>
-  <%include file="comment.html"/>
+<article class="main-content">
+    <div class="wrapper">
+        <header class="section-header">
+            <h1 class="section-title">${this.title}</h1>
+            <span class="section-subtitle"><time datetime="${this.date.strftime('%Y-%m-%d')}" pubdate="">${this.date.strftime('%Y-%m-%d')}</time></span>
+        </header>
+        <section class="post-content">
+        	${this.content}
+        </section>
+        <div class="post-nav">
+    		<%include file="comment.html"/>
+    	</div>
+    </div>
+
+</article>
 </%block>

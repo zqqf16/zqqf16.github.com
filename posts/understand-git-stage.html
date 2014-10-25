@@ -2,9 +2,10 @@
 <html lang="zh-cn">
 <head>
   
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <title>
-理解Git的暂存区 | 
+理解Git的暂存区 |
 穷折腾</title>
   <link rel="stylesheet" href="/static/css/pure-min.css">
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -13,31 +14,34 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-  <div id="main" class="pure-g">
-    <header class="sidebar pure-u-7-24">
-      <div class="top">
-        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
-        <ul class="menu contact">
-          <li><a href="https://github.com/zqqf16">Github</a></li>
-        </ul>         
-      </div>
-      <div class="bottom">
-        <ul class="menu nav">
-          <li><a href="/">主页</a></li>
-          <li><a href="/posts/about.html" title="关于">关于</a></li>
-        </ul>
-      </div>
-    </header>
-    <section class="content pure-u-17-24">
-      <div class="content-inner">
-      
-	<article>
-		<header>
-			<h2>理解Git的暂存区</h2>
-			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-06-05</time></span>
-		</header>
-		<section>
-      <p>虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。</p>
+    <div class="page-wrap">
+        <section class="main-header regular">
+            <div class="vertical-container">
+                <div class="wrapper clearfix">
+                    <header>
+                        <a href="/">
+                            <h1 id="main-title">穷折腾</h1>
+                            <h2 id="main-subtitle">Zorro的个人博客</h2>
+                        </a>
+                    </header>
+                    <nav id="main-nav" role="navigation">
+                        <a href="/" class="selected">主页</a>
+                        <a href="/posts/about.html" class="">关于</a>
+                        <a href="https://github.com/zqqf16">Github</a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            
+<article class="main-content">
+    <div class="wrapper">
+        <header class="section-header">
+            <h1 class="section-title">理解Git的暂存区</h1>
+            <span class="section-subtitle"><time datetime="2013-06-05" pubdate="">2013-06-05</time></span>
+        </header>
+        <section class="post-content">
+        	<p>虽然用了好几个月的Git，今天才了解了“换存区”这个东西，惭愧啊。。。</p>
 <p>在公司用的是CVS，因此用<code>git add</code>的时候就以为和<code>cvs add</code>的作用是一样的，把新文件加到代码库。后来学了一招<code>git commit -a</code>，还以为-a就是--all的意思。稀里糊涂地用到现在。。。</p>
 <p>Git中的暂存区类似于任务列表，当对工作区的文件做了修改之后，执行</p>
 <div class="codehilite"><pre>git add filename
@@ -63,9 +67,9 @@
 
 <p>是用HEAD指向的版本库中的文件来替换暂存区和工作区的文件。</p>
 <p>好了，先这么多了。通过这件事总结出一个道理：经验有时候会形成思维定势。</p>
-		</section>				
-	</article>
-  <!-- Duoshuo Comment BEGIN -->
+        </section>
+        <div class="post-nav">
+    		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
 <script type="text/javascript">
 	var duoshuoQuery = {short_name:"zqqf16"};
@@ -74,27 +78,25 @@
 		ds.type = 'text/javascript';ds.async = true;
 		ds.src = 'http://static.duoshuo.com/embed.js';
 		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
+		(document.getElementsByTagName('head')[0]
 		|| document.getElementsByTagName('body')[0]).appendChild(ds);
 	})();
 </script>
 <!-- Duoshuo Comment END -->
 
+    	</div>
+    </div>
 
-      <footer>
-        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
-        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
-      </footer>
-      <div>
-    </section>
-  </div>
-  <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-41282906-2', 'zorro.im');
-	  ga('require', 'displayfeatures');
-      ga('send', 'pageview');
-  </script>
+</article>
+
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="vertical-container">
+            <div class="wrapper">
+                <p class="copy">&copy; zqqf16</p>
+            </div>
+        </div>
+    </footer>
 </body>
+</html>

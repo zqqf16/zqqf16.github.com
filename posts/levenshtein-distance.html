@@ -2,9 +2,10 @@
 <html lang="zh-cn">
 <head>
   
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
   <title>
-Levenshtein distance（编辑距离）算法 | 
+Levenshtein distance（编辑距离）算法 |
 穷折腾</title>
   <link rel="stylesheet" href="/static/css/pure-min.css">
   <link rel="stylesheet" href="/static/css/style.css" />
@@ -13,31 +14,34 @@ Levenshtein distance（编辑距离）算法 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-  <div id="main" class="pure-g">
-    <header class="sidebar pure-u-7-24">
-      <div class="top">
-        <a class="blog-title" href="/">穷折腾<span class="blog-desc">zorro的个人博客</span></a>
-        <ul class="menu contact">
-          <li><a href="https://github.com/zqqf16">Github</a></li>
-        </ul>         
-      </div>
-      <div class="bottom">
-        <ul class="menu nav">
-          <li><a href="/">主页</a></li>
-          <li><a href="/posts/about.html" title="关于">关于</a></li>
-        </ul>
-      </div>
-    </header>
-    <section class="content pure-u-17-24">
-      <div class="content-inner">
-      
-	<article>
-		<header>
-			<h2>Levenshtein distance（编辑距离）算法</h2>
-			<span class="post-meta"><time datetime="{this.date.strftime('%Y-%m-%d')}">2013-08-02</time></span>
-		</header>
-		<section>
-      <p>在用Git的时候，如果一不小心把命令参数输入错了，比如把<code>show</code>写成了<code>slow</code>，Git会进行有好的提示：</p>
+    <div class="page-wrap">
+        <section class="main-header regular">
+            <div class="vertical-container">
+                <div class="wrapper clearfix">
+                    <header>
+                        <a href="/">
+                            <h1 id="main-title">穷折腾</h1>
+                            <h2 id="main-subtitle">Zorro的个人博客</h2>
+                        </a>
+                    </header>
+                    <nav id="main-nav" role="navigation">
+                        <a href="/" class="selected">主页</a>
+                        <a href="/posts/about.html" class="">关于</a>
+                        <a href="https://github.com/zqqf16">Github</a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            
+<article class="main-content">
+    <div class="wrapper">
+        <header class="section-header">
+            <h1 class="section-title">Levenshtein distance（编辑距离）算法</h1>
+            <span class="section-subtitle"><time datetime="2013-08-02" pubdate="">2013-08-02</time></span>
+        </header>
+        <section class="post-content">
+        	<p>在用Git的时候，如果一不小心把命令参数输入错了，比如把<code>show</code>写成了<code>slow</code>，Git会进行有好的提示：</p>
 <div class="codehilite"><pre><span class="nv">$git</span> slow
 git: <span class="s1">&#39;slow&#39;</span> is not a git command. See <span class="s1">&#39;git --help&#39;</span>.
 
@@ -53,9 +57,9 @@ Did you mean this?
 <p>鉴于解释这个算法需要画图，我也没个好用的工具，就放弃了。如果不明白，强烈建议看Wikipedia。结合推导公式和矩阵图，应该不难明白。</p>
 <p>有个外国哥们基于这个算法又改进了一下，在原有的三种操作（插入、删除、替换）中又增加了一种“交换”，这对于拼写检查之类的还是很有用的。这种改进后的算法又叫<a href="http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance">Damerau–Levenshtein distance</a>。Git源码里就是采用的这种算法，具体代码可以查看<a href="https://github.com/git/git/blob/master/levenshtein.c">这里</a>。需要注意的是，Git中把4中操作都加上了权值，这样更灵活一些。</p>
 <p>为了更好的理解这个算法，我自己也基于Python实现了一下，代码放在了Gist上，可以访问<a href="https://gist.github.com/zqqf16/6137789">这里</a>。PS：只是为了描述一下算法，并没有过多地考虑效率问题。</p>
-		</section>				
-	</article>
-  <!-- Duoshuo Comment BEGIN -->
+        </section>
+        <div class="post-nav">
+    		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
 <script type="text/javascript">
 	var duoshuoQuery = {short_name:"zqqf16"};
@@ -64,27 +68,25 @@ Did you mean this?
 		ds.type = 'text/javascript';ds.async = true;
 		ds.src = 'http://static.duoshuo.com/embed.js';
 		ds.charset = 'UTF-8';
-		(document.getElementsByTagName('head')[0] 
+		(document.getElementsByTagName('head')[0]
 		|| document.getElementsByTagName('body')[0]).appendChild(ds);
 	})();
 </script>
 <!-- Duoshuo Comment END -->
 
+    	</div>
+    </div>
 
-      <footer>
-        <p>Copyright <a href="http://zorro.im">Zorro.im</a> © 2014 • All right reserved.</p>
-        <p>Powered by <a href="https://github.com/zqqf16/zqqf16.github.com" title="Peanut">Peanut</a>.</p>
-      </footer>
-      <div>
-    </section>
-  </div>
-  <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-       m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-41282906-2', 'zorro.im');
-	  ga('require', 'displayfeatures');
-      ga('send', 'pageview');
-  </script>
+</article>
+
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="vertical-container">
+            <div class="wrapper">
+                <p class="copy">&copy; zqqf16</p>
+            </div>
+        </div>
+    </footer>
 </body>
+</html>
