@@ -190,7 +190,7 @@ body {
 
 a {
     text-decoration: none;
-    color: #aaa;
+    color: #34AADC;
     border-bottom: 1px dotted #ccc;
 }
 
@@ -204,18 +204,34 @@ ul {
 }
 
 ol {
-    list-style: decimal-leading-zero inside;
+    list-style: decimal inside;
     margin: 20px 0;
 }
 
 pre {
     background: none repeat scroll 0 0 #F7F7F7;
-    border: 5px solid #E9E9E9;
+    border: 1px solid #E9E9E9;
     font-family: Consolas, Courier, Monaco, monospace;
     font-size: 12px;
     line-height: 19px;
     overflow-x: auto;
     padding: 20px;
+}
+
+code {
+    padding: 0;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    margin: 0;
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 3px;
+    font:12px Consolas, "Liberation Mono", Menlo, Courier, monospace;
+}
+
+code::before,
+code::after {
+    letter-spacing: -0.2em;
+    content: " ";
 }
 
 table {
