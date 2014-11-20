@@ -11,7 +11,7 @@ tag: NSURLProtocol
 
 raywenderlich.com 上有一篇详细的 NSURLProtocol [教程](http://www.raywenderlich.com/59982/nsurlprotocol-tutorial)，很好的讲解了它的用法。按照惯例我这里就不重复了，只说一下我做的工程中遇到的难点。
 
-**原理**
+##原理
 
 NSURLProtocol 可以用来处理自定义的 URL Scheme，或者是改写对已经存在的 Scheme 的处理方式。比如，我可以定义一个 URLProtocol 来处理“certificate://xxx.pem" 这样的 URL 请求，用来查找目录下的证书并返回。这样当我用 NSURLConnection 发送这样的请求的时候，得到的将是证书内容。再比如，我可以定义一个 URLProtocol 来处理发到后台 Server 的 HTTP 请求，把请求中的 user-agent 改成 Server 端能识别的形式。
 
@@ -19,7 +19,7 @@ NSURLProtocol 的作用是全局的，也就是说一旦注册之后，所有的
 
 用 NSURLPRotocol 来实现全局 HTTP 代理时，需要用自定义的 URLProtocol 来处理所有的 HTTP/HTTPS 请求，然后再用 NSURLSession 或者 CFNetwork 这样支持代理的库把请求通过 HTTP 代理转发出去，并把结果返回给上层调用者。（这个调用者在 NSURLProtocol 里就是`client`这个属性）
 
-**为 NSURLSession 设置代理**
+##为 NSURLSession 设置代理
 
 为 NSURLSession 设置代理可以通过为其指定一个 NSURLSessionConfiguration 来实现，比如：
 
@@ -58,7 +58,7 @@ NSURLProtocol 的实例化过程对开发者来说是不透明的，也就是说
 
 先到这吧，如有问题再补充~
 
-**参考链接**
+##参考链接
 
 1. *AppProxyCap: [https://github.com/freewizard/AppProxyCap/issues/7](https://github.com/freewizard/AppProxyCap/issues/7)*
 2. *NSURLProtocol Tutorial: [http://www.raywenderlich.com/59982/nsurlprotocol-tutorial](http://www.raywenderlich.com/59982/nsurlprotocol-tutorial)*
