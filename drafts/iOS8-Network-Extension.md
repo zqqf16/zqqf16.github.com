@@ -108,4 +108,9 @@ if (startError) {
 
 上文提到的国际友人曾经遇到了一些问题（可以查看他文章下面的评论），这种问题基本上是因为坑#2 导致的。为了向他解释我的代码没问题，我根据他的代码写了一个简单的 Demo。没写全，但是基本可用。我这一切正常，他说他复制过去还有问题……
 
+> **2014-12-19 更新**
+> 
+> 如果`localIdentifier`和`remoteIdentifier`设置的不对也可能导致这个问题。我测试的 IPSec 服务端把这两个字段去掉了，所以一直没注意~
+
+
 <script src="https://gist.github.com/zqqf16/cbcbd2254e6cb965f1a3.js"></script>
