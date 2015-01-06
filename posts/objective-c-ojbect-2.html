@@ -48,9 +48,9 @@
 <p>这篇文章主要写一下实例变量的存储与访问。</p>
 <h2 id="_2">一、运行时实例对象的结构</h2>
 <p>接着上一篇文章里讲的，为类FirstClass加一个方法：</p>
-<div class="codehilite"><pre><span class="k">@interface</span> <span class="nc">FirstClass</span> : <span class="nc">NSObject</span>
+<div class="codehilite"><pre><span class="k">@interface</span> <span class="nc">FirstClass</span> : <span class="bp">NSObject</span>
 <span class="p">{</span>
-    <span class="n">NSString</span> <span class="o">*</span><span class="n">className</span><span class="p">;</span>
+    <span class="bp">NSString</span> <span class="o">*</span><span class="n">className</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="k">@end</span>
 <span class="o">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="n">accessClassName</span><span class="p">;</span>
@@ -58,11 +58,11 @@
 
 
 <p><code>accessClassName</code>定义如下：</p>
-<div class="codehilite"><pre><span class="k">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">accessClassName</span>
+<div class="codehilite"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">accessClassName</span>
 <span class="p">{</span>
-    <span class="n">NSString</span> <span class="o">*</span><span class="n">a</span> <span class="o">=</span> <span class="n">self</span><span class="p">.</span><span class="n">className</span><span class="p">;</span>
-    <span class="n">NSString</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="n">self</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">;</span>
-    <span class="n">NSString</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="n">className</span><span class="p">;</span>
+    <span class="bp">NSString</span> <span class="o">*</span><span class="n">a</span> <span class="o">=</span> <span class="nb">self</span><span class="p">.</span><span class="n">className</span><span class="p">;</span>
+    <span class="bp">NSString</span> <span class="o">*</span><span class="n">b</span> <span class="o">=</span> <span class="nb">self</span><span class="o">-&gt;</span><span class="n">className</span><span class="p">;</span>
+    <span class="bp">NSString</span> <span class="o">*</span><span class="n">c</span> <span class="o">=</span> <span class="n">className</span><span class="p">;</span>
 
     <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;%@, %@, %@&quot;</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">);</span>
 <span class="p">}</span>
