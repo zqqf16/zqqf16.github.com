@@ -13,7 +13,7 @@ from mako.lookup import TemplateLookup
 CONFIG = {
     'domain': 'blog.zorro.im',
     'title': u'穷折腾',
-    'description': u'Zorro的个人博客',
+    'description': u'zqqf16 的个人博客',
 }
 
 PATH = {
