@@ -4,11 +4,11 @@ top: yes
 
 **我**
 
-80末 IT 男，现混迹于帝都，在一个不大的公司当着一个多用途的螺丝钉。
+80末 IT 男，现混迹于帝都。
 
-工作三年，做过 Web，研究过 AAA，搞过 IPsec，正在做 iOS。
+工作近4年，做过 Web，研究过 AAA，搞过 IPsec，目前正在做 iOS。
 
-主力开发语言是 Objective-C/C，Python辅助。工作中用CVS、SVN，私人项目用Git。
+涉猎过的编程语言包括但不限于 C、Python、Objective-C、Shell、Perl、PHP、Javascript。
 
 同时用着 OS X，Windows 以及 Ubuntu。
 
@@ -26,7 +26,7 @@ top: yes
 
 对电脑游戏有着天生的认知障碍，仅对 CS、红警等少数老掉牙游戏有着特殊爱好。
 
-目前持有 rMBP、台式机、iPad2、iPhone5、Arduino、Raspberry Pi B+、宾得K-30、电钻以及电烙铁……
+目前持有 rMBP、台式机、iPad2、iPhone 5、Arduino、Raspberry Pi B+、宾得K-30、电钻以及电烙铁……
 
 联系方式：zqqf16[at]gmail[dot]com
 
@@ -34,7 +34,7 @@ top: yes
 
 为了写博客前前后后换了多次阵地，用过主机，买过 VPS，现在来到 Github。希望能够坚持下去，争取每周都有更新。
 
-本博客是由本人写的一个非常Ugly的Python脚本生成的、纯天然、无公害的、静态博客。如有兴趣，欢迎Fork：[Github](https://github.com/zqqf16/zqqf16.github.com) | [oschina](http://git.oschina.net/zqqf16/peanut)
+本博客是由本人写的一个非常 Ugly 的 Python 脚本生成的、纯天然、无公害的、静态博客。如有兴趣，欢迎 Fork：[Github](https://github.com/zqqf16/zqqf16.github.com) | [oschina](http://git.oschina.net/zqqf16/peanut)
 
 若无强调，本博客所有文章均属本人原创，转载时请注明出处。如有问题，欢迎留言。
 
