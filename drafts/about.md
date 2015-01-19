@@ -45,3 +45,5 @@ top: yes
 如果你正在找科学上网的方法，不妨试一下[云梯](http://refyunti.com/?r=65dd573aab9f2f10)。我已经用了1年多了，稳定，速度快，多国机房随意选择。
 
 如果点击我的推广[链接](http://refyunti.com/?r=65dd573aab9f2f10)购买，你将节省10块大洋～
+
+如果你想试一下 VPS，不妨试一下 Digital Ocean，通过我的[链接](https://www.digitalocean.com/?refcode=f982e59f11b0)注册，你将获得10刀～
