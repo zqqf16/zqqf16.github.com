@@ -1,4 +1,4 @@
-title: 理解Git的暂存区
+title: 理解 Git 的暂存区
 date: 2013-6-5
 tag: Git
 tag: 暂存区
