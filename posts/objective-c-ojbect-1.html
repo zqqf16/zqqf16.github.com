@@ -112,7 +112,14 @@
 
 
 <p>根据字面意思就可以看明白了，分别定义了两个变量，<code>OBJC_METACLASS_$_FirstClass</code>和<code>OBJC_CLASS_$_FirstClass</code>，前者是元类，后者是类。他们都是<code>_class_t</code>类型的，都是对象。因为是自动改写的，所以变量名都有些奇怪，但并不影响阅读。</p>
-<p>这里简单介绍一下<code>__declspec(dllimport)</code>、<code>__declspec(dllexport)</code> 以及 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code>。前两个分别声明导入和导出函数，一般用于动态链接库，后面的是一个GNU C的扩展，<code>used</code>告诉编译器即使后面没有引用也要编译这段代码，<code>section ("__DATA,__objc_data")</code>是说把这段代码编译到<code>__DATA,__objc_data</code>段，而不是默认的代码段。至于为啥要这样，我也不太明白，有待进一步研究。</p>
+<p>这里简单介绍一下<code>__declspec(dllimport)</code>、<code>__declspec(dllexport)</code> 以及 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code>。前两个分别声明导入和导出函数，一般用于动态链接库，后面的是一个GNU C的扩展，<code>used</code>告诉编译器即使后面没有引用也要编译这段代码，<code>section ("__DATA,__objc_data")</code><s>是说把这段代码编译到<code>__DATA,__objc_data</code>段，而不是默认的代码段。</s>至于为啥要这样，我也不太明白，有待进一步研究。</p>
+<blockquote>
+<p><strong>2015-1-21 更新</strong></p>
+<ol>
+<li>"__DATA,__objc_data" 是要把这段数据放在 "__DATA" 段（Segment）的 "__objc_data" 节（Section）。这跟 Mach-O 文件格式的规定有关，类似的还有 "__DATA,__objc_classlist"、"__TEXT,__objc_methodname" 这样的。</li>
+<li>这段代码定义了全局变量，应该放在数据段，而不是代码段</li>
+</ol>
+</blockquote>
 <p><code>_class_t</code>的声明如下：</p>
 <div class="codehilite"><pre><span class="k">struct</span> <span class="kt">_class_t</span> <span class="p">{</span>
     <span class="k">struct</span> <span class="kt">_class_t</span> <span class="o">*</span><span class="n">isa</span><span class="p">;</span>

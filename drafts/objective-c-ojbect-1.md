@@ -81,7 +81,12 @@ extern "C" __declspec(dllexport) struct _class_t OBJC_CLASS_$_FirstClass __attri
 
 根据字面意思就可以看明白了，分别定义了两个变量，`OBJC_METACLASS_$_FirstClass`和`OBJC_CLASS_$_FirstClass`，前者是元类，后者是类。他们都是`_class_t`类型的，都是对象。因为是自动改写的，所以变量名都有些奇怪，但并不影响阅读。
 
-这里简单介绍一下`__declspec(dllimport)`、`__declspec(dllexport)` 以及 `__attribute__ ((used, section ("__DATA,__objc_data")))`。前两个分别声明导入和导出函数，一般用于动态链接库，后面的是一个GNU C的扩展，`used`告诉编译器即使后面没有引用也要编译这段代码，`section ("__DATA,__objc_data")`是说把这段代码编译到`__DATA,__objc_data`段，而不是默认的代码段。至于为啥要这样，我也不太明白，有待进一步研究。
+这里简单介绍一下`__declspec(dllimport)`、`__declspec(dllexport)` 以及 `__attribute__ ((used, section ("__DATA,__objc_data")))`。前两个分别声明导入和导出函数，一般用于动态链接库，后面的是一个GNU C的扩展，`used`告诉编译器即使后面没有引用也要编译这段代码，`section ("__DATA,__objc_data")`<s>是说把这段代码编译到`__DATA,__objc_data`段，而不是默认的代码段。</s>至于为啥要这样，我也不太明白，有待进一步研究。
+
+> **2015-1-21 更新**
+>
+> 1. "\_\_DATA,\_\_objc_data" 是要把这段数据放在 "\_\_DATA" 段（Segment）的 "\_\_objc_data" 节（Section）。这跟 Mach-O 文件格式的规定有关，类似的还有 "\_\_DATA,\_\_objc_classlist"、"\_\_TEXT,\_\_objc_methodname" 这样的。
+> 2. 这段代码定义了全局变量，应该放在数据段，而不是代码段
 
 `_class_t`的声明如下：
 
