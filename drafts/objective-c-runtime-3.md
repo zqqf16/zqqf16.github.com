@@ -97,7 +97,7 @@ Contents of (__TEXT,__cstring) section
 
 通过看 Runtime 代码可知，“objc\_getClass”函数会从一个全局的类列表里查找该类，而这个全局的类列表则是在程序初始化时从“\_\_DATA,\_\_objc\_classlist”这个 Section（从clang 改写后的代码里看，这里存放着类对象的指针）中读取的（objc-runtime-new.mm)。
 
-把这些类对象放在一个 Section 里，在编译时期不用把每个类的地址都保存下来，创建类列表时只要便利一下这个 Section 就可以了。
+把这些类对象放在一个 Section 里，在编译时期不用把每个类的地址都保存下来，创建类列表时只要遍历一下这个 Section 就可以了。
 
 PS：这也是 class-dump 等工具的工作原理。
 

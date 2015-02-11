@@ -120,7 +120,7 @@ Contents of <span class="o">(</span>__TEXT,__cstring<span class="o">)</span> sec
 <p><em>没有找到官方文档来说明为什么要分成这些 Section ，下面仅是我个人理解</em></p>
 <p>在 Objective-C 中，当用到某个类对象时，是在运行时动态查找的，并不是像 C 那样在编译时期就确定的。比如调用<code>[ClassOne alloc]</code> ，内部实现上会先调用 <code>objc_getClass("ClassOne")</code> 函数来查找“ClassOne”这个类，找到后再调用其“alloc”方法。在编译时，调用者并不知道“ClassOne”的具体地址，只知道它的名字，运行时会拿着这个名字去找。这也体现了语言的动态性。</p>
 <p>通过看 Runtime 代码可知，“objc_getClass”函数会从一个全局的类列表里查找该类，而这个全局的类列表则是在程序初始化时从“__DATA,__objc_classlist”这个 Section（从clang 改写后的代码里看，这里存放着类对象的指针）中读取的（objc-runtime-new.mm)。</p>
-<p>把这些类对象放在一个 Section 里，在编译时期不用把每个类的地址都保存下来，创建类列表时只要便利一下这个 Section 就可以了。</p>
+<p>把这些类对象放在一个 Section 里，在编译时期不用把每个类的地址都保存下来，创建类列表时只要遍历一下这个 Section 就可以了。</p>
 <p>PS：这也是 class-dump 等工具的工作原理。</p>
 <h2 id="_3">参考链接</h2>
 <p><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html">OS X ABI Mach-O File Format Reference</a></p>
