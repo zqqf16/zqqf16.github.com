@@ -194,6 +194,8 @@ def peanut():
 
     posts = reader.read_all(PATH['draft'])
     posts.sort(lambda x, y: cmp(x.date, y.date), reverse=True)
+    posts = filter(lambda x: x.publish, posts)
+
     tags = Tag.all()
     tops = filter(lambda x: x.top, posts)
 
