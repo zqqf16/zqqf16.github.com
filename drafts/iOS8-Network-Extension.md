@@ -98,11 +98,16 @@ if (startError) {
 
 由于没有官方文档说明，不知道是调用方式不对还是 NE 本身不稳定，开发过程中遇到了很多大坑：
 
-1. 上面提到的，系统配置文件和 NEVPNManager 内容不同步，需要监听“NEVPNConfigurationChangeNotification” 消息。
+1. 上面提到的，系统配置文件和 NEVPNManager 内容不同步，需要监听 “NEVPNConfigurationChangeNotification” 消息。
 2.  NEVPNManager 的操作基本上都是异步的，改配置时必须确保 load 完成，启动 VPN 时必须确保 save 完成。
 3.  有时候创建、保存配置一切正常，但是启动时就会提示 “未知错误”。这时候需要在系统设置里面手动启动一次 VPN，然后程序就可以正常启动了……有时候手动启动也不成，那就得把配置文件删除，然后重新安装……
+	
+	> 2015-3-13 更新解决方法：
+	>
+	> 在调用 NEVPNManager 的 `saveToPreferencesWithCompletionHandler` 方法前，应将它的 `enabled` 属性置成 “YES”。
+
 4.  配置 IPSec 协议时，密码相关的（证书密码除外）必须得是 KeyChain 的永久引用，即`kSecReturnPersistentRef`需要是 YES。
-5.  获取 VPN 状态时，NEVPNConnection 的 status 属性是不支持 KVO 的，需要监听 “NEVPNStatusDidChangeNotification” 事件。这点应该是 By design 的，但是这个问题当时困扰我很久……
+5.  获取 VPN 状态时，NEVPNConnection 的 status 属性是不支持 KVO 的，需要监听 “NEVPNStatusDidChangeNotification” 事件。这点应该是 By-design 的，但是这个问题当时困扰我很久……
 
 ## 完整代码
 
@@ -112,5 +117,6 @@ if (startError) {
 > 
 > 如果`localIdentifier`和`remoteIdentifier`设置的不对也可能导致这个问题。我测试的 IPSec 服务端把这两个字段去掉了，所以一直没注意~
 
+*以下代码来自 Gist，需自备梯子～*
 
 <script src="https://gist.github.com/zqqf16/cbcbd2254e6cb965f1a3.js"></script>
