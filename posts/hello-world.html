@@ -13,7 +13,9 @@ Hello World |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Hello World |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Hello World</h1>
-            <span class="section-subtitle"><time datetime="2013-04-24" pubdate="">2013-04-24</time></span>
+            <h1 itemprop="name" class="section-title">Hello World</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-04-24" datetime="2013-04-24" pubdate="2013-04-24">2013-04-24</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>把博客搬到了Github</p>
 <p>测试一下Markdown</p>
 <h2 id="this-is-an-h2">This is an H2</h2>
@@ -90,6 +92,11 @@ Hello World |
 <p>Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please. </p>
 <p>Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please.</p>
         </section>
+
+		<meta itemprop="url" content="posts/hello-world.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

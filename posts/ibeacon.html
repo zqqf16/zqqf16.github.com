@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">初识 iBeacon</h1>
-            <span class="section-subtitle"><time datetime="2014-09-01" pubdate="">2014-09-01</time></span>
+            <h1 itemprop="name" class="section-title">初识 iBeacon</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-09-01" datetime="2014-09-01" pubdate="2014-09-01">2014-09-01</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>以前玩 Arduino 的时候就了解过蓝牙4.0，当时颇让我震惊的是它仅用一颗纽扣电池就可以工作一年！这天生就就是为物联网以及可穿戴设备准备的。可惜当时各厂商对它的支持不是很广泛，只有 iPhone 以及少数 Android 手机支持，一个小小的开发模块也得一两百大洋。</p>
 <p>后来看 WWDC 2014的视频（2013年没注意...），了解到了 iBeacon，一个苹果基于蓝牙4.0开发的定位技术。</p>
 <p>大致原理如下：</p>
@@ -145,6 +147,11 @@ NSLocationAlwaysUsageDescription
 <p>好吧，火星了，昨晚兴致勃勃地以为发现了事实的真相，结果一搜，连百度都能搜的出来…</p>
 <p>哈哈</p>
         </section>
+
+		<meta itemprop="url" content="posts/ibeacon.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">重拾C语言之运算符优先级</h1>
-            <span class="section-subtitle"><time datetime="2013-05-28" pubdate="">2013-05-28</time></span>
+            <h1 itemprop="name" class="section-title">重拾C语言之运算符优先级</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-05-28" datetime="2013-05-28" pubdate="2013-05-28">2013-05-28</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>总是记不住C语言各个运算符的优先级，<s>每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差</s>。因此，就借最近整理C语言知识点的时机恶补一下。</p>
 <p>注意：下面的这段内容抄自<a href="http://baike.baidu.com/view/1516130.htm">百度百科</a></p>
 <blockquote>
@@ -82,6 +84,11 @@
 <p>PS：如果实在记不清，还是建议乖乖地套上括号，这是最靠谱的方法。</p>
 <p>PS2：“只记住两个优先级就够了：乘法和除法优先于加减法，其他操作一律加括号” —— 《C专家编程》</p>
         </section>
+
+		<meta itemprop="url" content="posts/c-priority.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

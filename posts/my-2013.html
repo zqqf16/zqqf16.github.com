@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">我的2013</h1>
-            <span class="section-subtitle"><time datetime="2014-01-12" pubdate="">2014-01-12</time></span>
+            <h1 itemprop="name" class="section-title">我的2013</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-01-12" datetime="2014-01-12" pubdate="2014-01-12">2014-01-12</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<blockquote>
 <p>这篇文章本来是打算在2014年春节前完成的，但是由于要准备回老家就耽误了。前几天匆匆写了一篇算不上总结的总结，写完之后总觉得不太满意，所以就决定重写一篇了。</p>
 </blockquote>
@@ -66,6 +68,11 @@
 <li>多挣钱，不乱花钱。</li>
 </ol>
         </section>
+
+		<meta itemprop="url" content="posts/my-2013.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

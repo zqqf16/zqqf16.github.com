@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">谈谈 iOS8 中的 Network Extension</h1>
-            <span class="section-subtitle"><time datetime="2014-10-14" pubdate="">2014-10-14</time></span>
+            <h1 itemprop="name" class="section-title">谈谈 iOS8 中的 Network Extension</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-10-14" datetime="2014-10-14" pubdate="2014-10-14">2014-10-14</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<blockquote>
 <p>由于工作原因，对 iOS 的 VPN 方面比较关心，于是基本上就在第一时间发现并研究了 Network Extension（以下简称 NE）。</p>
 </blockquote>
@@ -139,6 +141,11 @@
 <p><em>以下代码来自 Gist，需自备梯子～</em></p>
 <script src="https://gist.github.com/zqqf16/cbcbd2254e6cb965f1a3.js"></script>
         </section>
+
+		<meta itemprop="url" content="posts/iOS8-Network-Extension.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

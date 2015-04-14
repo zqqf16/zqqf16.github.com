@@ -13,7 +13,9 @@ Tornado源码之Template |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Tornado源码之Template |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Tornado源码之Template</h1>
-            <span class="section-subtitle"><time datetime="2013-11-21" pubdate="">2013-11-21</time></span>
+            <h1 itemprop="name" class="section-title">Tornado源码之Template</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-11-21" datetime="2013-11-21" pubdate="2013-11-21">2013-11-21</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>Tornado底层的源码分析已经有很多人写过了，他们的水平都在我之上，写的也比我好，所以我就不再重复了。打算剑走偏锋，研究一下tornado周边的东西。这篇就研究一下之前一直很感兴趣的Template。</p>
 <p>Template的工作流程如下：</p>
 <ol>
@@ -176,6 +178,11 @@ Tornado源码之Template |
 <p>从上面的例子中可以看出，执行完这段字节码，namespace中会创建一个名为<code>_tt_execute</code>函数，然后再执行这个函数，得到的结果就是模板渲染完的结果。</p>
 <p>至此，Template的工作流程就介绍完了~</p>
         </section>
+
+		<meta itemprop="url" content="posts/tornado-template.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

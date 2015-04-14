@@ -13,7 +13,9 @@ Levenshtein distance（编辑距离）算法 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Levenshtein distance（编辑距离）算法 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Levenshtein distance（编辑距离）算法</h1>
-            <span class="section-subtitle"><time datetime="2013-08-02" pubdate="">2013-08-02</time></span>
+            <h1 itemprop="name" class="section-title">Levenshtein distance（编辑距离）算法</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-08-02" datetime="2013-08-02" pubdate="2013-08-02">2013-08-02</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>在用Git的时候，如果一不小心把命令参数输入错了，比如把<code>show</code>写成了<code>slow</code>，Git会进行有好的提示：</p>
 <div class="codehilite"><pre><span class="nv">$git</span> slow
 git: <span class="s1">&#39;slow&#39;</span> is not a git command. See <span class="s1">&#39;git --help&#39;</span>.
@@ -57,6 +59,11 @@ Did you mean this?
 <p>有个外国哥们基于这个算法又改进了一下，在原有的三种操作（插入、删除、替换）中又增加了一种“交换”，这对于拼写检查之类的还是很有用的。这种改进后的算法又叫<a href="http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance">Damerau–Levenshtein distance</a>。Git源码里就是采用的这种算法，具体代码可以查看<a href="https://github.com/git/git/blob/master/levenshtein.c">这里</a>。需要注意的是，Git中把4中操作都加上了权值，这样更灵活一些。</p>
 <p>为了更好的理解这个算法，我自己也基于Python实现了一下，代码放在了Gist上，可以访问<a href="https://gist.github.com/zqqf16/6137789">这里</a>。PS：只是为了描述一下算法，并没有过多地考虑效率问题。</p>
         </section>
+
+		<meta itemprop="url" content="posts/levenshtein-distance.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">高亮Markdown中的代码（续）</h1>
-            <span class="section-subtitle"><time datetime="2013-08-20" pubdate="">2013-08-20</time></span>
+            <h1 itemprop="name" class="section-title">高亮Markdown中的代码（续）</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-08-20" datetime="2013-08-20" pubdate="2013-08-20">2013-08-20</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>之前写过一篇文章（<a href="/posts/how-to-highlight-code-in-markdown.html">高亮Markdown中的代码</a>)，介绍了python-markdown2中高亮代码的方法。后来在使用中我发现了一个<code>fenced code blocks</code>的bug，如果代码中间有空行，它会把换行之后的部分当成嵌套的。生成的文件中会有一堆类似这样的部分：</p>
 <div class="codehilite"><pre><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;k&quot;</span><span class="nt">&gt;</span>class<span class="nt">&lt;/span&gt;</span> <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;nc&quot;</span><span class="nt">&gt;</span>
 </pre></div>
@@ -69,6 +71,11 @@ tag: python
 
 <p>过度完毕，问题搞定~</p>
         </section>
+
+		<meta itemprop="url" content="posts/how-to-highlight-code-in-markdown-continue.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

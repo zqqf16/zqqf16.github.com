@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">写了一个简单的Web剪切板-Clipboard</h1>
-            <span class="section-subtitle"><time datetime="2013-12-19" pubdate="">2013-12-19</time></span>
+            <h1 itemprop="name" class="section-title">写了一个简单的Web剪切板-Clipboard</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-12-19" datetime="2013-12-19" pubdate="2013-12-19">2013-12-19</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>平时由于工作的关系需要用到多台电脑，Mac和Windows来回切换。有时候想把一些信息复制到另一台电脑上，只能打开文件共享，然后把内容保存到文件里，再到另一台电脑里打开。时间一长，就积累了很多垃圾文件。于是乎就花了点时间，写了个简单的基于Web的内容共享程序，我叫它Clipboard。</p>
 <p>源码在此：<a href="https://github.com/zqqf16/clipboard">github</a></p>
 <p>我是把它当作一个练手项目来写的，尝试了很多新东西，也学到了很多。</p>
@@ -100,6 +102,11 @@
 <p>最后，上一张效果图~</p>
 <p><img alt="Clipboard" src="/static/img/clipboard.png" /></p>
         </section>
+
+		<meta itemprop="url" content="posts/web-clipboard.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

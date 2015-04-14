@@ -13,7 +13,9 @@ Python命令行参数解析工具——argparse |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Python命令行参数解析工具——argparse |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Python命令行参数解析工具——argparse</h1>
-            <span class="section-subtitle"><time datetime="2013-10-22" pubdate="">2013-10-22</time></span>
+            <h1 itemprop="name" class="section-title">Python命令行参数解析工具——argparse</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-10-22" datetime="2013-10-22" pubdate="2013-10-22">2013-10-22</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。</p>
 <p>之前用Python写了一个解析工具，可以从Diff文件中提取出修改过的文件列表，很方便的就可以找出不相关的文件，提交代码的时候也能省去很多麻烦。原理十分简单，主要是用正则表达式<code>^Index: (.*)$</code>来找出所有以“Index”开头的行。</p>
 <p>前几天在用着个工具的时候想用一下管道，结果发现当时写的太简单了，不支持……趁着空闲就花了点时间改造了一下，让它既支持从文件中读取，又支持stdin读取。既可以返回文件列表，又可以方便CVS操作的文件名串。</p>
@@ -130,6 +132,11 @@ optional arguments:
 
 <p>或者<a href="https://gist.github.com/zqqf16/7094628">Gist</a></p>
         </section>
+
+		<meta itemprop="url" content="posts/argparse.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

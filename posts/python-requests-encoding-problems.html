@@ -13,7 +13,9 @@ Requests抓取网页的编码问题 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Requests抓取网页的编码问题 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Requests抓取网页的编码问题</h1>
-            <span class="section-subtitle"><time datetime="2013-07-18" pubdate="">2013-07-18</time></span>
+            <h1 itemprop="name" class="section-title">Requests抓取网页的编码问题</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-07-18" datetime="2013-07-18" pubdate="2013-07-18">2013-07-18</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>经常在各大python论坛上看到有关爬虫的问题，实在是搞不明白这玩意儿除了对做搜索引擎还能有啥用。今天本着好奇的态度，打算试一试。</p>
 <p>一番Google之后，发现了个很NB的库<strong>Requests</strong>，比之前我用过的liburl2等http库简单多了。出于测试的目的，打算抓取一下我的博客。</p>
 <div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
@@ -71,6 +73,11 @@ Requests抓取网页的编码问题 |
 
 <p>问题搞定了，多看看官方文档还是很有帮助滴。</p>
         </section>
+
+		<meta itemprop="url" content="posts/python-requests-encoding-problems.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

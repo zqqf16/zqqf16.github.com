@@ -13,7 +13,9 @@ Python中关于__new__和__init__的坑 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Python中关于__new__和__init__的坑 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Python中关于__new__和__init__的坑</h1>
-            <span class="section-subtitle"><time datetime="2014-01-06" pubdate="">2014-01-06</time></span>
+            <h1 itemprop="name" class="section-title">Python中关于__new__和__init__的坑</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-01-06" datetime="2014-01-06" pubdate="2014-01-06">2014-01-06</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>前几天在重构Peanut的时候，想实现一个扩展的单实例模式。即每个同名的Tag在内存中只有一份，这样方便Tag与Post的关联。然后想起了之前在网上看的Python单实例方法，重写了<code>__new__</code>:</p>
 <div class="codehilite"><pre><span class="k">class</span> <span class="nc">Tag</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">_pool</span> <span class="o">=</span> <span class="p">{}</span>
@@ -139,6 +141,11 @@ Python中关于__new__和__init__的坑 |
 <p>通过这个，可以很清楚的了解元类的流程。</p>
 <p>完</p>
         </section>
+
+		<meta itemprop="url" content="posts/python-new-init.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

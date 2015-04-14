@@ -13,7 +13,9 @@ tornado源码之Configurable类 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ tornado源码之Configurable类 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">tornado源码之Configurable类</h1>
-            <span class="section-subtitle"><time datetime="2013-07-16" pubdate="">2013-07-16</time></span>
+            <h1 itemprop="name" class="section-title">tornado源码之Configurable类</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-07-16" datetime="2013-07-16" pubdate="2013-07-16">2013-07-16</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的<a href="http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html">源码分析</a>来作为入门。</p>
 <p>第一讲是说IOLoop的，也是tornado的核心。程序中主函数通常调用<code>tornado.ioloop.IOLoop.instance().start()</code>来启动IOLoop，但是看了一下IOLoop的实现，start方法是这样的：</p>
 <div class="codehilite"><pre>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -107,6 +109,11 @@ tornado源码之Configurable类 |
 <p><code>EPollIOLoop</code>是<code>PollIOLoop</code>的子类。至此，这个流程就理清楚了。</p>
 <p>第一天看tornado的代码就收获不少，<strong>最好的学习方式就是看别人的代码</strong>这话一点都不假。</p>
         </section>
+
+		<meta itemprop="url" content="posts/tornado-configurable.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

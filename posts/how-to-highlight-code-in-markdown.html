@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">高亮Markdown中的代码</h1>
-            <span class="section-subtitle"><time datetime="2013-04-26" pubdate="">2013-04-26</time></span>
+            <h1 itemprop="name" class="section-title">高亮Markdown中的代码</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-04-26" datetime="2013-04-26" pubdate="2013-04-26">2013-04-26</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于<code>&lt;code class="python"&gt;</code>的HTML标签，显得十分Ugly。</p>
 <p>于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。</p>
 <p>初步打算用</p>
@@ -68,6 +70,11 @@ print &quot;hi&quot;
 <p>问题圆满解决~</p>
 <p>更多Markdown2扩展请参考<a href="https://github.com/trentm/python-markdown2/wiki/Extras">Wiki</a></p>
         </section>
+
+		<meta itemprop="url" content="posts/how-to-highlight-code-in-markdown.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

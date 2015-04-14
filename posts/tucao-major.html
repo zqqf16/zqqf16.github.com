@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">吐槽一下专业</h1>
-            <span class="section-subtitle"><time datetime="2013-05-13" pubdate="">2013-05-13</time></span>
+            <h1 itemprop="name" class="section-title">吐槽一下专业</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-05-13" datetime="2013-05-13" pubdate="2013-05-13">2013-05-13</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<blockquote>
 <p>本文吐槽为主，杂乱无章，技术含量地下，阅读前请三思。</p>
 </blockquote>
@@ -47,6 +49,11 @@
 <p><strong>总想着用自己的专业解决所有事情</strong>，学计算机的恨不能连养猫养狗都写个程序，摆个地摊都想来个客户端。用自己所学知识解决了实际生活生产问题，这叫为社会做贡献；用自己的知识成功地把简单的东西复杂化，这叫吃饱撑得。</p>
 <p>--EOF--</p>
         </section>
+
+		<meta itemprop="url" content="posts/tucao-major.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

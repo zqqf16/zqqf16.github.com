@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">谈谈 iOS 中的 MVVM</h1>
-            <span class="section-subtitle"><time datetime="2014-07-07" pubdate="">2014-07-07</time></span>
+            <h1 itemprop="name" class="section-title">谈谈 iOS 中的 MVVM</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-07-07" datetime="2014-07-07" pubdate="2014-07-07">2014-07-07</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>前言</p>
 <p>很久没写博客了，一方面因为工作太忙，把精力都耗掉了。另一方面，由于长时间不写文章，不知道该如何下笔，越来越犹豫。</p>
 <p>前几天查看了一下最近的 Google 统计，发现我的小 Blog 竟然每天都有3、5个人访问。顿时就感觉到信心大增，为了对得起观众，我决定重新拾起来。</p>
@@ -96,6 +98,11 @@
 <li><a href="http://jpellat.com/how-to-separate-view-controllers-from-his-view-logic/">How to separate view controllers from their view logic</a></li>
 </ul>
         </section>
+
+		<meta itemprop="url" content="posts/mvvm.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

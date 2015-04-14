@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">我的Vim配置</h1>
-            <span class="section-subtitle"><time datetime="2013-05-22" pubdate="">2013-05-22</time></span>
+            <h1 itemprop="name" class="section-title">我的Vim配置</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-05-22" datetime="2013-05-22" pubdate="2013-05-22">2013-05-22</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>之前，我的Vim配置一直是通过Ubuntu One来保存和备份的。但是Ubuntu One的网络实在是不敢恭维，时好时坏。因此就在寻求一种比较靠谱的备份方式。</p>
 <p>后来有一次在看别人博客的时候，发现了一个神器“vim-pathogen”。关于它的详细介绍我就不罗嗦了，下载及查看可以到<a href="https://github.com/tpope/vim-pathogen">这里</a>。</p>
 <p>用一句话概括就是它是管理Vim插件的插件。用它加上Github的配合，可以完美地实现配置备份。</p>
@@ -87,6 +89,11 @@ execute pathogen#infect<span class="p">()</span>
 <p>上一张截图<img alt="vim" src="/static/img/my-vim.png" /></p>
 <p>参考文章：<a href="http://liluo.org/blog/2012/05/using-git-submodule-and-vim-pathogen-for-vim-configuraction-management/">liluo.org</a></p>
         </section>
+
+		<meta itemprop="url" content="posts/my-vim-configuration.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

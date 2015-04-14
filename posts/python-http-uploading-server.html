@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">支持上传的SimpleHTTPServer</h1>
-            <span class="section-subtitle"><time datetime="2013-07-24" pubdate="">2013-07-24</time></span>
+            <h1 itemprop="name" class="section-title">支持上传的SimpleHTTPServer</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-07-24" datetime="2013-07-24" pubdate="2013-07-24">2013-07-24</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>办公室有两台电脑，一个台式机，装着Ubuntu，主要用来开发。另一台笔记本，装着Windows，用来收发邮件，读写文档。为了方便两台机器的文件共享，在Ubuntu上装了Samba服务器。</p>
 <p>但是公司的WiFi和台式机的有线不在同一个网段，这就导致了笔记本用WiFi的时候就不能用Samba。后来发现python自带的SimpleHTTPServer可以很方便的搭建HTTP服务器，用它从台式机向笔记本传文件很方便。</p>
 <p>SimpleHTTPServer太Simple了，没有上传功能，从笔记本到台式机的时候不是很方便。于是乎找来SimpleHTTPServer.py好好研究一番，就有了下面的支持上传的SimpleHTTPServer：（或者移步<a href="https://github.com/zqqf16/SimpleHTTPServer">Github</a>）</p>
@@ -312,6 +314,11 @@
 </ol>
 <p>另外，SimpleHTTPServer基于BaseHTTPServer，如有兴趣可以参考官方文档。</p>
         </section>
+
+		<meta itemprop="url" content="posts/python-http-uploading-server.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

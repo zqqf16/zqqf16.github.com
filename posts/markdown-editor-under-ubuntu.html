@@ -13,7 +13,9 @@ Ubuntu下好用的Markdown编辑器 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Ubuntu下好用的Markdown编辑器 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Ubuntu下好用的Markdown编辑器</h1>
-            <span class="section-subtitle"><time datetime="2013-06-04" pubdate="">2013-06-04</time></span>
+            <h1 itemprop="name" class="section-title">Ubuntu下好用的Markdown编辑器</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-06-04" datetime="2013-06-04" pubdate="2013-06-04">2013-06-04</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。</p>
 <p>后来在Ubuntu软件中心里面搜"Markdown"，发现了一个不错的编辑器——ReText。</p>
 <p>可以直接用apt-get来安装：</p>
@@ -62,6 +64,11 @@ Ubuntu下好用的Markdown编辑器 |
 <p>重新打开ReText就OK了~</p>
 <p><img alt="图片" src="/static/img/retext.png" /></p>
         </section>
+
+		<meta itemprop="url" content="posts/markdown-editor-under-ubuntu.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

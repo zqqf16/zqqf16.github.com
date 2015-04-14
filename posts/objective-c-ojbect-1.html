@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">从源码看Objective-C的对象模型（一）</h1>
-            <span class="section-subtitle"><time datetime="2014-03-05" pubdate="">2014-03-05</time></span>
+            <h1 itemprop="name" class="section-title">从源码看Objective-C的对象模型（一）</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-03-05" datetime="2014-03-05" pubdate="2014-03-05">2014-03-05</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<h2 id="_1">前言</h2>
 <p>刚接触Objective-C的时候，曾被一个bug折磨得很痛苦，后来才发现是我对Category理解错了，不知道它对所有该类的实例都会起作用。当时就决定要好好研究一下Objective-C的对象模型。正好最近手头的活忙完了，可以有时间做个总结。</p>
 <p>本文所参照的代码是clang rewrite之后的C++代码，以及Apple开源的Runtime代码，地址<a href="http://www.opensource.apple.com/source/objc4/">在这</a>。Apple官方貌似没有提供一个打包下载的地址，我在Github上fork了一份别人整理过的437.1版本的，可以到<a href="https://github.com/zqqf16/OBJC4-437.1-Runtime">这里</a>查看。</p>
@@ -148,6 +150,11 @@
 <p>看到这就明白了，类对象以及元类对象是编译时就会创建好的。那么实例对象是怎么创建的，实例变量是怎么保存的呢？且看下一篇分解~</p>
 <p>--未完待续--</p>
         </section>
+
+		<meta itemprop="url" content="posts/objective-c-ojbect-1.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

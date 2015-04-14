@@ -5,16 +5,25 @@
 ${this.title} |
 </%block>
 
+<%block name="article_body">
+itemscope itemtype="http://schema.org/Article"
+</%block>
+
 <%block name="main">
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">${this.title}</h1>
-            <span class="section-subtitle"><time datetime="${this.date.strftime('%Y-%m-%d')}" pubdate="">${this.date.strftime('%Y-%m-%d')}</time></span>
+            <h1 itemprop="name" class="section-title">${this.title}</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="${this.date.strftime('%Y-%m-%d')}" datetime="${this.date.strftime('%Y-%m-%d')}" pubdate="${this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	${this.content}
         </section>
+
+		<meta itemprop="url" content="${this.url}">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="${author}"></span>
+
         <div class="post-nav">
     		<%include file="comment.html"/>
     	</div>

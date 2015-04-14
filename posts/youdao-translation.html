@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">命令行下的有道翻译</h1>
-            <span class="section-subtitle"><time datetime="2013-05-20" pubdate="">2013-05-20</time></span>
+            <h1 itemprop="name" class="section-title">命令行下的有道翻译</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-05-20" datetime="2013-05-20" pubdate="2013-05-20">2013-05-20</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。</p>
 <p>一次偶然的机会，发现了有道这个靠谱的工具提供了十分方便的API可供调用，就花了一点时间，写了个Python版的~。</p>
 <p>有道的数据接口如下：</p>
@@ -112,6 +114,11 @@ errorCode：<br />
 <p><img alt="图片" src="/static/img/youdao-translation.png" /></p>
 <p>PS: 用的时候最好自己去申请一个Key~</p>
         </section>
+
+		<meta itemprop="url" content="posts/youdao-translation.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

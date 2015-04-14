@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">一个方便无线发布iOS应用的工具——WAD</h1>
-            <span class="section-subtitle"><time datetime="2014-04-09" pubdate="">2014-04-09</time></span>
+            <h1 itemprop="name" class="section-title">一个方便无线发布iOS应用的工具——WAD</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-04-09" datetime="2014-04-09" pubdate="2014-04-09">2014-04-09</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<h3 id="_1">前言</h3>
 <p>鄙司目前还在用CVS来管理代码，这就导致了Xcode Bot这样的持续集成工具没有用武之地。再加上搞iOS的就我自己，上班时间基本都修Bug了，暂时还木有时间搞自动化。</p>
 <p>我的前辈写了一个Shell脚本，放在在一台专门的机器上完成打包发布的工作。但是这个工具是半自动的，每次发布都得改一些参数。再加上里面有太多的Hard Code，随着iOS7 SDK等变化，需要改的太多了，经常会发生各种错误，实在是耽误时间。真不如在自己电脑上用Xcode打包来的快。</p>
@@ -73,6 +75,11 @@
 <p>用Evernote做示范~</p>
 <p><img alt="WAD" src="http://zorro-blog.qiniudn.com/wad.png" /></p>
         </section>
+
+		<meta itemprop="url" content="posts/wad.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

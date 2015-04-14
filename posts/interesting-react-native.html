@@ -13,7 +13,9 @@ React Native 中那些有意思的地方（一） |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ React Native 中那些有意思的地方（一） |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">React Native 中那些有意思的地方（一）</h1>
-            <span class="section-subtitle"><time datetime="2015-04-13" pubdate="">2015-04-13</time></span>
+            <h1 itemprop="name" class="section-title">React Native 中那些有意思的地方（一）</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2015-04-13" datetime="2015-04-13" pubdate="2015-04-13">2015-04-13</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<blockquote>
 <p>最近看 React Native 源码，发现了挺多有意思的地方，正好很久没写文章了，就写写这个吧。</p>
 </blockquote>
@@ -142,6 +144,11 @@ React Native 中那些有意思的地方（一） |
 <p>还有一点，这种方式属于比 <code>+ (void)load</code> 还黑的黑科技，少用怡情，滥用伤神。当然，如果是传统的 C 程序员，这种方法对他们来说应该是见怪不怪了。</p>
 <p>不过，多知道一种有意思的方法总归是有益的，是吧？</p>
         </section>
+
+		<meta itemprop="url" content="posts/interesting-react-native.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

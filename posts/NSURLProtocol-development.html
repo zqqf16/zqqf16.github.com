@@ -13,7 +13,9 @@ NSURLProtocol 开发笔记 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ NSURLProtocol 开发笔记 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">NSURLProtocol 开发笔记</h1>
-            <span class="section-subtitle"><time datetime="2014-11-01" pubdate="">2014-11-01</time></span>
+            <h1 itemprop="name" class="section-title">NSURLProtocol 开发笔记</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-11-01" datetime="2014-11-01" pubdate="2014-11-01">2014-11-01</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>前一段时间一直在研究 iOS 应用内的 HTTP 代理问题，在 iOS 6之前可以用 <a href="https://github.com/freewizard/AppProxyCap">AppProxyCap</a> 这样的 Hack 方法实现，但从 iOS7 开始就不能用了。</p>
 <p>虽然 NSURLSession 提供了设置代理的方法，但是它只是针对单个 Session 的，没法实现全局的，尤其是 UIWebView 的代理。</p>
 <p>无奈之下，只能选择 NSURLProtocol 这个不完美的实现方案了，为什么说它是不完美的，下文将有介绍。</p>
@@ -80,6 +82,11 @@ NSURLProtocol 开发笔记 |
 <li><em>CustomHTTPProtocol: <a href="https://developer.apple.com/library/ios/samplecode/CustomHTTPProtocol/Listings/Read_Me_About_CustomHTTPProtocol_txt.html">https://developer.apple.com/library/ios/samplecode/CustomHTTPProtocol/</a></em></li>
 </ol>
         </section>
+
+		<meta itemprop="url" content="posts/NSURLProtocol-development.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

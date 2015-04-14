@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">重拾C语言之strncpy</h1>
-            <span class="section-subtitle"><time datetime="2013-05-24" pubdate="">2013-05-24</time></span>
+            <h1 itemprop="name" class="section-title">重拾C语言之strncpy</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-05-24" datetime="2013-05-24" pubdate="2013-05-24">2013-05-24</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<blockquote>
 <p>前一段时间Python用惯了，冷不丁地切换回C，发现很多基础东西都有点模糊了。从今天起，我将把一些平时碰到的知识点整理起来，起名为“重拾C语言”系列。纯粹的基础知识，老鸟绕行~</p>
 </blockquote>
@@ -66,6 +68,11 @@
 
 <p>只有当n大于src的长度才会在dest的末尾填“\0”。</p>
         </section>
+
+		<meta itemprop="url" content="posts/c-strncpy.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

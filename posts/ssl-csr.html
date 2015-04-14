@@ -13,7 +13,9 @@ SSL证书研究之CSR |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ SSL证书研究之CSR |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">SSL证书研究之CSR</h1>
-            <span class="section-subtitle"><time datetime="2013-11-01" pubdate="">2013-11-01</time></span>
+            <h1 itemprop="name" class="section-title">SSL证书研究之CSR</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-11-01" datetime="2013-11-01" pubdate="2013-11-01">2013-11-01</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<blockquote>
 <p>以前用SSL证书的时候对一些概念了解比较模糊，对x.509、pem、csr等一大堆概念没有一个整体的认识。于是下决心仔细研究一番，接下来会写一系列文章，这是第一篇，先介绍一下CSR。</p>
 </blockquote>
@@ -143,6 +145,11 @@ BgNVBAMMC3pxcWYxNi5p.....
          c7:94:34:7f
 </pre></div>
         </section>
+
+		<meta itemprop="url" content="posts/ssl-csr.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

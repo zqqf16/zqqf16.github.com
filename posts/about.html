@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">关于</h1>
-            <span class="section-subtitle"><time datetime="2013-04-25" pubdate="">2013-04-25</time></span>
+            <h1 itemprop="name" class="section-title">关于</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-04-25" datetime="2013-04-25" pubdate="2013-04-25">2013-04-25</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p><strong>我</strong></p>
 <p>80末 IT 男，现混迹于帝都。</p>
 <p>11年工作至今，先后从事过 Web 开发，VPN Server 端开发等工作，目前在做 iOS。</p>
@@ -64,6 +66,11 @@
 <p>如果点击我的推广<a href="http://refyunti.com/?r=65dd573aab9f2f10">链接</a>购买，你将节省10块大洋～</p>
 <p>如果你想试一下 VPS，不妨试一下 <a href="https://www.digitalocean.com/?refcode=f982e59f11b0">Digital Ocean</a>，通过我的<a href="https://www.digitalocean.com/?refcode=f982e59f11b0">链接</a>注册，你将获得10刀～</p>
         </section>
+
+		<meta itemprop="url" content="posts/about.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

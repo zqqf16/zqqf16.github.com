@@ -13,7 +13,9 @@ Colorit——一个给终端输出上色的工具 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Colorit——一个给终端输出上色的工具 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Colorit——一个给终端输出上色的工具</h1>
-            <span class="section-subtitle"><time datetime="2013-11-12" pubdate="">2013-11-12</time></span>
+            <h1 itemprop="name" class="section-title">Colorit——一个给终端输出上色的工具</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-11-12" datetime="2013-11-12" pubdate="2013-11-12">2013-11-12</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>平时自己写脚本的时候总喜欢给输出信息加点颜色，比如之前写的查找CVS diff中改动文件的<a href="https://gist.github.com/zqqf16/7094628">脚本</a>。方法很简单，就是输出一些ASCII控制码，比如<code>\033[;31m</code>代表红色之类的。</p>
 <p>用的多了，感觉老是拼字符串也不是个办法，索性规整了一下，写了人生中第一个正经的python模块。。。</p>
 <div class="codehilite"><pre><span class="c">#!/usr/bin/env python</span>
@@ -95,6 +97,11 @@ Colorit——一个给终端输出上色的工具 |
 <p>最后，附一张完整的颜色图（<code>python colorit.py</code>）：</p>
 <p><img alt="colors" src="https://raw.github.com/zqqf16/colorit/master/examples/all.png" /></p>
         </section>
+
+		<meta itemprop="url" content="posts/colorit.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

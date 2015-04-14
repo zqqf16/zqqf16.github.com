@@ -13,7 +13,9 @@ Sphinx入门 |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ Sphinx入门 |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">Sphinx入门</h1>
-            <span class="section-subtitle"><time datetime="2013-05-23" pubdate="">2013-05-23</time></span>
+            <h1 itemprop="name" class="section-title">Sphinx入门</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-05-23" datetime="2013-05-23" pubdate="2013-05-23">2013-05-23</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<p>公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。</p>
 <p>.doc .docx格式也太TMD难兼容了，不能在线预览也就罢了，libreoffice打开之后就成翔了。</p>
 <p>而且对于搞计算机的来说，往Word里面粘代码简直就是糊弄人啊。就别说代码高亮了，连起码的缩进都困难。</p>
@@ -114,6 +116,11 @@ genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js 
 <p><img alt="sphinx" src="/static/img/sphinx.png" /></p>
 <p>PS: reStructuredText的语法可以自行Google，不是博主懒，是博主花了大半天愣是没掌握。。。在这里也吐个槽。。。这玩意还是不如用Markdown来得快。。。</p>
         </section>
+
+		<meta itemprop="url" content="posts/sphinx.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

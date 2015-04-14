@@ -13,7 +13,9 @@
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">从源码看Objective-C的对象模型（二）</h1>
-            <span class="section-subtitle"><time datetime="2014-03-17" pubdate="">2014-03-17</time></span>
+            <h1 itemprop="name" class="section-title">从源码看Objective-C的对象模型（二）</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2014-03-17" datetime="2014-03-17" pubdate="2014-03-17">2014-03-17</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<h2 id="_1">前言</h2>
 <blockquote>
 <p>最近由于工作比较忙，所以这篇文章比预期的时间来的晚了。  </p>
@@ -201,6 +203,11 @@
 <li>在方法中通过指针或者变量名访问实例变量，是通过self指针加上偏移量来实现的</li>
 </ul>
         </section>
+
+		<meta itemprop="url" content="posts/objective-c-ojbect-2.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>

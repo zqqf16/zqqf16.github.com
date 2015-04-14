@@ -13,7 +13,9 @@ OpenLDAP添加Schema（Ubuntu） |
   <link rel="icon" type="image/png" href="/static/img/favicon.png">
 </head>
 <body>
-    <div class="page-wrap">
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
         <section class="main-header regular">
             <div class="vertical-container">
                 <div class="wrapper clearfix">
@@ -36,10 +38,10 @@ OpenLDAP添加Schema（Ubuntu） |
 <article class="main-content">
     <div class="wrapper">
         <header class="section-header">
-            <h1 class="section-title">OpenLDAP添加Schema（Ubuntu）</h1>
-            <span class="section-subtitle"><time datetime="2013-08-19" pubdate="">2013-08-19</time></span>
+            <h1 itemprop="name" class="section-title">OpenLDAP添加Schema（Ubuntu）</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2013-08-19" datetime="2013-08-19" pubdate="2013-08-19">2013-08-19</time></span>
         </header>
-        <section class="post-content">
+        <section itemprop="articleBody" class="post-content">
         	<h2 id="_1">前言</h2>
 <p>工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。</p>
 <p>网络上很多流传的教程都太老了，不是很适用。Ubuntu8.10以及之后的系统倾向于用slapd-config的各种工具来配置sladp，而不是之前的直接修改文件的方法。</p>
@@ -161,6 +163,11 @@ olcObjectClasses: {0}( testObject NAME &#39;testObject&#39; DESC &#39;Just for t
 </li>
 </ol>
         </section>
+
+		<meta itemprop="url" content="posts/openldap-add-schema.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
         <div class="post-nav">
     		<!-- Duoshuo Comment BEGIN -->
 <div class="ds-thread"></div>
