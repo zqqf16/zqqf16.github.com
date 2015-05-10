@@ -1,5 +1,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
+		<loc>http://blog.zorro.im/posts/concert.html</loc>
+		<lastmod>2015-05-10</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>http://blog.zorro.im/posts/interesting-react-native.html</loc>
 		<lastmod>2015-04-13</lastmod>
 		<changefreq>monthly</changefreq>
