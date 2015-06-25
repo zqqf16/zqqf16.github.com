@@ -168,7 +168,7 @@ a:hover, #posts-list a:hover {
 
 body,
 #posts-list h3 {
-    font-family: 'Fenix', Georgia, serif;
+    font-family: Helvetica, Tahoma, Arial, STXihei, "华文细黑", "Microsoft YaHei", "微软雅黑", SimSun, "宋体", Heiti, "黑体", sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, .section-subtitle, #main-nav a, .button, figcaption,
@@ -350,7 +350,6 @@ h4 + p {
     font-size: 18px;
     line-height: 24px;
     color: #212121;
-    text-transform: uppercase;
     font-weight: 700;
 }
 
