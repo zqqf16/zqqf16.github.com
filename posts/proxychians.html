@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>
+ProxyChains 及其原理 |
+穷折腾</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/pygments.css" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+</head>
+<body>
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
+        <section class="main-header regular">
+            <div class="vertical-container">
+                <div class="wrapper clearfix">
+                    <header>
+                        <a href="/">
+                            <h1 id="main-title">穷折腾</h1>
+                            <h2 id="main-subtitle">zqqf16 的个人博客</h2>
+                        </a>
+                    </header>
+                    <nav id="main-nav" role="navigation">
+                        <a href="/" class="selected">主页</a>
+                        <a href="/posts/about.html" class="">关于</a>
+                        <a href="https://github.com/zqqf16">Github</a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            
+<article class="main-content">
+    <div class="wrapper">
+        <header class="section-header">
+            <h1 itemprop="name" class="section-title">ProxyChains 及其原理</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2015-06-25" datetime="2015-06-25" pubdate="2015-06-25">2015-06-25</time></span>
+        </header>
+        <section itemprop="articleBody" class="post-content">
+        	<h2 id="_1">前言</h2>
+<p>Shadowsocks 是一个非常好用的 SOCKS 代理程序，尤其在 Mac 上，基本上只要支持系统代理的应用都直接可以一键爬墙了。</p>
+<p>但是有些底层的应用，比如那些传统的 Unix 命令行工具，就不会搭理系统的代理了，甚至绝大多数压根就不支持 SOCKS 代理。</p>
+<p>以前，我一般都会用 L2TP 或 IPSec 这样的底层 VPN 来搞定，不仅麻烦，而且越来越不稳定（原因你懂的……）。</p>
+<p>直到后来发现了 ProxyChains。</p>
+<h2 id="_2">安装以及使用</h2>
+<p>ProxyChains 的项目地址在 <a href="https://github.com/rofl0r/proxychains-ng">Github</a></p>
+<p>在 Mac 下安装十分简单：</p>
+<div class="codehilite"><pre>brew install proxychains-ng
+</pre></div>
+
+
+<p>然后编辑配置文件 <strong>/usr/local/etc/proxychains.conf</strong>，在末尾加上：</p>
+<div class="codehilite"><pre># Shadowsocks
+socks5 127.0.0.1 1080
+</pre></div>
+
+
+<p>使用方法也很简单，比如 ping：</p>
+<div class="codehilite"><pre><span class="nv">$ </span>proxychains4 ping -c <span class="m">2</span> www.google.com
+<span class="o">[</span>proxychains<span class="o">]</span> config file found: /usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
+<span class="o">[</span>proxychains<span class="o">]</span> preloading /usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
+<span class="o">[</span>proxychains<span class="o">]</span> DLL init
+PING www.google.com <span class="o">(</span>216.58.221.132<span class="o">)</span>: <span class="m">56</span> data bytes
+<span class="m">64</span> bytes from 216.58.221.132: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">0</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">41</span> <span class="nb">time</span><span class="o">=</span>65.601 ms
+<span class="m">64</span> bytes from 216.58.221.132: <span class="nv">icmp_seq</span><span class="o">=</span><span class="m">1</span> <span class="nv">ttl</span><span class="o">=</span><span class="m">41</span> <span class="nb">time</span><span class="o">=</span>66.572 ms
+
+--- www.google.com ping statistics ---
+<span class="m">2</span> packets transmitted, <span class="m">2</span> packets received, 0.0% packet loss
+round-trip min/avg/max/stddev <span class="o">=</span> 65.601/66.087/66.572/0.486 ms
+</pre></div>
+
+
+<p>当然，需要先启动 Shadowsocks。</p>
+<h2 id="_3">原理</h2>
+<p>在其主页上，它是这样描述的：</p>
+<blockquote>
+<p>proxychains ng (new generation) - a preloader which hooks calls to sockets in dynamically linked programs and redirects it through one or more socks/http proxies. continuation of the unmaintained proxychains project.</p>
+</blockquote>
+<p>简单的说就是这个程序 Hook 了 sockets 相关的操作，让普通程序的 sockets 数据走 SOCKS/HTTP 代理。</p>
+<p>其核心就是利用了 <strong>LD_PRELOAD</strong> 这个环境变量（Mac 上是 <strong>DYLD_INSERT_LIBRARIES</strong>）。</p>
+<p>在 Unix 系统中，如果设置了 LD_PRELOAD 环境变量，那么在程序运行时，动态链接器会先加载该环境变量所指定的动态库。也就是说，这个动态库的加载优先于任何其它的库，包括 libc。</p>
+<p>ProxyChains 创建了一个叫 libproxychains4.so（Mac 上是 libproxychains4.dylib）的动态库。里面重写了 <code>connect</code>、<code>close</code> 以及 <code>sendto</code> 等与 socket 相关的函数，通过这些函数发出的数据将会走代理，详细代码可以参考 libproxychains.c。</p>
+<p>在主程序里，它会读取配置文件，查找 libproxychains4 所在位置，把这些信息存入环境变量后执行子程序。这样子程序里对 socket 相关的函数调用就会被 Hook 了，对子程序来说，跟代理相关的东西都是透明的。</p>
+<p>可以用 printenv 程序来查看增加的环境变量，在 Mac 上，输出结果类似于：</p>
+<div class="codehilite"><pre><span class="nv">$ </span>proxychains4 printenv
+<span class="o">[</span>proxychains<span class="o">]</span> config file found: /usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
+<span class="o">[</span>proxychains<span class="o">]</span> preloading /usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
+<span class="o">[</span>proxychains<span class="o">]</span> DLL init
+...
+<span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
+<span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
+<span class="nv">DYLD_FORCE_FLAT_NAMESPACE</span><span class="o">=</span>1
+</pre></div>
+
+
+<p>一共设置了三个环境变量，其中 <strong>PROXYCHAINS_CONF_FILE</strong> 保存的是配置文件路径，<strong>DYLD_INSERT_LIBRARIES</strong> 保存的是动态库路径，在 Mac 中，必须使<strong>DYLD_FORCE_FLAT_NAMESPACE</strong> 为 1 才能保证 <strong>DYLD_INSERT_LIBRARIES</strong> 起作用。</p>
+<p>其实还有个一劳永逸的方法：</p>
+<p>手动设置这三个环境变量</p>
+<div class="codehilite"><pre><span class="nv">$ </span><span class="nb">export </span><span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf 
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
+<span class="nv">$ </span><span class="nb">export </span><span class="nv">DYLD_FORCE_FLAT_NAMESPACE</span><span class="o">=</span>1
+</pre></div>
+
+
+<p>这样在当前 shell 中运行的所有程序的网络请求都会走代理了。</p>
+<h2 id="_4">参考链接</h2>
+<ol>
+<li><a href="http://blog.csdn.net/haoel/article/details/1602108">警惕 UNIX 下的 LD_PRELOAD 环境变量</a></li>
+<li><a href="http://hbprotoss.github.io/posts/li-yong-ld_preloadjin-xing-hook.html">利用 LD_PRELOAD 进行 hook</a></li>
+<li><a href="http://www.dreamxu.com/proxychains-ng/">Mac 下安装及配置 ProxyChains-NG 实现终端下代理</a></li>
+<li><a href="https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/dyld.1.html">dyld - the dynamic link editor</a></li>
+</ol>
+        </section>
+
+		<meta itemprop="url" content="posts/proxychians.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
+        <div class="post-nav">
+    		<!-- Duoshuo Comment BEGIN -->
+<div class="ds-thread"></div>
+<script type="text/javascript">
+	var duoshuoQuery = {short_name:"zqqf16"};
+	(function() {
+		var ds = document.createElement('script');
+		ds.type = 'text/javascript';ds.async = true;
+		ds.src = 'http://static.duoshuo.com/embed.js';
+		ds.charset = 'UTF-8';
+		(document.getElementsByTagName('head')[0]
+		|| document.getElementsByTagName('body')[0]).appendChild(ds);
+	})();
+</script>
+<!-- Duoshuo Comment END -->
+
+    	</div>
+    </div>
+
+</article>
+
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="vertical-container">
+            <div class="wrapper">
+                <p class="copy">&copy; zqqf16</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-41282906-2', 'auto');
+      ga('require', 'displayfeatures');
+      ga('send', 'pageview');
+    </script>
+</body>
+</html>
