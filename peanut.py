@@ -6,6 +6,9 @@ import os
 import weakref
 import markdown
 
+from six import with_metaclass
+from inspect import getcallargs
+
 from datetime import datetime
 from mako.template import Template
 from mako.lookup import TemplateLookup
@@ -33,16 +36,18 @@ SINGLE_FILES = (
 )
 
 class Pool(type):
-    '''Meta class to implement a simple "object pool".
-    '''
+    '''Meta class to implement a simple object pool'''
+
     def __new__(self, name, bases, attrs):
-        '''Add an attribute "_pool" and a classmethod "all".
-        '''
+        '''Add pool-operation methods'''
+
         def all(cls):
+            '''Get all objects in the pool'''
             return cls._pool.values()
 
-        def get(cls, id):
-            return cls._pool.get(id)
+        def get(cls, pid):
+            '''Get object from pool by pid'''
+            return cls._pool.get(pid)
 
         attrs['_pool'] = {}
         attrs['all'] = classmethod(all)
@@ -51,20 +56,31 @@ class Pool(type):
         return super(Pool, self).__new__(self, name, bases, attrs)
 
     def __call__(cls, *args, **kwargs):
-        identity = tuple(*args, **kwargs)
-        if identity in cls._pool:
-            #Get from pool
-            return cls._pool[identity]
+        '''Find or create an object'''
 
-        #Generate a new one
+        pid_key = getattr(cls, 'pid')
+        if not pid_key:
+            return super(Pool, cls).__call__(*args, **kwargs)
+
+        all_args = getcallargs(cls.__init__, None, *args, **kwargs)
+        pid = all_args.get(pid_key)
+        if not pid:
+            return super(Pool, cls).__call__(*args, **kwargs)
+
+        if pid in cls._pool:
+            # Got from pool
+            return cls._pool[pid]
+
+        #Create a new one
         instance = super(Pool, cls).__call__(*args, **kwargs)
-        cls._pool[identity] = instance
-        setattr(instance, 'id', identity)
+        cls._pool[pid] = instance
 
         return instance
 
-class HTMLPage(object):
+class HTMLPage(with_metaclass(Pool, object)):
     '''Base class for HTML Page'''
+
+    pid = 'title'
 
     def __init__(self, title, url, layout, dest):
         self.title = title
