@@ -20,7 +20,7 @@ top: yes
 
 不是五毛，也不是美分。爱生活，不反社会。辟谣爱好者，崇尚实事求是。
 
-正在入门的摄影爱好者，不会 PS，反唯器材论。 
+正在入门的摄影爱好者，不会 PS，反唯器材论。
 
 智商中等偏下，玩不明白三国杀以及各种复杂游戏，水平仅限于和邻居小孩斗地主。
 
@@ -40,10 +40,8 @@ top: yes
 
 另外，本人水平有限，表达能力底下，各位看官见谅。
 
-**广告**
+**下面是广告**
 
-如果你正在找科学上网的方法，不妨试一下[云梯](http://refyunti.com/?r=65dd573aab9f2f10)。我已经用了1年多了，稳定，速度快，多国机房随意选择。
+如果你正在找科学上网的方法，不妨试一下[云梯](http://refyunti.com/?r=65dd573aab9f2f10)，多国机房随意选择。如果点击我的推广[链接](http://refyunti.com/?r=65dd573aab9f2f10)购买，你将节省10块大洋～
 
-如果点击我的推广[链接](http://refyunti.com/?r=65dd573aab9f2f10)购买，你将节省10块大洋～
-
-如果你想试一下 VPS，不妨试一下 [Digital Ocean](https://www.digitalocean.com/?refcode=f982e59f11b0)，通过我的[链接](https://www.digitalocean.com/?refcode=f982e59f11b0)注册，你将获得10刀～
+如果你想试一下 VPS，不妨试一下 [Digital Ocean](https://www.digitalocean.com/?refcode=f982e59f11b0)，通过我的[链接](https://www.digitalocean.com/?refcode=f982e59f11b0)注册，你将获得10刀～ 或者可以尝试一下日本的 [ConoHa](https://www.conoha.jp/referral/?token=7IKgEb4U78UeQQN6jbKq3sAZXgnSXdtC4GnQS95EHt7gKgiAd8w-Q36)。
