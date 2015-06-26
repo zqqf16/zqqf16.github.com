@@ -35,6 +35,8 @@ SINGLE_FILES = (
 #    ('rss.xml', 'rss.xml', 'rss.xml'),
 )
 
+# Model
+
 class Pool(type):
     '''Meta class to implement a simple object pool'''
 
@@ -71,11 +73,73 @@ class Pool(type):
             # Got from pool
             return cls._pool[pid]
 
-        #Create a new one
+        # Create a new one
         instance = super(Pool, cls).__call__(*args, **kwargs)
         cls._pool[pid] = instance
 
         return instance
+
+
+class BaseModel(with_metaclass(Pool, object)):
+    '''Base Model'''
+
+    # Select the title property as pid
+    title = None
+    url = None
+    file_path = None
+
+    pid = 'title'
+
+    def __init__(self, title):
+        self.title = title
+
+
+class Tag(BaseModel):
+    '''Tag'''
+
+    def __init__(self, title):
+        super(Tag, self).__init__(title)
+        self.url = 'tags/' + title + '.html'
+        self.file_path = os.path.join('tags', title+'.html')
+        self._post_ids = set()
+
+    @property
+    def posts(self):
+        '''Get all posts that has this tag'''
+        return [Post.get(p.title) for p in self._post_ids]
+
+    def add_post(self, post):
+        self._post_ids.add(post.title)
+
+
+class Category(Tag):
+    '''Category'''
+
+    def __init__(self, title):
+        super(Category, self).__init(title)
+        self.url = 'categories/' + title + '.html'
+        self.file_path = os.path.join('categories', title+'.html')
+
+
+class Post(BaseModel):
+    '''Post'''
+
+    def __init__(self, title, content, slug, date,
+            layout='post.html', top=False, publish=True, tags=None,
+            category=None):
+        super(Post, self).__init__(title)
+        self.top = top
+        self.publish = publish
+        self.content = content
+        self.date = date
+
+        self.url = 'posts/' + slug + '.html'
+        self.file_path = os.path.join('posts', slug+'.html')
+
+        self._tag_ids = set()
+
+    def add_tag(self, tag):
+        pass
 
 class HTMLPage(with_metaclass(Pool, object)):
     '''Base class for HTML Page'''
@@ -87,6 +151,7 @@ class HTMLPage(with_metaclass(Pool, object)):
         self.url = url
         self.layout = layout
         self.dest = dest
+
 
 class Post(HTMLPage):
     def __init__(self, title, content, slug, date, layout='post.html', top=False, publish=True, tag=[]):
