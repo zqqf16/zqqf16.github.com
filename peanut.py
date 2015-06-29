@@ -3,11 +3,8 @@
 
 import re
 import os
-import weakref
 import markdown
-
-from six import with_metaclass
-from inspect import getcallargs
+import six
 
 from datetime import datetime
 from mako.template import Template
@@ -37,79 +34,57 @@ SINGLE_FILES = (
 
 # Model
 
-class Pool(type):
-    '''Meta class to implement a simple object pool'''
+class BaseModel(object):
+    '''Base MOdel'''
 
-    def __new__(self, name, bases, attrs):
-        '''Add pool-operation methods'''
+    _object_pool = {}
 
-        def all(cls):
-            '''Get all objects in the pool'''
-            return cls._pool.values()
+    def __init__(self, mid):
+        self.mid = mid
 
-        def get(cls, pid):
-            '''Get object from pool by pid'''
-            return cls._pool.get(pid)
+    @classmethod
+    def get(cls, mid):
+        '''Get instance'''
+        return cls._object_pool.get(mid)
 
-        attrs['_pool'] = {}
-        attrs['all'] = classmethod(all)
-        attrs['get'] = classmethod(get)
+    @classmethod
+    def add(cls, instance):
+        '''Add instance'''
+        cls._object_pool[instance.mid] = instance
 
-        return super(Pool, self).__new__(self, name, bases, attrs)
-
-    def __call__(cls, *args, **kwargs):
-        '''Find or create an object'''
-
-        pid_key = getattr(cls, 'pid')
-        if not pid_key:
-            return super(Pool, cls).__call__(*args, **kwargs)
-
-        all_args = getcallargs(cls.__init__, None, *args, **kwargs)
-        pid = all_args.get(pid_key)
-        if not pid:
-            return super(Pool, cls).__call__(*args, **kwargs)
-
-        if pid in cls._pool:
-            # Got from pool
-            return cls._pool[pid]
-
-        # Create a new one
-        instance = super(Pool, cls).__call__(*args, **kwargs)
-        cls._pool[pid] = instance
-
-        return instance
+    @classmethod
+    def all(cls):
+        '''Get all instances'''
+        return cls._object_pool.values()
 
 
-class BaseModel(with_metaclass(Pool, object)):
-    '''Base Model'''
+class HTMLPage(BaseModel):
+    '''HTML Page'''
 
-    # Select the title property as pid
-    title = None
-    url = None
-    file_path = None
-
-    pid = 'title'
-
-    def __init__(self, title):
+    def __init__(self, title, url, html_path):
+        super(HTMLPage, self).__init__(title)
         self.title = title
+        self.url = url
+        self.html_path = html_path
 
 
-class Tag(BaseModel):
+class Tag(HTMLPage):
     '''Tag'''
 
     def __init__(self, title):
-        super(Tag, self).__init__(title)
-        self.url = 'tags/' + title + '.html'
-        self.file_path = os.path.join('tags', title+'.html')
+        url = 'tags/' + title + '.html'
+        path = os.path.join('tags', title+'.html')
+        super(Tag, self).__init__(title, url, path)
+
         self._post_ids = set()
 
     @property
     def posts(self):
         '''Get all posts that has this tag'''
-        return [Post.get(p.title) for p in self._post_ids]
+        return [Post.get(p) for p in self._post_ids]
 
     def add_post(self, post):
-        self._post_ids.add(post.title)
+        self._post_ids.add(post.mid)
 
 
 class Category(Tag):
@@ -121,71 +96,41 @@ class Category(Tag):
         self.file_path = os.path.join('categories', title+'.html')
 
 
-class Post(BaseModel):
+class Post(HTMLPage):
     '''Post'''
 
-    def __init__(self, title, content, slug, date,
-            layout='post.html', top=False, publish=True, tags=None,
-            category=None):
-        super(Post, self).__init__(title)
+    def __init__(self, title, content, slug,
+            date=None,top=False, publish=True):
+
+        url = 'posts/' + slug + '.html'
+        path = os.path.join('posts', slug+'.html')
+        super(Post, self).__init__(title, url, path)
+
         self.top = top
         self.publish = publish
         self.content = content
-        self.date = date
-
-        self.url = 'posts/' + slug + '.html'
-        self.file_path = os.path.join('posts', slug+'.html')
+        self.date = date if date else datetime.now()
 
         self._tag_ids = set()
+        self._category_id = None
 
     def add_tag(self, tag):
-        pass
-
-class HTMLPage(with_metaclass(Pool, object)):
-    '''Base class for HTML Page'''
-
-    pid = 'title'
-
-    def __init__(self, title, url, layout, dest):
-        self.title = title
-        self.url = url
-        self.layout = layout
-        self.dest = dest
-
-
-class Post(HTMLPage):
-    def __init__(self, title, content, slug, date, layout='post.html', top=False, publish=True, tag=[]):
-        url = 'posts/'+slug+'.html'
-        dest = os.path.join('posts', slug+'.html')
-
-        super(Post, self).__init__(title, url, layout, dest)
-
-        self.top = top
-        self.publish = publish
-        self.content = content
-        self.date = date
-
-        self.tags = tag
-        for t in tag:
-            t.add_post(self)
-
-class Tag(HTMLPage):
-    __metaclass__ = Pool
-
-    def __init__(self, title):
-        url = 'tags/'+title+'.html'
-        dest = os.path.join('tags', title+'.html')
-
-        super(Tag, self).__init__(title, url, 'tag.html', dest)
-
-        self._posts = {}
-
-    def add_post(self, post):
-        self._posts[post.title] = weakref.ref(post)
+        self._tag_ids.add(tag.mid)
+        tag.add_post(self)
 
     @property
-    def posts(self):
-        return filter(None, [p() for p in self._posts.values()])
+    def tags(self):
+        return [Tag.get(t) for t in self._tag_ids]
+
+    @property
+    def category(self):
+        return Category.get(self._category_id)
+
+    @category.setter
+    def category(self, c):
+        self._category_id = c.mid
+        c.add_post(self)
+
 
 class Writer(object):
     '''HTML file writer'''
@@ -208,15 +153,33 @@ class Writer(object):
             p = temp.render(this=page, **self.namespace)
             f.write(p)
 
+
 class Reader(object):
     '''Markdown reader'''
 
     regex = re.compile(r'([^/]+)\.(md|markdown)')
 
+    def __init__(self):
+
+        # Markdown extensions
+        extensions = ['fenced_code', 'codehilite', 'meta', 'footnotes', 'tables', 'toc'],
+        # Extension configurations
+        configs = {'codehilite': [ ('guess_lang', False) ]}
+        #self.md = markdown.Markdown(extensions=extensions,
+        #                            extension_configs=configs)
+        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta', 'footnotes', 'tables', 'toc'], extension_configs={'codehilite': [ ('guess_lang', False) ]})
+
+    def get_slug(self, file_name):
+        m = self.regex.match(file_name)
+        if not m:
+            return None
+        return m.group(1)
+
     # metadata handlers
     meta_handlers = {
-        'tag':      lambda x: [Tag(t) for t in x] if x else [],
+        'tag':      lambda x: x if x else [],
         'title':    lambda x: x[0] if x else '',
+        'category': lambda x: x[0] if x else None,
         'date':     lambda x: datetime.strptime(x[0], '%Y-%m-%d') if x else datetime.now(),
         'top':      lambda x: True if x and x[0]=='yes' else False,
         'publish':  lambda x: False if x and x[0]=='no' else True,
@@ -225,23 +188,32 @@ class Reader(object):
     def parse_metadata(self, meta):
         res = {}
         for name, handler in self.meta_handlers.items():
-            value = handler(meta.get(name, None))
+            value = handler(meta.get(name))
             res[name] = value
+        # Tag
+        tag_titles = res.get('tag')
+        if tag_titles:
+            tags = set()
+            for t in tag_titles:
+                tag = Tag.get(t)
+                if not tag:
+                    tag = Tag(t)
+                    Tag.add(tag)
+                tags.add(tag)
+            res.pop('tag')
+        # Category
+        category_title = res.get('category')
+        if category_title:
+            category = Category.get(category_title)
+            if not category:
+                category = Category(category_title)
+                Category.add(category)
+            res['category'] = category
 
         return res
 
-    def __init__(self):
-        self.md = markdown.Markdown(extensions=['fenced_code', 'codehilite', 'meta', 'footnotes', 'tables', 'toc'],
-                                    extension_configs={'codehilite': [ ('guess_lang', False) ]})
-
-    def get_slug(self, file_name):
-        m = self.regex.match(file_name)
-        if not m:
-            return None
-        return m.group(1)
-
     def read(self, file_name, slug=None):
-        '''Read markdown file and get the HTML and META data.'''
+        '''Read markdown file'''
 
         if not slug:
             slug = self.get_slug(file_name)
@@ -250,13 +222,28 @@ class Reader(object):
             return None
 
         with open(file_name, 'r') as f:
-            content = f.read().decode('utf-8')
+            content = f.read()
+            if six.PY2:
+                content = content.decode('utf-8')
+
             html = self.md.reset().convert(content.strip(' \n'))
             if not self.md.Meta:
                 return None
 
             meta = self.parse_metadata(self.md.Meta)
-            return Post(content=html, slug=slug, **meta)
+            post = Post(content=html, slug=slug, title=meta.get('title'),
+                    top = meta.get('top'), publish = meta.get('publish'))
+
+            tags = meta.get('tags')
+            if tags:
+                for t in tags:
+                    post.add_tag(t)
+
+            category = meta.get('category')
+            if category:
+                post.category = category
+
+            return post
 
     def read_all(self, directory):
         '''Read all markdown files in the directory'''
