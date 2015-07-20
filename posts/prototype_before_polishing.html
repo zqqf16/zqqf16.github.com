@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+  <title>
+雕琢前先得有原型，跑之前先学会走 |
+穷折腾</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+  <link rel="stylesheet" href="/static/css/pygments.css" />
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
+  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+</head>
+<body>
+    <div 
+itemscope itemtype="http://schema.org/Article"
+ class="page-wrap">
+        <section class="main-header regular">
+            <div class="vertical-container">
+                <div class="wrapper clearfix">
+                    <header>
+                        <a href="/">
+                            <h1 id="main-title">穷折腾</h1>
+                            <h2 id="main-subtitle">zqqf16 的个人博客</h2>
+                        </a>
+                    </header>
+                    <nav id="main-nav" role="navigation">
+                        <a href="/" class="selected">主页</a>
+                        <a href="/posts/about.html" class="">关于</a>
+                        <a href="https://github.com/zqqf16">Github</a>
+                    </nav>
+                </div>
+            </div>
+        </section>
+        <section class="main-content">
+            
+<article class="main-content">
+    <div class="wrapper">
+        <header class="section-header">
+            <h1 itemprop="name" class="section-title">雕琢前先得有原型，跑之前先学会走</h1>
+            <span class="section-subtitle"><time itemprop="datePublished" content="2015-07-20" datetime="2015-07-20" pubdate="2015-07-20">2015-07-20</time></span>
+        </header>
+        <section itemprop="articleBody" class="post-content">
+        	<blockquote>
+<p>本文标题来自《UNIX 编程艺术》，在此借用这句话来表达一下自己对于软件开发的想法。</p>
+</blockquote>
+<p>先说几个我自己的经历。</p>
+<p><strong>一</strong></p>
+<p>那时候还是在校学生，打算做一个记账的小程序来练手。当时刚刚接触 MVC，心想，就从 M 开始吧。于是就花了很长时间来设计存储格式（是的，当时还不知道用数据库）。</p>
+<p>那时也没多少经验，编程思想还局限在 C 语言初学者这个级别。为了能够节省存储空间以及减少读取的复杂度，绞尽脑汁，恨不得以“位”为单位来设计。天天脑子里想的就是怎么减少尺寸、怎么快速索引、怎么减少计算次数。当时以为自己是在追求完美，一定要把 Model 层设计的完美无缺。因此花了很多时间在这上面，而这，也直接导致整体进度一拖再拖，最终烂尾了。</p>
+<p>然而到最后的时刻这个程序也没完整的跑起来过。</p>
+<p><strong>二</strong></p>
+<p>这个经历发生在我上班后，那时候打算写写博客来提高一下自己，但市面上的博客应用都不太满意，所以就想自己写一个，顺便也可以学学 Web 开发。</p>
+<p>由于这是我第一个 Web 项目，因此格外用心，直接导致“追求完美”的强迫症又犯了。</p>
+<p>做登陆功能时，花了很长时间研究密码的存储策略，充分考虑到了数据库被攻破的情况，甚至还考虑到了有人要暴力破解密码的情况。觉得普通的样式没有个性，索性花了很长时间设计了一个跟终端很像的 UI。</p>
+<p>做后台管理功能时，花了很长时间在 Markdown 编辑器上，抠出了 Markdown 预览、标签选择器、上传图片、进度条等功能。</p>
+<p>做页面生成功能时，想到万一有人 Ddos 我怎么办，每次访问都生成一次页面岂不是要扛不住？于是乎就构思了缓存机制。还考虑到如果访问量太大，图片存在本地把流量耗完该如何处理……（现在想想也挺好笑的，现在的博客每天访问量最多不过十位数，当时真是想多了😢）</p>
+<p>每做一块功能时，都想着要做到最“完美”，以至于后来自己都觉得工作量太大了，做不出来自己想要的结果。终于，在一次重构过程中烂尾了。</p>
+<p>是的，此时的博客连文章都发布不了，因为还没来得及做（代码在此：<a href="https://github.com/zqqf16/znote">Znote</a>，欢迎围观）</p>
+<hr />
+<p>这两个经历只是我那几年的一个缩影，后来总结了一下，那个时候基本有以下特征：</p>
+<ul>
+<li>对项目没有整体规划，接到任务后不怎么思考就开始动手。</li>
+<li>喜欢扣细节，比如会在做子模块的时候把接口设计的超级丰富。</li>
+<li>会在主功能还没完成的时候就开始优化，有时候甚至会直接重构。</li>
+<li>会在方案 A 和方案 B 之间犹豫不决，其实连二者的优劣都不清楚。</li>
+<li>在小地方追求所谓的“完美”</li>
+</ul>
+<p>我想，像这样的应该不止我一个吧，至少第四点我在很多论坛上都见识过了。很多人把这种行为美其名曰“完美主义”，我觉得这并不是，完美主义应该体现在整体，而不是在单个细节上。过分的在细节上追求完美只是缺乏大局观的表现罢了。</p>
+<p><strong>雕琢前先得有原型，跑之前先学会走</strong> 这个观点是后来在看一些优秀的开源项目代码中领悟过来的。
+令人惊艳的项目经常在内部用了很多“丑陋的”实现方式，但这丝毫不妨碍他们的优秀。因为他们的首要任务是为了解决某些问题，而不是纯粹地为了展示自己的代码水平。大多数项目都是在几次迭代之后才变得“赏心悦目”的。</p>
+<p>在 <a href="https://github.com/zqqf16/znote">Znote</a> 失败之后，我重新捋了一下需求，想起来我的出发点就是找个地方写博客。于是就干脆用起了 Github Pages，还顺手写了一个 Python <a href="https://github.com/zqqf16/zqqf16.github.com">程序</a>来把 Markdown 转成 HTML。转眼间已经坚持写博客两年多了。</p>
+<p><em>PS：我把博客程序放在 Github 以及 Git@OSC 上之后，前前后后大约收到了 50 多个 star 与 30 多个 fork。我一一跟踪过 fork 我代码的人，他们中只有几个人搞起了自己的博客，但坚持写下去的寥寥无几。</em></p>
+        </section>
+
+		<meta itemprop="url" content="posts/prototype_before_polishing.html">
+		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
+			<meta itemprop="name" content="zqqf16"></span>
+
+        <div class="post-nav">
+    		<div id="disqus_thread"></div>
+<script type="text/javascript">
+    /* * * CONFIGURATION VARIABLES * * */
+    var disqus_shortname = 'zqqf16';
+
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+    	</div>
+    </div>
+
+</article>
+
+        </section>
+    </div>
+    <footer class="main-footer">
+        <div class="vertical-container">
+            <div class="wrapper">
+                <p class="copy">&copy; zqqf16</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-41282906-2', 'auto');
+      ga('require', 'displayfeatures');
+      ga('send', 'pageview');
+    </script>
+</body>
+</html>
