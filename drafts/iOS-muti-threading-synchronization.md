@@ -7,13 +7,13 @@ tag: 多线程
 > 在这样的氛围影响下，我在开发的时候也很少用锁，能不用就不用。
 > 后来去面试 iOS 开发的时候，面试官总是喜欢问有关于锁的问题，最近趁有时间就整理了一下，算是补充一下技能树吧。
 
-## 互斥锁（Mutex）
+## 1. 互斥锁（Mutex）
 
 互斥锁是比较常用的一种锁，当一个线程试图获取被另一个线程占用的锁时，它将会被挂起，让出 CPU，直到该锁被释放。
 
 在 iOS 中，互斥锁有多种实现方式：
 
-### POSIX Api
+### 1.1 POSIX Api
 
 POSIX 方式的优点是比较通用，对那些需要跨平台的 library 来说再合适不过了。
 
@@ -49,7 +49,7 @@ void destroyLock()
 }
 ```
 
-### @synchronized
+### 1.2 @synchronized
 
 @synchronized 应该是用起来最简单的方式了，例如：
 
@@ -83,7 +83,7 @@ objc_exception_throw
 
 可以看到做了很多与锁有关的操作，其性能不如 POSIX 方式，尽管后者难看些。
 
-### NSLock
+### 1.3 NSLock
 
 ```objective-c
 NSLock *lock = [[NSLock alloc] init];
@@ -100,7 +100,7 @@ NSLock *lock = [[NSLock alloc] init];
 }
 ```
 
-## 递归锁（Recursive Lock）
+## 2. 递归锁（Recursive Lock）
 
 递归锁是互斥锁的变体，它允许一个线程在释放它之前多次获取它，并且只有在释放相同次数之后其它线程才能获取它。
 
@@ -122,7 +122,7 @@ MyRecursiveFunction(5);
 ```
 
 
-## 读写锁（Read-write Lock）
+## 3. 读写锁（Read-write Lock）
 
 读写锁把访问对象划分为**读者**和**写者**，当读写锁在**读加锁**状态时，所有的试图以读加锁方式对其进行加锁时，都会获得访问权限。
 所有的试图以写加锁方式对其加锁的线程都将阻塞，直到所有的读锁释放。
@@ -161,7 +161,7 @@ void mutiThreadReadding()
 }
 ```
 
-## 自旋锁（Spin Lock）
+## 4. 自旋锁（Spin Lock）
 
 自旋锁与互斥锁不同的地方在于，自旋锁是非阻塞的，当一个线程无法获取自旋锁时，会自旋，直到该锁被释放，等待的过程中线程并不会挂起。
 
@@ -180,7 +180,7 @@ void mutiThreadMethod4
 }
 ```
 
-## 分布锁（Distributed Lock）
+## 5. 分布锁（Distributed Lock）
 
 严格来说，分布锁是进程间同步的工具，有点像 Unix 下的各种 lock 文件，比如 apt-get 的 “/var/lib/apt/lists/lock”。
 
@@ -201,7 +201,7 @@ if ([lock tryLock]) {
 
 或者，可以直接通过写 lock 文件的方式来实现。
 
-## 条件变量（Condition Variable）
+## 6. 条件变量（Condition Variable）
 
 如果一个线程需要等待某一条件才能继续执行，而这个条件是由别的线程产生的，这时候只用锁就有点捉襟见肘了。要么不停的轮询，消耗资源，要么每隔一段时间查询一次，丧失了及时性。
 条件变量就是为了满足这种场景而生的，它可以让一个线程等待某一条件，当条件满足时，会收到通知。
@@ -209,7 +209,7 @@ if ([lock tryLock]) {
 
 iOS 中，条件变量有两种实现方式：
 
-### POSIX
+### 6.1 POSIX
 
 POSIX 提供的相关函数如下：
 
@@ -259,7 +259,7 @@ pthread_mutex_destroy(&mutex);
 pthread_cond_destroy(&condition);
 ```
 
-### NSCondition
+### 6.2 NSCondition
 
 例子摘自 [Threading Programming Guide](https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Multithreading/ThreadSafety/ThreadSafety.html)
 
@@ -284,7 +284,7 @@ timeToDoWork++;
 [cocoaCondition unlock];
 ```
 
-## NSConditionLock
+## 7. NSConditionLock
 
 NSConditionLock 跟 NSCondition 类似，但是实现机制是不一样的，所以单独列了出来。
 
@@ -316,13 +316,13 @@ while (true)
 }
 ```
 
-## 信号量（Semaphore）
+## 8. 信号量（Semaphore）
 
 信号量可以看成是一种特殊的互斥锁，不同的是，它可以不只有两个状态，它可以是资源的计数器。还记得《操作系统》中学过的 PV 操作么？
 
 iOS 中，信号量有两种实现方式：
 
-### POSIX
+### 8.1 POSIX
 
 POSIX 提供的相关函数如下：
 
@@ -332,7 +332,7 @@ POSIX 提供的相关函数如下：
 - `sem_getvalue` 返回信号量的值
 - `sem_destroy` 销毁
 
-### GCD 信号量
+### 8.2 GCD 信号量
 
 GCD 提供的函数如下：
 
@@ -352,21 +352,21 @@ dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
 dispatch_semaphore_signal(semaphore);
 ```
 
-## 栅栏／屏障（Barrier）
+## 9. 栅栏／屏障（Barrier）
 
 如果一个线程需要等待另一个线程的某些操作之后才能继续执行，可以用上面所说的条件变量来实现，还有一种优雅的实现方式 —— Barrier。
 形象点说，就是把线程挡在同一个 Barrier 之前，所有的线程都达到 Barrier 之后，统一放行。
 
 同样，iOS 中有两种实现方式：
 
-### POSIX
+### 9.1 POSIX
 
 相关函数如下：
 - `pthread_barrier_init` 创建 barrier
 - `pthread_barrier_wait` 告知当前线程已经到达 barrier，等所有线程都告知后，会继续往下执行
 - `pthread_barrier_destroy` 销毁
 
-### Dispatch Barrier
+### 9.2 Dispatch Barrier
 
 Dispatch Barrier 的概念跟 POSIX 类似，不同的是它是针对于 GCD 异步任务的。它可以让在它之前提交的异步任务都执行完成之后再执行。
 

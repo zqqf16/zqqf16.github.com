@@ -47,10 +47,10 @@ itemscope itemtype="http://schema.org/Article"
 在这样的氛围影响下，我在开发的时候也很少用锁，能不用就不用。
 后来去面试 iOS 开发的时候，面试官总是喜欢问有关于锁的问题，最近趁有时间就整理了一下，算是补充一下技能树吧。</p>
 </blockquote>
-<h2 id="mutex">互斥锁（Mutex）</h2>
+<h2 id="1-mutex">1. 互斥锁（Mutex）</h2>
 <p>互斥锁是比较常用的一种锁，当一个线程试图获取被另一个线程占用的锁时，它将会被挂起，让出 CPU，直到该锁被释放。</p>
 <p>在 iOS 中，互斥锁有多种实现方式：</p>
-<h3 id="posix-api">POSIX Api</h3>
+<h3 id="11-posix-api">1.1 POSIX Api</h3>
 <p>POSIX 方式的优点是比较通用，对那些需要跨平台的 library 来说再合适不过了。</p>
 <p>POSIX 中与互斥锁有关的主要有 5 个函数：</p>
 <ul>
@@ -82,7 +82,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h3 id="synchronized">@synchronized</h3>
+<h3 id="12-synchronized">1.2 @synchronized</h3>
 <p>@synchronized 应该是用起来最简单的方式了，例如：</p>
 <div class="codehilite"><pre><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mutiThreadMethod2</span>
 <span class="p">{</span>
@@ -112,7 +112,7 @@ itemscope itemtype="http://schema.org/Article"
 
 
 <p>可以看到做了很多与锁有关的操作，其性能不如 POSIX 方式，尽管后者难看些。</p>
-<h3 id="nslock">NSLock</h3>
+<h3 id="13-nslock">1.3 NSLock</h3>
 <div class="codehilite"><pre><span class="bp">NSLock</span> <span class="o">*</span><span class="n">lock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 
 <span class="c1">// ...</span>
@@ -128,7 +128,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="recursive-lock">递归锁（Recursive Lock）</h2>
+<h2 id="2-recursive-lock">2. 递归锁（Recursive Lock）</h2>
 <p>递归锁是互斥锁的变体，它允许一个线程在释放它之前多次获取它，并且只有在释放相同次数之后其它线程才能获取它。</p>
 <div class="codehilite"><pre><span class="bp">NSRecursiveLock</span> <span class="o">*</span><span class="n">theLock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSRecursiveLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
 
@@ -147,7 +147,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="read-write-lock">读写锁（Read-write Lock）</h2>
+<h2 id="3-read-write-lock">3. 读写锁（Read-write Lock）</h2>
 <p>读写锁把访问对象划分为<strong>读者</strong>和<strong>写者</strong>，当读写锁在<strong>读加锁</strong>状态时，所有的试图以读加锁方式对其进行加锁时，都会获得访问权限。
 所有的试图以写加锁方式对其加锁的线程都将阻塞，直到所有的读锁释放。
 当在<strong>写加锁</strong>状态时，所有试图对其加锁的线程都将阻塞。</p>
@@ -182,7 +182,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="spin-lock">自旋锁（Spin Lock）</h2>
+<h2 id="4-spin-lock">4. 自旋锁（Spin Lock）</h2>
 <p>自旋锁与互斥锁不同的地方在于，自旋锁是非阻塞的，当一个线程无法获取自旋锁时，会自旋，直到该锁被释放，等待的过程中线程并不会挂起。</p>
 <p>它的优点是效率高，不用进行线程切换。缺点是如果一个线程霸占锁的时间过长，自旋会消耗 CPU 资源。</p>
 <div class="codehilite"><pre><span class="cp">#import &lt;libkern/OSAtomic.h&gt;</span>
@@ -198,7 +198,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="distributed-lock">分布锁（Distributed Lock）</h2>
+<h2 id="5-distributed-lock">5. 分布锁（Distributed Lock）</h2>
 <p>严格来说，分布锁是进程间同步的工具，有点像 Unix 下的各种 lock 文件，比如 apt-get 的 “/var/lib/apt/lists/lock”。</p>
 <p>它并不强制进程休眠，只是起到告知的作用。具体如何处理资源被占，完全由进程自己决定。</p>
 <p>iOS 上几本用不上分布锁，在 OS X 中，可以用 <strong>NSDistributedLock</strong> 实现：</p>
@@ -214,12 +214,12 @@ itemscope itemtype="http://schema.org/Article"
 
 
 <p>或者，可以直接通过写 lock 文件的方式来实现。</p>
-<h2 id="condition-variable">条件变量（Condition Variable）</h2>
+<h2 id="6-condition-variable">6. 条件变量（Condition Variable）</h2>
 <p>如果一个线程需要等待某一条件才能继续执行，而这个条件是由别的线程产生的，这时候只用锁就有点捉襟见肘了。要么不停的轮询，消耗资源，要么每隔一段时间查询一次，丧失了及时性。
 条件变量就是为了满足这种场景而生的，它可以让一个线程等待某一条件，当条件满足时，会收到通知。
 在获取条件变量并等待条件发生的过程中，也会产生多线程的竞争，所以条件变量通常会和互斥锁一起工作。</p>
 <p>iOS 中，条件变量有两种实现方式：</p>
-<h3 id="posix">POSIX</h3>
+<h3 id="61-posix">6.1 POSIX</h3>
 <p>POSIX 提供的相关函数如下：</p>
 <ul>
 <li><code>pthread_cond_init</code> 初始化</li>
@@ -267,7 +267,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h3 id="nscondition">NSCondition</h3>
+<h3 id="62-nscondition">6.2 NSCondition</h3>
 <p>例子摘自 <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Multithreading/ThreadSafety/ThreadSafety.html">Threading Programming Guide</a></p>
 <div class="codehilite"><pre><span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">lock</span><span class="p">];</span>
 <span class="k">while</span> <span class="p">(</span><span class="n">timeToDoWork</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
@@ -289,7 +289,7 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="nsconditionlock">NSConditionLock</h2>
+<h2 id="7-nsconditionlock">7. NSConditionLock</h2>
 <p>NSConditionLock 跟 NSCondition 类似，但是实现机制是不一样的，所以单独列了出来。</p>
 <p>例子：</p>
 <p>生产者</p>
@@ -316,10 +316,10 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="semaphore">信号量（Semaphore）</h2>
+<h2 id="8-semaphore">8. 信号量（Semaphore）</h2>
 <p>信号量可以看成是一种特殊的互斥锁，不同的是，它可以不只有两个状态，它可以是资源的计数器。还记得《操作系统》中学过的 PV 操作么？</p>
 <p>iOS 中，信号量有两种实现方式：</p>
-<h3 id="posix_1">POSIX</h3>
+<h3 id="81-posix">8.1 POSIX</h3>
 <p>POSIX 提供的相关函数如下：</p>
 <ul>
 <li><code>sem_init</code> 初始化</li>
@@ -328,7 +328,7 @@ itemscope itemtype="http://schema.org/Article"
 <li><code>sem_getvalue</code> 返回信号量的值</li>
 <li><code>sem_destroy</code> 销毁</li>
 </ul>
-<h3 id="gcd">GCD 信号量</h3>
+<h3 id="82-gcd">8.2 GCD 信号量</h3>
 <p>GCD 提供的函数如下：</p>
 <ul>
 <li><code>dispatch_semaphore_create</code> 创建信号量</li>
@@ -346,16 +346,16 @@ itemscope itemtype="http://schema.org/Article"
 </pre></div>
 
 
-<h2 id="barrier">栅栏／屏障（Barrier）</h2>
+<h2 id="9-barrier">9. 栅栏／屏障（Barrier）</h2>
 <p>如果一个线程需要等待另一个线程的某些操作之后才能继续执行，可以用上面所说的条件变量来实现，还有一种优雅的实现方式 —— Barrier。
 形象点说，就是把线程挡在同一个 Barrier 之前，所有的线程都达到 Barrier 之后，统一放行。</p>
 <p>同样，iOS 中有两种实现方式：</p>
-<h3 id="posix_2">POSIX</h3>
+<h3 id="91-posix">9.1 POSIX</h3>
 <p>相关函数如下：
 - <code>pthread_barrier_init</code> 创建 barrier
 - <code>pthread_barrier_wait</code> 告知当前线程已经到达 barrier，等所有线程都告知后，会继续往下执行
 - <code>pthread_barrier_destroy</code> 销毁</p>
-<h3 id="dispatch-barrier">Dispatch Barrier</h3>
+<h3 id="92-dispatch-barrier">9.2 Dispatch Barrier</h3>
 <p>Dispatch Barrier 的概念跟 POSIX 类似，不同的是它是针对于 GCD 异步任务的。它可以让在它之前提交的异步任务都执行完成之后再执行。</p>
 <p>例子：</p>
 <div class="codehilite"><pre><span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span> <span class="n">block1</span><span class="p">);</span>
