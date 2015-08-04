@@ -243,7 +243,6 @@ table {
 table thead h4 {
     font-size: 10px;
     line-height: 18px;
-    text-transform: uppercase;
     margin-bottom: 0;
 }
 
@@ -304,16 +303,23 @@ q {
     padding-left: 15px;
 }
 
+.section-header h1 {
+    font-size: 20px;
+    line-height: 26px;
+}
+.post-content h2 {
+    font-size: 18px;
+    line-height: 24px;
+}
+
 .post-content h3 {
     font-size: 16px;
     line-height: 22px;
-    text-transform: uppercase;
 }
 
 h4 {
     font-size: 14px;
     margin: 25px 0 10px;
-    text-transform: uppercase;
     color: #666;
 }
 
@@ -357,7 +363,6 @@ h4 + p {
     font-size: 12px;
     line-height: 18px;
     color: #ccc;
-    text-transform: uppercase;
     font-weight: 700;
     display: block;
     margin-top: 5px;
@@ -394,7 +399,6 @@ h4 + p {
     padding: 12px 24px 11px;
     display: inline-block;
     margin: 7px;
-    text-transform: uppercase;
 }
 
 /* Button (can be used in any other context ) */
@@ -516,7 +520,6 @@ h4 + p {
     line-height: 12px;
     color: #ccc;
     width: 115px;
-    text-transform: uppercase;
     float: left;
     padding-top: 16px;
 }
@@ -569,7 +572,6 @@ h4 + p {
 
 .main-footer {
     font-size: 12px;
-    text-transform: uppercase;
     line-height: 12px;
     color: #fff;
 }
@@ -630,7 +632,6 @@ figcaption {
     padding: 13px 16px 11px;
     position: absolute;
     right: 10px;
-    text-transform: uppercase;
 }
 
 /* ---------------------
@@ -685,7 +686,6 @@ figcaption {
     font-size: 12px;
     line-height: 12px;
     color: #ccc;
-    text-transform: uppercase;
     font-weight: 400;
 }
 
@@ -765,4 +765,8 @@ a,
     .projects-list li {
         margin: 20px 0 0 0 !important;
     }
+}
+
+.codehilite {
+	margin-bottom: 20px;
 }
