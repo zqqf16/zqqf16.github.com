@@ -1,5 +1,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
+		<loc>http://blog.zorro.im/posts/object_setIvar_under_arc.html</loc>
+		<lastmod>2015-09-11</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>http://blog.zorro.im/posts/prototype_before_polishing.html</loc>
 		<lastmod>2015-07-20</lastmod>
 		<changefreq>monthly</changefreq>
