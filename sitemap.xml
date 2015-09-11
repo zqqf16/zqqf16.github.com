@@ -5,6 +5,11 @@
 		<changefreq>monthly</changefreq>
 	</url>
 	<url>
+		<loc>http://blog.zorro.im/posts/iOS-muti-threading-synchronization.html</loc>
+		<lastmod>2015-08-04</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>http://blog.zorro.im/posts/prototype_before_polishing.html</loc>
 		<lastmod>2015-07-20</lastmod>
 		<changefreq>monthly</changefreq>
