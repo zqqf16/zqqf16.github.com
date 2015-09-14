@@ -5,7 +5,8 @@ date: 2014-3-5
 ##前言
 刚接触Objective-C的时候，曾被一个bug折磨得很痛苦，后来才发现是我对Category理解错了，不知道它对所有该类的实例都会起作用。当时就决定要好好研究一下Objective-C的对象模型。正好最近手头的活忙完了，可以有时间做个总结。
 
-本文所参照的代码是clang rewrite之后的C++代码，以及Apple开源的Runtime代码，地址[在这](http://www.opensource.apple.com/source/objc4/)。Apple官方貌似没有提供一个打包下载的地址，我在Github上fork了一份别人整理过的437.1版本的，可以到[这里](https://github.com/zqqf16/OBJC4-437.1-Runtime)查看。
+本文所参照的代码是clang rewrite之后的C++代码，以及Apple开源的Runtime代码，地址[在这](http://www.opensource.apple.com/source/objc4/)，
+也可以参考 Github 上的这个镜像: [opensource-apple/objc4](https://github.com/opensource-apple/objc4)
 
 ##基本概念
 对于Objective-C有关对象、类、元类的基本概念，我就不细说了，和Python很像。这里有三篇文章，对我当时研究的启发很大，大家可以参考一下。

@@ -40,7 +40,10 @@ itemscope itemtype="http://schema.org/Article"
     <div class="wrapper">
         <header class="section-header">
             <h1 itemprop="name" class="section-title">Colorit——一个给终端输出上色的工具</h1>
-            <span class="section-subtitle"><time itemprop="datePublished" content="2013-11-12" datetime="2013-11-12" pubdate="2013-11-12">2013-11-12</time></span>
+            <span class="section-subtitle">
+                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                on <time itemprop="datePublished" content="2013-11-12" datetime="2013-11-12" pubdate="2013-11-12">2013-11-12</time>
+            </span>
         </header>
         <section itemprop="articleBody" class="post-content">
         	<p>平时自己写脚本的时候总喜欢给输出信息加点颜色，比如之前写的查找CVS diff中改动文件的<a href="https://gist.github.com/zqqf16/7094628">脚本</a>。方法很简单，就是输出一些ASCII控制码，比如<code>\033[;31m</code>代表红色之类的。</p>

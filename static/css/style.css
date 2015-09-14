@@ -366,6 +366,11 @@ h4 + p {
     font-weight: 700;
     display: block;
     margin-top: 5px;
+    display: inline-block;
+}
+
+.section-subtitle .author{
+    display: inline-block;
 }
 
 /* --------------------------------------

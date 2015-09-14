@@ -14,7 +14,10 @@ itemscope itemtype="http://schema.org/Article"
     <div class="wrapper">
         <header class="section-header">
             <h1 itemprop="name" class="section-title">${this.title}</h1>
-            <span class="section-subtitle"><time itemprop="datePublished" content="${this.date.strftime('%Y-%m-%d')}" datetime="${this.date.strftime('%Y-%m-%d')}" pubdate="${this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time></span>
+            <span class="section-subtitle">
+                <address class="author">By <a rel="author" href="/posts/about.html">${author}</a></address>
+                on <time itemprop="datePublished" content="${this.date.strftime('%Y-%m-%d')}" datetime="${this.date.strftime('%Y-%m-%d')}" pubdate="${this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time>
+            </span>
         </header>
         <section itemprop="articleBody" class="post-content">
         	${this.content}

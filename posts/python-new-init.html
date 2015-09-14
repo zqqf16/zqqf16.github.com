@@ -40,7 +40,10 @@ itemscope itemtype="http://schema.org/Article"
     <div class="wrapper">
         <header class="section-header">
             <h1 itemprop="name" class="section-title">Python中关于__new__和__init__的坑</h1>
-            <span class="section-subtitle"><time itemprop="datePublished" content="2014-01-06" datetime="2014-01-06" pubdate="2014-01-06">2014-01-06</time></span>
+            <span class="section-subtitle">
+                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                on <time itemprop="datePublished" content="2014-01-06" datetime="2014-01-06" pubdate="2014-01-06">2014-01-06</time>
+            </span>
         </header>
         <section itemprop="articleBody" class="post-content">
         	<p>前几天在重构Peanut的时候，想实现一个扩展的单实例模式。即每个同名的Tag在内存中只有一份，这样方便Tag与Post的关联。然后想起了之前在网上看的Python单实例方法，重写了<code>__new__</code>:</p>

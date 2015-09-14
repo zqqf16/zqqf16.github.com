@@ -40,7 +40,10 @@ itemscope itemtype="http://schema.org/Article"
     <div class="wrapper">
         <header class="section-header">
             <h1 itemprop="name" class="section-title">高亮Markdown中的代码（续）</h1>
-            <span class="section-subtitle"><time itemprop="datePublished" content="2013-08-20" datetime="2013-08-20" pubdate="2013-08-20">2013-08-20</time></span>
+            <span class="section-subtitle">
+                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                on <time itemprop="datePublished" content="2013-08-20" datetime="2013-08-20" pubdate="2013-08-20">2013-08-20</time>
+            </span>
         </header>
         <section itemprop="articleBody" class="post-content">
         	<p>之前写过一篇文章（<a href="/posts/how-to-highlight-code-in-markdown.html">高亮Markdown中的代码</a>)，介绍了python-markdown2中高亮代码的方法。后来在使用中我发现了一个<code>fenced code blocks</code>的bug，如果代码中间有空行，它会把换行之后的部分当成嵌套的。生成的文件中会有一堆类似这样的部分：</p>
