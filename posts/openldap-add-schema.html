@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">OpenLDAP添加Schema（Ubuntu）</h1>
+            <h1 itemprop="headline" class="section-title">OpenLDAP添加Schema（Ubuntu）</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2013-08-19" datetime="2013-08-19" pubdate="2013-08-19">2013-08-19</time>
             </span>
         </header>
@@ -167,11 +167,6 @@ olcObjectClasses: {0}( testObject NAME &#39;testObject&#39; DESC &#39;Just for t
 </li>
 </ol>
         </section>
-
-		<meta itemprop="url" content="posts/openldap-add-schema.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

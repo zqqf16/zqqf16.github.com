@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">我的Vim配置</h1>
+            <h1 itemprop="headline" class="section-title">我的Vim配置</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2013-05-22" datetime="2013-05-22" pubdate="2013-05-22">2013-05-22</time>
             </span>
         </header>
@@ -93,11 +93,6 @@ execute pathogen#infect<span class="p">()</span>
 <p>上一张截图<img alt="vim" src="/static/img/my-vim.png" /></p>
 <p>参考文章：<a href="http://liluo.org/blog/2012/05/using-git-submodule-and-vim-pathogen-for-vim-configuraction-management/">liluo.org</a></p>
         </section>
-
-		<meta itemprop="url" content="posts/my-vim-configuration.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

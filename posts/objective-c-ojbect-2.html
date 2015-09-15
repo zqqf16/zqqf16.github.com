@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">从源码看Objective-C的对象模型（二）</h1>
+            <h1 itemprop="headline" class="section-title">从源码看Objective-C的对象模型（二）</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2014-03-17" datetime="2014-03-17" pubdate="2014-03-17">2014-03-17</time>
             </span>
         </header>
@@ -207,11 +207,6 @@ itemscope itemtype="http://schema.org/Article"
 <li>在方法中通过指针或者变量名访问实例变量，是通过self指针加上偏移量来实现的</li>
 </ul>
         </section>
-
-		<meta itemprop="url" content="posts/objective-c-ojbect-2.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

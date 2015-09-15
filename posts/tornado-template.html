@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">Tornado源码之Template</h1>
+            <h1 itemprop="headline" class="section-title">Tornado源码之Template</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2013-11-21" datetime="2013-11-21" pubdate="2013-11-21">2013-11-21</time>
             </span>
         </header>
@@ -182,11 +182,6 @@ itemscope itemtype="http://schema.org/Article"
 <p>从上面的例子中可以看出，执行完这段字节码，namespace中会创建一个名为<code>_tt_execute</code>函数，然后再执行这个函数，得到的结果就是模板渲染完的结果。</p>
 <p>至此，Template的工作流程就介绍完了~</p>
         </section>
-
-		<meta itemprop="url" content="posts/tornado-template.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

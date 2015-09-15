@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">从源码看Objective-C的对象模型（一）</h1>
+            <h1 itemprop="headline" class="section-title">从源码看Objective-C的对象模型（一）</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2014-03-05" datetime="2014-03-05" pubdate="2014-03-05">2014-03-05</time>
             </span>
         </header>
@@ -155,11 +155,6 @@ itemscope itemtype="http://schema.org/Article"
 <p>看到这就明白了，类对象以及元类对象是编译时就会创建好的。那么实例对象是怎么创建的，实例变量是怎么保存的呢？且看下一篇分解~</p>
 <p>--未完待续--</p>
         </section>
-
-		<meta itemprop="url" content="posts/objective-c-ojbect-1.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

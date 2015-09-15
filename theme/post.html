@@ -11,22 +11,17 @@ itemscope itemtype="http://schema.org/Article"
 
 <%block name="main">
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">${this.title}</h1>
+            <h1 itemprop="headline" class="section-title">${this.title}</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">${author}</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">${author}</a></address>
                 on <time itemprop="datePublished" content="${this.date.strftime('%Y-%m-%d')}" datetime="${this.date.strftime('%Y-%m-%d')}" pubdate="${this.date.strftime('%Y-%m-%d')}">${this.date.strftime('%Y-%m-%d')}</time>
             </span>
         </header>
         <section itemprop="articleBody" class="post-content">
         	${this.content}
         </section>
-
-		<meta itemprop="url" content="${this.url}">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="${author}"></span>
-
         <div class="post-nav">
     		<%include file="comment.html"/>
     	</div>

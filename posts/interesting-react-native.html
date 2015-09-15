@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">React Native 中那些有意思的地方（一）</h1>
+            <h1 itemprop="headline" class="section-title">React Native 中那些有意思的地方（一）</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2015-04-13" datetime="2015-04-13" pubdate="2015-04-13">2015-04-13</time>
             </span>
         </header>
@@ -148,11 +148,6 @@ itemscope itemtype="http://schema.org/Article"
 <p>还有一点，这种方式属于比 <code>+ (void)load</code> 还黑的黑科技，少用怡情，滥用伤神。当然，如果是传统的 C 程序员，这种方法对他们来说应该是见怪不怪了。</p>
 <p>不过，多知道一种有意思的方法总归是有益的，是吧？</p>
         </section>
-
-		<meta itemprop="url" content="posts/interesting-react-native.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

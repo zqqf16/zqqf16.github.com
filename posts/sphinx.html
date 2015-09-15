@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">Sphinx入门</h1>
+            <h1 itemprop="headline" class="section-title">Sphinx入门</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2013-05-23" datetime="2013-05-23" pubdate="2013-05-23">2013-05-23</time>
             </span>
         </header>
@@ -120,11 +120,6 @@ genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js 
 <p><img alt="sphinx" src="/static/img/sphinx.png" /></p>
 <p>PS: reStructuredText的语法可以自行Google，不是博主懒，是博主花了大半天愣是没掌握。。。在这里也吐个槽。。。这玩意还是不如用Markdown来得快。。。</p>
         </section>
-
-		<meta itemprop="url" content="posts/sphinx.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

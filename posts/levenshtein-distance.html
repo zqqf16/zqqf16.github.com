@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">Levenshtein distance（编辑距离）算法</h1>
+            <h1 itemprop="headline" class="section-title">Levenshtein distance（编辑距离）算法</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2013-08-02" datetime="2013-08-02" pubdate="2013-08-02">2013-08-02</time>
             </span>
         </header>
@@ -63,11 +63,6 @@ Did you mean this?
 <p>有个外国哥们基于这个算法又改进了一下，在原有的三种操作（插入、删除、替换）中又增加了一种“交换”，这对于拼写检查之类的还是很有用的。这种改进后的算法又叫<a href="http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance">Damerau–Levenshtein distance</a>。Git源码里就是采用的这种算法，具体代码可以查看<a href="https://github.com/git/git/blob/master/levenshtein.c">这里</a>。需要注意的是，Git中把4中操作都加上了权值，这样更灵活一些。</p>
 <p>为了更好的理解这个算法，我自己也基于Python实现了一下，代码放在了Gist上，可以访问<a href="https://gist.github.com/zqqf16/6137789">这里</a>。PS：只是为了描述一下算法，并没有过多地考虑效率问题。</p>
         </section>
-
-		<meta itemprop="url" content="posts/levenshtein-distance.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">

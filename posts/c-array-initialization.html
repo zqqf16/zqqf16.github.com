@@ -37,11 +37,11 @@ itemscope itemtype="http://schema.org/Article"
         <section class="main-content">
             
 <article class="main-content">
-    <div class="wrapper">
+    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
         <header class="section-header">
-            <h1 itemprop="name" class="section-title">重拾C语言之数组初始化</h1>
+            <h1 itemprop="headline" class="section-title">重拾C语言之数组初始化</h1>
             <span class="section-subtitle">
-                <address class="author">By <a rel="author" href="/posts/about.html">zqqf16</a></address>
+                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
                 on <time itemprop="datePublished" content="2013-05-26" datetime="2013-05-26" pubdate="2013-05-26">2013-05-26</time>
             </span>
         </header>
@@ -75,11 +75,6 @@ itemscope itemtype="http://schema.org/Article"
 <p>就是把第一个元素赋1，其他的元素都被初始化成0。</p>
 <p>就是这么简单。</p>
         </section>
-
-		<meta itemprop="url" content="posts/c-array-initialization.html">
-		<span itemprop="author" itemscope itemtype="http://schema.org/Person">
-			<meta itemprop="name" content="zqqf16"></span>
-
         <div class="post-nav">
     		<div id="disqus_thread"></div>
 <script type="text/javascript">
