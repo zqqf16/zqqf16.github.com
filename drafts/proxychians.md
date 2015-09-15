@@ -29,6 +29,15 @@ brew install proxychains-ng
 socks5 127.0.0.1 1080
 ```
 
+> 2015-9-15 更新
+>
+> OS X El Capitan v10.11 之后，Apple 推出了一个叫 **System Integrity Protection** 的新功能：
+> > A new security policy that applies to every running process, including privileged code and code that runs out of the sandbox. The policy extends additional protections to components on disk and at run-time, only allowing system binaries to be modified by the system installer and software updates. **Code injection and runtime attachments to system binaries are no longer permitted**.
+
+> 如果开启了 SIP，可能导致 ProxyChains 失效。解决方法是进入 Recovery 模式，在终端执行 `csrutil disable`，禁止 SIP。
+>
+> 其中的风险请自行判断:-)
+
 使用方法也很简单，比如 ping：
 
 ```bash
@@ -83,7 +92,7 @@ DYLD_FORCE_FLAT_NAMESPACE=1
 手动设置这三个环境变量
 
 ```bash
-$ export PROXYCHAINS_CONF_FILE=/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf 
+$ export PROXYCHAINS_CONF_FILE=/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
 $ export DYLD_INSERT_LIBRARIES=/usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
 $ export DYLD_FORCE_FLAT_NAMESPACE=1
 ```
@@ -97,4 +106,3 @@ $ export DYLD_FORCE_FLAT_NAMESPACE=1
 2. [利用 LD_PRELOAD 进行 hook](http://hbprotoss.github.io/posts/li-yong-ld_preloadjin-xing-hook.html)
 3. [Mac 下安装及配置 ProxyChains-NG 实现终端下代理](http://www.dreamxu.com/proxychains-ng/)
 4. [dyld - the dynamic link editor](https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man1/dyld.1.html)
-

@@ -62,6 +62,15 @@ socks5 127.0.0.1 1080
 </pre></div>
 
 
+<blockquote>
+<p>2015-9-15 更新</p>
+<p>OS X El Capitan v10.11 之后，Apple 推出了一个叫 <strong>System Integrity Protection</strong> 的新功能：</p>
+<blockquote>
+<p>A new security policy that applies to every running process, including privileged code and code that runs out of the sandbox. The policy extends additional protections to components on disk and at run-time, only allowing system binaries to be modified by the system installer and software updates. <strong>Code injection and runtime attachments to system binaries are no longer permitted</strong>.</p>
+</blockquote>
+<p>如果开启了 SIP，可能导致 ProxyChains 失效。解决方法是进入 Recovery 模式，在终端执行 <code>csrutil disable</code>，禁止 SIP。</p>
+<p>其中的风险请自行判断:-)</p>
+</blockquote>
 <p>使用方法也很简单，比如 ping：</p>
 <div class="codehilite"><pre><span class="nv">$ </span>proxychains4 ping -c <span class="m">2</span> www.google.com
 <span class="o">[</span>proxychains<span class="o">]</span> config file found: /usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
@@ -103,7 +112,7 @@ round-trip min/avg/max/stddev <span class="o">=</span> 65.601/66.087/66.572/0.48
 <p>一共设置了三个环境变量，其中 <strong>PROXYCHAINS_CONF_FILE</strong> 保存的是配置文件路径，<strong>DYLD_INSERT_LIBRARIES</strong> 保存的是动态库路径，在 Mac 中，必须使<strong>DYLD_FORCE_FLAT_NAMESPACE</strong> 为 1 才能保证 <strong>DYLD_INSERT_LIBRARIES</strong> 起作用。</p>
 <p>其实还有个一劳永逸的方法：</p>
 <p>手动设置这三个环境变量</p>
-<div class="codehilite"><pre><span class="nv">$ </span><span class="nb">export </span><span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf 
+<div class="codehilite"><pre><span class="nv">$ </span><span class="nb">export </span><span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
 <span class="nv">$ </span><span class="nb">export </span><span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
 <span class="nv">$ </span><span class="nb">export </span><span class="nv">DYLD_FORCE_FLAT_NAMESPACE</span><span class="o">=</span>1
 </pre></div>
