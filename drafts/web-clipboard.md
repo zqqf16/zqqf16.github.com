@@ -1,7 +1,10 @@
+---
 title: 写了一个简单的Web剪切板-Clipboard
 date: 2013-12-19
-tag: Clipboard
-tag: tornado
+tags:
+    - Clipboard
+    - tornado
+---
 
 平时由于工作的关系需要用到多台电脑，Mac和Windows来回切换。有时候想把一些信息复制到另一台电脑上，只能打开文件共享，然后把内容保存到文件里，再到另一台电脑里打开。时间一长，就积累了很多垃圾文件。于是乎就花了点时间，写了个简单的基于Web的内容共享程序，我叫它Clipboard。
 

@@ -1,7 +1,10 @@
+---
 title: 高亮Markdown中的代码（续）
 date: 2013-8-20
-tag: python
-     markdown
+tags:
+    - python
+    - markdown
+---
 
 之前写过一篇文章（[高亮Markdown中的代码](/posts/how-to-highlight-code-in-markdown.html))，介绍了python-markdown2中高亮代码的方法。后来在使用中我发现了一个`fenced code blocks`的bug，如果代码中间有空行，它会把换行之后的部分当成嵌套的。生成的文件中会有一堆类似这样的部分：
 

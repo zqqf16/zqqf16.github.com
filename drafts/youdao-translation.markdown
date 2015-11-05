@@ -1,6 +1,8 @@
+---
 title: 命令行下的有道翻译
 date: 2013-5-20
-tag: 翻译
+tags: 翻译
+---
 
 像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。
 
@@ -42,7 +44,7 @@ green = '\033[0;32m%s\033[0m: \033[0;34m%s\033[0m'
 
 opener = urllib2.build_opener()
 msg = (' '.join(sys.argv[1:]))
-url_utf = 'http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&key=908880018&type=data&doctype=json&version=1.1&q=' + msg 
+url_utf = 'http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&key=908880018&type=data&doctype=json&version=1.1&q=' + msg
 
 try:
 	result_json = opener.open(url_utf).read()

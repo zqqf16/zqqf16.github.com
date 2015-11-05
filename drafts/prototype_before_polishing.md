@@ -1,6 +1,8 @@
+---
 title: 雕琢前先得有原型，跑之前先学会走
 date: 2015-7-20
-tag: 软件开发
+tags: 软件开发
+---
 
 > 本文标题来自《UNIX 编程艺术》，在此借用这句话来表达一下自己对于软件开发的想法。
 
@@ -48,4 +50,3 @@ tag: 软件开发
 在 [Znote](https://github.com/zqqf16/znote) 失败之后，我重新捋了一下需求，想起来我的出发点就是找个地方写博客。于是就干脆用起了 Github Pages，还顺手写了一个 Python [程序](https://github.com/zqqf16/zqqf16.github.com)来把 Markdown 转成 HTML。转眼间已经坚持写博客两年多了。
 
 *PS：我把博客程序放在 Github 以及 Git@OSC 上之后，前前后后大约收到了 50 多个 star 与 30 多个 fork。我一一跟踪过 fork 我代码的人，他们中只有几个人搞起了自己的博客，但坚持写下去的寥寥无几。*
-

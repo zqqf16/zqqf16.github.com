@@ -1,6 +1,8 @@
+---
 title: 高亮Markdown中的代码
 date: 2013-4-26
-tag: python
+tags: python
+---
 
 Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于`<code class="python">`的HTML标签，显得十分Ugly。
 
@@ -11,7 +13,7 @@ Markdown语法标准中并没有一种方法来标明代码语言的种类。所
     ```python
     print 'hello'
     ```
-    
+
 这样的方式来指明代码种类。先把代码段用正则匹配出来，根据语言种类调用Pygments进行着色。然后再把其它部分连同着色后的的代码段一起Markdown转换。
 
 后来越想越觉得不太靠谱，还是有点Ugly。
@@ -25,7 +27,7 @@ Markdown2提供了一个代码高亮的扩展：[fenced code blocks](https://git
     ```python
     print "hi"
     ```
-    
+
 使用方法也很简单：
 
 ```python

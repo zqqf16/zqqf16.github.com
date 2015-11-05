@@ -1,7 +1,10 @@
+---
 title: 谈谈 iOS8 中的 Network Extension
-tag: iOS8
-tag: Network Extension
+tags:
+    - iOS
+    - Network Extension
 date: 2014-10-14
+---
 
 > 由于工作原因，对 iOS 的 VPN 方面比较关心，于是基本上就在第一时间发现并研究了 Network Extension（以下简称 NE）。
 
@@ -101,7 +104,7 @@ if (startError) {
 1. 上面提到的，系统配置文件和 NEVPNManager 内容不同步，需要监听 “NEVPNConfigurationChangeNotification” 消息。
 2.  NEVPNManager 的操作基本上都是异步的，改配置时必须确保 load 完成，启动 VPN 时必须确保 save 完成。
 3.  有时候创建、保存配置一切正常，但是启动时就会提示 “未知错误”。这时候需要在系统设置里面手动启动一次 VPN，然后程序就可以正常启动了……有时候手动启动也不成，那就得把配置文件删除，然后重新安装……
-	
+
 	> 2015-3-13 更新解决方法：
 	>
 	> 在调用 NEVPNManager 的 `saveToPreferencesWithCompletionHandler` 方法前，应将它的 `enabled` 属性置成 “YES”。
@@ -114,7 +117,7 @@ if (startError) {
 上文提到的国际友人曾经遇到了一些问题（可以查看他文章下面的评论），这种问题基本上是因为坑#2 导致的。为了向他解释我的代码没问题，我根据他的代码写了一个简单的 Demo。没写全，但是基本可用。我这一切正常，他说他复制过去还有问题……
 
 > **2014-12-19 更新**
-> 
+>
 > 如果`localIdentifier`和`remoteIdentifier`设置的不对也可能导致这个问题。我测试的 IPSec 服务端把这两个字段去掉了，所以一直没注意~
 
 *以下代码来自 Gist，需自备梯子～*

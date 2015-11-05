@@ -1,6 +1,8 @@
+---
 title: Levenshtein distance（编辑距离）算法
 date: 2013-8-2
-tag: Levenshtein distance
+tags: Levenshtein distance
+---
 
 在用Git的时候，如果一不小心把命令参数输入错了，比如把`show`写成了`slow`，Git会进行有好的提示：
 
@@ -25,4 +27,3 @@ Did you mean this?
 有个外国哥们基于这个算法又改进了一下，在原有的三种操作（插入、删除、替换）中又增加了一种“交换”，这对于拼写检查之类的还是很有用的。这种改进后的算法又叫[Damerau–Levenshtein distance](http://en.wikipedia.org/wiki/Damerau–Levenshtein_distance)。Git源码里就是采用的这种算法，具体代码可以查看[这里](https://github.com/git/git/blob/master/levenshtein.c)。需要注意的是，Git中把4中操作都加上了权值，这样更灵活一些。
 
 为了更好的理解这个算法，我自己也基于Python实现了一下，代码放在了Gist上，可以访问[这里](https://gist.github.com/zqqf16/6137789)。PS：只是为了描述一下算法，并没有过多地考虑效率问题。
-

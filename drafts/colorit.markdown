@@ -1,6 +1,8 @@
+---
 title: Colorit——一个给终端输出上色的工具
 date: 2013-11-12
-tag: python
+tags: python
+---
 
 平时自己写脚本的时候总喜欢给输出信息加点颜色，比如之前写的查找CVS diff中改动文件的[脚本](https://gist.github.com/zqqf16/7094628)。方法很简单，就是输出一些ASCII控制码，比如`\033[;31m`代表红色之类的。
 

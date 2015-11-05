@@ -1,8 +1,11 @@
+---
 title: Ubuntu下好用的Markdown编辑器
 date: 2013-6-4
-tag: markdown
-tag: ubuntu
-tag: retext
+tags:
+    - markdown
+    - ubuntu
+    - retext
+---
 
 之前在Ubuntu下一直用Vim来编辑Markdown，纯英文还好，但是Vim里输入汉语实在是忒复杂了。
 
@@ -27,7 +30,7 @@ $ gsettings get org.gnome.desktop.interface icon-theme
 打开“～/.config/ReText\ project/ReText.conf”，加入
 
     iconThem=ubuntu-mono-dark
-    
+
 重新打开ReText就OK了~
 
 ![图片](/static/img/retext.png)

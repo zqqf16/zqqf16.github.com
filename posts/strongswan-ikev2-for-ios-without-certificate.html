@@ -1,50 +1,53 @@
 <!DOCTYPE html>
-<html lang="zh-cn">
+<html>
 <head>
-  
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta http-equiv="Content-Type" content="text/html;charset=utf-8">
-  <title>
-用 strongSwan 搭建免证书的 IKEv2 VPN |
-穷折腾</title>
-  <link rel="stylesheet" href="/static/css/style.css" />
-  <link rel="stylesheet" href="/static/css/pygments.css" />
-  <link rel="alternate" type="application/rss+xml" title="RSS" href="http://blog.zorro.im/rss.xml" />
-  <link rel="sitemap"  type="application/xml" title="Sitemap" href="/sitemap.xml" />
-  <link rel="icon" type="image/png" href="/static/img/favicon.png">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>穷折腾</title>
+    <meta name="description" content="zqqf16 的个人博客" />
+    <meta name="HandheldFriendly" content="True" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="shortcut icon" href="/assets/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Merriweather:300,700,700italic,300italic|Open+Sans:700,400" />
+    
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+
 </head>
-<body>
-    <div  class="page-wrap">
-        <section class="main-header regular">
-            <div class="vertical-container">
-                <div class="wrapper clearfix">
-                    <header>
-                        <a href="/">
-                            <h1 id="main-title">穷折腾</h1>
-                            <h2 id="main-subtitle">zqqf16 的个人博客</h2>
-                        </a>
-                    </header>
-                    <nav id="main-nav" role="navigation">
-                        <a href="/" class="selected">主页</a>
-                        <a href="/posts/about.html" class="">关于</a>
-                        <a href="https://github.com/zqqf16">Github</a>
-                    </nav>
-                </div>
-            </div>
-        </section>
-        <section class="main-content">
-            
-<article class="main-content">
-    <div class="wrapper" itemscope itemtype="http://schema.org/Article">
-        <header class="section-header">
-            <h1 itemprop="headline" class="section-title">用 strongSwan 搭建免证书的 IKEv2 VPN</h1>
-            <span class="section-subtitle">
-                <address class="author">By <a itemprop="author" rel="author" href="/posts/about.html">zqqf16</a></address>
-                on <time itemprop="datePublished" content="2015-10-14" datetime="2015-10-14" pubdate="2015-10-14">2015-10-14</time>
-            </span>
+<body class="post-template tag-fables nav-closed">
+    
+    <div class="site-wrapper">
+        
+
+
+<header class="main-header post-head no-cover">
+    <nav class="main-nav  clearfix">
+        
+        <a class="blog-logo" href="http://blog.zorro.im">
+            <img src="/static/img/favicon.png" alt="穷折腾" />
+        </a>
+        
+        
+    </nav>
+</header>
+<main class="content" role="main">
+    <article class="post ">
+        <header class="post-header">
+            <h1 class="post-title">用 strongSwan 搭建免证书的 IKEv2 VPN</h1>
+            <section class="post-meta">
+                <time class="post-date" datetime="2015-10-14">14 Oct 2015</time>
+                
+                     on 
+                    
+                    <a href="/tags/strongSwan.html"> strongSwan </a>
+                    
+                    <a href="/tags/IKEv2.html"> IKEv2 </a>
+                    
+                
+            </section>
         </header>
-        <section itemprop="articleBody" class="post-content">
-        	<h2 id="_1">前言</h2>
+        <section class="post-content">
+            <h2 id="_1">前言</h2>
 <p>目前能搜到的 strongSwan IKEv2 配置基本上都是基于证书的，不知道别人怎么样，反正我觉得证书方式挺繁琐的，虽然跟证书打了三年多的交道。</p>
 <p>如果只是在 iOS 或者 OS X 上用 IKEv2，用 PSK（预共享密钥）的方式就简单很多。</p>
 <p><em>本文仅限于科学研究使用，请勿用于其他目的。所有配置文件可以在 <a href="https://gist.github.com/zqqf16/b207a17637de103e05c6">Gist</a> 上获取。</em></p>
@@ -160,105 +163,105 @@ include strongswan.d/*.conf
 </ul>
 <p><em>PS：我用 Apple Configurator 2，可能是 Beta 的缘故，编辑的时候总是提示有错误，却死活找不着错误的地方……</em></p>
 <p>如果没有 Apple Configurator，可以手工编辑下面的文件：</p>
-<div class="codehilite"><pre>&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
-&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;
-&lt;plist version=&quot;1.0&quot;&gt;
-&lt;dict&gt;
-    &lt;key&gt;PayloadContent&lt;/key&gt;
-    &lt;array&gt;
-        &lt;dict&gt;
-            &lt;key&gt;IKEv2&lt;/key&gt;
-            &lt;dict&gt;
-                &lt;key&gt;AuthName&lt;/key&gt;
-                &lt;string&gt;{username}&lt;/string&gt;
-                &lt;key&gt;AuthPassword&lt;/key&gt;
-                &lt;string&gt;{password}&lt;/string&gt;
-                &lt;key&gt;AuthenticationMethod&lt;/key&gt;
-                &lt;string&gt;SharedSecret&lt;/string&gt;
-                &lt;key&gt;ChildSecurityAssociationParameters&lt;/key&gt;
-                &lt;dict&gt;
-                    &lt;key&gt;DiffieHellmanGroup&lt;/key&gt;
-                    &lt;integer&gt;2&lt;/integer&gt;
-                    &lt;key&gt;EncryptionAlgorithm&lt;/key&gt;
-                    &lt;string&gt;3DES&lt;/string&gt;
-                    &lt;key&gt;IntegrityAlgorithm&lt;/key&gt;
-                    &lt;string&gt;SHA1-96&lt;/string&gt;
-                    &lt;key&gt;LifeTimeInMinutes&lt;/key&gt;
-                    &lt;integer&gt;1440&lt;/integer&gt;
-                &lt;/dict&gt;
-                &lt;key&gt;DeadPeerDetectionRate&lt;/key&gt;
-                &lt;string&gt;Medium&lt;/string&gt;
-                &lt;key&gt;DisableMOBIKE&lt;/key&gt;
-                &lt;false/&gt;
-                &lt;key&gt;DisableRedirect&lt;/key&gt;
-                &lt;integer&gt;0&lt;/integer&gt;
-                &lt;key&gt;EnableCertificateRevocationCheck&lt;/key&gt;
-                &lt;false/&gt;
-                &lt;key&gt;EnablePFS&lt;/key&gt;
-                &lt;false/&gt;
-                &lt;key&gt;ExtendedAuthEnabled&lt;/key&gt;
-                &lt;true/&gt;
-                &lt;key&gt;IKESecurityAssociationParameters&lt;/key&gt;
-                &lt;dict&gt;
-                    &lt;key&gt;DiffieHellmanGroup&lt;/key&gt;
-                    &lt;integer&gt;2&lt;/integer&gt;
-                    &lt;key&gt;EncryptionAlgorithm&lt;/key&gt;
-                    &lt;string&gt;3DES&lt;/string&gt;
-                    &lt;key&gt;IntegrityAlgorithm&lt;/key&gt;
-                    &lt;string&gt;SHA1-96&lt;/string&gt;
-                    &lt;key&gt;LifeTimeInMinutes&lt;/key&gt;
-                    &lt;integer&gt;1440&lt;/integer&gt;
-                &lt;/dict&gt;
-                &lt;key&gt;LocalIdentifier&lt;/key&gt;
-                &lt;string&gt;{rightid}&lt;/string&gt;
-                &lt;key&gt;RemoteAddress&lt;/key&gt;
-                &lt;string&gt;{your_server_address}&lt;/string&gt;
-                &lt;key&gt;RemoteIdentifier&lt;/key&gt;
-                &lt;string&gt;{leftid}&lt;/string&gt;
-                &lt;key&gt;SharedSecret&lt;/key&gt;
-                &lt;string&gt;{your_psk}&lt;/string&gt;
-                &lt;key&gt;UseConfigurationAttributeInternalIPSubnet&lt;/key&gt;
-                &lt;false/&gt;
-            &lt;/dict&gt;
-            &lt;key&gt;IPv4&lt;/key&gt;
-            &lt;dict&gt;
-                &lt;key&gt;OverridePrimary&lt;/key&gt;
-                &lt;integer&gt;1&lt;/integer&gt;
-            &lt;/dict&gt;
-            &lt;key&gt;PayloadDescription&lt;/key&gt;
-            &lt;string&gt;Configures VPN settings&lt;/string&gt;
-            &lt;key&gt;PayloadDisplayName&lt;/key&gt;
-            &lt;string&gt;VPN&lt;/string&gt;
-            &lt;key&gt;PayloadIdentifier&lt;/key&gt;
-            &lt;string&gt;com.apple.vpn.managed.10D1B7B7-57C1-4AFD-A51E-DD496017EA14&lt;/string&gt;
-            &lt;key&gt;PayloadType&lt;/key&gt;
-            &lt;string&gt;com.apple.vpn.managed&lt;/string&gt;
-            &lt;key&gt;PayloadUUID&lt;/key&gt;
-            &lt;string&gt;F8362154-56D1-434D-AA7A-4CEA68A2C543&lt;/string&gt;
-            &lt;key&gt;PayloadVersion&lt;/key&gt;
-            &lt;real&gt;1&lt;/real&gt;
-            &lt;key&gt;Proxies&lt;/key&gt;
-            &lt;dict/&gt;
-            &lt;key&gt;UserDefinedName&lt;/key&gt;
-            &lt;string&gt;IKEV2&lt;/string&gt;
-            &lt;key&gt;VPNType&lt;/key&gt;
-            &lt;string&gt;IKEv2&lt;/string&gt;
-        &lt;/dict&gt;
-    &lt;/array&gt;
-    &lt;key&gt;PayloadDisplayName&lt;/key&gt;
-    &lt;string&gt;IKEV2&lt;/string&gt;
-    &lt;key&gt;PayloadIdentifier&lt;/key&gt;
-    &lt;string&gt;{your.payload.identifier}}&lt;/string&gt;
-    &lt;key&gt;PayloadRemovalDisallowed&lt;/key&gt;
-    &lt;false/&gt;
-    &lt;key&gt;PayloadType&lt;/key&gt;
-    &lt;string&gt;Configuration&lt;/string&gt;
-    &lt;key&gt;PayloadUUID&lt;/key&gt;
-    &lt;string&gt;8F74450B-5341-4796-B0AC-9965E64685EB&lt;/string&gt;
-    &lt;key&gt;PayloadVersion&lt;/key&gt;
-    &lt;integer&gt;1&lt;/integer&gt;
-&lt;/dict&gt;
-&lt;/plist&gt;
+<div class="codehilite"><pre><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
+<span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;dict&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadContent<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;array&gt;</span>
+        <span class="nt">&lt;dict&gt;</span>
+            <span class="nt">&lt;key&gt;</span>IKEv2<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;dict&gt;</span>
+                <span class="nt">&lt;key&gt;</span>AuthName<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>{username}<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>AuthPassword<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>{password}<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>AuthenticationMethod<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>SharedSecret<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>ChildSecurityAssociationParameters<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;dict&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>DiffieHellmanGroup<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;integer&gt;</span>2<span class="nt">&lt;/integer&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>EncryptionAlgorithm<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;string&gt;</span>3DES<span class="nt">&lt;/string&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>IntegrityAlgorithm<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;string&gt;</span>SHA1-96<span class="nt">&lt;/string&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>LifeTimeInMinutes<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;integer&gt;</span>1440<span class="nt">&lt;/integer&gt;</span>
+                <span class="nt">&lt;/dict&gt;</span>
+                <span class="nt">&lt;key&gt;</span>DeadPeerDetectionRate<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>Medium<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>DisableMOBIKE<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;false/&gt;</span>
+                <span class="nt">&lt;key&gt;</span>DisableRedirect<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;integer&gt;</span>0<span class="nt">&lt;/integer&gt;</span>
+                <span class="nt">&lt;key&gt;</span>EnableCertificateRevocationCheck<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;false/&gt;</span>
+                <span class="nt">&lt;key&gt;</span>EnablePFS<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;false/&gt;</span>
+                <span class="nt">&lt;key&gt;</span>ExtendedAuthEnabled<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;true/&gt;</span>
+                <span class="nt">&lt;key&gt;</span>IKESecurityAssociationParameters<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;dict&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>DiffieHellmanGroup<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;integer&gt;</span>2<span class="nt">&lt;/integer&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>EncryptionAlgorithm<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;string&gt;</span>3DES<span class="nt">&lt;/string&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>IntegrityAlgorithm<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;string&gt;</span>SHA1-96<span class="nt">&lt;/string&gt;</span>
+                    <span class="nt">&lt;key&gt;</span>LifeTimeInMinutes<span class="nt">&lt;/key&gt;</span>
+                    <span class="nt">&lt;integer&gt;</span>1440<span class="nt">&lt;/integer&gt;</span>
+                <span class="nt">&lt;/dict&gt;</span>
+                <span class="nt">&lt;key&gt;</span>LocalIdentifier<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>{rightid}<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>RemoteAddress<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>{your_server_address}<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>RemoteIdentifier<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>{leftid}<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>SharedSecret<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;string&gt;</span>{your_psk}<span class="nt">&lt;/string&gt;</span>
+                <span class="nt">&lt;key&gt;</span>UseConfigurationAttributeInternalIPSubnet<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;false/&gt;</span>
+            <span class="nt">&lt;/dict&gt;</span>
+            <span class="nt">&lt;key&gt;</span>IPv4<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;dict&gt;</span>
+                <span class="nt">&lt;key&gt;</span>OverridePrimary<span class="nt">&lt;/key&gt;</span>
+                <span class="nt">&lt;integer&gt;</span>1<span class="nt">&lt;/integer&gt;</span>
+            <span class="nt">&lt;/dict&gt;</span>
+            <span class="nt">&lt;key&gt;</span>PayloadDescription<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>Configures VPN settings<span class="nt">&lt;/string&gt;</span>
+            <span class="nt">&lt;key&gt;</span>PayloadDisplayName<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>VPN<span class="nt">&lt;/string&gt;</span>
+            <span class="nt">&lt;key&gt;</span>PayloadIdentifier<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>com.apple.vpn.managed.10D1B7B7-57C1-4AFD-A51E-DD496017EA14<span class="nt">&lt;/string&gt;</span>
+            <span class="nt">&lt;key&gt;</span>PayloadType<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>com.apple.vpn.managed<span class="nt">&lt;/string&gt;</span>
+            <span class="nt">&lt;key&gt;</span>PayloadUUID<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>F8362154-56D1-434D-AA7A-4CEA68A2C543<span class="nt">&lt;/string&gt;</span>
+            <span class="nt">&lt;key&gt;</span>PayloadVersion<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;real&gt;</span>1<span class="nt">&lt;/real&gt;</span>
+            <span class="nt">&lt;key&gt;</span>Proxies<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;dict/&gt;</span>
+            <span class="nt">&lt;key&gt;</span>UserDefinedName<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>IKEV2<span class="nt">&lt;/string&gt;</span>
+            <span class="nt">&lt;key&gt;</span>VPNType<span class="nt">&lt;/key&gt;</span>
+            <span class="nt">&lt;string&gt;</span>IKEv2<span class="nt">&lt;/string&gt;</span>
+        <span class="nt">&lt;/dict&gt;</span>
+    <span class="nt">&lt;/array&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadDisplayName<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;string&gt;</span>IKEV2<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadIdentifier<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;string&gt;</span>{your.payload.identifier}}<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadRemovalDisallowed<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;false/&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadType<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;string&gt;</span>Configuration<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadUUID<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;string&gt;</span>8F74450B-5341-4796-B0AC-9965E64685EB<span class="nt">&lt;/string&gt;</span>
+    <span class="nt">&lt;key&gt;</span>PayloadVersion<span class="nt">&lt;/key&gt;</span>
+    <span class="nt">&lt;integer&gt;</span>1<span class="nt">&lt;/integer&gt;</span>
+<span class="nt">&lt;/dict&gt;</span>
+<span class="nt">&lt;/plist&gt;</span>
 </pre></div>
 
 
@@ -269,43 +272,64 @@ include strongswan.d/*.conf
 <li><a href="https://wiki.strongswan.org/projects/strongswan/wiki/ConnSection">strongSwan configuration</a></li>
 </ul>
         </section>
-        <div class="post-nav">
-    		<div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = 'zqqf16';
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-    })();
-</script>
-<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-    	</div>
-    </div>
-
-</article>
-
-        </section>
-    </div>
-    <footer class="main-footer">
-        <div class="vertical-container">
-            <div class="wrapper">
-                <p class="copy">&copy; zqqf16</p>
+        <footer class="post-footer">
+        
+        <figure class="author-image">
+            <a class="img" href="http://blog.zorro.im/posts/about.html" style="background-image: url(http://s.gravatar.com/avatar/4062f9b2373a5519a3b97012489d4bc1?s=80)"><span class="hidden">zqqf16's Picture</span></a>
+        </figure>
+        
+        <section class="author">
+            <h4><a href="http://blog.zorro.im/posts/about.html">zqqf16</a></h4>
+            
+                <p>手工艺人</p>
+            
+            <div class="author-meta">
+                
+                <span class="author-location icon-location">Beijing</span>
+                
+                
+                <span class="author-link icon-link"><a href="http://blog.zorro.im/posts/about.html">http://blog.zorro.im/posts/about.html</a></span>
+                
             </div>
-        </div>
-    </footer>
-    <script>
-      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-      ga('create', 'UA-41282906-2', 'auto');
-      ga('require', 'displayfeatures');
-      ga('send', 'pageview');
-    </script>
+        </section>
+            <section class="share">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/intent/tweet?text=用 strongSwan 搭建免证书的 IKEv2 VPN&amp;url=http://blog.zorro.im/posts/strongswan-ikev2-for-ios-without-certificate.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden">Twitter</span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.zorro.im/posts/strongswan-ikev2-for-ios-without-certificate.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden">Facebook</span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=http://blog.zorro.im/posts/strongswan-ikev2-for-ios-without-certificate.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden">Google+</span>
+                </a>
+            </section>
+        </footer>
+    </article>
+</main>
+<aside class="read-next">
+    
+    <a class="read-next-story no-cover" href="/posts/object_setIvar_under_arc.html">
+        <section class="post">
+            <h2>在 ARC 下使用 object_setIvar 的问题</h2>
+            <p>&hellip;</p>
+        </section>
+    </a>
+    
+    
+</aside>
+
+        <footer class="site-footer clearfix">
+            <section class="copyright"><a href="http://blog.zorro.im">穷折腾</a> &copy; 2015</section>
+            <section class="poweredby">Proudly published with <a href="https://ghost.org">Ghost</a></section>
+        </footer>
+    </div>
+    
+    <script type="text/javascript" src="/assets/js/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" src="/assets/js/jquery.fitvids.js"></script>
+    <script type="text/javascript" src="/assets/js/index.js"></script>
 </body>
 </html>

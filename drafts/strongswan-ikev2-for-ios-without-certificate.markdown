@@ -1,7 +1,10 @@
+---
 title: 用 strongSwan 搭建免证书的 IKEv2 VPN
 date: 2015-10-14
-tag: IKEv2
-tag: strongSwan
+tags:
+    - IKEv2
+    - strongSwan
+---
 
 
 ## 前言
@@ -46,27 +49,27 @@ make && make install
 # basic configuration
 
 config setup
-	strictcrlpolicy=no
-	uniqueids = no
+    strictcrlpolicy=no
+    uniqueids = no
 
 # IKEv2 for iOS
 
 conn iOS-IKEV2
-	auto=add
-	dpdaction=clear
-	keyexchange=ikev2
+    auto=add
+    dpdaction=clear
+    keyexchange=ikev2
 
-	#left
-	left=%any
-	leftsubnet=0.0.0.0/0
-	leftauth=psk
-	leftid=im.zorro.ipsec.server
+    #left
+    left=%any
+    leftsubnet=0.0.0.0/0
+    leftauth=psk
+    leftid=im.zorro.ipsec.server
 
-	#right
-	right=%any
-	rightsourceip=10.99.1.0/24
-	rightauth=eap-mschapv2
-	rightid=im.zorro.ipsec.client
+    #right
+    right=%any
+    rightsourceip=10.99.1.0/24
+    rightauth=eap-mschapv2
+    rightid=im.zorro.ipsec.client
 ```
 
 需要注意的点是 `leftauth=psk` 与 `rightauth=eap-mschapv2`，分别对应着 iOS／OS X 中的“设备鉴定”与“EAP 鉴定”。
@@ -156,99 +159,99 @@ include strongswan.d/*.conf
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>PayloadContent</key>
-	<array>
-		<dict>
-			<key>IKEv2</key>
-			<dict>
-				<key>AuthName</key>
-				<string>{username}</string>
-				<key>AuthPassword</key>
-				<string>{password}</string>
-				<key>AuthenticationMethod</key>
-				<string>SharedSecret</string>
-				<key>ChildSecurityAssociationParameters</key>
-				<dict>
-					<key>DiffieHellmanGroup</key>
-					<integer>2</integer>
-					<key>EncryptionAlgorithm</key>
-					<string>3DES</string>
-					<key>IntegrityAlgorithm</key>
-					<string>SHA1-96</string>
-					<key>LifeTimeInMinutes</key>
-					<integer>1440</integer>
-				</dict>
-				<key>DeadPeerDetectionRate</key>
-				<string>Medium</string>
-				<key>DisableMOBIKE</key>
-				<false/>
-				<key>DisableRedirect</key>
-				<integer>0</integer>
-				<key>EnableCertificateRevocationCheck</key>
-				<false/>
-				<key>EnablePFS</key>
-				<false/>
-				<key>ExtendedAuthEnabled</key>
-				<true/>
-				<key>IKESecurityAssociationParameters</key>
-				<dict>
-					<key>DiffieHellmanGroup</key>
-					<integer>2</integer>
-					<key>EncryptionAlgorithm</key>
-					<string>3DES</string>
-					<key>IntegrityAlgorithm</key>
-					<string>SHA1-96</string>
-					<key>LifeTimeInMinutes</key>
-					<integer>1440</integer>
-				</dict>
-				<key>LocalIdentifier</key>
-				<string>{rightid}</string>
-				<key>RemoteAddress</key>
-				<string>{your_server_address}</string>
-				<key>RemoteIdentifier</key>
-				<string>{leftid}</string>
+    <key>PayloadContent</key>
+    <array>
+        <dict>
+            <key>IKEv2</key>
+            <dict>
+                <key>AuthName</key>
+                <string>{username}</string>
+                <key>AuthPassword</key>
+                <string>{password}</string>
+                <key>AuthenticationMethod</key>
+                <string>SharedSecret</string>
+                <key>ChildSecurityAssociationParameters</key>
+                <dict>
+                    <key>DiffieHellmanGroup</key>
+                    <integer>2</integer>
+                    <key>EncryptionAlgorithm</key>
+                    <string>3DES</string>
+                    <key>IntegrityAlgorithm</key>
+                    <string>SHA1-96</string>
+                    <key>LifeTimeInMinutes</key>
+                    <integer>1440</integer>
+                </dict>
+                <key>DeadPeerDetectionRate</key>
+                <string>Medium</string>
+                <key>DisableMOBIKE</key>
+                <false/>
+                <key>DisableRedirect</key>
+                <integer>0</integer>
+                <key>EnableCertificateRevocationCheck</key>
+                <false/>
+                <key>EnablePFS</key>
+                <false/>
+                <key>ExtendedAuthEnabled</key>
+                <true/>
+                <key>IKESecurityAssociationParameters</key>
+                <dict>
+                    <key>DiffieHellmanGroup</key>
+                    <integer>2</integer>
+                    <key>EncryptionAlgorithm</key>
+                    <string>3DES</string>
+                    <key>IntegrityAlgorithm</key>
+                    <string>SHA1-96</string>
+                    <key>LifeTimeInMinutes</key>
+                    <integer>1440</integer>
+                </dict>
+                <key>LocalIdentifier</key>
+                <string>{rightid}</string>
+                <key>RemoteAddress</key>
+                <string>{your_server_address}</string>
+                <key>RemoteIdentifier</key>
+                <string>{leftid}</string>
                 <key>SharedSecret</key>
-				<string>{your_psk}</string>
-				<key>UseConfigurationAttributeInternalIPSubnet</key>
-				<false/>
-			</dict>
-			<key>IPv4</key>
-			<dict>
-				<key>OverridePrimary</key>
-				<integer>1</integer>
-			</dict>
-			<key>PayloadDescription</key>
-			<string>Configures VPN settings</string>
-			<key>PayloadDisplayName</key>
-			<string>VPN</string>
-			<key>PayloadIdentifier</key>
-			<string>com.apple.vpn.managed.10D1B7B7-57C1-4AFD-A51E-DD496017EA14</string>
-			<key>PayloadType</key>
-			<string>com.apple.vpn.managed</string>
-			<key>PayloadUUID</key>
-			<string>F8362154-56D1-434D-AA7A-4CEA68A2C543</string>
-			<key>PayloadVersion</key>
-			<real>1</real>
-			<key>Proxies</key>
-			<dict/>
-			<key>UserDefinedName</key>
-			<string>IKEV2</string>
-			<key>VPNType</key>
-			<string>IKEv2</string>
-		</dict>
-	</array>
-	<key>PayloadDisplayName</key>
-	<string>IKEV2</string>
-	<key>PayloadIdentifier</key>
-	<string>{your.payload.identifier}}</string>
-	<key>PayloadRemovalDisallowed</key>
-	<false/>
-	<key>PayloadType</key>
-	<string>Configuration</string>
-	<key>PayloadUUID</key>
-	<string>8F74450B-5341-4796-B0AC-9965E64685EB</string>
-	<key>PayloadVersion</key>
-	<integer>1</integer>
+                <string>{your_psk}</string>
+                <key>UseConfigurationAttributeInternalIPSubnet</key>
+                <false/>
+            </dict>
+            <key>IPv4</key>
+            <dict>
+                <key>OverridePrimary</key>
+                <integer>1</integer>
+            </dict>
+            <key>PayloadDescription</key>
+            <string>Configures VPN settings</string>
+            <key>PayloadDisplayName</key>
+            <string>VPN</string>
+            <key>PayloadIdentifier</key>
+            <string>com.apple.vpn.managed.10D1B7B7-57C1-4AFD-A51E-DD496017EA14</string>
+            <key>PayloadType</key>
+            <string>com.apple.vpn.managed</string>
+            <key>PayloadUUID</key>
+            <string>F8362154-56D1-434D-AA7A-4CEA68A2C543</string>
+            <key>PayloadVersion</key>
+            <real>1</real>
+            <key>Proxies</key>
+            <dict/>
+            <key>UserDefinedName</key>
+            <string>IKEV2</string>
+            <key>VPNType</key>
+            <string>IKEv2</string>
+        </dict>
+    </array>
+    <key>PayloadDisplayName</key>
+    <string>IKEV2</string>
+    <key>PayloadIdentifier</key>
+    <string>{your.payload.identifier}}</string>
+    <key>PayloadRemovalDisallowed</key>
+    <false/>
+    <key>PayloadType</key>
+    <string>Configuration</string>
+    <key>PayloadUUID</key>
+    <string>8F74450B-5341-4796-B0AC-9965E64685EB</string>
+    <key>PayloadVersion</key>
+    <integer>1</integer>
 </dict>
 </plist>
 ```
@@ -259,5 +262,3 @@ include strongswan.d/*.conf
 
 * [linux上用strongswan搭建ikev2协议vpn](https://gist.github.com/losisli/11081793)
 * [strongSwan configuration](https://wiki.strongswan.org/projects/strongswan/wiki/ConnSection)
-
-

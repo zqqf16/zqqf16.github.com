@@ -1,6 +1,8 @@
+---
 title: Hello World
 date: 2013-4-24
-tag: test  
+tags: test  
+---
 
 把博客搬到了Github
 
@@ -34,7 +36,7 @@ tag: test
     Suspendisse id sem consectetuer libero luctus adipiscing.
 
 A sample text here. And some code below:
-    
+
 ```python
 import sys
 import gobject
@@ -54,7 +56,6 @@ This is a link to [Google](http://google.com).
 
 **double asterisks**
 
-Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please. 
+Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please.
 
-Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please. 
-
+Create fake iPhone text conversations. Enter a conversation: Example: Dad: Your mom and I are going to divorce next month. Son: Why ? Call me please.

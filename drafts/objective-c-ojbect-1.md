@@ -1,6 +1,10 @@
+---
 title: 从源码看Objective-C的对象模型（一）
-tag: Objective-C
+tags:
+    - Objective-C
+    - iOS
 date: 2014-3-5
+---
 
 ##前言
 刚接触Objective-C的时候，曾被一个bug折磨得很痛苦，后来才发现是我对Category理解错了，不知道它对所有该类的实例都会起作用。当时就决定要好好研究一下Objective-C的对象模型。正好最近手头的活忙完了，可以有时间做个总结。

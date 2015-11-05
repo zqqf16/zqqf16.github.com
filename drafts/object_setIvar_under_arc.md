@@ -1,8 +1,11 @@
+---
 title: 在 ARC 下使用 object_setIvar 的问题
-tag: Objective-C
-tag: Runtime
-tag: object_setIvar
+tags:
+    - Objective-C
+    - Runtime
+    - object_setIvar
 date: 2015-9-11
+---
 
 ## 背景
 

@@ -1,8 +1,11 @@
+---
 title: Python命令行参数解析工具——argparse
 date: 2013-10-22
-tag: argparse
-tag: python
-tag: diff
+tags:
+    - argparse
+    - python
+    - diff
+---
 
 鄙司一直用的CVS来代码管理，每次提交代码都相当的繁琐。先diff，再review，再commit。由于代码量庞大，有可能同时在修好几个bug。一不小心就会误改一些不相关的文件，所以每次diff的时候都需要仔细看一遍改过的文件。
 
@@ -61,14 +64,14 @@ def get_files_from_diff(diff):
     for line in diff:
         m = FILE_RE.match(line)
         if m:
-            res.append(m.group(1)) 
+            res.append(m.group(1))
 
     return res
 
 def main():
     parser = argparse.ArgumentParser(description='Get changed files from diff')
     parser.add_argument('file', nargs='?', help='Diff file')
-    parser.add_argument('-i', dest='input', action='store_true', 
+    parser.add_argument('-i', dest='input', action='store_true',
                         help='Read diff string from stdin')
     parser.add_argument('-l', dest="list", action='store_true',
                         help='List all files')

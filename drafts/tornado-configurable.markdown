@@ -1,7 +1,10 @@
+---
 title: tornado源码之Configurable类
-tag: tornado
-tag: python
+tags:
+    - tornado
+    - python
 date: 2013-7-16
+---
 
 最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的[源码分析](http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html)来作为入门。
 

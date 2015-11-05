@@ -1,6 +1,10 @@
+---
 title: 从源码看Objective-C的对象模型（二）
 date: 2014-3-17
-tag: Objective-C
+tags:
+    - Objective-C
+    - iOS
+---
 
 ## 前言
 

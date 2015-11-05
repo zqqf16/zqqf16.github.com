@@ -1,7 +1,10 @@
+---
 title: Tornado源码之Template
 date: 2013-11-21
-tag: tornado
-tag: template
+tags:
+    - tornado
+    - template
+---
 
 Tornado底层的源码分析已经有很多人写过了，他们的水平都在我之上，写的也比我好，所以我就不再重复了。打算剑走偏锋，研究一下tornado周边的东西。这篇就研究一下之前一直很感兴趣的Template。
 
@@ -51,7 +54,7 @@ def _tt_execute():
 
     #body
 
-    return _tt_utf8('').join(_tt_buffer) 
+    return _tt_utf8('').join(_tt_buffer)
 ```
 
 由于`_File`是这棵树的根，所以最终生成的代码都会被嵌套在一个叫`_tt_execute`的函数内，而这个函数内所有语句生成的字符串会被塞到_tt_buffer中被返回。
@@ -66,7 +69,7 @@ def indent(self):
             return self
 
         def __exit__(_, *args):
-            assert self._indent > 0 
+            assert self._indent > 0
             self._indent -= 1
 
     return Indenter()

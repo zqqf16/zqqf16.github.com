@@ -1,7 +1,10 @@
+---
 title: 初识 iBeacon
 date: 2014-9-1
-tag: iOS
-tag: iBeacon
+tags:
+    - iOS
+    - iBeacon
+---
 
 以前玩 Arduino 的时候就了解过蓝牙4.0，当时颇让我震惊的是它仅用一颗纽扣电池就可以工作一年！这天生就就是为物联网以及可穿戴设备准备的。可惜当时各厂商对它的支持不是很广泛，只有 iPhone 以及少数 Android 手机支持，一个小小的开发模块也得一两百大洋。
 
@@ -51,14 +54,14 @@ iBeacon 基站每隔一段时间就向周围广播，信息里面带有自己的
 - (void)initBeacon {
     NSUUID *uuid = [[NSUUID alloc] initWithUUIDString:@"E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"];
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid identifier:@"E2C56DB5-DFFB-48D2-B060-D0F5A71096E0"];
-    
+
     self.beaconRegion = [[CLBeaconRegion alloc] initWithProximityUUID:uuid major:0 minor:0 identifier:@"im.zorro.ibeacon"];
-    
+
     self.locationManager = [[CLLocationManager alloc] init];
     _locationManager.delegate = self;
     [_locationManager startMonitoringForRegion:_beaconRegion];
     [_locationManager startRangingBeaconsInRegion:_beaconRegion];
-    
+
     if([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0) {
         [self.locationManager requestAlwaysAuthorization];
     }
@@ -106,9 +109,9 @@ NSLocationAlwaysUsageDescription
 -(void)locationManager:(CLLocationManager *)manager didRangeBeacons:(NSArray *)beacons inRegion:(CLBeaconRegion *)region {
     CLBeacon *beacon = [[CLBeacon alloc] init];
     beacon = [beacons lastObject];
-    
+
     NSLog(@"##Beacon is %@", beacon);
-    
+
     _uuid.text = beacon.proximityUUID.UUIDString;
     _major.text = [beacon.major stringValue];
     _minor.text = [beacon.minor stringValue];
@@ -129,7 +132,7 @@ Log 打印如下:
 上一张截图：
 ![](http://zorro-blog.qiniudn.com/IMG_0794.PNG)
 
-<s>最后，发现了一个好玩的东西。在OS X 10.10发布的时候，Apple 着重介绍了与 iOS 8 联动功能。比如，拿着 iPhone 走近正在浏览网页的 Mac，iPhone 的锁屏界面左下角就会出现 Safari 图标，划开之后就能打开该网页。 
+<s>最后，发现了一个好玩的东西。在OS X 10.10发布的时候，Apple 着重介绍了与 iOS 8 联动功能。比如，拿着 iPhone 走近正在浏览网页的 Mac，iPhone 的锁屏界面左下角就会出现 Safari 图标，划开之后就能打开该网页。
 
 就在刚才我玩 iBeacon 的时候，似乎发现了一个秘密——这功能是通过 iBeacon 实现的！
 

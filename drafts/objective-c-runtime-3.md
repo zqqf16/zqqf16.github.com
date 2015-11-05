@@ -1,6 +1,10 @@
+---
 title: Objective-C Runtime（三）
 date: 2015-2-11
-tag: Objective-C, Mach-O
+tags:
+    - Objective-C
+    - iOS
+---
 
 > 从写完两篇 Runtime 相关文章至今，有了一些变化：
 >
@@ -38,7 +42,7 @@ extern "C" __declspec(dllexport) struct _class_t OBJC_CLASS_$_ClassOne __attribu
 可以用 size 命令来查看一个 Mach-O 文件（还有个图形化的工具叫“[MachOView](http://sourceforge.net/projects/machoview/)”）：
 
 ```bash
-$ size -l -m -x test 
+$ size -l -m -x test
 Segment __PAGEZERO: 0x100000000 (vmaddr 0x0 fileoff 0)
 Segment __TEXT: 0x1000 (vmaddr 0x100000000 fileoff 0)
 	Section __text: 0x249 (addr 0x100000c00 offset 3072)

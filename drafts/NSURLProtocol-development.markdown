@@ -1,7 +1,10 @@
+---
 title: NSURLProtocol 开发笔记
 date: 2014-11-1
-tag: iOS
-tag: NSURLProtocol
+tags:
+    - iOS
+    - NSURLProtocol
+---
 
 前一段时间一直在研究 iOS 应用内的 HTTP 代理问题，在 iOS 6之前可以用 [AppProxyCap](https://github.com/freewizard/AppProxyCap) 这样的 Hack 方法实现，但从 iOS7 开始就不能用了。
 

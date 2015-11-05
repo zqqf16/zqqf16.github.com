@@ -1,6 +1,8 @@
+---
 title: OpenLDAP添加Schema（Ubuntu）
 date: 2013-8-19
-tag: OpenLDAP
+tags: OpenLDAP
+---
 
 前言
 ---
@@ -19,38 +21,38 @@ tag: OpenLDAP
 -------
 
 1. 编辑Schema文件，保存为`test.schema`
-		
+
 		objectIdentifier testOID 1.1.1.1
 		objectIdentifier testAttr testOID:1
 		objectIdentifier testObject testOID:2
-		
+
 		attributetype ( testAttr
 			NAME 'testattr'
 			DESC 'Test attribute'
 			EQUALITY caseIgnoreMatch
 			SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
-			
+
 		objectclass ( testObject
 			NAME 'testObject'
 			DESC 'Just for test'
 			AUXILIARY
 			MAY	(testattr))
-        
+
 2. 创建文件`tmp.conf`,加入以下内容
 
 		include test.schema
-    
+
 3. 创建目录`ldif_dir`
 
 		$mkdir ldif_dir
 
 
 4. 生成‘ldif’文件
-	
+
 		$slaptest -f tmp.conf -F ldif_dir
 
 	ldif目录结构如下：
-	
+
 		.
 		|-- cn=config
 		|   |-- cn=schema
@@ -59,23 +61,23 @@ tag: OpenLDAP
 		|   |-- olcDatabase={0}config.ldif
 		|   `-- olcDatabase={-1}frontend.ldif
 		`-- cn=config.ldif
-		
+
 5. 文件`cn=config/cn=schema/cn={0}test.ldif`就是生成的‘ldif’文件，编辑此文件：
 
 	将
-	
+
 		dn: cn={0}test
 		objectClass: olcSchemaConfig
 		cn: {0}test
-    
+
 	修改为
 
 		dn: cn=test,cn=schema,cn=config
     	objectClass: olcSchemaConfig
     	cn: test
-    
+
 	删除以下几行：
-		
+
 		structuralObjectClass: olcSchemaConfig
 		entryUUID: 9530cb4a-9845-1032-9b5c-15d9e32663bc
 		creatorsName: cn=config

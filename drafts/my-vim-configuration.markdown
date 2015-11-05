@@ -1,8 +1,11 @@
+---
 title: 我的Vim配置
 date: 2013-5-22
-tag: vim-pathogen
-tag: github
-tag: vim
+tags:
+    - vim-pathogen
+    - github
+    - vim
+---
 
 之前，我的Vim配置一直是通过Ubuntu One来保存和备份的。但是Ubuntu One的网络实在是不敢恭维，时好时坏。因此就在寻求一种比较靠谱的备份方式。
 
@@ -16,7 +19,7 @@ tag: vim
 
 - 添加pathogen插件：
 
-```bash 
+```bash
 git submoudle add git://github.com/tpope/vim-pathogen.git bundle/vim-pathogen
 ```
 

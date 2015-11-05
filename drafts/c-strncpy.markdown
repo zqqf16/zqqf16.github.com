@@ -1,7 +1,10 @@
+---
 title: 重拾C语言之strncpy
 date: 2013-5-24
-tag: c
-tag: strncpy
+tags:
+    - c
+    - strncpy
+---
 
 > 前一段时间Python用惯了，冷不丁地切换回C，发现很多基础东西都有点模糊了。从今天起，我将把一些平时碰到的知识点整理起来，起名为“重拾C语言”系列。纯粹的基础知识，老鸟绕行~
 
@@ -14,15 +17,15 @@ char *strncpy(char *dest, const char *src, size_t n);
 char *
 strncpy(char *dest, const char *src, size_t n)
 {
-	size_t i;
+    size_t i;
 
-	for (i = 0; i < n && src[i] != '\0'; i++)
-		dest[i] = src[i]; 
+    for (i = 0; i < n && src[i] != '\0'; i++)
+        dest[i] = src[i];
 
-	for ( ; i < n; i++) 
-		dest[i] = '\0'; 
+    for ( ; i < n; i++)
+        dest[i] = '\0';
 
-	return dest; 
+    return dest;
 }
 ```
 

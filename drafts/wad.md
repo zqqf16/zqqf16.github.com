@@ -1,7 +1,10 @@
+---
 title: 一个方便无线发布iOS应用的工具——WAD
 date: 2014-4-9
-tag: iOS
-tag: python
+tags:
+    - iOS
+    - python
+---
 
 ### 前言
 

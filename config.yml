@@ -1,0 +1,12 @@
+site:
+    title: 穷折腾
+    logo: /static/img/favicon.png
+    cover: /static/img/cover.png
+    url: http://blog.zorro.im
+    description: zqqf16 的个人博客
+author:
+    image: http://s.gravatar.com/avatar/4062f9b2373a5519a3b97012489d4bc1?s=80
+    name: zqqf16
+    url: http://blog.zorro.im/posts/about.html
+    bio: 手工艺人
+    location': Beijing

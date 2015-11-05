@@ -1,6 +1,8 @@
+---
 title: Python中关于__new__和__init__的坑
 date: 2014-1-6
-tag: python
+tags: python
+---
 
 前几天在重构Peanut的时候，想实现一个扩展的单实例模式。即每个同名的Tag在内存中只有一份，这样方便Tag与Post的关联。然后想起了之前在网上看的Python单实例方法，重写了`__new__`:
 
@@ -88,7 +90,7 @@ from six import with_metaclass
 
 class Meta(type):
 	'''Meta class'''
-	
+
     def __new__(self, name, bases, attrs):
         print('Meta: __new__: {} | {} | {} | {}'.format(self, name, bases, attrs))
         return super(Meta, self).__new__(self, name, bases, attrs)

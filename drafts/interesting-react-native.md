@@ -1,7 +1,10 @@
+---
 title: React Native 中那些有意思的地方（一）
 date: 2015-4-13
-tag: iOS
-tag: React Native
+tags:
+    - iOS
+    - React Native
+---
 
 > 最近看 React Native 源码，发现了挺多有意思的地方，正好很久没写文章了，就写写这个吧。
 
@@ -34,7 +37,7 @@ RN 定义了一个叫做 RCTBridgeModule 的协议，所有要暴露给 JS 的�
     return;
   }
   // ...
- 
+
 ```
 
 

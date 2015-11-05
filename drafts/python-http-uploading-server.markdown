@@ -1,6 +1,8 @@
+---
 title: 支持上传的SimpleHTTPServer
 date: 2013-7-24
-tag: python
+tags: python
+---
 
 办公室有两台电脑，一个台式机，装着Ubuntu，主要用来开发。另一台笔记本，装着Windows，用来收发邮件，读写文档。为了方便两台机器的文件共享，在Ubuntu上装了Samba服务器。
 
