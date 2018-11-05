@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">写了一个简单的Web剪切板-Clipboard</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-12-19">2013-12-19</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>平时由于工作的关系需要用到多台电脑，Mac和Windows来回切换。有时候想把一些信息复制到另一台电脑上，只能打开文件共享，然后把内容保存到文件里，再到另一台电脑里打开。时间一长，就积累了很多垃圾文件。于是乎就花了点时间，写了个简单的基于Web的内容共享程序，我叫它Clipboard。</p>
+<p>源码在此：<a href="https://github.com/zqqf16/clipboard">github</a></p>
+<p>我是把它当作一个练手项目来写的，尝试了很多新东西，也学到了很多。</p>
+<p><strong>数据库</strong></p>
+<p>一开始我把所有内容以JSON格式存储到文件里，为此写了一个简单的JSON-DB以及相应的ORM。（<a href="https://github.com/zqqf16/clipboard/blob/0eceea61e3d2e49fdafc73b88b5b42722a8ab192/clipboard/model.py">View History</a>）在这个过程中充分的学习了Meta class以及Descriptor的相关知识。</p>
+<p>后来考虑到以后可能会有更多功能，自己维护一套类似数据库有点不现实，所以就转向了Sqlite，并采用了一个比较小巧的ORM - Peewee。也就有了当前的版本。</p>
+<p><strong>Unit Test</strong></p>
+<p>从写JSON-DB的时候就仔仔细细的写了Unit Test，虽然最后还是发现了一些纰漏，但是还算成功。后来又加了Web层的Unit Test，学会了用Tornado的HTTPClient来测试，也算收获不小。</p>
+<div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">TestModel</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">application</span> <span class="o">=</span> <span class="n">app</span><span class="o">.</span><span class="n">App</span><span class="p">()</span>
+        <span class="n">http_server</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">httpserver</span><span class="o">.</span><span class="n">HTTPServer</span><span class="p">(</span><span class="n">application</span><span class="p">)</span>
+        <span class="n">http_server</span><span class="o">.</span><span class="n">listen</span><span class="p">(</span><span class="mi">8888</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">handle_request</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">response</span> <span class="o">=</span> <span class="n">response</span>
+        <span class="n">tornado</span><span class="o">.</span><span class="n">ioloop</span><span class="o">.</span><span class="n">IOLoop</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">test_get</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">http_client</span> <span class="o">=</span> <span class="n">tornado</span><span class="o">.</span><span class="n">httpclient</span><span class="o">.</span><span class="n">AsyncHTTPClient</span><span class="p">()</span>
+        <span class="n">http_client</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s1">&#39;http://0.0.0.0:8888&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle_request</span><span class="p">)</span>
+        <span class="n">tornado</span><span class="o">.</span><span class="n">ioloop</span><span class="o">.</span><span class="n">IOLoop</span><span class="o">.</span><span class="n">instance</span><span class="p">()</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="k">print</span> <span class="bp">self</span><span class="o">.</span><span class="n">response</span><span class="o">.</span><span class="n">body</span>
+</pre></div>
+
+
+<p><strong>XMLHTTPRequest</strong></p>
+<p>尝试了一把RESTful，但由于原生的HTML Form不支持DELETE方法，我又不想引入JQuery这样的牛刀。经过一番搜索，找着了XMLHTTPRequest。就照着网上的例子画了个瓢~</p>
+<div class="codehilite"><pre><span></span><span class="kd">function</span> <span class="nx">delete_entry</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">();</span>
+        <span class="nx">form</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="nx">id</span><span class="p">);</span>
+
+        <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+        <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="s2">&quot;/c/&quot;</span><span class="o">+</span><span class="nx">id</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
+        <span class="nx">xhr</span><span class="p">.</span><span class="nx">responseType</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span><span class="p">;</span>
+        <span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mi">200</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="s1">&#39;success&#39;</span><span class="p">){</span>
+                                <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
+                        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                                <span class="nx">alert</span><span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span><span class="p">);</span>
+                        <span class="p">}</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Connection error!&#39;</span><span class="p">);</span>
+                <span class="p">}</span>
+        <span class="p">};</span>
+
+        <span class="nx">xhr</span><span class="p">.</span><span class="nx">send</span><span class="p">(</span><span class="nx">form</span><span class="p">);</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p><strong>Others</strong></p>
+<p>为了使开发的过程更加规范，我强制自己用了Github的issue功能，成功的解决了仅有的两个issue~</p>
+<p>用了Yahoo的CSS框架 - Pure。Bootstrap太大了，而且默认的界面看疲劳了。所以就尝试了这个小清新的Pure。抄了不少官网的代码。最后的界面还凑合，不难看。</p>
+<p>最后，上一张效果图~</p>
+<p><img alt="Clipboard" src="/static/img/clipboard.png" /></p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/Clipboard/"> Clipboard </a>
+					<a href="/tags/tornado/"> tornado </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=写了一个简单的Web剪切板-Clipboard&amp;url=https://blog.zorro.im/posts/2013-12-19-web-clipboard.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-12-19-web-clipboard.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-12-19-web-clipboard.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

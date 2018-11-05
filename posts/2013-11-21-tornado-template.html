@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">Tornado源码之Template</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-11-21">2013-11-21</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>Tornado底层的源码分析已经有很多人写过了，他们的水平都在我之上，写的也比我好，所以我就不再重复了。打算剑走偏锋，研究一下tornado周边的东西。这篇就研究一下之前一直很感兴趣的Template。</p>
+<p>Template的工作流程如下：</p>
+<ol>
+<li>读取模板文件，解析成相应的数据结构</li>
+<li>把解析到的结构拼接成Python代码</li>
+<li>将生成的代码编译成字节码</li>
+<li>执行字节码，返回结果</li>
+</ol>
+<p>（这其中还会有一些编码转换、特殊字符转义等工作，本文中不做研究。）</p>
+<h2 id="_1">模板解析与代码生成</h2>
+<p>步骤1-3主要由Template类的__init__方法完成，关键代码如下：</p>
+<div class="codehilite"><pre><span></span><span class="n">reader</span> <span class="o">=</span> <span class="n">_TemplateReader</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">escape</span><span class="o">.</span><span class="n">native_str</span><span class="p">(</span><span class="n">template_string</span><span class="p">))</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">file</span> <span class="o">=</span> <span class="n">_File</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_parse</span><span class="p">(</span><span class="n">reader</span><span class="p">,</span> <span class="bp">self</span><span class="p">))</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_python</span><span class="p">(</span><span class="n">loader</span><span class="p">,</span> <span class="n">compress_whitespace</span><span class="p">)</span>
+</pre></div>
+
+
+<p>首先创建了一个reader，用来读取模板字符串。<code>_TemplateReader</code>这个类还重载了一些诸如<code>__getitem__</code>这样的方法，可以很方便的来操作字符串。</p>
+<p><code>_parse</code>这个函数负责了模板的语法的解析和数据结构的生成。在这个过程中，会将<code>{{title}}</code>这样的字符串解析成<code>_Expression</code>，<code>{% raw %} {% for line in lines %} {% endraw %}</code>解析成<code>_IntermediateControlBlock</code>等。这些类都继承自<code>_Node</code>。解析的最后结果是返回一个由这些类为节点组成的树状结构，树的根节点是<code>_File</code>。</p>
+<p>当字符串解析完成之后，调用Template的<code>_generate_python</code>方法，来生成Python代码。代码生成时会调用每个树节点的<code>generate</code>方法。</p>
+<p><code>_File</code>的<code>generate</code>代码如下：</p>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">generate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="p">):</span>
+    <span class="n">writer</span><span class="o">.</span><span class="n">write_line</span><span class="p">(</span><span class="s2">&quot;def _tt_execute():&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">writer</span><span class="o">.</span><span class="n">indent</span><span class="p">():</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write_line</span><span class="p">(</span><span class="s2">&quot;_tt_buffer = []&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write_line</span><span class="p">(</span><span class="s2">&quot;_tt_append = _tt_buffer.append&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">body</span><span class="o">.</span><span class="n">generate</span><span class="p">(</span><span class="n">writer</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">write_line</span><span class="p">(</span><span class="s2">&quot;return _tt_utf8(&#39;&#39;).join(_tt_buffer)&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+
+
+<p>这个方法会会生成类似这样的语句：</p>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">_tt_execute</span><span class="p">():</span>
+    <span class="n">_tt_buffer</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">_tt_append</span> <span class="o">=</span> <span class="n">_tt_buffer</span><span class="o">.</span><span class="n">append</span>
+
+    <span class="c1">#body</span>
+
+    <span class="k">return</span> <span class="n">_tt_utf8</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_tt_buffer</span><span class="p">)</span>
+</pre></div>
+
+
+<p>由于<code>_File</code>是这棵树的根，所以最终生成的代码都会被嵌套在一个叫<code>_tt_execute</code>的函数内，而这个函数内所有语句生成的字符串会被塞到_tt_buffer中被返回。</p>
+<p>注意一下这行代码<code>with writer.indent():</code>，先看一下源码：</p>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">indent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">Indenter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+        <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">return</span> <span class="bp">self</span>
+
+        <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+            <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">&gt;</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_indent</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">Indenter</span><span class="p">()</span>
+</pre></div>
+
+
+<p>重载了<code>__enter__</code>和<code>__exit__</code>方法，这样每次在<code>with writer.indent()</code>代码段里面，缩进就自动加一，退出来之后缩进就自动减一。</p>
+<p>在这里举个简单的例子来看一下生成的代码：</p>
+<p>{% raw %}</p>
+<div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">tornado.template</span> <span class="kn">import</span> <span class="n">Template</span>
+
+<span class="n">html</span> <span class="o">=</span> <span class="s1">&#39;&#39;&#39;</span><span class="se">\</span>
+<span class="s1">&lt;ul&gt;</span>
+<span class="s1">{</span><span class="si">% f</span><span class="s1">or l in lines %}</span>
+<span class="s1">    &lt;li&gt;{{l}}&lt;/li&gt;</span>
+<span class="s1">{</span><span class="si">% e</span><span class="s1">nd %}</span>
+<span class="s1">&lt;/ul&gt;</span>
+<span class="s1">&#39;&#39;&#39;</span>
+<span class="p">{</span><span class="o">%</span> <span class="n">endraw</span> <span class="o">%</span><span class="p">}</span>
+
+<span class="n">t</span> <span class="o">=</span> <span class="n">Template</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">code</span><span class="p">)</span>
+</pre></div>
+
+
+<p>执行完这段代码打印结果如下：</p>
+<div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">_tt_execute</span><span class="p">():</span>  <span class="c1"># &lt;string&gt;:0</span>
+    <span class="n">_tt_buffer</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># &lt;string&gt;:0</span>
+    <span class="n">_tt_append</span> <span class="o">=</span> <span class="n">_tt_buffer</span><span class="o">.</span><span class="n">append</span>  <span class="c1"># &lt;string&gt;:0</span>
+    <span class="n">_tt_append</span><span class="p">(</span><span class="s1">&#39;&lt;ul&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:2</span>
+    <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>  <span class="c1"># &lt;string&gt;:2</span>
+        <span class="n">_tt_append</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    &lt;li&gt;&#39;</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:3</span>
+        <span class="n">_tt_tmp</span> <span class="o">=</span> <span class="n">l</span>  <span class="c1"># &lt;string&gt;:3</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">_tt_tmp</span><span class="p">,</span> <span class="n">_tt_string_types</span><span class="p">):</span> <span class="n">_tt_tmp</span> <span class="o">=</span> <span class="n">_tt_utf8</span><span class="p">(</span><span class="n">_tt_tmp</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:3</span>
+        <span class="k">else</span><span class="p">:</span> <span class="n">_tt_tmp</span> <span class="o">=</span> <span class="n">_tt_utf8</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">_tt_tmp</span><span class="p">))</span>  <span class="c1"># &lt;string&gt;:3</span>
+        <span class="n">_tt_tmp</span> <span class="o">=</span> <span class="n">_tt_utf8</span><span class="p">(</span><span class="n">xhtml_escape</span><span class="p">(</span><span class="n">_tt_tmp</span><span class="p">))</span>  <span class="c1"># &lt;string&gt;:3</span>
+        <span class="n">_tt_append</span><span class="p">(</span><span class="n">_tt_tmp</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:3</span>
+        <span class="n">_tt_append</span><span class="p">(</span><span class="s1">&#39;&lt;/li&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:4</span>
+        <span class="k">pass</span>  <span class="c1"># &lt;string&gt;:2</span>
+    <span class="n">_tt_append</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&lt;/ul&gt;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:6</span>
+    <span class="k">return</span> <span class="n">_tt_utf8</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_tt_buffer</span><span class="p">)</span>  <span class="c1"># &lt;string&gt;:0</span>
+</pre></div>
+
+
+<p>生成的每条语句后都会有该条语句在模板文件中的行号。</p>
+<p>代码生成之后，就调用python的<code>compile</code>函数，将代码编译成了字节码。</p>
+<h2 id="_2">模板渲染</h2>
+<p>当执行Template的<code>generate</code>方法时，首先会把一些常用函数比如<code>datetime</code>等以及用户输入的参数放到namespace中，作为执行字节码时的全局命名空间。</p>
+<p>这是执行字节码的代码：</p>
+<div class="codehilite"><pre><span></span><span class="n">exec_in</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">compiled</span><span class="p">,</span> <span class="n">namespace</span><span class="p">)</span>
+<span class="n">execute</span> <span class="o">=</span> <span class="n">namespace</span><span class="p">[</span><span class="s2">&quot;_tt_execute&quot;</span><span class="p">]</span>
+<span class="n">linecache</span><span class="o">.</span><span class="n">clearcache</span><span class="p">()</span>
+<span class="k">return</span> <span class="n">execute</span><span class="p">()</span>
+</pre></div>
+
+
+<p>其中，<code>exec_in</code>的定义如下：</p>
+<div class="codehilite"><pre><span></span><span class="k">if</span> <span class="n">sys</span><span class="o">.</span><span class="n">version_info</span> <span class="o">&gt;</span> <span class="p">(</span><span class="mi">3</span><span class="p">,):</span>
+    <span class="k">exec</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def raise_exc_info(exc_info):</span>
+<span class="s2">    raise exc_info[1].with_traceback(exc_info[2])</span>
+
+<span class="s2">def exec_in(code, glob, loc=None):</span>
+<span class="s2">    if isinstance(code, str):</span>
+<span class="s2">        code = compile(code, &#39;&lt;string&gt;&#39;, &#39;exec&#39;, dont_inherit=True)</span>
+<span class="s2">    exec(code, glob, loc)</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="k">exec</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">def raise_exc_info(exc_info):</span>
+<span class="s2">    raise exc_info[0], exc_info[1], exc_info[2]</span>
+
+<span class="s2">def exec_in(code, glob, loc=None):</span>
+<span class="s2">    if isinstance(code, basestring):</span>
+<span class="s2">        # exec(string) inherits the caller&#39;s future imports; compile</span>
+<span class="s2">        # the string first to prevent that.</span>
+<span class="s2">        code = compile(code, &#39;&lt;string&gt;&#39;, &#39;exec&#39;, dont_inherit=True)</span>
+<span class="s2">    exec code in glob, loc</span>
+<span class="s2">&quot;&quot;&quot;</span><span class="p">)</span>
+</pre></div>
+
+
+<p>这里用到了一个技巧，用<code>exec</code>来根据python版本动态的添加函数。</p>
+<p>从上面的例子中可以看出，执行完这段字节码，namespace中会创建一个名为<code>_tt_execute</code>函数，然后再执行这个函数，得到的结果就是模板渲染完的结果。</p>
+<p>至此，Template的工作流程就介绍完了~</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/tornado/"> tornado </a>
+					<a href="/tags/template/"> template </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Tornado源码之Template&amp;url=https://blog.zorro.im/posts/2013-11-21-tornado-template.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-11-21-tornado-template.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-11-21-tornado-template.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

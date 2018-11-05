@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">安利一套iOS开发工具-libimobiledevice</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2018-05-06">2018-05-06</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<h2 id="_1">前言</h2>
+<p>公司项目大了之后，Xcode 调试控制台输出的内容已经被各种各样的东西冲得七零八落。有时候自己加的 log 还没看见就被冲没了，影响调试效率。</p>
+<p>在 Xcode 还能支持插件的时代，可以用一些插件来过滤 log，但现在的版本已经不能用了。在搜索第三方 log 替代方案时，发现了 libimobiledevice。</p>
+<h2 id="_2">简介</h2>
+<p>libimobiledevice 是一个跨平台的连接 iOS 设备的软件库，可以用来操作 iOS 设备，比如读取设备信息、读取设备日志、获取设备屏幕截图、浏览 Document 文件夹等功能。Appium、iTools 等工具也是基于这个库。</p>
+<h3 id="_3">安装</h3>
+<p><code>brew install --HEAD libimobiledevice</code></p>
+<p><code>--HEAD</code> 是为了基于最新代码安装，libimobiledevice 需要随着 iOS 版本升级来做调整，需要保持最新。</p>
+<h3 id="_4">使用</h3>
+<p><strong>实时查看系统日志</strong></p>
+<p><code>idevicesyslog</code></p>
+<p>由于 NSLog、DDlog 等默认会写到 iOS 系统日志里，所以这个工具可以用来实时查看调试日志。</p>
+<p>可以跟 grep、awk、sed 等命令组合来添加过滤条件:</p>
+<p><code>idevicesyslog | grep your_app_name</code></p>
+<p>或者过滤掉一些乱七八糟的内容:</p>
+<p><code>idevicesyslog | grep -v xxx</code></p>
+<p><strong>获取设备截图</strong></p>
+<p><code>idevicescreenshot</code></p>
+<p><strong>查看设备信息</strong></p>
+<p><code>ideviceinfo</code></p>
+<p><strong>查看设备上已安装应用</strong></p>
+<p><code>ideviceinstaller -l</code></p>
+<p><strong>挂载应用的 Document 目录</strong></p>
+<p>需要安装 ifuse</p>
+<p><code>brew cask install osxfuse ; brew install ifuse</code> </p>
+<p>创建挂载点</p>
+<p><code>sudo mkdir /Volumes/you_app_name.app</code></p>
+<p>挂载 App 目录</p>
+<div class="codehilite"><pre><span></span>mkdir /tmp/you_app_id
+ifuse --container you.app.id /tmp/you_app_id
+</pre></div>
+
+
+<p><code>you.app.id</code> 可以通过 <code>ideviceinstaller -l</code> 得到，<code>-o allow_other</code> 可以让非 root 用户来访问。</p>
+<p>打开目录</p>
+<p><code>open /tmp/you_app_id</code></p>
+<p><strong>其它</strong></p>
+<p>libimobiledevice 提供了一些列 idevice 开头的工具，比如：</p>
+<ul>
+<li>idevice_id</li>
+<li>idevicedebug</li>
+<li>ideviceinfo</li>
+<li>idevicescreenshot</li>
+<li>idevicebackup</li>
+<li>idevicedebugserverproxy</li>
+<li>idevicename</li>
+<li>idevicesyslog</li>
+<li>idevicebackup2</li>
+<li>idevicediagnostics</li>
+<li>idevicenotificationproxy</li>
+<li>idevicecrashreport       </li>
+<li>ideviceenterrecovery</li>
+<li>idevicepair</li>
+<li>idevicedate</li>
+<li>ideviceimagemounter</li>
+<li>ideviceprovision</li>
+</ul>
+<p>有兴趣的可以自己研究一下使用方法</p>
+<p>-EOF-</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/libimobiledevice/"> libimobiledevice </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=安利一套iOS开发工具-libimobiledevice&amp;url=https://blog.zorro.im/posts/2018-5-6-libimobiledevice.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2018-5-6-libimobiledevice.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2018-5-6-libimobiledevice.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

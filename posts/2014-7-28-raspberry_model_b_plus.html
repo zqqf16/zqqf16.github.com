@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">树莓派 Model B+ 入手小记</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2014-07-28">2014-07-28</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>在买树莓派之前，我认为比较理想的板子是这样的：</p>
+<ol>
+<li>性能强</li>
+<li>兼容性强，可支持的系统比较多，外设驱动完善</li>
+<li>有 SATA，读写速度快</li>
+<li>功率小，省电</li>
+<li>社区支持完善</li>
+</ol>
+<p>前后考虑了多款板子，包括 Cubieboard、Bananapi、Radxa 以及刚刚开始预定的 HummingBoard。</p>
+<p>Cubieboard 社区比较完善，有 SATA，兼容性好，性能稍强。Bananapi 可以看做一个有 SATA 的树莓派。Radxa 性能强悍，没有 SATA，但社区支持太差了。HummingBoard 刚开始预订，性能强悍，有 SATA，但社区及兼容性未知。</p>
+<p>后来我明确了一下需求，发现对硬件的要求远远小于软件，这种板子玩的就是可玩性。正好赶上树莓派 Model B+ 发布了，虽然 CPU 和内存的参数还是那么可怜，但是电器性能提升不少。于是果断出手。（感谢伟大的淘宝，在官方发布一周之后就有货了）</p>
+<p>开箱照：</p>
+<p><img alt="开箱照" src="/static/img/IMG_0735.JPG" /></p>
+<p>到手时候发现树莓派是真的小，比图片看上去小多了。板子整体感觉就是金属部件都比较亮，应该是有电镀层。由于刚刚发布不就，可以保证是百分百英国原厂~</p>
+<p>找了一个老掉牙的 8G TF 卡，刷上 Debian，开机启动：</p>
+<p><img alt="工作照" src="/static/img/IMG_0737.JPG" /></p>
+<p>进行完一些设置之后就进桌面了，第一感觉是还算流畅，至少鼠标右键没有卡顿。但是由于 CPU 以及 TF 卡太烂，每打开一个程序都需要加载半天。CPU 占用率也是忽上忽下，打开浏览器轻轻松松百分之百~</p>
+<p>这里不得不提的一点，我插上了一个两三年前的 USB 无线网卡，竟然原生支持！兼容性的好处体现的淋漓尽致。</p>
+<p>好了，就这么多了，我要开始我的树莓派之旅了~</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/%E6%A0%91%E8%8E%93%E6%B4%BE/"> 树莓派 </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=树莓派 Model B+ 入手小记&amp;url=https://blog.zorro.im/posts/2014-7-28-raspberry_model_b_plus.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2014-7-28-raspberry_model_b_plus.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2014-7-28-raspberry_model_b_plus.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

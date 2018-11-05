@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">Objective-C Runtime（三）</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2015-02-11">2015-02-11</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<blockquote>
+<p>从写完两篇 Runtime 相关文章至今，有了一些变化：</p>
+<ol>
+<li>Apple 开源了10.10中的 Runtime 代码，并提供了打包下载的方式：<a href="http://www.opensource.apple.com/tarballs/objc4/objc4-646.tar.gz">OS X 10.10 Source objc4-646</a>。</li>
+<li>最新的 Runtime 与之前看过的版本有些变化，几乎全都是用 C++ 实现。比如 <code>struct objc_class</code> 已经完完全全 C++ 化了。</li>
+</ol>
+<p>本文基于最新的 Runtime 代码。</p>
+</blockquote>
+<h2 id="_1">缘起</h2>
+<p>在文章 <a href="posts/objective-c-ojbect-1.html">从源码看 Objective-C 的对象模型（一）</a>里曾提到过，clang 改写后的变量定义后面总是会有一些类似于 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code> 这样的代码，例如这样的：</p>
+<div class="codehilite"><pre><span></span><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="n">_class_t</span> <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_ClassOne</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_ClassOne,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
+    <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
+    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_</span><span class="err">$</span><span class="n">_ClassOne</span><span class="p">,</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>当时由于水平所限，不明白它的作用，后来随着慢慢地了解了一些有关 Mach-O 文件格式，以及一些 Runtime 加载代码，对这块有了更好的理解。</p>
+<h2 id="mach-o">Mach-O</h2>
+<p>首先来了解一下概念（来自 <a href="http://zh.wikipedia.org/zh/Mach-O">Wikipedia</a>）:</p>
+<blockquote>
+<p>Mach-O 为 Mach Object 文件格式的缩写，它是一种用于可执行文件，目标代码，动态库，内核转储的文件格式。</p>
+</blockquote>
+<p>跟 ELF、PE 等文件格式类似，Mach-O 文件内部也分成代码段、数据段等部分，偷一张 Apple 官方的图：</p>
+<p><img alt="Mach-O file format basic structure" src="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/art/mach_o_segments.gif" /></p>
+<p>可以用 size 命令来查看一个 Mach-O 文件（还有个图形化的工具叫“<a href="http://sourceforge.net/projects/machoview/">MachOView</a>”）：</p>
+<div class="codehilite"><pre><span></span>$ size -l -m -x <span class="nb">test</span>
+Segment __PAGEZERO: 0x100000000 <span class="o">(</span>vmaddr 0x0 fileoff <span class="m">0</span><span class="o">)</span>
+Segment __TEXT: 0x1000 <span class="o">(</span>vmaddr 0x100000000 fileoff <span class="m">0</span><span class="o">)</span>
+    Section __text: 0x249 <span class="o">(</span>addr 0x100000c00 offset <span class="m">3072</span><span class="o">)</span>
+    Section __stubs: 0x30 <span class="o">(</span>addr 0x100000e4a offset <span class="m">3658</span><span class="o">)</span>
+    Section __stub_helper: 0x60 <span class="o">(</span>addr 0x100000e7c offset <span class="m">3708</span><span class="o">)</span>
+    Section __cstring: 0x33 <span class="o">(</span>addr 0x100000edc offset <span class="m">3804</span><span class="o">)</span>
+    Section __objc_methname: 0x3a <span class="o">(</span>addr 0x100000f0f offset <span class="m">3855</span><span class="o">)</span>
+    Section __objc_classname: 0xb <span class="o">(</span>addr 0x100000f49 offset <span class="m">3913</span><span class="o">)</span>
+    Section __objc_methtype: 0x27 <span class="o">(</span>addr 0x100000f54 offset <span class="m">3924</span><span class="o">)</span>
+    Section __unwind_info: 0x48 <span class="o">(</span>addr 0x100000f7c offset <span class="m">3964</span><span class="o">)</span>
+    Section __eh_frame: 0x30 <span class="o">(</span>addr 0x100000fc8 offset <span class="m">4040</span><span class="o">)</span>
+    total 0x3f0
+Segment __DATA: 0x1000 <span class="o">(</span>vmaddr 0x100001000 fileoff <span class="m">4096</span><span class="o">)</span>
+    Section __nl_symbol_ptr: 0x10 <span class="o">(</span>addr 0x100001000 offset <span class="m">4096</span><span class="o">)</span>
+    Section __got: 0x8 <span class="o">(</span>addr 0x100001010 offset <span class="m">4112</span><span class="o">)</span>
+    Section __la_symbol_ptr: 0x40 <span class="o">(</span>addr 0x100001018 offset <span class="m">4120</span><span class="o">)</span>
+    Section __cfstring: 0x40 <span class="o">(</span>addr 0x100001058 offset <span class="m">4184</span><span class="o">)</span>
+    Section __objc_classlist: 0x8 <span class="o">(</span>addr 0x100001098 offset <span class="m">4248</span><span class="o">)</span>
+    Section __objc_imageinfo: 0x8 <span class="o">(</span>addr 0x1000010a0 offset <span class="m">4256</span><span class="o">)</span>
+    Section __objc_const: 0x158 <span class="o">(</span>addr 0x1000010a8 offset <span class="m">4264</span><span class="o">)</span>
+    Section __objc_selrefs: 0x18 <span class="o">(</span>addr 0x100001200 offset <span class="m">4608</span><span class="o">)</span>
+    Section __objc_classrefs: 0x8 <span class="o">(</span>addr 0x100001218 offset <span class="m">4632</span><span class="o">)</span>
+    Section __objc_superrefs: 0x8 <span class="o">(</span>addr 0x100001220 offset <span class="m">4640</span><span class="o">)</span>
+    Section __objc_ivar: 0x8 <span class="o">(</span>addr 0x100001228 offset <span class="m">4648</span><span class="o">)</span>
+    Section __objc_data: 0x50 <span class="o">(</span>addr 0x100001230 offset <span class="m">4656</span><span class="o">)</span>
+    total 0x280
+Segment __LINKEDIT: 0x1000 <span class="o">(</span>vmaddr 0x100002000 fileoff <span class="m">8192</span><span class="o">)</span>
+total 0x100003000
+</pre></div>
+
+
+<p>可以看到，Mach-O 文件里把代码放在了“__TEXT”这个段（Segment）里，数据放在了“__DATA”里，而这两个段里面有分了很多节（Section）。</p>
+<p><em>习惯上都称 Section 为段，为了不至于混淆，下文都用英文单词来表示。</em></p>
+<p>要查看这些 Section 里面的内容，就得用 otool（MachOView）这样的工具了，比如查看“__TEXT”里面的“__cstring”：</p>
+<div class="codehilite"><pre><span></span>$ otool -v -s __TEXT __cstring <span class="nb">test</span>       
+test:
+Contents of <span class="o">(</span>__TEXT,__cstring<span class="o">)</span> section
+0x0000000100000edc  Hello, World!
+0x0000000100000eea  Default
+0x0000000100000ef2  name
+0x0000000100000ef7  T@<span class="s2">&quot;NSString&quot;</span>,<span class="p">&amp;</span>,N,V_name
+</pre></div>
+
+
+<p>这个 Section 里面存放着不可变的 C 语言字符串，也就是代码里的字符串字面量。如果你的程序里以这种方式保存着密码等关键信息，那得小心了，很容易就会被识破。</p>
+<p>好了，再回过头看文章开始的例子 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code>就好理解了，这段代码的作用就是把“OBJC_CLASS_$_ClassOne __attribute__”这个全局变量放在 Mach-O 文件的 “__DATA” Segment 中的 “__objc_data” Section 里。还有很多类似的代码，其目的就是把数据归类存放在不同的 Section 中。</p>
+<h2 id="_2">作用</h2>
+<p><em>没有找到官方文档来说明为什么要分成这些 Section ，下面仅是我个人理解</em></p>
+<p>在 Objective-C 中，当用到某个类对象时，是在运行时动态查找的，并不是像 C 那样在编译时期就确定的。比如调用<code>[ClassOne alloc]</code> ，内部实现上会先调用 <code>objc_getClass("ClassOne")</code> 函数来查找“ClassOne”这个类，找到后再调用其“alloc”方法。在编译时，调用者并不知道“ClassOne”的具体地址，只知道它的名字，运行时会拿着这个名字去找。这也体现了语言的动态性。</p>
+<p>通过看 Runtime 代码可知，“objc_getClass”函数会从一个全局的类列表里查找该类，而这个全局的类列表则是在程序初始化时从“__DATA,__objc_classlist”这个 Section（从clang 改写后的代码里看，这里存放着类对象的指针）中读取的（objc-runtime-new.mm)。</p>
+<p>把这些类对象放在一个 Section 里，在编译时期不用把每个类的地址都保存下来，创建类列表时只要遍历一下这个 Section 就可以了。</p>
+<p>PS：这也是 class-dump 等工具的工作原理。</p>
+<h2 id="_3">参考链接</h2>
+<p><a href="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/index.html">OS X ABI Mach-O File Format Reference</a></p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/Objective-C/"> Objective-C </a>
+					<a href="/tags/iOS/"> iOS </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Objective-C Runtime（三）&amp;url=https://blog.zorro.im/posts/2015-2-11-objective-c-runtime-3.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2015-2-11-objective-c-runtime-3.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2015-2-11-objective-c-runtime-3.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

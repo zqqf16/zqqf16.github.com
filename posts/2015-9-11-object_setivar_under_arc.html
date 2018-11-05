@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">在 ARC 下使用 object_setIvar 的问题</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2015-09-11">2015-09-11</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<h2 id="_1">背景</h2>
+<p>前几天有同事遇到了一个问题，在 ARC 下，通过 Runtime 动态创建的类（<code>objc_allocateClassPair</code>），
+在调用 <code>object_setIvar</code> 给 Ivar 赋值时，发现并不能自动增加被赋值对象的引用计数。
+当被赋值的对象被干掉之后，调用 <code>object_getIvar</code> 会返回野指针。</p>
+<p>由于没 Google 到相似的，所以就自己花时间研究了一下。</p>
+<h2 id="_2">原理</h2>
+<p>首先，看一下 <code>object_setIvar</code> 函数的定义，在 Runtime 源码里的 <a href="http://www.opensource.apple.com/source/objc4/objc4-493.9/runtime/objc-class.m">objc-class.m</a> 文件，如下：</p>
+<div class="codehilite"><pre><span></span><span class="kt">void</span> <span class="nf">object_setIvar</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">Ivar</span> <span class="n">ivar</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">obj</span>  <span class="o">&amp;&amp;</span>  <span class="n">ivar</span>  <span class="o">&amp;&amp;</span>  <span class="o">!</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">isTaggedPointer</span><span class="p">())</span> <span class="p">{</span>
+        <span class="kt">Class</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">_ivar_getClass</span><span class="p">(</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">ISA</span><span class="p">(),</span> <span class="n">ivar</span><span class="p">);</span>
+        <span class="kt">ptrdiff_t</span> <span class="n">ivar_offset</span> <span class="o">=</span> <span class="n">ivar_getOffset</span><span class="p">(</span><span class="n">ivar</span><span class="p">);</span>
+        <span class="kt">id</span> <span class="o">*</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="kt">id</span> <span class="o">*</span><span class="p">)((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">obj</span> <span class="o">+</span> <span class="n">ivar_offset</span><span class="p">);</span>
+        <span class="c1">// if this ivar is a member of an ARR compiled class, then issue the correct barrier according to the layout.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">_class_usesAutomaticRetainRelease</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span> <span class="p">{</span>
+            <span class="c1">// for ARR, layout strings are relative to the instance start.</span>
+            <span class="kt">uint32_t</span> <span class="n">instanceStart</span> <span class="o">=</span> <span class="n">_class_getInstanceStart</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
+            <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">weak_layout</span> <span class="o">=</span> <span class="n">class_getWeakIvarLayout</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">weak_layout</span> <span class="o">&amp;&amp;</span> <span class="n">is_scanned_offset</span><span class="p">(</span><span class="n">ivar_offset</span> <span class="o">-</span> <span class="n">instanceStart</span><span class="p">,</span> <span class="n">weak_layout</span><span class="p">))</span> <span class="p">{</span>
+                <span class="c1">// use the weak system to write to this variable.</span>
+                <span class="n">objc_storeWeak</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">strong_layout</span> <span class="o">=</span> <span class="n">class_getIvarLayout</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">strong_layout</span> <span class="o">&amp;&amp;</span> <span class="n">is_scanned_offset</span><span class="p">(</span><span class="n">ivar_offset</span> <span class="o">-</span> <span class="n">instanceStart</span><span class="p">,</span> <span class="n">strong_layout</span><span class="p">))</span> <span class="p">{</span>
+                <span class="n">objc_storeStrong</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
+                <span class="k">return</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+<span class="cp">#if SUPPORT_GC</span>
+        <span class="c1">// Never go here.</span>
+<span class="cp">#else</span>
+        <span class="o">*</span><span class="n">location</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="cp">#endif</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>在调试的时候发现 <code>class_getWeakIvarLayout</code> 以及 <code>class_getIvarLayout</code> 返回值都是<code>""</code>。</p>
+<p>首先可以排除掉 <code>objc_storeStrong(location, value);</code>，因为这个函数会增加引用计数。
+由 <code>object_getIvar</code> 函数返回野指针可以知道，Ivar 内部并不是 Weak 引用的，
+进而可以排除掉 <code>objc_storeWeak(location, value);</code>。</p>
+<p>所以，这个函数最终会执行到 <code>*location = value;</code>，直接对指针赋值，整个过程并没有涉及到内存管理。</p>
+<p>至于为什么会这样的关键就在 <code>_class_usesAutomaticRetainRelease</code> 这个函数了，看一下它的定义：</p>
+<div class="codehilite"><pre><span></span><span class="cm">/***********************************************************************</span>
+<span class="cm"> * _class_usesAutomaticRetainRelease</span>
+<span class="cm"> * Returns YES if class was compiled with -fobjc-arc</span>
+<span class="cm"> **********************************************************************/</span>
+<span class="kt">BOOL</span> <span class="nf">_class_usesAutomaticRetainRelease</span><span class="p">(</span><span class="kt">Class</span> <span class="n">cls</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">cls</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">ro</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">RO_IS_ARR</span><span class="p">)</span> <span class="o">?</span> <span class="nb">YES</span> <span class="o">:</span> <span class="nb">NO</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>其中 <code>RO_IS_ARR</code> 宏定义如下：</p>
+<div class="codehilite"><pre><span></span><span class="c1">// class compiled with -fobjc-arc (automatic retain/release)</span>
+<span class="cp">#define RO_IS_ARR             (1&lt;&lt;7)   </span><span class="c1">// 0x80</span>
+</pre></div>
+
+
+<p>从函数的注释可以看出来此函数是用来判断这个类是否是在开启 ARC 的情况下编译的。</p>
+<p>而且我搜索了 <code>objc_allocateClassPair</code> 函数定义以及整个 Runtime 代码，发现没有一个地方设置了这个 flag。
+也就是说在运行时创建的类肯定没有这个 flag。</p>
+<p>为了进一步验证，得找到设置这个 flag 的地方，因此我又去翻了一下 clang 的源码（还顺便复习了当年 Vim＋Ctags＋Cscope 的各种用法￣▽￣" ），
+在 CGObjCMac.cpp 这个文件中发现了这么一段：</p>
+<div class="codehilite"><pre><span></span><span class="n">llvm</span><span class="o">::</span><span class="n">GlobalVariable</span> <span class="o">*</span> <span class="n">CGObjCNonFragileABIMac</span><span class="o">::</span><span class="n">BuildClassRoTInitializer</span><span class="p">(</span>
+  <span class="kt">unsigned</span> <span class="n">flags</span><span class="p">,</span>
+  <span class="kt">unsigned</span> <span class="n">InstanceStart</span><span class="p">,</span>
+  <span class="kt">unsigned</span> <span class="n">InstanceSize</span><span class="p">,</span>
+  <span class="k">const</span> <span class="n">ObjCImplementationDecl</span> <span class="o">*</span><span class="n">ID</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ClassName</span> <span class="o">=</span> <span class="n">ID</span><span class="o">-&gt;</span><span class="n">getObjCRuntimeNameAsString</span><span class="p">();</span>
+  <span class="n">llvm</span><span class="o">::</span><span class="n">Constant</span> <span class="o">*</span><span class="n">Values</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span> <span class="c1">// 11 for 64bit targets!</span>
+
+  <span class="k">if</span> <span class="p">(</span><span class="n">CGM</span><span class="p">.</span><span class="n">getLangOpts</span><span class="p">().</span><span class="n">ObjCAutoRefCount</span><span class="p">)</span>
+    <span class="n">flags</span> <span class="o">|=</span> <span class="n">NonFragileABI_Class_CompiledByARC</span><span class="p">;</span>
+</pre></div>
+
+
+<p><em>注：当开启 <code>-fobjc-arc</code> 选项时，<code>CGM.getLangOpts().ObjCAutoRefCount</code> 返回的是 true，而且 <code>NonFragileABI_Class_CompiledByARC</code> 的值就是 0x80。</em></p>
+<p>也就是说当 ARC 开启的时候，clang 会给类设上 0x80 这个 flag。</p>
+<p>到这，就可以分析出来为什么 <code>object_getIvar</code> 不会增加对象的引用计数了。</p>
+<p><strong>动态创建类的时候，Runtime 并不知道当前代码是否是在 ARC 下编译的，所以进行 Ivar 操作时，
+它并不会对 Ivar 里的对象进行自动的内存管理，而是让调用者自己进行。</strong></p>
+<p>进而也可以知道 <strong>ARC 是需要编译器与 Runtime 共同参与的</strong>。</p>
+<h2 id="_3">解决方法</h2>
+<p>如果非要解决 <code>object_getIvar</code> 不能进行内存管理这个问题，可以采取以下几种方法：</p>
+<ol>
+<li>
+<p>用 MRC</p>
+<p>这个简单粗暴有效。</p>
+</li>
+<li>
+<p>用 <code>objc_retain</code>、<code>objc_release</code> 方法手动管理 Ivar 引用计数</p>
+<p>这两个方法应该是私有的 API，可以用 <code>dlsym</code> 来搞定。</p>
+</li>
+</ol>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/Objective-C/"> Objective-C </a>
+					<a href="/tags/Runtime/"> Runtime </a>
+					<a href="/tags/object_setIvar/"> object_setIvar </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=在 ARC 下使用 object_setIvar 的问题&amp;url=https://blog.zorro.im/posts/2015-9-11-object_setivar_under_arc.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2015-9-11-object_setivar_under_arc.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2015-9-11-object_setivar_under_arc.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

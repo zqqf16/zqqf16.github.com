@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">初识 iBeacon</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2014-09-01">2014-09-01</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>以前玩 Arduino 的时候就了解过蓝牙4.0，当时颇让我震惊的是它仅用一颗纽扣电池就可以工作一年！这天生就就是为物联网以及可穿戴设备准备的。可惜当时各厂商对它的支持不是很广泛，只有 iPhone 以及少数 Android 手机支持，一个小小的开发模块也得一两百大洋。</p>
+<p>后来看 WWDC 2014的视频（2013年没注意...），了解到了 iBeacon，一个苹果基于蓝牙4.0开发的定位技术。</p>
+<p>大致原理如下：</p>
+<p>iBeacon 基站每隔一段时间就向周围广播，信息里面带有自己的 UUID 以及 Major 和 Minor。当一个 iOS 设备进入此基站的覆盖范围，通过这三个维度就可验证一个基站的身份。然后通过应用程序来进行下一步的行动。</p>
+<p>比如，商场在每一个店铺里都部署了 iBeacon 基站。消费者装上商场的应用之后，每当走近一个店铺，应用都会被唤醒，给用户发送通知，告诉用户此店铺的打折促销活动等等。</p>
+<p>在此过程中，基站不做任何工作，一切行为都是由 APP 控制的。APP 告诉 iOS 监听那些 UUID，当 iOS 收到消息后，会通知 APP 来处理。在 iOS 中，即使 APP 并不在运行，系统收到消息后也会调用 APP 来处理。</p>
+<p>并且，所有的 iBeacon 探测功能都是由系统完成的，避免了 APP 过多的消耗电能。这也是很多 Android 上的实现方案所不具备的。</p>
+<p>了解了这些知识之后，兴趣来了，于是就上淘宝买了个四月兄弟开发的 iBeacon。</p>
+<p><img alt="" src="/static/img/IMG_0791.JPG" />
+体积超小，可以轻松地用双面胶黏在墙上</p>
+<p>再看看内部结构
+<img alt="" src="/static/img/IMG_0793.JPG" /></p>
+<p>比一颗2450纽扣电池大不了多少~</p>
+<p>接下来就是尝试应用开发了。</p>
+<p>首先，创建一个应用，需要依赖<code>CoreLocation.framework</code>。并且在 View Controller 的实现文件里加上：</p>
+<div class="codehilite"><pre><span></span><span class="cp">#import &lt;CoreLocation/CoreLocation.h&gt;</span>
+</pre></div>
+
+
+<p>然后加上两个 Property：</p>
+<div class="codehilite"><pre><span></span><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">CLBeaconRegion</span> <span class="o">*</span><span class="n">beaconRegion</span><span class="p">;</span>
+<span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">CLLocationManager</span> <span class="o">*</span><span class="n">locationManager</span><span class="p">;</span>
+</pre></div>
+
+
+<p><code>beaconRegion</code> 用来定义一个 Beacon，iOS 的 iBeacon API 中，应用只能探测已知 UUID 的 iBeacon 基站。要想探测周围所有基站，就得用底层的 Bluetooth 库或者 iBeacon 基站厂商提供的 SDK。
+<code>localtionManager</code> 用来进行实际的探测工作。</p>
+<p>接下来定义 Beacon 初始化方法：</p>
+<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initBeacon</span> <span class="p">{</span>
+    <span class="bp">NSUUID</span> <span class="o">*</span><span class="n">uuid</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSUUID</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithUUIDString</span><span class="p">:</span><span class="s">@&quot;E2C56DB5-DFFB-48D2-B060-D0F5A71096E0&quot;</span><span class="p">];</span>
+    <span class="nb">self</span><span class="p">.</span><span class="n">beaconRegion</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">CLBeaconRegion</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProximityUUID</span><span class="p">:</span><span class="n">uuid</span> <span class="nl">identifier</span><span class="p">:</span><span class="s">@&quot;E2C56DB5-DFFB-48D2-B060-D0F5A71096E0&quot;</span><span class="p">];</span>
+
+    <span class="nb">self</span><span class="p">.</span><span class="n">beaconRegion</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">CLBeaconRegion</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProximityUUID</span><span class="p">:</span><span class="n">uuid</span> <span class="nl">major</span><span class="p">:</span><span class="mi">0</span> <span class="nl">minor</span><span class="p">:</span><span class="mi">0</span> <span class="nl">identifier</span><span class="p">:</span><span class="s">@&quot;im.zorro.ibeacon&quot;</span><span class="p">];</span>
+
+    <span class="nb">self</span><span class="p">.</span><span class="n">locationManager</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">CLLocationManager</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="n">_locationManager</span><span class="p">.</span><span class="n">delegate</span> <span class="o">=</span> <span class="nb">self</span><span class="p">;</span>
+    <span class="p">[</span><span class="n">_locationManager</span> <span class="nl">startMonitoringForRegion</span><span class="p">:</span><span class="n">_beaconRegion</span><span class="p">];</span>
+    <span class="p">[</span><span class="n">_locationManager</span> <span class="nl">startRangingBeaconsInRegion</span><span class="p">:</span><span class="n">_beaconRegion</span><span class="p">];</span>
+
+    <span class="k">if</span><span class="p">([[[</span><span class="bp">UIDevice</span> <span class="n">currentDevice</span><span class="p">]</span> <span class="n">systemVersion</span><span class="p">]</span> <span class="n">floatValue</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="mf">8.0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">locationManager</span> <span class="n">requestAlwaysAuthorization</span><span class="p">];</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>这段代码首先初始化了一个 Beacon Region，UUID、Major 以及 Minor 是我通过四月兄弟提供的 APP 获取的， 这里因厂商而异。</p>
+<p>接着初始化了 Location Manager，把 Delegate 设置成当前 View Controller。（需要实现<code>CLLocationManagerDelegate</code>协议）</p>
+<p>这里有一点需要说明，在 iOS 8中，使用 Location Manager 需要申请授权，也就是调用<code>- (void)requestAlwaysAuthorization</code>这个方法，这是 iOS 8 新加的。
+同时，需要在 Info.plist 里加上两个 Key：</p>
+<div class="codehilite"><pre><span></span>NSLocationWhenInUseUsageDescription
+NSLocationAlwaysUsageDescription
+</pre></div>
+
+
+<p>这样，在程序第一次运行的时候，会有这样的提示：</p>
+<p><img alt="" src="/static/img/IMG_0795.PNG" /></p>
+<p>我之前没有注意到这一点，导致死活探测不到基站...</p>
+<p>初始化完成之后，我们需要处理事件，也就是实现<code>CLLocationManagerDelegate</code>协议。主要代码如下：</p>
+<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didEnterRegion:</span><span class="p">(</span><span class="bp">CLRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">locationManager</span> <span class="nl">startRangingBeaconsInRegion</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">beaconRegion</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didExitRegion:</span><span class="p">(</span><span class="bp">CLRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="p">{</span>
+    <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">locationManager</span> <span class="nl">stopRangingBeaconsInRegion</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">beaconRegion</span><span class="p">];</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">monitoringDidFailForRegion:</span><span class="p">(</span><span class="bp">CLRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="nf">withError:</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Failed monitoring region: %@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didFailWithError:</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="p">)</span><span class="nv">error</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Location manager failed: %@&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="p">-(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didRangeBeacons:</span><span class="p">(</span><span class="bp">NSArray</span> <span class="o">*</span><span class="p">)</span><span class="nv">beacons</span> <span class="nf">inRegion:</span><span class="p">(</span><span class="bp">CLBeaconRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="p">{</span>
+    <span class="bp">CLBeacon</span> <span class="o">*</span><span class="n">beacon</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">CLBeacon</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+    <span class="n">beacon</span> <span class="o">=</span> <span class="p">[</span><span class="n">beacons</span> <span class="n">lastObject</span><span class="p">];</span>
+
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;##Beacon is %@&quot;</span><span class="p">,</span> <span class="n">beacon</span><span class="p">);</span>
+
+    <span class="n">_uuid</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="n">beacon</span><span class="p">.</span><span class="n">proximityUUID</span><span class="p">.</span><span class="n">UUIDString</span><span class="p">;</span>
+    <span class="n">_major</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">beacon</span><span class="p">.</span><span class="n">major</span> <span class="n">stringValue</span><span class="p">];</span>
+    <span class="n">_minor</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="p">[</span><span class="n">beacon</span><span class="p">.</span><span class="n">minor</span> <span class="n">stringValue</span><span class="p">];</span>
+
+    <span class="n">_proximity</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="l">@[</span><span class="s">@&quot;Unknow&quot;</span><span class="p">,</span> <span class="s">@&quot;Immediate&quot;</span><span class="p">,</span> <span class="s">@&quot;Near&quot;</span><span class="p">,</span> <span class="s">@&quot;Far&quot;</span><span class="l">]</span><span class="p">[</span><span class="n">beacon</span><span class="p">.</span><span class="n">proximity</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>其中<code>locationManager: didRangeBeacons: inRegion:</code> 方法在每次 iOS 探测之后都会被调用，频率大约是每秒一次。此方法会得到探测到的基站信息，里面包括了 UUID、Major、Minor、以及 Proximity 和 rssi 等。</p>
+<p>Proximity 代表了与基站的距离，由于2.4G 信号也不怎么靠谱，容易受干扰，所以测出来的距离不是那么准确。Apple 用了四个值代表距离，分别是 Immediate、Near、Far、Unknow，距离依次递减。根据我的测试，在1m 以内基本上就是 Immediate，1米到3米就是 Near。</p>
+<p>Log 打印如下:
+<code>##Beacon is CLBeacon (uuid:&lt;__NSConcreteUUID 0x15595ac0&gt; E2C56DB5-DFFB-48D2-B060-D0F5A71096E0, major:0, minor:0, proximity:1 +/- 0.26m, rssi:-47)</code></p>
+<p>上一张截图：
+<img alt="" src="/static/img/IMG_0794.PNG" /></p>
+<p><s>最后，发现了一个好玩的东西。在OS X 10.10发布的时候，Apple 着重介绍了与 iOS 8 联动功能。比如，拿着 iPhone 走近正在浏览网页的 Mac，iPhone 的锁屏界面左下角就会出现 Safari 图标，划开之后就能打开该网页。</p>
+<p>就在刚才我玩 iBeacon 的时候，似乎发现了一个秘密——这功能是通过 iBeacon 实现的！</p>
+<p>看这张截图：
+<img alt="" src="/static/img/IMG_0796.PNG" /></p>
+<p>左下角出现了我的测试应用的图标！而且划开之后就是我的测试应用~</p>
+<p>这也就解释了为啥拿着手机进星巴克，左下角会有星巴克应用的图标，因为他们部署了 iBeacon~</s></p>
+<p>好吧，火星了，昨晚兴致勃勃地以为发现了事实的真相，结果一搜，连百度都能搜的出来…</p>
+<p>哈哈</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/iBeacon/"> iBeacon </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=初识 iBeacon&amp;url=https://blog.zorro.im/posts/2014-9-1-ibeacon.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2014-9-1-ibeacon.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2014-9-1-ibeacon.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

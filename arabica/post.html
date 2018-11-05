@@ -1,0 +1,50 @@
+{% extends "default.html" %}
+{% block header %}
+<link rel="stylesheet" type="text/css" href="{{ 'css/pygments.css'|asset }}" />
+{% endblock %}
+
+{% block body %}
+<main class="content" role="main">
+	<article class="post {{post_class}}">
+		<header class="post-header">
+			{% if post.image %}
+				<img src="{{post.image}}"></img>
+			{% endif %}
+			<h2 class="post-title">{{post.title}}</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="{{post.date|strftime('%Y-%m-%d')}}">{{post.date|strftime('%Y-%m-%d')}}</time>
+			</section>
+		</header>
+		<section class="post-content">
+			{{post.content}}
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+				{% if post.tags %}
+					{{ "Tagged " }}
+					{% for tag in post.tags %}
+					<a href="{{ tag.url }}"> {{ tag.title }} </a>
+					{% endfor %}
+				{% endif %}
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text={{post.title}}&amp;url={{ post.url|abs_url }}"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u={{ post.url|abs_url }}"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url={{ post.url|abs_url }}"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+		{% include 'comments.html' %}
+	</article>
+</main>
+
+{% endblock %}

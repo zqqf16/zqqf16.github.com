@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+				<img src="/static/img/letsencrypt.png"></img>
+			<h2 class="post-title">用 Let‘s Encrypt 证书搭建 IKEv2 VPN</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2016-02-17">2016-02-17</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<h2 id="_1">前言</h2>
+<p>之前写过一遍博客，<a href="/strongswan-ikev2-for-ios-without-certificate/">用 strongSwan 搭建免证书的 IKEv2 VPN</a>，之所以不想用证书，主要是因为买证书需要钱，而生成证书的手续又过于繁琐。需要创建个 CA，然后签发证书，客户端还得手动信任 CA，中间过程很容易出错。</p>
+<p>现在有了 <a href="https://letsencrypt.org">Let‘s Encrypt</a>，问题简单多了。它不仅可以提供免费的受信证书，而且用起来很简单。另外，用了证书认证之后，在 iOS 上就免除了安装配置文件的步骤。</p>
+<p>简直 “<strong>完美</strong>”👈👩👉</p>
+<h2 id="_2">服务器端配置</h2>
+<h4 id="1-strongswan">1. 安装 strongSwan</h4>
+<p>请参考: <a href="/strongswan-ikev2-for-ios-without-certificate/">用 strongSwan 搭建免证书的 IKEv2 VPN</a>。</p>
+<h4 id="2-lets-encrypt">2. 申请 Let's Encrypt 证书</h4>
+<p>这步超级简单：</p>
+<div class="codehilite"><pre><span></span>user@webserver:~$ git clone https://github.com/letsencrypt/letsencrypt
+user@webserver:~$ <span class="nb">cd</span> letsencrypt
+user@webserver:~/letsencrypt$ ./letsencrypt-auto certonly --standalone
+</pre></div>
+
+
+<p>注意：填写的域名必须跟 VPN 服务器地址一致。</p>
+<p>生成的证书位于 /etc/letsencrypt/archive/your.domain/ 目录下，需要拷贝到 strongSwan 目录：</p>
+<div class="codehilite"><pre><span></span>cp /etc/letsencrypt/live/your.domain/fullchain.pem /etc/ipsec.d/certs
+cp /etc/letsencrypt/live/your.domain/privkey.pem /etc/ipsec.d/private
+</pre></div>
+
+
+<h4 id="3-etcipsecconf">3. 修改 /etc/ipsec.conf 配置</h4>
+<p>如下：</p>
+<div class="codehilite"><pre><span></span># ipsec.conf - strongSwan IPsec configuration file
+# basic configuration
+config setup
+    strictcrlpolicy=no
+    uniqueids = no
+
+# Default
+conn %default
+    keyexchange=ikev2
+    auto=add
+    dpdaction=clear
+    leftsubnet=0.0.0.0/0
+    right=%any
+    rightsourceip=10.99.1.0/24
+
+# With certificate
+conn iOS-IKEv2-cert
+    leftid=your.domain
+    leftcert=fullchain.pem
+    leftsendcert=always
+    rightauth=eap-mschapv2
+    eap_identity=%identity
+</pre></div>
+
+
+<p>注意：leftid 需要跟你的域名一致。</p>
+<h4 id="4-etcipsecsecret">4. 修改 /etc/ipsec.secret 文件</h4>
+<div class="codehilite"><pre><span></span>: RSA privkey.pem
+u1 : EAP &quot;password&quot;
+u2 : EAP &quot;password&quot;
+</pre></div>
+
+
+<h4 id="5-ip-table">5. 配置 IP Table</h4>
+<div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
+
+<span class="c1"># Add ip tables</span>
+
+iptables -A INPUT -p udp --dport <span class="m">500</span> -j ACCEPT
+iptables -A INPUT -p udp --dport <span class="m">4500</span> -j ACCEPT
+<span class="nb">echo</span> <span class="m">1</span> &gt; /proc/sys/net/ipv4/ip_forward
+iptables -t nat -A POSTROUTING -s <span class="m">10</span>.99.1.0/24 -o eth0 -j MASQUERADE
+iptables -A FORWARD -s <span class="m">10</span>.99.1.0/24 -j ACCEPT
+</pre></div>
+
+
+<h4 id="6-ipsec">6. 启动 ipsec</h4>
+<div class="codehilite"><pre><span></span>ipsec start
+</pre></div>
+
+
+<h2 id="_3">客户端配置</h2>
+<h4 id="1-vpn">1. 添加 VPN 配置</h4>
+<p>进入“设置” -&gt; “VPN” -&gt; “添加 VPN 配置”，选择 “IKEv2” 类型，填好参数保存。</p>
+<h4 id="2-lets-encrypt_1">2. 安装 Let‘s Encrypt 中间证书</h4>
+<p>用 Safari 访问 <a href="https://letsencrypt.org/certificates/">https://letsencrypt.org</a>，点击 <strong>PEM</strong> 格式的 <strong>Let’s Encrypt Authority X1</strong> 证书并安装。</p>
+<p>至此，就可以连接 VPN 了。</p>
+<h2 id="_4">参考链接</h2>
+<p><a href="http://dcamero.azurewebsites.net/strongswan-ubuntu-1604-ios-9.html">Strongswan on Ubuntu 16.04 for iOS 9 Client</a></p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/IKEv2/"> IKEv2 </a>
+					<a href="/tags/strongSwan/"> strongSwan </a>
+					<a href="/tags/Let%E2%80%98s-Encrypt/"> Let‘s Encrypt </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=用 Let‘s Encrypt 证书搭建 IKEv2 VPN&amp;url=https://blog.zorro.im/posts/2016-2-17-strongswan-ikev2-for-ios-with-letsencrypt.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2016-2-17-strongswan-ikev2-for-ios-with-letsencrypt.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2016-2-17-strongswan-ikev2-for-ios-with-letsencrypt.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

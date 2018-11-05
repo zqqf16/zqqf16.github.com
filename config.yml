@@ -1,0 +1,83 @@
+# Site configurations
+site:
+
+    # Site title
+    title: 穷折腾
+
+    # Site logo
+    logo: /static/img/favicon.png
+
+    # Site cover
+    cover: /static/img/cover.jpg
+
+    # Base url
+    url: https://blog.zorro.im
+
+    # Description
+    description: zqqf16 的个人博客
+
+    disqus: zqqf16
+    google_analytics: UA-41282906-2
+    links:
+        - title: Home 
+          url: /
+        - title: Archive
+          url: /archive.html
+        - title: About
+          url: /posts/2013-4-25-about.html
+        - title: RSS
+          url: /rss.xml
+
+# Author configurations
+author:
+
+    avator: http://s.gravatar.com/avatar/4062f9b2373a5519a3b97012489d4bc1?s=80
+    name: zqqf16
+    url: https://blog.zorro.im
+    socials:
+        - name: Github
+          url: https://github.com/zqqf16
+          icon: github
+        - name: Weibo
+          url: http://weibo.com/zqqf16
+          icon: weibo
+        - name: Twitter
+          url: http://twitter.com/zqqf16
+          icon: twitter
+    bio: 不会写代码的钳工不是好木匠
+    location: Beijing
+
+# Path configurations
+# path:
+    # Draft path
+    # draft: drafts
+
+    # Post url template
+    # post: posts/{slug}.html
+
+    # Tag url template
+    # tag: tags/{title}/
+
+    # Pagination url template
+    # pagination: page/{num}/
+
+    # Sitemap url
+    # sitemap: sitemap.xml
+
+    # RSS url
+    # rss: rss.xml
+
+    # Assert files url
+    # asset: assets/
+
+# Whether to create sitemap or not
+# sitemap: True
+
+# Whether to create rss or not
+# rss: True
+
+# Theme name or path
+theme: arabica
+
+# How many posts each page.
+# pagination: 10

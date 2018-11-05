@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">谈谈 iOS8 中的 Network Extension</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2014-10-14">2014-10-14</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<blockquote>
+<p>由于工作原因，对 iOS 的 VPN 方面比较关心，基本上在第一时间就发现并研究了 Network Extension（以下简称 NE），在这篇文章里做个入门指南。</p>
+<p>另外，做了一个完整的 IKEv2 版 Demo（<a href="https://github.com/zqqf16/IKEv2_Demo">Github</a>），服务端配置可以参考<a href="/strongswan-ikev2-for-ios-without-certificate/">用 strongSwan 搭建免证书的 IKEv2 VPN</a>。</p>
+</blockquote>
+<h2 id="_1">介绍</h2>
+<p>NE 向应用开放了 VPN（Personal VPN）的权限，开发者可以创建、修改、删除 VPN 配置，启动、停止 VPN，以及获取 VPN 状态等。目前只支持 Cisco IPSec 和 IKEv2。</p>
+<p>可能是 NE 的受众太小，只有我们这样的厂商才会关心，所以 Apple 连个官方文档头没提供，目前所能掌握的东西只有头文件里的注释。</p>
+<p>推荐读者在看这篇文章之前先阅读一篇外国友人写的<a href="http://ramezanpour.net/post/2014/08/03/configure-and-manage-vpn-connections-programmatically-in-ios-8/">教程</a>，他把步骤描述的很详细，基本上照着一步步做就行了。我当时也是看了这篇文章，然后根据自己摸索才弄明白的。这里只点出需要注意的重点。</p>
+<h2 id="_2">准备工作</h2>
+<p>你需要 Enable App ID 中的 “VPN Configuration &amp; Control”，然后在应用的 “Capabilities” 中打开 “Personal VPN”，这时候 Xcode 会完成一些初始化工作。</p>
+<p>最后，链接上 “NetworkExtension.framework”，然后在代码里<code>#import &lt;NetworkExtension/NetworkExtension.h&gt;</code>就 OK 了。</p>
+<h2 id="_3">工作流程</h2>
+<p>NE 的工作流程基本上分为以下几步：</p>
+<p><strong>加载系统配置</strong></p>
+<p>这步很重要，初次操作 NE 时一定别忘了先加载，否则将会出现一些莫名其妙的问题。</p>
+<div class="codehilite"><pre><span></span><span class="c1">// init VPN manager</span>
+<span class="nb">self</span><span class="p">.</span><span class="n">vpnManager</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NEVPNManager</span> <span class="n">sharedManager</span><span class="p">];</span>
+
+<span class="c1">// load config from perference</span>
+<span class="p">[</span><span class="n">_vpnManager</span> <span class="nl">loadFromPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do something</span>
+<span class="p">}];</span>
+</pre></div>
+
+
+<p>这里需要说明一下，NE 需要给系统安装一个配置文件（类似于 mobileconfig）才能工作，应用在退出后可以在系统设置的 VPN 选项中手动开启 VPN。这个配置文件和 NEVPNManager 是不会自动同步的，也就是说每次操作 NEVPNManager，都必须先从配置文件加载内容，如果做了修改，一定要记得保存。</p>
+<p>而且，如果手动在系统设置里面把配置文件删除，NEVPNManager 的内容还是会存在的。所以，每次启动 VPN 之前都应该加载一下配置，确保配置文件存在。</p>
+<p><strong>添加或修改 IPSec 或 IKEv2 配置信息（以 IPSec 为例）</strong></p>
+<div class="codehilite"><pre><span></span><span class="c1">// config IPSec protocol</span>
+<span class="bp">NEVPNProtocolIPSec</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NEVPNProtocolIPSec</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+<span class="n">p</span><span class="p">.</span><span class="n">username</span> <span class="o">=</span> <span class="s">@&quot;[Your username]&quot;</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">serverAddress</span> <span class="o">=</span> <span class="s">@&quot;[Your server address]&quot;</span><span class="p">;;</span>
+
+<span class="c1">// get password persistent reference from keychain</span>
+<span class="n">p</span><span class="p">.</span><span class="n">passwordReference</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;VPN_PASSWORD&quot;</span><span class="p">];</span>
+
+<span class="c1">// PSK</span>
+<span class="n">p</span><span class="p">.</span><span class="n">authenticationMethod</span> <span class="o">=</span> <span class="n">NEVPNIKEAuthenticationMethodSharedSecret</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sharedSecretReference</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;PSK&quot;</span><span class="p">];</span>
+
+<span class="cm">/*</span>
+<span class="cm">// certificate</span>
+<span class="cm">p.identityData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@&quot;client&quot; ofType:@&quot;p12&quot;]];</span>
+<span class="cm">p.identityDataPassword = @&quot;[Your certificate import password]&quot;;</span>
+<span class="cm">*/</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">localIdentifier</span> <span class="o">=</span> <span class="s">@&quot;[VPN local identifier]&quot;</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">remoteIdentifier</span> <span class="o">=</span> <span class="s">@&quot;[VPN remote identifier]&quot;</span><span class="p">;</span>
+
+<span class="n">p</span><span class="p">.</span><span class="n">useExtendedAuthentication</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">disconnectOnSleep</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
+</pre></div>
+
+
+<p>上面的代码应该放到<code>loadFromPreferencesWithCompletionHandler</code>的 block 中执行，这样可以确保系统配置已经加载完成。</p>
+<p>IPSec 协议里的密码以及预共享密钥都需要是一个 KeyChain 中密码的永久引用（persistent reference）。</p>
+<p>如果用证书来作为 IKE 的认证方式，而且 Server 端用的是自签发证书，则需要手工将 CA 导入到 iOS 设备。目前 Apple 还没提供添加授信证书的方法。</p>
+<p><strong>保存配置</strong></p>
+<div class="codehilite"><pre><span></span><span class="p">[</span><span class="n">_vpnManager</span> <span class="nl">saveToPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Save config failed [%@]&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}];</span>
+</pre></div>
+
+
+<p><strong>启动 VPN</strong></p>
+<div class="codehilite"><pre><span></span><span class="bp">NSError</span> <span class="o">*</span><span class="n">startError</span><span class="p">;</span>
+<span class="p">[</span><span class="n">_vpnManager</span><span class="p">.</span><span class="n">connection</span> <span class="nl">startVPNTunnelAndReturnError</span><span class="p">:</span><span class="o">&amp;</span><span class="n">startError</span><span class="p">];</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">startError</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">&quot;Start VPN failed: [%@]&quot;</span><span class="p">,</span> <span class="n">startError</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>根据目前的测试结果来看，<code>startVPNTunnelAndReturnError</code>只会在配置有误的时候才会返回 Error。其他时候，比如协议协商失败、连接超时等系统都会直接弹出对话框。</p>
+<h2 id="_4">坑</h2>
+<p>由于没有官方文档说明，不知道是调用方式不对还是 NE 本身不稳定，开发过程中遇到了很多大坑：</p>
+<ol>
+<li>上面提到的，系统配置文件和 NEVPNManager 内容不同步，需要监听 “NEVPNConfigurationChangeNotification” 消息。</li>
+<li>NEVPNManager 的操作基本上都是异步的，改配置时必须确保 load 完成，启动 VPN 时必须确保 save 完成。</li>
+<li>有时候创建、保存配置一切正常，但是启动时就会提示 “未知错误”。这时候需要在系统设置里面手动启动一次 VPN，然后程序就可以正常启动了……有时候手动启动也不成，那就得把配置文件删除，然后重新安装……</li>
+</ol>
+<blockquote>
+<p>2015-3-13 更新解决方法：</p>
+<p>在调用 NEVPNManager 的 <code>saveToPreferencesWithCompletionHandler</code> 方法前，应将它的 <code>enabled</code> 属性置成 “YES”。</p>
+</blockquote>
+<ol>
+<li>配置 IPSec 协议时，密码相关的（证书密码除外）必须得是 KeyChain 的永久引用，即<code>kSecReturnPersistentRef</code>需要是 YES。</li>
+<li>获取 VPN 状态时，NEVPNConnection 的 status 属性是不支持 KVO 的，需要监听 “NEVPNStatusDidChangeNotification” 事件。这点应该是 By-design 的，但是这个问题当时困扰我很久……</li>
+</ol>
+<h2 id="_5">完整代码</h2>
+<p>上文提到的国际友人曾经遇到了一些问题（可以查看他文章下面的评论），这种问题基本上是因为坑#2 导致的。为了向他解释我的代码没问题，我根据他的代码写了一个简单的 Demo。没写全，但是基本可用。我这一切正常，他说他复制过去还有问题……</p>
+<blockquote>
+<p><strong>2014-12-19 更新</strong></p>
+<p>如果<code>localIdentifier</code>和<code>remoteIdentifier</code>设置的不对也可能导致这个问题。我测试的 IPSec 服务端把这两个字段去掉了，所以一直没注意~</p>
+</blockquote>
+<p><em>以下代码来自 Gist，需自备梯子～</em></p>
+<script src="https://gist.github.com/zqqf16/cbcbd2254e6cb965f1a3.js"></script>
+
+<p>由于 Disqus 被墙，若有问题，欢迎到 <a href="https://github.com/zqqf16/zqqf16.github.com/issues/1">Github issues</a> 交流。</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/Network-Extension/"> Network Extension </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=谈谈 iOS8 中的 Network Extension&amp;url=https://blog.zorro.im/posts/2014-10-14-ios8-network-extension.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2014-10-14-ios8-network-extension.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2014-10-14-ios8-network-extension.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

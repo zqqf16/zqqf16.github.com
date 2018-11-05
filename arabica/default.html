@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'meta.html' %}
+    <title>{{site.title}}</title>
+    <link rel="stylesheet" type="text/css" href="{{"css/normalize.css"|asset}}" />
+    <link rel="stylesheet" type="text/css" href="{{"css/icons.css"|asset}}" />
+    <link rel="stylesheet" type="text/css" href="{{"css/screen.css"|asset}}" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="{{"bigfoot/bigfoot.min.js" | asset}}"></script>
+    <link rel="stylesheet" type="text/css" href="{{"bigfoot/bigfoot-number.css" | asset}}" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+    {% include 'google-analytics.html' %}
+
+    {% block header %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="{{site.url}}">{{site.title}}</a></h1>
+			<h2 class="blog-description">{{site.description}}</h2>
+		</div>
+        {% include 'navigation.html' %}
+	</header>
+
+    {% block body %}{% endblock %}
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="{{site.url}}/rss.xml"></a></section>
+        {% for social in author.socials %}
+        <section class="{{social.name}}"><a class="icon-{{social.icon}}" href="{{social.url}}"> {{social.name}}</a></section>
+        {% endfor %}
+        <section class="copyright">&copy; 2018 {{site.title}}</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

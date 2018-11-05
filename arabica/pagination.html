@@ -1,0 +1,10 @@
+<nav class="pagination" role="navigation">
+    {% if prev_page %}
+    <a rel="next" class="posts newer btn small" href="{{prev_page.url}}#open">&larr; Newer Posts</a>
+    {% endif %}
+    <span class="posts index">Page {{page.page}} of {{page.total}}</span>
+    {% if next_page %}
+    <a rel="prev" class="posts older btn small" href="{{next_page.url}}#open">Older Posts &rarr;</a>
+    {% endif %}
+</nav>
+      

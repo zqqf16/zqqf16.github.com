@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">OS X 上 ProxyChains 失效的原因</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2015-11-11">2015-11-11</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>最近遇到很多同学反应 ProxyChains 失效的问题，于是就花了点时间研究了一下。</p>
+<p>排除配置错误以及 SOCKS 代理本身的问题，在 OS X 10.11 上，最大的可能就是<a href="proxychains.html">前一篇文章</a>中说的 SIP。摘录 <a href="https://en.wikipedia.org/wiki/System_Integrity_Protection">Wikipedia</a> 上面的一段话：</p>
+<blockquote>
+<p>The kernel stops all processes without specific privileges from writing to flagged files and folders and prevents <strong>code injection</strong> and runtime attachment (like debugging) with respect to flagged processes or processes signed with an Apple private entitlement key</p>
+</blockquote>
+<p>其次，就是 dyld 了，前面说过，ProxyChains 是基于 <strong>DYLD_</strong> 环境变量的，dyld 在链接动态库的时候会进行一些条件判断，并不是每个应用都允许有 DYLD_。</p>
+<div class="codehilite"><pre><span></span><span class="k">switch</span> <span class="p">(</span><span class="n">sRestrictedReason</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">case</span> <span class="nl">restrictedNot</span><span class="p">:</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nl">restrictedBySetGUid</span><span class="p">:</span>
+        <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is setuid or setgid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nl">restrictedBySegment</span><span class="p">:</span>
+        <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) has __RESTRICT/__restrict section</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+    <span class="k">case</span> <span class="nl">restrictedByEntitlements</span><span class="p">:</span>
+        <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is code signed with entitlements</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
+        <span class="k">break</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><em>注：以上代码来自 <a href="http://www.opensource.apple.com/source/dyld/dyld-353.2.3/src/dyld.cpp">dyld.cpp</a></em></p>
+<p>从上面这段 dyld 注释的 log 相关代码来看，以下三种情况会清空 DYLD_ 环境变量：</p>
+<ol>
+<li>可执行程序被设置了 <strong>setuid</strong> 或 <strong>setgid</strong> 权限</li>
+<li>可执行文件中存在 <strong>__RESTRICT,__restrict</strong> 这个段</li>
+<li>应用程序被 <strong>entitlements</strong> 签过名</li>
+</ol>
+<p>第一点很好理解，毕竟是为了安全，比如 “sudo”、“passwd” 这样的程序肯定是要保护的。</p>
+<p>第二点玩 iOS 越狱开发的应该很熟悉，很多讲 iOS 安全的都会建议在 Xcode 的 “Other Linker Flags” 中加上这样一行：</p>
+<p><code>-Wl,-sectcreate,__RESTRICT,__restrict,/dev/null</code></p>
+<p>目的就是在生成的可执行文件中插入一个空的  <strong>__RESTRICT,__restrict</strong> 段，这样就能在越狱的设备上阻止一部分恶意 Hook 了。</p>
+<p>第三点暂时还没研究。</p>
+<p>所以，在遇到 ProxyChains 不好使的时候，应该：</p>
+<ol>
+<li>
+<p>如果是 OS X 11.11，并且可执行文件在 <strong>/System</strong>、 <strong>/bin</strong>、 <strong>/sbin</strong>、<strong>/usr</strong> 这些目录中，先看一下 SIP 关闭没。</p>
+</li>
+<li>
+<p>看一下可执行文件属性，如果有 <strong>setuid</strong> 或 <strong>setgid</strong> 权限，那就放弃吧，安全第一。</p>
+</li>
+<li>
+<p>看一下可执行文件中是否有 <strong>__RESTRICT,__restrict</strong>，如果有，而且十分想用，那么用二进制编辑器打开，把这个段改个名吧。（如果被签名了那就算了）</p>
+</li>
+<li>
+<p>entitlements 签名我也不知道怎么看。</p>
+</li>
+<li>
+<p>换一下程序执行思路</p>
+<p>比如: <code>sudo pip install xxx</code></p>
+<p>如果这样执行：<code>proxychains sudo pip install xxx</code>，肯定不行，因为 sudo 有 setuid，所以 DYLD_ 环境变量传到这就丢掉了。</p>
+<p>应该这样：<code>sudo proxychains pip install xxx</code>，让 pip 作为 proxychains 的直接子进程。</p>
+</li>
+</ol>
+<p>另外，关闭 SIP 有潜在的风险，需谨慎。</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/ProxyChains/"> ProxyChains </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=OS X 上 ProxyChains 失效的原因&amp;url=https://blog.zorro.im/posts/2015-11-11-proxychains_not_work.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2015-11-11-proxychains_not_work.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2015-11-11-proxychains_not_work.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

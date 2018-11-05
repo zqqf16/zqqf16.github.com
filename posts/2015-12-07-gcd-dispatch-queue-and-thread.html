@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+				<img src="/static/img/gcd-queues@2x-82965db9.png"></img>
+			<h2 class="post-title">Dispatch Queue 与线程</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2015-12-07">2015-12-07</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<blockquote>
+<p>背景图片来自<a href="https://www.objc.io/issues/2-concurrency/concurrency-apis-and-pitfalls/">Concurrent Programming: APIs and Challenges</a></p>
+</blockquote>
+<p>前几天 Apple 开源了 Swift，顺带也开源了 <a href="https://github.com/apple/swift-corelibs-libdispatch">swift-corelibs-libdispatch</a>，其实也就是个跨平台的 <a href="https://opensource.apple.com/tarballs/libdispatch/">libdispatch</a>。之前对 GCD 的理解很多都是死记硬背下来的（而且基本上都是去面试前准备的……）。正好趁这个机会研究一下，当然，最主要的原因是看不懂 Swift 代码😂</p>
+<p>认真看过代码之后才发现，以前对很多概念的理解都是错误的，比如 Queue，线程池等。</p>
+<h3 id="queue">Queue</h3>
+<p>在之前的理解中，我以为每次创建的 queue 都是一个独立的 queue 实体，管理着它自己的线程池。</p>
+<p>然而并不是这样。</p>
+<p>先来看一下创建 queue 的函数 <code>dispatch_queue_create</code> 代码：</p>
+<div class="codehilite"><pre><span></span><span class="n">dispatch_queue_t</span>
+<span class="nf">dispatch_queue_create</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="p">,</span> <span class="n">dispatch_queue_attr_t</span> <span class="n">attr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">return</span> <span class="n">dispatch_queue_create_with_target</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span>
+            <span class="n">DISPATCH_TARGET_QUEUE_DEFAULT</span><span class="p">);</span>
+    <span class="c1">// #define DISPATCH_TARGET_QUEUE_DEFAULT NULL</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p><code>dispatch_queue_create_with_target</code> 函数定义如下（省略部分代码)：</p>
+<div class="codehilite"><pre><span></span><span class="n">dispatch_queue_t</span>
+<span class="nf">dispatch_queue_create_with_target</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="p">,</span> <span class="n">dispatch_queue_attr_t</span> <span class="n">dqa</span><span class="p">,</span>
+        <span class="n">dispatch_queue_t</span> <span class="n">tq</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="c1">// ...</span>
+    <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">tq</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+        <span class="n">tq</span> <span class="o">=</span> <span class="n">_dispatch_get_root_queue</span><span class="p">(</span><span class="n">qos</span><span class="p">,</span> <span class="n">overcommit</span> <span class="o">==</span> 
+                <span class="n">_dispatch_queue_attr_overcommit_enabled</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">slowpath</span><span class="p">(</span><span class="o">!</span><span class="n">tq</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">DISPATCH_CLIENT_CRASH</span><span class="p">(</span><span class="s">&quot;Invalid queue attribute&quot;</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="c1">// ...</span>
+    <span class="n">_dispatch_queue_set_override_priority</span><span class="p">(</span><span class="n">dq</span><span class="p">);</span>
+    <span class="n">dq</span><span class="o">-&gt;</span><span class="n">do_targetq</span> <span class="o">=</span> <span class="n">tq</span><span class="p">;</span>
+    <span class="n">_dispatch_object_debug</span><span class="p">(</span><span class="n">dq</span><span class="p">,</span> <span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">__func__</span><span class="p">);</span>
+    <span class="k">return</span> <span class="n">_dispatch_introspection_queue_create</span><span class="p">(</span><span class="n">dq</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>可以发现，其实创建自定义 queue 的时候，只不过是从 root queue 列表里找一个相应优先级的 root queue，把它设置成新 queue 的 target queue 而已。在自定义 queue 中执行 block 时实际是在它的 target queue 中执行的。</p>
+<p>自定义 queue 更像是一个 root queue 的 “代理”。</p>
+<p>代码里的 “root queue”，其实就是 GCD 概念里的 <strong>Global Queue</strong>。在初始化的时候，会创建 15 个 global queue，分别是：
+<!--
+| 序号   | 名称                                       |
+| ---- | ---------------------------------------- |
+| 1    | com.apple.main-thread                    |
+| 2    | com.apple.libdispatch-manager            |
+| 3    | com.apple.root.libdispatch-manager       |
+| 4    | com.apple.root.maintenance-qos           |
+| 5    | com.apple.root.maintenance-qos.overcommit |
+| 6    | com.apple.root.background-qos            |
+| 7    | com.apple.root.background-qos.overcommit |
+| 8    | com.apple.root.utility-qos               |
+| 9    | com.apple.root.utility-qos.overcommit    |
+| 10   | com.apple.root.default-qos               |
+| 11   | com.apple.root.default-qos.overcommit    |
+| 12   | com.apple.root.user-initiated-qos        |
+| 13   | com.apple.root.user-initiated-qos.overcommit |
+| 14   | com.apple.root.user-interactive-qos      |
+| 15   | com.apple.root.user-interactive-qos.overcommit |
+-->
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>com.apple.main-thread</td>
+</tr>
+<tr>
+<td>2</td>
+<td>com.apple.libdispatch-manager</td>
+</tr>
+<tr>
+<td>3</td>
+<td>com.apple.root.libdispatch-manager</td>
+</tr>
+<tr>
+<td>4</td>
+<td>com.apple.root.maintenance-qos</td>
+</tr>
+<tr>
+<td>5</td>
+<td>com.apple.root.maintenance-qos.overcommit</td>
+</tr>
+<tr>
+<td>6</td>
+<td>com.apple.root.background-qos</td>
+</tr>
+<tr>
+<td>7</td>
+<td>com.apple.root.background-qos.overcommit</td>
+</tr>
+<tr>
+<td>8</td>
+<td>com.apple.root.utility-qos</td>
+</tr>
+<tr>
+<td>9</td>
+<td>com.apple.root.utility-qos.overcommit</td>
+</tr>
+<tr>
+<td>10</td>
+<td>com.apple.root.default-qos</td>
+</tr>
+<tr>
+<td>11</td>
+<td>com.apple.root.default-qos.overcommit</td>
+</tr>
+<tr>
+<td>12</td>
+<td>com.apple.root.user-initiated-qos</td>
+</tr>
+<tr>
+<td>13</td>
+<td>com.apple.root.user-initiated-qos.overcommit</td>
+</tr>
+<tr>
+<td>14</td>
+<td>com.apple.root.user-interactive-qos</td>
+</tr>
+<tr>
+<td>15</td>
+<td>com.apple.root.user-interactive-qos.overcommit</td>
+</tr></tbody></table></p>
+<p>其中：</p>
+<ol>
+<li>＃0 没有使用。</li>
+<li>＃1 与主线程关联，定义在 init.c 文件。</li>
+<li>＃2－3 是内部管理 queue 用的，定义在 queue.c 文件。</li>
+<li>＃4－15 queue 定义在 queue.c 文件的 <code>_dispatch_root_queues</code> 数组里。</li>
+</ol>
+<p>带 overcommit 参数的表示该 queue 在执行 block 时，无论系统多忙都会新开一个线程。在调用 ｀<code>dispatch_get_global_queue(long identifier, unsigned long flags)</code> 方法时，指定 flags 为 <code>DISPATCH_QUEUE_OVERCOMMIT</code> 即可获取此类 Queue。</p>
+<p>关于优先级，在早期版本中比较简单，有以下这些：</p>
+<ul>
+<li>DISPATCH_QUEUE_PRIORITY_HIGH </li>
+<li>DISPATCH_QUEUE_PRIORITY_DEFAULT </li>
+<li>DISPATCH_QUEUE_PRIORITY_LOW </li>
+<li>DISPATCH_QUEUE_PRIORITY_BACKGROUND</li>
+</ul>
+<p>在支持了 <a href="https://developer.apple.com/library/prerelease/ios/documentation/Performance/Conceptual/EnergyGuide-iOS/PrioritizeWorkWithQoS.html">Quality of Service（QoS）</a>之后复杂了一些：</p>
+<ul>
+<li>QOS_CLASS_USER_INTERACTIVE</li>
+<li>QOS_CLASS_USER_INITIATED （DISPATCH_QUEUE_PRIORITY_HIGH）</li>
+<li>QOS_CLASS_DEFAULT （DISPATCH_QUEUE_PRIORITY_DEFAULT）</li>
+<li>QOS_CLASS_UTILITY （DISPATCH_QUEUE_PRIORITY_LOW）</li>
+<li>QOS_CLASS_BACKGROUND （DISPATCH_QUEUE_PRIORITY_BACKGROUND）</li>
+</ul>
+<p>为了支持 QoS，root queue 也从 11 个增加到了 15 个。</p>
+<p>objc.io 的这幅图很形象地描述了各种 queue 的关系：</p>
+<p><img alt="queue" src="/static/img/gcd-queues@2x-82965db9.png" /></p>
+<h3 id="queue_1">Queue 与线程</h3>
+<p>之前我以为每个 queue 都管理着它自己的线程池，concurrent queue 的线程池里有多个线程，而 serial queue 的只有一个。</p>
+<p>然而并不是。</p>
+<p>所有 queue 的线程池都是统一管理的，在 Mac OS 中，是靠 pthread workqueue 实现的。（pthread workqueue 没找到详细信息，可以参考 <a href="https://people.freebsd.org/~sson/thrworkq/pthread_workqueue.3.txt">FreeBSD 手册</a>。<em>PS：可以用 <code>sysctl kern.wq_max_threads</code> 查看 workqueue 中支持的最大线程数</em>）。这需要 Libc 标准库与 Kernel 的支持。</p>
+<p>所以即使对于 serial queue 来说，它所面对的也是所有的线程池。所以任务是否是并发执行的决定权在 queue 本身。</p>
+<p>来看一下 queue 结构体的定义（不同平台可能有差异，大致如下）：</p>
+<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">dispatch_queue_s</span> <span class="p">{</span>
+    <span class="n">DISPATCH_STRUCT_HEADER</span><span class="p">(</span><span class="n">queue</span><span class="p">);</span>
+
+    <span class="cm">/* DISPATCH_QUEUE_HEADER */</span>
+    <span class="kt">uint32_t</span> <span class="k">volatile</span> <span class="n">dq_running</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="n">dispatch_object_s</span> <span class="o">*</span><span class="k">volatile</span> <span class="n">dq_items_head</span><span class="p">;</span>
+    <span class="cm">/* LP64 global queue cacheline boundary */</span>
+    <span class="k">struct</span> <span class="n">dispatch_object_s</span> <span class="o">*</span><span class="k">volatile</span> <span class="n">dq_items_tail</span><span class="p">;</span>
+    <span class="n">dispatch_queue_t</span> <span class="n">dq_specific_q</span><span class="p">;</span>
+    <span class="kt">uint16_t</span> <span class="n">dq_width</span><span class="p">;</span>
+    <span class="kt">uint16_t</span> <span class="nl">dq_is_thread_bound</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
+    <span class="kt">uint32_t</span> <span class="k">volatile</span> <span class="n">dq_override</span><span class="p">;</span>
+    <span class="n">pthread_priority_t</span> <span class="n">dq_priority</span><span class="p">;</span>
+    <span class="n">mach_port_t</span> <span class="n">dq_thread</span><span class="p">;</span>
+    <span class="n">mach_port_t</span> <span class="k">volatile</span> <span class="n">dq_tqthread</span><span class="p">;</span>
+    <span class="n">voucher_t</span> <span class="n">dq_override_voucher</span><span class="p">;</span>
+    <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">dq_serialnum</span><span class="p">;</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">dq_label</span><span class="p">;</span>
+
+    <span class="n">DISPATCH_QUEUE_CACHELINE_PADDING</span><span class="p">;</span> <span class="c1">// for static queues only</span>
+<span class="p">};</span>
+</pre></div>
+
+
+<p>其中 <strong>dq_width</strong> 属性的值就是能够并发执行的最大任务数，concurrent queue 的值为 <code>DISPATCH_QUEUE_WIDTH_MAX</code> （<code>#define DISPATCH_QUEUE_WIDTH_MAX UINT16_MAX</code>），serial queue 的值为 1。</p>
+<p>Queue 会根据自身 dq_width 值的大小来安排任务的执行。</p>
+<p>--待续--</p>
+<h3 id="_1">参考链接</h3>
+<ul>
+<li><a href="http://newosxbook.com/articles/GCD.html">GCD Internals</a></li>
+<li><a href="https://www.objc.io/issues/2-concurrency/concurrency-apis-and-pitfalls/">Concurrent Programming: APIs and Challenges</a></li>
+<li><a href="https://www.objc.io/issues/2-concurrency/low-level-concurrency-apis/">Low-Level Concurrency APIs</a></li>
+</ul>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/GCD/"> GCD </a>
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/libdispatch/"> libdispatch </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Dispatch Queue 与线程&amp;url=https://blog.zorro.im/posts/2015-12-07-gcd-dispatch-queue-and-thread.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2015-12-07-gcd-dispatch-queue-and-thread.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2015-12-07-gcd-dispatch-queue-and-thread.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

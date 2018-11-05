@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">命令行下的有道翻译</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-05-20">2013-05-20</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。</p>
+<p>一次偶然的机会，发现了有道这个靠谱的工具提供了十分方便的API可供调用，就花了一点时间，写了个Python版的~。</p>
+<p>有道的数据接口如下：</p>
+<div class="codehilite"><pre><span></span>http://fanyi.youdao.com/openapi.do?keyfrom=<span class="p">&lt;</span><span class="nt">keyfrom</span><span class="p">&gt;</span><span class="err">&amp;</span>key=<span class="p">&lt;</span><span class="nt">key</span><span class="p">&gt;</span><span class="err">&amp;</span>type=data<span class="err">&amp;</span>doctype=<span class="p">&lt;</span><span class="nt">doctype</span><span class="p">&gt;</span><span class="err">&amp;</span>version=1.1<span class="err">&amp;</span>q=要翻译的文本
+</pre></div>
+
+
+<blockquote>
+<p>版本：1.1，请求方式：get，编码方式：utf-8<br />
+主要功能：中英互译，同时获得有道翻译结果和有道词典结果（可能没有）<br />
+参数说明：<br />
+　type - 返回结果的类型，固定为data<br />
+　doctype - 返回结果的数据格式，xml或json或jsonp<br />
+　version - 版本，当前最新版本为1.1<br />
+　q - 要翻译的文本，不能超过200个字符，需要使用utf-8编码<br />
+errorCode：<br />
+　0 - 正常<br />
+　20 - 要翻译的文本过长<br />
+　30 - 无法进行有效的翻译<br />
+　40 - 不支持的语言类型<br />
+　50 - 无效的key  </p>
+</blockquote>
+<p>详见<a href="http://fanyi.youdao.com/openapi?path=data-mode">官网</a></p>
+<p>Python实现的代码如下：</p>
+<div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">urllib2</span>
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="n">green</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[0;32m</span><span class="si">%s</span><span class="se">\033</span><span class="s1">[0m: </span><span class="se">\033</span><span class="s1">[0;34m</span><span class="si">%s</span><span class="se">\033</span><span class="s1">[0m&#39;</span>
+
+<span class="n">opener</span> <span class="o">=</span> <span class="n">urllib2</span><span class="o">.</span><span class="n">build_opener</span><span class="p">()</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span>
+<span class="n">url_utf</span> <span class="o">=</span> <span class="s1">&#39;http://fanyi.youdao.com/fanyiapi.do?keyfrom=asdfksljl&amp;key=908880018&amp;type=data&amp;doctype=json&amp;version=1.1&amp;q=&#39;</span> <span class="o">+</span> <span class="n">msg</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">result_json</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url_utf</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_json</span><span class="p">)</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="nb">exit</span><span class="p">()</span>
+
+<span class="k">for</span> <span class="n">tran</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">]:</span>
+    <span class="k">print</span> <span class="n">green</span> <span class="o">%</span> <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;翻译&#39;</span><span class="p">,</span> <span class="n">tran</span><span class="p">)</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">print</span> <span class="sa">u</span><span class="s1">&#39;读音: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;basic&#39;</span><span class="p">][</span><span class="s1">&#39;phonetic&#39;</span><span class="p">]</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">explain</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;basic&#39;</span><span class="p">][</span><span class="s1">&#39;explains&#39;</span><span class="p">]:</span>
+        <span class="k">print</span> <span class="sa">u</span><span class="s1">&#39;解释: &#39;</span> <span class="o">+</span> <span class="n">explain</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">web</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;web&#39;</span><span class="p">]:</span>
+        <span class="n">value_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+        <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">web</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]:</span>
+            <span class="n">value_str</span> <span class="o">+=</span> <span class="n">value</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
+        <span class="k">print</span> <span class="sa">u</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="n">web</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;] &#39;</span> <span class="o">+</span> <span class="n">value_str</span>
+<span class="k">except</span><span class="p">:</span>
+    <span class="k">pass</span>
+</pre></div>
+
+
+<p>或见<a href="https://gist.github.com/zqqf16/5610235">Gist</a></p>
+<p>把上面的脚本命名为“t”，放在<code>~/bin</code>下，需要翻译的时候打开终端输入<code>t 文本</code>即可~</p>
+<p><img alt="图片" src="/static/img/youdao-translation.png" /></p>
+<p>PS: 用的时候最好自己去申请一个Key~</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/%E7%BF%BB%E8%AF%91/"> 翻译 </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=命令行下的有道翻译&amp;url=https://blog.zorro.im/posts/2013-5-20-youdao-translation.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-5-20-youdao-translation.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-5-20-youdao-translation.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">重拾C语言之运算符优先级</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-05-28">2013-05-28</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>总是记不住C语言各个运算符的优先级，<s>每次用的时候都得用笨办法——加括号。虽然成功率很高，但是稍微长一点的语句可读性极差</s>。因此，就借最近整理C语言知识点的时机恶补一下。</p>
+<p>注意：下面的这段内容抄自<a href="http://baike.baidu.com/view/1516130.htm">百度百科</a></p>
+<blockquote>
+<p><strong>1级（左结合）</strong>  <br />
+( ) 圆括号；[ ]下标运算符；-&gt;指向结构体成员运算符；. 结构体成员运算符。<br />
+<strong>2级（右结合）</strong><br />
+“ ! ”逻辑非运算符；“ ~ ”按位取反运算符；“ ++ ”前缀增量运算符；“ -- ”前缀减量运算符；<br />
+“ - ”负号运算符；(类型)类型转换运算符；“ * ”指针运算符；“ &amp; ”地址运算符；<br />
+“sizeof ” 长度运算符。<br />
+<strong>3级（左结合）</strong><br />
+“ * ” 乘法运算符；“ / ”除法运算符；“ % ” 取余运算符。<br />
+<strong>4级（左结合）</strong><br />
+“ + ”加法运算符；“ - ”减法运算符。<br />
+<strong>5级（左结合）</strong>  <br />
+&lt;&lt; 左移运算符；&gt;&gt; 右移运算符。<br />
+<strong>6级（左结合）</strong><br />
+&lt;、&lt;=、&gt;、&gt;=关系运算符。<br />
+<strong>7级（左结合）</strong><br />
+“ == ”等于运算符；“ != ”不等于运算符。<br />
+<strong>8级（左结合）</strong>  <br />
+“ &amp; ”按位与运算符。<br />
+<strong>9级（左结合）</strong><br />
+“ ∧ ”按位异或运算符。<br />
+<strong>10级（左结合）</strong><br />
+“ | ”按位或运算符。
+<strong>11级（左结合）</strong><br />
+“&amp;&amp;”逻辑与运算符。<br />
+<strong>12级（左结合）</strong><br />
+“ || ”逻辑或运算符。<br />
+<strong>13级（右结合）</strong><br />
+? :条件运算符。<br />
+<strong>14级（右结合）</strong><br />
+=、 +=、 -=、 *=、 /=、 %=、 &amp;=、 ^=、 |=、 &lt;&lt;=、 &gt;&gt;=赋值运算符。<br />
+<strong>15级（左结合）</strong><br />
+“，”逗号运算符。  </p>
+</blockquote>
+<p>---抄袭结束---</p>
+<p>记住“==”和“!=”的优先级高于“&amp;&amp;”和“||”，<code>if</code>的时候就可以省下好几对括号了。</p>
+<p>记住[ ]的优先级高于“*”, 就可以区分数组的指针和指针数组了(<code>char (*p)[20]</code>，<code>char *p[20]</code>)。</p>
+<p>PS：如果实在记不清，还是建议乖乖地套上括号，这是最靠谱的方法。</p>
+<p>PS2：“只记住两个优先级就够了：乘法和除法优先于加减法，其他操作一律加括号” —— 《C专家编程》</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/c/"> c </a>
+					<a href="/tags/%E4%BC%98%E5%85%88%E7%BA%A7/"> 优先级 </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=重拾C语言之运算符优先级&amp;url=https://blog.zorro.im/posts/2013-5-28-c-priority.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-5-28-c-priority.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-5-28-c-priority.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

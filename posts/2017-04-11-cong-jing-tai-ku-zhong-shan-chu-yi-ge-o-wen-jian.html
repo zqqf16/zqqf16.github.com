@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">从静态库中删除一个 .o 文件</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2017-04-11">2017-04-11</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p><a href="https://blog.zorro.im/how_to_create_a_static_library/">开发一个合格的 iOS SDK</a>里写过，有些 SDK 开发得不够规范，把一些第三方的库打包到自己的库里。比如见过很多把 OpenSSL 包进去的，SDK A 包一个 OpenSSL，SDK B 也包一个 OpenSSL，链接的时候就发现符号冲突了。</p>
+<p>这时不得不对这些库“动手术”，把冲突的内容删掉。于是也就有了这个脚本，还加了对 Fat file 的判断。</p>
+<div class="codehilite"><pre><span></span><span class="ch">#!/bin/sh</span>
+
+<span class="c1"># Remove an object from a static library.</span>
+
+
+<span class="nv">LIB_SRC</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+<span class="nv">OBJ</span><span class="o">=</span><span class="si">${</span><span class="nv">2</span><span class="si">}</span>
+
+
+<span class="k">if</span> <span class="o">[</span> -z <span class="si">${</span><span class="nv">OBJ</span><span class="si">}</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;Usage: </span><span class="nv">$0</span><span class="s2"> source.a target.o&quot;</span>
+    <span class="nb">exit</span> <span class="m">0</span>
+<span class="k">fi</span>
+
+<span class="k">if</span> <span class="o">[</span> ! -f <span class="si">${</span><span class="nv">LIB_SRC</span><span class="si">}</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    <span class="nb">echo</span> <span class="s2">&quot;File </span><span class="si">${</span><span class="nv">LIB_SRC</span><span class="si">}</span><span class="s2"> not found&quot;</span>
+    <span class="nb">exit</span> <span class="m">1</span>
+<span class="k">fi</span>
+
+EXTRACT_FAT<span class="o">(){</span>
+    <span class="nv">SUBS</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> ARCH in <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$LIB_INFO</span> <span class="p">|</span> sed -n -e <span class="s1">&#39;s/Architectures in the fat file:.*are: \(.*\)/\1/p&#39;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+        <span class="nv">SUB</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span>_<span class="si">${</span><span class="nv">ARCH</span><span class="si">}</span>.a
+        lipo -thin <span class="si">${</span><span class="nv">ARCH</span><span class="si">}</span> <span class="si">${</span><span class="nv">1</span><span class="si">}</span> -output <span class="si">${</span><span class="nv">SUB</span><span class="si">}</span>
+        EXTRACT <span class="si">${</span><span class="nv">SUB</span><span class="si">}</span> <span class="si">${</span><span class="nv">2</span><span class="si">}</span>
+        <span class="nv">SUBS</span><span class="o">=</span><span class="s2">&quot;</span><span class="si">${</span><span class="nv">SUBS</span><span class="si">}</span><span class="s2"> </span><span class="si">${</span><span class="nv">SUB</span><span class="si">}</span><span class="s2">&quot;</span>
+    <span class="k">done</span>
+
+    lipo -create <span class="si">${</span><span class="nv">SUBS</span><span class="si">}</span> -output <span class="si">${</span><span class="nv">1</span><span class="si">}</span>
+    rm <span class="si">${</span><span class="nv">SUBS</span><span class="si">}</span>
+<span class="o">}</span>
+
+EXTRACT<span class="o">(){</span>
+    ar -d <span class="si">${</span><span class="nv">1</span><span class="si">}</span> <span class="si">${</span><span class="nv">2</span><span class="si">}</span>
+<span class="o">}</span>
+
+<span class="nv">LIB_INFO</span><span class="o">=</span><span class="sb">`</span>lipo -info <span class="si">${</span><span class="nv">LIB_SRC</span><span class="si">}</span><span class="sb">`</span>
+<span class="k">if</span> <span class="o">[</span> <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$LIB_INFO</span> <span class="p">|</span> grep -c <span class="s2">&quot;Architectures in the fat file&quot;</span> <span class="sb">`</span> -gt <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
+    EXTRACT_FAT <span class="si">${</span><span class="nv">LIB_SRC</span><span class="si">}</span> <span class="si">${</span><span class="nv">OBJ</span><span class="si">}</span>
+<span class="k">else</span>
+    EXTRACT <span class="si">${</span><span class="nv">LIB_SRC</span><span class="si">}</span> <span class="si">${</span><span class="nv">OBJ</span><span class="si">}</span>
+<span class="k">fi</span>
+</pre></div>
+
+
+<p>或者，移步 Gist：<a href="https://gist.github.com/zqqf16/1eb6649a68aeb1ee27fabd8a05ea8f1d">https://gist.github.com/zqqf16/1eb6649a68aeb1ee27fabd8a05ea8f1d</a></p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"> 开发工具 </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=从静态库中删除一个 .o 文件&amp;url=https://blog.zorro.im/posts/2017-04-11-cong-jing-tai-ku-zhong-shan-chu-yi-ge-o-wen-jian.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2017-04-11-cong-jing-tai-ku-zhong-shan-chu-yi-ge-o-wen-jian.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2017-04-11-cong-jing-tai-ku-zhong-shan-chu-yi-ge-o-wen-jian.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">开发一个合格的 iOS SDK</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2016-08-27">2016-08-27</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<h3 id="_1">前言</h3>
+<p>最近用到了一些 SDK，本来是为了 A 功能引入的，没想到它依赖了 B、C、D 等不相干的 SDK，B、C、D 又依赖了 E、F、G……前前后后总共引入了将近 20 个 Framework，简直就是个“全家桶”。</p>
+<p>本文打算从我个人的角度谈一下，一个合格的 iOS SDK 应该是什么样的。</p>
+<h3 id="_2">一、依赖</h3>
+<h4 id="1-sdk">1. 不要大量依赖其他的第三方 SDK</h4>
+<p>首先，现在的移动 APP 普遍有包体积过大的困扰，如果只是为了省几行代码就贸然地引入第三方 SDK，会导致包越来越大。</p>
+<p>其次，如果是商业项目，当以稳定为先。多一个依赖就多一份风险，尤其是那些没有经过严格测试过的。</p>
+<h4 id="2-podspec">2. 不要把依赖写在 podspec 里</h4>
+<p>Cocoapod 虽然很方便，但是很容易引发“依赖地狱”问题。</p>
+<p>假设有一个第三方库 A，团队根据自己的业务定制了一个本地版本。但是在引入第三方库 B 时，podspec 写了对 A 的依赖。<code>pod install</code> 后，很有可能就混乱了。</p>
+<p>这时，不如在文档里写清楚，让使用者根据自己的情况自己在 Podfile 里添加依赖。</p>
+<h4 id="3">3. 不要强制依赖，留有余地</h4>
+<p>比如，你的 SDK 需要实现网络连接，不要在代码里写死了用 AFNetworking 之类的库，万一使用者不想用呢？</p>
+<p>相反，我觉得以下方案是比较靠谱的：</p>
+<ul>
+<li>根据场景，留下接口，让使用者自己实现相关功能。比如，很多场景下，上传的数据需要加密、或者使用一些特殊的上传格式，没办法在 SDK 里写死。</li>
+<li>分割功能，做好替代方案。比如，把上传功能分割开，独立放在一个库中，并提供多种实现方式，加密的、不加密的等等，使用者可以根据自己的情况灵活选择。</li>
+</ul>
+<h4 id="4-sdk">4. 合理拆分，每个 SDK 只干一件事</h4>
+<p>比如某著名“统计分析 SDK”，在提供打点功能的同时还顺便做了 Crash 收集。做的好也就罢了，就收集了那么点的崩溃信息还好意思拿出来？</p>
+<h3 id="sdk">二、SDK 加载</h3>
+<h4 id="1-loadinitialize">1. 不要滥用 <code>+load</code>、<code>+initialize</code> 等所谓的“黑魔法”</h4>
+<p>几乎没有什么操作是非得用“黑魔法”实现的，那些方法除了拖慢启动速度、搞出一些莫名其妙的问题，没有其他的作用。</p>
+<h4 id="2-sdk">2. 让使用者自己决定 SDK 的加载时机</h4>
+<p>比如 <code>[XXXSDK start];</code> 就很好。</p>
+<h4 id="3-sdk">3. 提供 SDK 卸载的方式</h4>
+<p>启动之后，不要逼着用户用黑科技的方式才能让你的 SDK 停下来。</p>
+<h4 id="4-sdk_1">4. 三行代码之内完成 SDK 初始化</h4>
+<p>争取在三行代码之内完成最常用、最基本的 SDK 功能初始化，不要拖泥带水。</p>
+<h4 id="5">5. 提供丰富的配置</h4>
+<p>这点见仁见智，我是觉得越丰富越好，给高级用户足够多的选择。</p>
+<h3 id="_3">三、代码</h3>
+<h4 id="1-warning">1. 不要存在 Warning</h4>
+<p>原本以为这是个人人皆知的准则，然而并不是。。。</p>
+<h4 id="2">2. 命名加前缀</h4>
+<p>同上。</p>
+<h4 id="3-method-swizzling">3. 不要滥用 method swizzling</h4>
+<p>很多人对自己的实力过于自信了，swizzle 系统库的时候完全没想到自己的代码有多烂。</p>
+<h4 id="4">4. 不要滥用“黑科技”</h4>
+<p>作为 SDK，当以稳定为主。不要为了炫技，或者是为了达到某种不可告人的目的，而滥用各种所谓的“黑科技”。</p>
+<h4 id="5_1">5. 要正规</h4>
+<p>比如：</p>
+<ul>
+<li>规范一下头文件里的文档、说明、作者、Copyright 等。</li>
+<li>如果 SDK 比较高级，提供了证书啥的，不能草率地弄一个就放在里面，比如某微博 SDK。</li>
+<li>如果只提供二进制的 SDK，把静态库里面的调试信息给删掉吧。</li>
+</ul>
+<h4 id="6-cocoapods">6. 提供除了 Cocoapods 以外的安装方式</h4>
+<p>比如，提供一个打包好的 Framework，使用者拖进来就能用。</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/SDK/"> SDK </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=开发一个合格的 iOS SDK&amp;url=https://blog.zorro.im/posts/2016-8-27-how_to_create_a_static_library.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2016-8-27-how_to_create_a_static_library.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2016-8-27-how_to_create_a_static_library.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

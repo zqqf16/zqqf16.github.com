@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+				<img src="https://raw.github.com/zqqf16/colorit/master/examples/all.png"></img>
+			<h2 class="post-title">Colorit——一个给终端输出上色的工具</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-11-12">2013-11-12</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>平时自己写脚本的时候总喜欢给输出信息加点颜色，比如之前写的查找CVS diff中改动文件的<a href="https://gist.github.com/zqqf16/7094628">脚本</a>。方法很简单，就是输出一些ASCII控制码，比如<code>\033[;31m</code>代表红色之类的。</p>
+<p>用的多了，感觉老是拼字符串也不是个办法，索性规整了一下，写了人生中第一个正经的python模块。。。</p>
+<div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<span class="c1">#-*- coding: utf-8 -*-</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;paint&#39;</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">]</span>
+<span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
+
+<span class="n">_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[{}m</span><span class="se">\033</span><span class="s1">[{};{}m{}</span><span class="se">\033</span><span class="s1">[0m&#39;</span>
+
+<span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">]</span>
+<span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blod&#39;</span><span class="p">,</span> <span class="s1">&#39;underscore&#39;</span><span class="p">,</span> <span class="s1">&#39;blink&#39;</span><span class="p">,</span> <span class="s1">&#39;reverse&#39;</span><span class="p">,</span> <span class="s1">&#39;concealed&#39;</span><span class="p">]</span>
+
+<span class="n">_FOREGROUND</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">38</span><span class="p">))))</span>
+<span class="n">_BACKGROUND</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">48</span><span class="p">))))</span>
+<span class="n">_attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]))</span>
+
+<span class="k">def</span> <span class="nf">paint</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">_FOREGROUND</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="mi">39</span><span class="p">)</span>
+    <span class="n">bg</span> <span class="o">=</span> <span class="n">_BACKGROUND</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
+    <span class="n">att</span> <span class="o">=</span> <span class="n">_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">:</span> <span class="n">_FORMAT</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">att</span><span class="p">,</span> <span class="n">bg</span><span class="p">,</span> <span class="n">fg</span><span class="p">,</span> <span class="n">s</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">print_row</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+            <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="s1">&#39;{:^8}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="n">print_row</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
+        <span class="n">print_row</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+</pre></div>
+
+
+<p>用的时候也很方便：</p>
+<div class="codehilite"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<span class="n">p</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+</pre></div>
+
+
+<p>比如输出字体为绿色，背景为黄色的文字：</p>
+<div class="codehilite"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">))</span>
+</pre></div>
+
+
+<p>可以访问我的<a href="https://github.com/zqqf16/colorit">Github</a>查看完整代码。</p>
+<p>最后，附一张完整的颜色图（<code>python colorit.py</code>）：</p>
+<p><img alt="colors" src="https://raw.github.com/zqqf16/colorit/master/examples/all.png" /></p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/python/"> python </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Colorit——一个给终端输出上色的工具&amp;url=https://blog.zorro.im/posts/2013-11-12-colorit.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-11-12-colorit.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-11-12-colorit.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

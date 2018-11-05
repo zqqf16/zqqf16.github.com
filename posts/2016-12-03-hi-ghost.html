@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">Hi Ghost</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2016-12-03">2016-12-03</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>周末花了几个小时搭建了这个 Ghost 博客，并把原来的文章从 Github 迁了过来。为此还专门给 Peanut 添加了一个一键迁移的命令，感谢 Markdown 格式提供的便利，使这次迁移做到了“无损”。</p>
+<p>新博客切换到了根域名 <a href="https://zorro.im">zorro.im</a>，同时开启了 HTTPS，感谢 Let's Encrypt 提供的服务。</p>
+<p>Ghost 是一个很优秀的博客系统，简洁、快速、易部署，完全符合当年写 Znote 时对博客系统的设想。</p>
+<p>希望以后能够多写写博客吧</p>
+<hr />
+<h4 id="peanut-ghost">附：Peanut -&gt; Ghost 迁移方法</h4>
+<p><strong>上传文章</strong></p>
+<p>进入原博客根目录，执行:    </p>
+<div class="codehilite"><pre><span></span>peanut ghost http://your_ghost.domain username password
+</pre></div>
+
+
+<p>会将本地 Markdown 文件上传到 Ghost。</p>
+<p>PS：由于目前 Ghost api 还处在 0.1 版本，文档还不怎么全，暂时会丢失所有 tag。</p>
+<p><strong>添加 Nginx rewrite 规则</strong></p>
+<div class="codehilite"><pre><span></span><span class="k">location</span> <span class="s">/posts/</span> <span class="p">{</span>
+    <span class="kn">rewrite</span> <span class="s">&#39;^/posts/(.*)\.html</span><span class="nv">$&#39;</span> <span class="s">/</span><span class="nv">$1/</span> <span class="s">permanent</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="k">location</span> <span class="s">/rss.html</span> <span class="p">{</span>
+    <span class="kn">rewrite</span> <span class="s">&#39;^/rss.html</span><span class="nv">$&#39;</span> <span class="s">/rss/</span> <span class="s">permanent</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+
+
+<p>Done</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/%E5%8D%9A%E5%AE%A2/"> 博客 </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Hi Ghost&amp;url=https://blog.zorro.im/posts/2016-12-03-hi-ghost.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2016-12-03-hi-ghost.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2016-12-03-hi-ghost.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

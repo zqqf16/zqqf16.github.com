@@ -1,0 +1,7 @@
+<div class="nav">
+	{% if site.links %}
+		{% for link in site.links %}
+		<a class="nav-link" role="presentation" href="{{link.url}}">{{link.title}}</a>
+		{% endfor %}
+	{% endif %}
+</div>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">Sphinx入门</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-05-23">2013-05-23</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>公司的文档都是保存成Word格式的，编写完之后上传到OpenKM上统一管理。这种方式对于大多数人来说都还ok，对于我这种忠实的Linux用户来说，简直太苦逼了。。。</p>
+<p>.doc .docx格式也太TMD难兼容了，不能在线预览也就罢了，libreoffice打开之后就成翔了。</p>
+<p>而且对于搞计算机的来说，往Word里面粘代码简直就是糊弄人啊。就别说代码高亮了，连起码的缩进都困难。</p>
+<p>好了，吐槽完毕，切入正题。</p>
+<p>今天研究一下一个NB的文档工具<a href="http://sphinx-doc.org/index.html">Sphinx</a>。它是用Python写的，可以把reStructuredText格式的文档转成各种可读格式。如果你看过Python的文档，你就会发现它们大多都是用这个来写的。</p>
+<p>安装方法：</p>
+<p>Ubuntu用户</p>
+<div class="codehilite"><pre><span></span>$ sudo apt-get install python-sphinx
+</pre></div>
+
+
+<p>新建个目录，注意，路径上不能有中文。。。</p>
+<div class="codehilite"><pre><span></span>$ mkdir doc
+$ <span class="nb">cd</span> doc
+$ sphinx-quickstart
+</pre></div>
+
+
+<p>执行上条命令后会提示一堆设置信息，简单地英语，一步步照做就行了。这些信息会保存在conf.py里面，可以直接修改文件来更改设置。</p>
+<p>设置完之后，会在当前目录下生成一些目录及文件：</p>
+<div class="codehilite"><pre><span></span>$ ls
+_build  conf.py  index.rst  make.bat  Makefile  _static  _templates
+</pre></div>
+
+
+<p>_build是最终编译完的文件存放目录</p>
+<p>_static存放一些静态文件，比如文档中要使用的图片等。</p>
+<p>_templates存放模板，如果不需要定制样式的话，暂且用不着。</p>
+<p>新建一个文件：</p>
+<div class="codehilite"><pre><span></span>$ vim hello.rst
+</pre></div>
+
+
+<p>写入如下内容：</p>
+<div class="codehilite"><pre><span></span><span class="gh">=======================</span>
+<span class="gh">Hello World</span>
+<span class="gh">=======================</span>
+
+<span class="gh">标题</span>
+<span class="gh">========</span>
+
+<span class="gh">小标题</span>
+<span class="gh">--------</span>
+
+<span class="m">1.</span> 列表1
+
+<span class="m">2.</span> 类表2
+</pre></div>
+
+
+<p>编辑index.rst，修改如下：</p>
+<div class="codehilite"><pre><span></span><span class="p">..</span> <span class="ow">toctree</span><span class="p">::</span>
+   <span class="nc">:maxdepth:</span> <span class="nf">2</span>
+
+   hello
+</pre></div>
+
+
+<p><strong>注意</strong>, hello是文件名，不用写rst扩展名，hello与toctree左对齐，即左空3个空格。</p>
+<p>然后执行:</p>
+<div class="codehilite"><pre><span></span>$ make html
+</pre></div>
+
+
+<p>如果没有错误的话，会在_build/html下生成一些HTML文件：</p>
+<div class="codehilite"><pre><span></span>$ ls _build/html/
+genindex.html  hello.html  index.html  objects.inv  search.html  searchindex.js  _sources  _static
+</pre></div>
+
+
+<p>用浏览器打开index.html就可以看到成果了~</p>
+<p><img alt="sphinx" src="/static/img/sphinx.png" /></p>
+<p>PS: reStructuredText的语法可以自行Google，不是博主懒，是博主花了大半天愣是没掌握。。。在这里也吐个槽。。。这玩意还是不如用Markdown来得快。。。</p>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/sphinx/"> sphinx </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=Sphinx入门&amp;url=https://blog.zorro.im/posts/2013-5-23-sphinx.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-5-23-sphinx.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-5-23-sphinx.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

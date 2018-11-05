@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">OpenLDAP添加Schema（Ubuntu）</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2013-08-19">2013-08-19</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<h2 id="_1">前言</h2>
+<p>工作中遇到了需要给LDAP添加自定义字段的情况，介于公司中此技艺已经失传，只能自己来了。</p>
+<p>网络上很多流传的教程都太老了，不是很适用。Ubuntu8.10以及之后的系统倾向于用slapd-config的各种工具来配置sladp，而不是之前的直接修改文件的方法。</p>
+<p>用sldap-config来添加Schema可以总结为以下几步：</p>
+<ol>
+<li>创建Schema文件</li>
+<li>将Schema转换成ldif格式文件</li>
+<li>将ldif文件内容导入</li>
+</ol>
+<h2 id="_2">具体步骤</h2>
+<ol>
+<li>
+<p>编辑Schema文件，保存为<code>test.schema</code></p>
+<div class="codehilite"><pre><span></span>objectIdentifier testOID 1.1.1.1
+objectIdentifier testAttr testOID:1
+objectIdentifier testObject testOID:2
+
+attributetype ( testAttr
+    NAME &#39;testattr&#39;
+    DESC &#39;Test attribute&#39;
+    EQUALITY caseIgnoreMatch
+    SYNTAX 1.3.6.1.4.1.1466.115.121.1.15 )
+
+objectclass ( testObject
+    NAME &#39;testObject&#39;
+    DESC &#39;Just for test&#39;
+    AUXILIARY
+    MAY (testattr))
+</pre></div>
+
+
+</li>
+<li>
+<p>创建文件<code>tmp.conf</code>,加入以下内容</p>
+<div class="codehilite"><pre><span></span>include test.schema
+</pre></div>
+
+
+</li>
+<li>
+<p>创建目录<code>ldif_dir</code></p>
+<div class="codehilite"><pre><span></span>$mkdir ldif_dir
+</pre></div>
+
+
+</li>
+<li>
+<p>生成‘ldif’文件</p>
+<div class="codehilite"><pre><span></span>$slaptest -f tmp.conf -F ldif_dir
+</pre></div>
+
+
+<p>ldif目录结构如下：</p>
+<div class="codehilite"><pre><span></span>.
+|-- cn=config
+|   |-- cn=schema
+|   |   `-- cn={0}test.ldif
+|   |-- cn=schema.ldif
+|   |-- olcDatabase={0}config.ldif
+|   `-- olcDatabase={-1}frontend.ldif
+`-- cn=config.ldif
+</pre></div>
+
+
+</li>
+<li>
+<p>文件<code>cn=config/cn=schema/cn={0}test.ldif</code>就是生成的‘ldif’文件，编辑此文件：</p>
+<p>将</p>
+<div class="codehilite"><pre><span></span><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">={</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span>
+<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">cn</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span>
+</pre></div>
+
+
+<p>修改为</p>
+<div class="codehilite"><pre><span></span><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">cn</span><span class="o">:</span> <span class="n">test</span>
+</pre></div>
+
+
+<p>删除以下几行：</p>
+<div class="codehilite"><pre><span></span><span class="n">structuralObjectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">entryUUID</span><span class="o">:</span> <span class="mi">9530</span><span class="n">cb4a</span><span class="o">-</span><span class="mi">9845</span><span class="o">-</span><span class="mi">1032</span><span class="o">-</span><span class="mi">9</span><span class="n">b5c</span><span class="o">-</span><span class="mi">15</span><span class="n">d9e32663bc</span>
+<span class="n">creatorsName</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">createTimestamp</span><span class="o">:</span> <span class="mi">20130813092213</span><span class="n">Z</span>
+<span class="n">entryCSN</span><span class="o">:</span> <span class="mf">20130813092213.368308</span><span class="n">Z</span><span class="err">#</span><span class="mi">000000</span><span class="err">#</span><span class="mi">000</span><span class="err">#</span><span class="mi">000000</span>
+<span class="n">modifiersName</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">modifyTimestamp</span><span class="o">:</span> <span class="mi">20130813092213</span><span class="n">Z</span>
+</pre></div>
+
+
+<p>最终文件变为</p>
+<div class="codehilite"><pre><span></span><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span>
+<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
+<span class="n">cn</span><span class="o">:</span> <span class="n">test</span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">testOID</span> <span class="mf">1.1</span><span class="o">.</span><span class="mf">1.1</span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">1</span><span class="o">}</span><span class="n">testAttr</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">1</span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">2</span><span class="o">}</span><span class="n">testObject</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">2</span>
+<span class="n">olcAttributeTypes</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}(</span> <span class="n">testAttr</span> <span class="n">NAME</span> <span class="s1">&#39;testattr&#39;</span> <span class="n">DESC</span> <span class="s1">&#39;Test attribute&#39;</span> <span class="n">E</span>    <span class="n">QUALIT</span> <span class="n">Y</span> <span class="n">caseIgnoreMatch</span> <span class="n">SYNTAX</span> <span class="mf">1.3</span><span class="o">.</span><span class="mf">6.1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">.</span><span class="mf">1466.115</span><span class="o">.</span><span class="mf">121.1</span><span class="o">.</span><span class="mi">15</span> <span class="o">)</span>
+<span class="n">olcObjectClasses</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}(</span> <span class="n">testObject</span> <span class="n">NAME</span> <span class="s1">&#39;testObject&#39;</span> <span class="n">DESC</span> <span class="s1">&#39;Just for test&#39;</span>     <span class="n">AUXILIARY</span> <span class="n">MAY</span> <span class="n">testattr</span> <span class="o">)</span>
+</pre></div>
+
+
+</li>
+<li>
+<p>将‘ldif’文件内容导入ldap数据库</p>
+<div class="codehilite"><pre><span></span>$sudo ldapadd -Q -Y EXTERNAL -H ldapi:/// -f cn\=test.ldif
+</pre></div>
+
+
+</li>
+<li>
+<p>检查导入结果</p>
+<div class="codehilite"><pre><span></span>$sudo ldapsearch -Q -LLL -Y EXTERNAL -H ldapi:/// -b cn=schema,cn=config dn
+</pre></div>
+
+
+</li>
+</ol>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/OpenLDAP/"> OpenLDAP </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=OpenLDAP添加Schema（Ubuntu）&amp;url=https://blog.zorro.im/posts/2013-8-19-openldap-add-schema.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-8-19-openldap-add-schema.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-8-19-openldap-add-schema.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

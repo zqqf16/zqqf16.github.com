@@ -1,0 +1,29 @@
+{% extends "default.html" %}
+{% block body %}
+
+<main class="content" role="main">
+
+<div class="extra-pagination">
+    {% include 'pagination.html' %}
+</div>
+
+{% for post in posts %}
+<article class="post {{post_class}}">
+    <header class="post-header">
+        {% if post.image %}
+            <img src="{{post.image}}"></img>
+        {% endif %}
+        <h2 class="post-title"><a href="{{post.url}}">{{post.title}}</a></h2>
+    </header>
+    <section class="post-excerpt">
+        <p>{{post.excerpt}}&hellip; <a class="read-more" href="{{post.url}}">&raquo;</a></p>
+    </section>
+    <footer class="post-meta">
+        <time class="post-date" datetime="{{post.date|strftime('%Y-%m-%d')}}">{{post.date|strftime('%Y-%m-%d')}}</time> 
+    </footer>
+</article>
+{% endfor %}
+
+{% include 'pagination.html' %}
+</main>
+{% endblock %}

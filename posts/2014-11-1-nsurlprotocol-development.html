@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>穷折腾</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">NSURLProtocol 开发笔记</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2014-11-01">2014-11-01</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<p>前一段时间一直在研究 iOS 应用内的 HTTP 代理问题，在 iOS 6之前可以用 <a href="https://github.com/freewizard/AppProxyCap">AppProxyCap</a> 这样的 Hack 方法实现，但从 iOS7 开始就不能用了。</p>
+<p>虽然 NSURLSession 提供了设置代理的方法，但是它只是针对单个 Session 的，没法实现全局的，尤其是 UIWebView 的代理。</p>
+<p>无奈之下，只能选择 NSURLProtocol 这个不完美的实现方案了，为什么说它是不完美的，下文将有介绍。</p>
+<p>raywenderlich.com 上有一篇详细的 NSURLProtocol <a href="http://www.raywenderlich.com/59982/nsurlprotocol-tutorial">教程</a>，很好的讲解了它的用法。按照惯例我这里就不重复了，只说一下我做的工程中遇到的难点。</p>
+<h2 id="_1">原理</h2>
+<p>NSURLProtocol 可以用来处理自定义的 URL Scheme，或者是改写对已经存在的 Scheme 的处理方式。比如，我可以定义一个 URLProtocol 来处理“certificate://xxx.pem" 这样的 URL 请求，用来查找目录下的证书并返回。这样当我用 NSURLConnection 发送这样的请求的时候，得到的将是证书内容。再比如，我可以定义一个 URLProtocol 来处理发到后台 Server 的 HTTP 请求，把请求中的 user-agent 改成 Server 端能识别的形式。</p>
+<p>NSURLProtocol 的作用是全局的，也就是说一旦注册之后，所有的 NSURLRequest （包括 UIWebView 发送的） 都会先经 URLProtocol 处理，这也就是为什么能用它来实现全局代理的原因（忽略掉 CFNetwork）。</p>
+<p>用 NSURLPRotocol 来实现全局 HTTP 代理时，需要用自定义的 URLProtocol 来处理所有的 HTTP/HTTPS 请求，然后再用 NSURLSession 或者 CFNetwork 这样支持代理的库把请求通过 HTTP 代理转发出去，并把结果返回给上层调用者。（这个调用者在 NSURLProtocol 里就是<code>client</code>这个属性）</p>
+<h2 id="nsurlsession">为 NSURLSession 设置代理</h2>
+<p>为 NSURLSession 设置代理可以通过为其指定一个 NSURLSessionConfiguration 来实现，比如：</p>
+<div class="codehilite"><pre><span></span><span class="bp">NSURLSessionConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURLSessionConfiguration</span> <span class="n">defaultSessionConfiguration</span><span class="p">];</span>
+<span class="n">configuration</span><span class="p">.</span><span class="n">connectionProxyDictionary</span> <span class="o">=</span>
+<span class="l">@{</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nl">kCFStreamPropertyHTTPProxyHost</span><span class="p">:</span> <span class="s">@&quot;127.0.0.1&quot;</span><span class="p">,</span>
+  <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nl">kCFStreamPropertyHTTPProxyPort</span><span class="p">:</span> <span class="mi">@8080</span><span class="l">}</span><span class="p">;</span>
+<span class="bp">NSURLSession</span> <span class="o">*</span><span class="n">session</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURLSession</span> <span class="nl">sessionWithConfiguration</span><span class="p">:</span><span class="n">configuration</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">delegateQueue</span><span class="p">:[</span><span class="bp">NSOperationQueue</span> <span class="n">currentQueue</span><span class="p">]];</span>
+</pre></div>
+
+
+<p>这里有几点需要注意：</p>
+<ol>
+<li>connectionProxyDictionary 字典的 Key 一定得正确，据我的搜索结果，网上很多例子都不对……其实这些 Key 可以从函数<code>CFNetworkCopySystemProxySettings()</code>返回的结果中获取。</li>
+<li><code>kCFStreamPropertyHTTPProxyPort</code>对应的 Value 类型一定得是 <strong>NSNumber</strong>，这是用大量时间换回来的教训……</li>
+</ol>
+<p><strong>Authentication Challenge</strong></p>
+<p>如果要发送的请求比较简单，不涉及到证书、用户认证等复杂情况，或者即使涉及到这些情况，但处理方式比较简单，在 URLProtocol 内部就可以处理时，NSURLProtocol 还算是比较完美的。但是一旦需求比较复杂，比如某些时候需要上层的代码来处理用户认证，这时候 NSURLProtocol 机制就不完美了，因为它做不到对上层调用者的透明。</p>
+<p>用过 NSURLSession 的一般都明白，处理 Authentication 的 Challenge 可以在 NSURLSessionTaskDelegate 协议的<code>URLSession:task:didReceiveChallenge:completionHandler:</code>方法中做一些处理，之后调用 <code>completionHandler</code> 就可以了。</p>
+<p>但是如果用了 NSRULProtocol，并且想要让上层代码来处理 Challenge 时就比较困难了。自定义的 URLProtocol 和它的上层调用者之间只能通过<code>NSURLProtocolClient</code>协议来通信。这个协议（<code>URLProtocol:didReceiveAuthenticationChallenge:</code>）并没有实现将 <code>completionHandler</code> 传递过去的方法。这就导致上层调用者的 Challenge 处理方法（比如<code>connection:willSendRequestForAuthenticationChallenge:</code>）在这种情况下是无效的。</p>
+<p>因此，必须得用另外的方式解决 Challenge。</p>
+<p>Apple 有个示例程序 <a href="https://developer.apple.com/library/ios/samplecode/CustomHTTPProtocol/Listings/Read_Me_About_CustomHTTPProtocol_txt.html">CustomHTTPProtocol</a>，它的实现方式是为类对象（注意，是<strong>类对象</strong>）添加了代理。当 CustomHTTPProtocol 收到 Chellenge 时，会调用代理来完成进一步工作，然后再将结果返回给 CustomHTTPProtocol 实例，后者会调用<code>completionHandler</code>来发送结果。（这里涉及上下文切换，状态保存等，而且需要注意调用过程中的多线程问题，其代码中有比较详细的描述。）</p>
+<p>NSURLProtocol 的实例化过程对开发者来说是不透明的，也就是说无法通过自定义代码控制，这也就是为啥 CustomHTTPProtocol 要为类对象实现代理。</p>
+<p>但是问题又来了，如果遇到奇葩的情况，比如有些请求我想处理 Challenge，有请求又不想处理，该咋办捏？</p>
+<p>这时候就应该祭出 NSURLProtocol 的<code>setProperty:forKey:inRequest:</code>方法了，这个方法可以为 URLRequest 设置一个属性，当处理 Challenge 时可以通过检查这个属性来判断是否需要处理。</p>
+<p>先到这吧，如有问题再补充~</p>
+<h2 id="_2">参考链接</h2>
+<ol>
+<li><em>AppProxyCap: <a href="https://github.com/freewizard/AppProxyCap/issues/7">https://github.com/freewizard/AppProxyCap/issues/7</a></em></li>
+<li><em>NSURLProtocol Tutorial: <a href="http://www.raywenderlich.com/59982/nsurlprotocol-tutorial">http://www.raywenderlich.com/59982/nsurlprotocol-tutorial</a></em></li>
+<li><em>CustomHTTPProtocol: <a href="https://developer.apple.com/library/ios/samplecode/CustomHTTPProtocol/Listings/Read_Me_About_CustomHTTPProtocol_txt.html">https://developer.apple.com/library/ios/samplecode/CustomHTTPProtocol/</a></em></li>
+</ol>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/iOS/"> iOS </a>
+					<a href="/tags/NSURLProtocol/"> NSURLProtocol </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=NSURLProtocol 开发笔记&amp;url=https://blog.zorro.im/posts/2014-11-1-nsurlprotocol-development.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2014-11-1-nsurlprotocol-development.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2014-11-1-nsurlprotocol-development.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

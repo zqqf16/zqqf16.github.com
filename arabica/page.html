@@ -1,0 +1,24 @@
+{% extends "default.html" %}
+
+{% block body %}
+<main class="content" role="main">
+	<article class="post {{post_class}}">
+		<header class="post-header">
+			<h2 class="post-title">{{post.title}}</h2>
+		</header>
+		<section class="post-content">
+			{{post.content}}
+		</section>
+		<footer class="post-footer">
+			<section class="tags">
+				{% if post.tags %}
+        		{{ "Tagged " }}
+        			{% for tag in post.tags %}
+        			<a href="{{ tag.url }}"> {{ tag.title }} </a>
+        			{% endfor %}
+   				{% endif %}
+			</section>
+		</footer>
+	</article>
+</main>
+{% endblock %}
