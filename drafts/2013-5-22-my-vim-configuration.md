@@ -51,6 +51,6 @@ git submodule foreach git pull origin master
 - 看代码神器：taglist
 - powerline插件：vim-powerline
 
-上一张截图![vim](/static/img/my-vim.png)
+上一张截图![vim](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/my-vim.png?x-oss-process=style/jpg)
 
 参考文章：[liluo.org](http://liluo.org/blog/2012/05/using-git-submodule-and-vim-pathogen-for-vim-configuraction-management/)

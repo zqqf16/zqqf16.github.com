@@ -5,7 +5,7 @@ date: 2018-5-3
 tags:
     - macOS
 image:
-    feature: /static/img/IMG_0618.JPG
+    feature: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0618.JPG?x-oss-process=style/jpg
 excerpt: >
     macOS 的 HiDPI 显示模式对很多显示器的支持都有问题，有些屏幕即使是自家的（比如 iPad 屏），也死活不能完美地支持。
 ---

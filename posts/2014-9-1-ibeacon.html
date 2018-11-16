@@ -63,10 +63,10 @@
 <p>在此过程中，基站不做任何工作，一切行为都是由 APP 控制的。APP 告诉 iOS 监听那些 UUID，当 iOS 收到消息后，会通知 APP 来处理。在 iOS 中，即使 APP 并不在运行，系统收到消息后也会调用 APP 来处理。</p>
 <p>并且，所有的 iBeacon 探测功能都是由系统完成的，避免了 APP 过多的消耗电能。这也是很多 Android 上的实现方案所不具备的。</p>
 <p>了解了这些知识之后，兴趣来了，于是就上淘宝买了个四月兄弟开发的 iBeacon。</p>
-<p><img alt="" src="/static/img/IMG_0791.JPG" />
+<p><img alt="" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0791.JPG?x-oss-process=style/jpg" />
 体积超小，可以轻松地用双面胶黏在墙上</p>
 <p>再看看内部结构
-<img alt="" src="/static/img/IMG_0793.JPG" /></p>
+<img alt="" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0793.JPG?x-oss-process=style/jpg" /></p>
 <p>比一颗2450纽扣电池大不了多少~</p>
 <p>接下来就是尝试应用开发了。</p>
 <p>首先，创建一个应用，需要依赖<code>CoreLocation.framework</code>。并且在 View Controller 的实现文件里加上：</p>
@@ -111,7 +111,7 @@ NSLocationAlwaysUsageDescription
 
 
 <p>这样，在程序第一次运行的时候，会有这样的提示：</p>
-<p><img alt="" src="/static/img/IMG_0795.PNG" /></p>
+<p><img alt="" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0795.PNG?x-oss-process=style/jpg" /></p>
 <p>我之前没有注意到这一点，导致死活探测不到基站...</p>
 <p>初始化完成之后，我们需要处理事件，也就是实现<code>CLLocationManagerDelegate</code>协议。主要代码如下：</p>
 <div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didEnterRegion:</span><span class="p">(</span><span class="bp">CLRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="p">{</span>
@@ -150,11 +150,11 @@ NSLocationAlwaysUsageDescription
 <p>Log 打印如下:
 <code>##Beacon is CLBeacon (uuid:&lt;__NSConcreteUUID 0x15595ac0&gt; E2C56DB5-DFFB-48D2-B060-D0F5A71096E0, major:0, minor:0, proximity:1 +/- 0.26m, rssi:-47)</code></p>
 <p>上一张截图：
-<img alt="" src="/static/img/IMG_0794.PNG" /></p>
+<img alt="" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0794.PNG?x-oss-process=style/jpg" /></p>
 <p><s>最后，发现了一个好玩的东西。在OS X 10.10发布的时候，Apple 着重介绍了与 iOS 8 联动功能。比如，拿着 iPhone 走近正在浏览网页的 Mac，iPhone 的锁屏界面左下角就会出现 Safari 图标，划开之后就能打开该网页。</p>
 <p>就在刚才我玩 iBeacon 的时候，似乎发现了一个秘密——这功能是通过 iBeacon 实现的！</p>
 <p>看这张截图：
-<img alt="" src="/static/img/IMG_0796.PNG" /></p>
+<img alt="" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0796.PNG?x-oss-process=style/jpg" /></p>
 <p>左下角出现了我的测试应用的图标！而且划开之后就是我的测试应用~</p>
 <p>这也就解释了为啥拿着手机进星巴克，左下角会有星巴克应用的图标，因为他们部署了 iBeacon~</s></p>
 <p>好吧，火星了，昨晚兴致勃勃地以为发现了事实的真相，结果一搜，连百度都能搜的出来…</p>

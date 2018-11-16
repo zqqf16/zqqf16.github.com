@@ -80,4 +80,4 @@ function delete_entry(id) {
 
 最后，上一张效果图~
 
-![Clipboard](/static/img/clipboard.png)
+![Clipboard](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/clipboard.png?x-oss-process=style/jpg)

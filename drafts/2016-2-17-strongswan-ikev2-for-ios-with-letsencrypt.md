@@ -7,7 +7,7 @@ tags:
     - strongSwan
     - Let‘s Encrypt
 image: 
-    feature: /static/img/letsencrypt.png
+    feature: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/letsencrypt.png?x-oss-process=style/jpg
 excerpt: >
     Let‘s Encrypt 提供的证书不仅免费而且方便，可以简化 VPN 的搭建流程
 ---

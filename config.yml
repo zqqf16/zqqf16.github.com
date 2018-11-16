@@ -5,10 +5,10 @@ site:
     title: 穷折腾
 
     # Site logo
-    logo: /static/img/favicon.png
+    logo: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/favicon.png?x-oss-process=style/jpg
 
     # Site cover
-    cover: /static/img/cover.jpg
+    cover: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/cover.jpg?x-oss-process=style/jpg
 
     # Base url
     url: https://blog.zorro.im

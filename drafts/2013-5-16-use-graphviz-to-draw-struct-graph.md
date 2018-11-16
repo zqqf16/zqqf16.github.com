@@ -30,6 +30,6 @@ digraph g {
 把上述代码保存到`example.dot`，然后执行：`dot -Tpng example.dot -o example.png`
 
 绘出的图如下：
-![graph](/static/img/graphviz.png)
+![graph](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/graphviz.png?x-oss-process=style/jpg)
 
 更多实例，请参考[Graphviz官网](http://www.graphviz.org/Gallery.php)

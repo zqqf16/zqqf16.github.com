@@ -35,4 +35,4 @@ $ gsettings get org.gnome.desktop.interface icon-theme
 
 重新打开ReText就OK了~
 
-![图片](/static/img/retext.png)
+![图片](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/retext.png?x-oss-process=style/jpg)

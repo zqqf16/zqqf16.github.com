@@ -22,13 +22,13 @@ Cubieboard 社区比较完善，有 SATA，兼容性好，性能稍强。Bananap
 
 开箱照：
 
-![开箱照](/static/img/IMG_0735.JPG)
+![开箱照](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0735.JPG?x-oss-process=style/jpg)
 
 到手时候发现树莓派是真的小，比图片看上去小多了。板子整体感觉就是金属部件都比较亮，应该是有电镀层。由于刚刚发布不就，可以保证是百分百英国原厂~
 
 找了一个老掉牙的 8G TF 卡，刷上 Debian，开机启动：
 
-![工作照](/static/img/IMG_0737.JPG)
+![工作照](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0737.JPG?x-oss-process=style/jpg)
 
 进行完一些设置之后就进桌面了，第一感觉是还算流畅，至少鼠标右键没有卡顿。但是由于 CPU 以及 TF 卡太烂，每打开一个程序都需要加载半天。CPU 占用率也是忽上忽下，打开浏览器轻轻松松百分之百~
 

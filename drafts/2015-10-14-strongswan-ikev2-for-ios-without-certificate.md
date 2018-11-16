@@ -6,7 +6,7 @@ tags:
     - IKEv2
     - strongSwan
 image:
-    feature: /static/img/Strongswan.png
+    feature: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/Strongswan.png?x-oss-process=style/jpg
 excerpt: >
     目前能搜到的 strongSwan IKEv2 配置基本上都是基于证书的，不知道别人怎么样，反正我觉得证书方式挺繁琐的，虽然跟证书打了三年多的交道。
     如果只是在 iOS 或者 OS X 上用 IKEv2，用 PSK（预共享密钥）的方式就简单很多。

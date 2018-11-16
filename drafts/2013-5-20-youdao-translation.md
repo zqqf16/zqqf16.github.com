@@ -81,6 +81,6 @@ except:
 
 把上面的脚本命名为“t”，放在`~/bin`下，需要翻译的时候打开终端输入`t 文本`即可~
 
-![图片](/static/img/youdao-translation.png)
+![图片](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/youdao-translation.png?x-oss-process=style/jpg)
 
 PS: 用的时候最好自己去申请一个Key~

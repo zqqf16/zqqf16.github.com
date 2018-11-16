@@ -7,7 +7,7 @@ tags:
     - iOS
     - libdispatch
 image:
-    feature: /static/img/gcd-queues@2x-82965db9.png
+    feature: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/gcd-queues@2x-82965db9.png?x-oss-process=style/jpg
 excerpt: 阅读了一下 libdispatch 的代码，发现了以前对于 GCD 的很多理解都是错误的。
 ---
 
@@ -181,7 +181,7 @@ dispatch_queue_create_with_target(const char *label, dispatch_queue_attr_t dqa,
 
 objc.io 的这幅图很形象地描述了各种 queue 的关系：
 
-![queue](/static/img/gcd-queues@2x-82965db9.png)
+![queue](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/gcd-queues@2x-82965db9.png?x-oss-process=style/jpg)
 
 ### Queue 与线程
 

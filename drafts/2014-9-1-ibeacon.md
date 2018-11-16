@@ -24,11 +24,11 @@ iBeacon 基站每隔一段时间就向周围广播，信息里面带有自己的
 
 了解了这些知识之后，兴趣来了，于是就上淘宝买了个四月兄弟开发的 iBeacon。
 
-![](/static/img/IMG_0791.JPG)
+![](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0791.JPG?x-oss-process=style/jpg)
 体积超小，可以轻松地用双面胶黏在墙上
 
 再看看内部结构
-![](/static/img/IMG_0793.JPG)
+![](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0793.JPG?x-oss-process=style/jpg)
 
 比一颗2450纽扣电池大不了多少~
 
@@ -85,7 +85,7 @@ NSLocationAlwaysUsageDescription
 
 这样，在程序第一次运行的时候，会有这样的提示：
 
-![](/static/img/IMG_0795.PNG)
+![](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0795.PNG?x-oss-process=style/jpg)
 
 我之前没有注意到这一点，导致死活探测不到基站...
 
@@ -132,14 +132,14 @@ Log 打印如下:
 ```
 
 上一张截图：
-![](/static/img/IMG_0794.PNG)
+![](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0794.PNG?x-oss-process=style/jpg)
 
 <s>最后，发现了一个好玩的东西。在OS X 10.10发布的时候，Apple 着重介绍了与 iOS 8 联动功能。比如，拿着 iPhone 走近正在浏览网页的 Mac，iPhone 的锁屏界面左下角就会出现 Safari 图标，划开之后就能打开该网页。
 
 就在刚才我玩 iBeacon 的时候，似乎发现了一个秘密——这功能是通过 iBeacon 实现的！
 
 看这张截图：
-![](/static/img/IMG_0796.PNG)
+![](https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0796.PNG?x-oss-process=style/jpg)
 
 左下角出现了我的测试应用的图标！而且划开之后就是我的测试应用~
 
