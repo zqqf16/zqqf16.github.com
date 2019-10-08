@@ -65,7 +65,7 @@
 
 
 <p><strong>安装依赖库</strong></p>
-<div class="codehilite"><pre><span></span>brew install libplist usbmuxd
+<div class="codehilite"><pre><span></span>brew install --HEAD libplist usbmuxd
 </pre></div>
 
 
@@ -73,43 +73,44 @@
 <p>如果不想用 libimobiledevice 的库，而是直接用编译好的可执行文件，OpenSSL 可以省略，用  GnuTLS 代替。详见<a href="https://github.com/libimobiledevice/libimobiledevice">官方文档</a>。</p>
 <p>用 OpenSSL 的好处是集成到其它 App 时，可以直接用 OpenSSL 的库，GnuTLS 的库怎么用还没研究……</p>
 <p><strong>下载 OpenSSL 代码</strong></p>
-<div class="codehilite"><pre><span></span>wget https://www.openssl.org/source/openssl-1.0.2p.tar.gz -O openssl.tar.gz
+<div class="codehilite"><pre><span></span>wget https://www.openssl.org/source/openssl-1.0.2t.tar.gz -O openssl.tar.gz
 tar vzxf openssl.tar.gz
-<span class="nb">cd</span> openssl-1.0.2p
+<span class="nb">cd</span> openssl-1.0.2t
 </pre></div>
 
 
 <p><strong>编译 </strong></p>
 <div class="codehilite"><pre><span></span>./Configure darwin64-x86_64-cc
+make
 </pre></div>
 
 
 <p>如果需要指定支持的 macOS 最小版本，可以这样：</p>
 <div class="codehilite"><pre><span></span>./Configure darwin64-x86_64-cc -mmacosx-version-min<span class="o">=</span><span class="m">10</span>.11
+make
 </pre></div>
 
 
 <p>这样可以避免集成到 App 时 Xcode 的 warning。</p>
-<p><strong>创建 pc 文件</strong></p>
-<div class="codehilite"><pre><span></span>touch openssl.pc
-</pre></div>
-
-
-<p>写入以下内容：</p>
-<div class="codehilite"><pre><span></span>prefix=/path/to/your/openssl-1.0.2p
+<p><strong>修改 libssl.pc 文件</strong></p>
+<p>改成以下内容：</p>
+<div class="codehilite"><pre><span></span>prefix=/path/to/your/openssl-1.0.2t
 exec_prefix=<span class="cp">${</span><span class="n">prefix</span><span class="cp">}</span>
-libdir=<span class="cp">${</span><span class="n">exec_prefix</span><span class="cp">}</span>/lib
+libdir=<span class="cp">${</span><span class="n">exec_prefix</span><span class="cp">}</span>
 includedir=<span class="cp">${</span><span class="n">prefix</span><span class="cp">}</span>/include
 
-Name: OpenSSL
-Description: Secure Sockets Layer and cryptography libraries and tools
-Version: 1.0.2p
-Requires: libssl libcrypto
+Name: OpenSSL-libssl
+Description: Secure Sockets Layer and cryptography libraries
+Version: 1.0.2t
+Requires.private: libcrypto
+Libs: -L<span class="cp">${</span><span class="n">libdir</span><span class="cp">}</span> -lssl
+Libs.private: 
+Cflags: -I<span class="cp">${</span><span class="n">includedir</span><span class="cp">}</span> 
 </pre></div>
 
 
 <p><strong>添加 pkg-config 路径</strong></p>
-<div class="codehilite"><pre><span></span><span class="nb">export</span> <span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/your/openssl-1.0.2p
+<div class="codehilite"><pre><span></span><span class="nb">export</span> <span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/your/openssl-1.0.2t
 </pre></div>
 
 

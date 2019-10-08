@@ -25,7 +25,7 @@ brew install automake autoconf libtool
 **安装依赖库**
 
 ```shell
-brew install libplist usbmuxd
+brew install --HEAD libplist usbmuxd
 ```
 
 ### 准备 OpenSSL
@@ -37,49 +37,50 @@ brew install libplist usbmuxd
 **下载 OpenSSL 代码**
 
 ```shell
-wget https://www.openssl.org/source/openssl-1.0.2p.tar.gz -O openssl.tar.gz
+wget https://www.openssl.org/source/openssl-1.0.2t.tar.gz -O openssl.tar.gz
 tar vzxf openssl.tar.gz
-cd openssl-1.0.2p
+cd openssl-1.0.2t
 ```
 
 **编译 **
 
 ```shell
 ./Configure darwin64-x86_64-cc
+make
 ```
 
 如果需要指定支持的 macOS 最小版本，可以这样：
 
 ```shell
 ./Configure darwin64-x86_64-cc -mmacosx-version-min=10.11
+make
 ```
 
 这样可以避免集成到 App 时 Xcode 的 warning。
 
-**创建 pc 文件**
+**修改 libssl.pc 文件**
 
-```shell
-touch openssl.pc
-```
-
-写入以下内容：
+改成以下内容：
 
 ```
-prefix=/path/to/your/openssl-1.0.2p
+prefix=/path/to/your/openssl-1.0.2t
 exec_prefix=${prefix}
-libdir=${exec_prefix}/lib
+libdir=${exec_prefix}
 includedir=${prefix}/include
 
-Name: OpenSSL
-Description: Secure Sockets Layer and cryptography libraries and tools
-Version: 1.0.2p
-Requires: libssl libcrypto
+Name: OpenSSL-libssl
+Description: Secure Sockets Layer and cryptography libraries
+Version: 1.0.2t
+Requires.private: libcrypto
+Libs: -L${libdir} -lssl
+Libs.private: 
+Cflags: -I${includedir} 
 ```
 
 **添加 pkg-config 路径**
 
 ```shell
-export PKG_CONFIG_PATH=/path/to/your/openssl-1.0.2p
+export PKG_CONFIG_PATH=/path/to/your/openssl-1.0.2t
 ```
 
 这一步是为了 pkg-config 能够索引到刚才编译的 OpenSSL。

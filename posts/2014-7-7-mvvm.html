@@ -66,7 +66,7 @@
 <p>这样做的后果就是代码耦合度大增，逻辑混乱。一个 View Controller 的实现文件轻轻松松达到3、4百行。</p>
 <p>这样的问题大牛们早就遇到了，他们弄出了 MVVM 的概念来解决这个问题，有关 MVVM 的介绍可以参考 Objc.io 上的这篇文章 <a href="http://www.objc.io/issue-13/mvvm.html">Introduction to MVVM</a> ，大多数认都应该看过了吧~ 这里我就不再详细介绍了，只谈谈自己的理解。</p>
 <p>所谓的 MVVM，就是在 View Controller 与 Model 之间加了一个叫 “View Model” 的层。把 iOS 中原本的 View 与 View Controller 合并到一个新的 “View”。</p>
-<div class="codehilite"><pre><span></span>View | View Controller  &amp;lt;--------&amp;gt; View Model &amp;lt;--------&amp;gt; Model
+<div class="codehilite"><pre><span></span>View | View Controller  &lt;--------&gt; View Model &lt;--------&gt; Model
 </pre></div>
 
 
