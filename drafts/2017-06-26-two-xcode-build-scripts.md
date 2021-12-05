@@ -5,6 +5,7 @@ date: 2017-06-26
 tags: 
     - iOS
     - Xcode Tips
+excerpt: 两个还算有用的编译脚本，Make Xcode Great Again!
 ---
 
 检查 Localizable.strings 是否有语法错误

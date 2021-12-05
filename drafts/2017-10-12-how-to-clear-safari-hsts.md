@@ -2,6 +2,7 @@
 layout: post
 title: 清理 Safari HSTS 记录
 date: 2017-10-12
+excerpt: 解决网站从 HTTPS 切换到 HTTP 之后，Safari 无法访问的问题
 ---
 
 之前用来放博客的 vps 在这次清洗活动中阵亡，思考再三，还是回到了 Github Pages。这点访问量不值得再折腾了...

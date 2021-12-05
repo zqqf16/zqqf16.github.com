@@ -5,6 +5,7 @@ date: 2017-04-11
 tags: 
     - iOS
     - 开发工具
+excerpt: 一个简单的脚本，从静态库中删除有冲突的 .o 文件
 ---
 
 [开发一个合格的 iOS SDK](https://blog.zorro.im/how_to_create_a_static_library/)里写过，有些 SDK 开发得不够规范，把一些第三方的库打包到自己的库里。比如见过很多把 OpenSSL 包进去的，SDK A 包一个 OpenSSL，SDK B 也包一个 OpenSSL，链接的时候就发现符号冲突了。

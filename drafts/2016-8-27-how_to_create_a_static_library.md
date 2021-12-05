@@ -5,6 +5,8 @@ date: 2016-8-27
 tags:
     - iOS
     - SDK
+excerpt: >
+    本文打算从我个人的角度谈一下，一个合格的 iOS SDK 应该是什么样的。
 ---
 
 
