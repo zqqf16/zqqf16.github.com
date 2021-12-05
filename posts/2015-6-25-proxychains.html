@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -63,15 +63,13 @@
 <h2 id="_2">安装以及使用</h2>
 <p>ProxyChains 的项目地址在 <a href="https://github.com/rofl0r/proxychains-ng">Github</a></p>
 <p>在 Mac 下安装十分简单：</p>
-<div class="codehilite"><pre><span></span>brew install proxychains-ng
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>brew install proxychains-ng
+</code></pre></div>
 
 <p>然后编辑配置文件 <strong>/usr/local/etc/proxychains.conf</strong>，在末尾加上：</p>
-<div class="codehilite"><pre><span></span># Shadowsocks
+<div class="codehilite"><pre><span></span><code># Shadowsocks
 socks5 127.0.0.1 1080
-</pre></div>
-
+</code></pre></div>
 
 <blockquote>
 <p>2015-9-15 更新</p>
@@ -84,7 +82,7 @@ socks5 127.0.0.1 1080
 <p>写了一篇文章《<a href="proxychains_not_work.html">OS X 上 ProxyChains 失效的原因</a>》</p>
 </blockquote>
 <p>使用方法也很简单，比如 ping：</p>
-<div class="codehilite"><pre><span></span>$ proxychains4 ping -c <span class="m">2</span> www.google.com
+<div class="codehilite"><pre><span></span><code>$ proxychains4 ping -c <span class="m">2</span> www.google.com
 <span class="o">[</span>proxychains<span class="o">]</span> config file found: /usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
 <span class="o">[</span>proxychains<span class="o">]</span> preloading /usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
 <span class="o">[</span>proxychains<span class="o">]</span> DLL init
@@ -95,8 +93,7 @@ PING www.google.com <span class="o">(</span><span class="m">216</span>.58.221.13
 --- www.google.com ping statistics ---
 <span class="m">2</span> packets transmitted, <span class="m">2</span> packets received, <span class="m">0</span>.0% packet loss
 round-trip min/avg/max/stddev <span class="o">=</span> <span class="m">65</span>.601/66.087/66.572/0.486 ms
-</pre></div>
-
+</code></pre></div>
 
 <p>当然，需要先启动 Shadowsocks。</p>
 <h2 id="_3">原理</h2>
@@ -110,7 +107,7 @@ round-trip min/avg/max/stddev <span class="o">=</span> <span class="m">65</span>
 <p>ProxyChains 创建了一个叫 libproxychains4.so（Mac 上是 libproxychains4.dylib）的动态库。里面重写了 <code>connect</code>、<code>close</code> 以及 <code>sendto</code> 等与 socket 相关的函数，通过这些函数发出的数据将会走代理，详细代码可以参考 libproxychains.c。</p>
 <p>在主程序里，它会读取配置文件，查找 libproxychains4 所在位置，把这些信息存入环境变量后执行子程序。这样子程序里对 socket 相关的函数调用就会被 Hook 了，对子程序来说，跟代理相关的东西都是透明的。</p>
 <p>可以用 printenv 程序来查看增加的环境变量，在 Mac 上，输出结果类似于：</p>
-<div class="codehilite"><pre><span></span>$ proxychains4 printenv
+<div class="codehilite"><pre><span></span><code>$ proxychains4 printenv
 <span class="o">[</span>proxychains<span class="o">]</span> config file found: /usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
 <span class="o">[</span>proxychains<span class="o">]</span> preloading /usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
 <span class="o">[</span>proxychains<span class="o">]</span> DLL init
@@ -118,17 +115,15 @@ round-trip min/avg/max/stddev <span class="o">=</span> <span class="m">65</span>
 <span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
 <span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
 <span class="nv">DYLD_FORCE_FLAT_NAMESPACE</span><span class="o">=</span><span class="m">1</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>一共设置了三个环境变量，其中 <strong>PROXYCHAINS_CONF_FILE</strong> 保存的是配置文件路径，<strong>DYLD_INSERT_LIBRARIES</strong> 保存的是动态库路径，在 Mac 中，必须使<strong>DYLD_FORCE_FLAT_NAMESPACE</strong> 为 1 才能保证 <strong>DYLD_INSERT_LIBRARIES</strong> 起作用。</p>
 <p>其实还有个一劳永逸的方法：</p>
 <p>手动设置这三个环境变量</p>
-<div class="codehilite"><pre><span></span>$ <span class="nb">export</span> <span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
+<div class="codehilite"><pre><span></span><code>$ <span class="nb">export</span> <span class="nv">PROXYCHAINS_CONF_FILE</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/etc/proxychains.conf
 $ <span class="nb">export</span> <span class="nv">DYLD_INSERT_LIBRARIES</span><span class="o">=</span>/usr/local/Cellar/proxychains-ng/4.7/lib/libproxychains4.dylib
 $ <span class="nb">export</span> <span class="nv">DYLD_FORCE_FLAT_NAMESPACE</span><span class="o">=</span><span class="m">1</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>这样在当前 shell 中运行的所有程序的网络请求都会走代理了。</p>
 <h2 id="_4">参考链接</h2>
@@ -180,7 +175,7 @@ $ <span class="nb">export</span> <span class="nv">DYLD_FORCE_FLAT_NAMESPACE</spa
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -60,27 +60,23 @@
 </blockquote>
 <p>在公司用的是 CVS，因此用<code>git add</code>的时候就以为和<code>cvs add</code>的作用是一样的，把新文件加到代码库。后来学了一招<code>git commit -a</code>，还以为-a就是--all的意思。稀里糊涂地用到现在。。。</p>
 <p>Git 中的暂存区类似于任务列表，当对工作区的文件做了修改之后，执行</p>
-<div class="codehilite"><pre><span></span>git add filename
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>git add filename
+</code></pre></div>
 
 <p>就会把修改的文件加到这个任务列表中，当执行</p>
-<div class="codehilite"><pre><span></span>git commit
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>git commit
+</code></pre></div>
 
 <p>的时候，暂存区中的改动就会提交到版本库中，而在“git add”之后所做的改动就不会被提交。</p>
 <p>比如，我现在 Readme.md 文件中增加了一行，然后执行<code>git add Readme.md</code>。然后再加一行，执行<code>git commit</code>，这样我提交的只是第一次修改的内容。</p>
 <p>命令</p>
-<div class="codehilite"><pre><span></span>git checkout filename
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>git checkout filename
+</code></pre></div>
 
 <p>是用暂存区中的文件来替换工作区中的文件。</p>
 <p>命令</p>
-<div class="codehilite"><pre><span></span>git checkout HEAD
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>git checkout HEAD
+</code></pre></div>
 
 <p>是用HEAD指向的版本库中的文件来替换暂存区和工作区的文件。</p>
 <p>好了，先这么多了。通过这件事总结出一个道理：经验有时候会形成思维定势。</p>
@@ -127,7 +123,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

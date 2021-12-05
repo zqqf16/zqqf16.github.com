@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -58,27 +58,24 @@
 			<p>Markdown语法标准中并没有一种方法来标明代码语言的种类。所以要想用Javascript来进行代码高亮的话就需要手动加一些类似于<code>&lt;code class="python"&gt;</code>的HTML标签，显得十分Ugly。</p>
 <p>于是乎想从Server端入手，想到了Pygments这个神器。但问题又来了。。。</p>
 <p>初步打算用</p>
-<div class="codehilite"><pre><span></span>```python
+<div class="codehilite"><pre><span></span><code>```python
 print &#39;hello&#39;
 ```
-</pre></div>
-
+</code></pre></div>
 
 <p>这样的方式来指明代码种类。先把代码段用正则匹配出来，根据语言种类调用Pygments进行着色。然后再把其它部分连同着色后的的代码段一起Markdown转换。</p>
 <p>后来越想越觉得不太靠谱，还是有点Ugly。</p>
 <p>于是乎继续Google，终于发现了一个完美的方法，并对Markdown2刮目相看。</p>
 <p>一直用Markdown2这个Python写的解释器来转换Markdown脚本，之前光看名字还觉得这玩意是个山寨货。今天研究发现，这货还挺好用。</p>
 <p>Markdown2提供了一个代码高亮的扩展：<a href="https://github.com/trentm/python-markdown2/wiki/fenced-code-blocks">fenced code blocks</a>, 它能自动匹配这样的代码，并调用Pygments进行着色。</p>
-<div class="codehilite"><pre><span></span>```python
+<div class="codehilite"><pre><span></span><code>```python
 print &quot;hi&quot;
 ```
-</pre></div>
-
+</code></pre></div>
 
 <p>使用方法也很简单：</p>
-<div class="codehilite"><pre><span></span><span class="n">html</span> <span class="o">=</span> <span class="n">markdown2</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s2">&quot;some markdown&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;fenced-code-blocks&quot;</span><span class="p">])</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="n">html</span> <span class="o">=</span> <span class="n">markdown2</span><span class="o">.</span><span class="n">markdown</span><span class="p">(</span><span class="s2">&quot;some markdown&quot;</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">extras</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;fenced-code-blocks&quot;</span><span class="p">])</span>
+</code></pre></div>
 
 <p>问题圆满解决~</p>
 <p>更多Markdown2扩展请参考<a href="https://github.com/trentm/python-markdown2/wiki/Extras">Wiki</a></p>
@@ -124,7 +121,7 @@ print &quot;hi&quot;
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

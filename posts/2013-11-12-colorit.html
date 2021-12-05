@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -58,7 +58,7 @@
 		<section class="post-content">
 			<p>平时自己写脚本的时候总喜欢给输出信息加点颜色，比如之前写的查找CVS diff中改动文件的<a href="https://gist.github.com/zqqf16/7094628">脚本</a>。方法很简单，就是输出一些ASCII控制码，比如<code>\033[;31m</code>代表红色之类的。</p>
 <p>用的多了，感觉老是拼字符串也不是个办法，索性规整了一下，写了人生中第一个正经的python模块。。。</p>
-<div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
 <span class="c1">#-*- coding: utf-8 -*-</span>
 
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span>
@@ -66,7 +66,7 @@
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;paint&#39;</span><span class="p">,</span> <span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;attributes&#39;</span><span class="p">]</span>
 <span class="n">__version__</span> <span class="o">=</span> <span class="s1">&#39;1.0&#39;</span>
 
-<span class="n">_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[{}m</span><span class="se">\033</span><span class="s1">[{};{}m{}</span><span class="se">\033</span><span class="s1">[0m&#39;</span>
+<span class="n">_FORMAT</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\033</span><span class="s1">[</span><span class="si">{}</span><span class="s1">m</span><span class="se">\033</span><span class="s1">[</span><span class="si">{}</span><span class="s1">;</span><span class="si">{}</span><span class="s1">m</span><span class="si">{}</span><span class="se">\033</span><span class="s1">[0m&#39;</span>
 
 <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="s1">&#39;red&#39;</span><span class="p">,</span> <span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">,</span> <span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="s1">&#39;magenta&#39;</span><span class="p">,</span> <span class="s1">&#39;cyan&#39;</span><span class="p">,</span> <span class="s1">&#39;white&#39;</span><span class="p">]</span>
 <span class="n">attributes</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;blod&#39;</span><span class="p">,</span> <span class="s1">&#39;underscore&#39;</span><span class="p">,</span> <span class="s1">&#39;blink&#39;</span><span class="p">,</span> <span class="s1">&#39;reverse&#39;</span><span class="p">,</span> <span class="s1">&#39;concealed&#39;</span><span class="p">]</span>
@@ -75,7 +75,7 @@
 <span class="n">_BACKGROUND</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">colors</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">48</span><span class="p">))))</span>
 <span class="n">_attributes</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">attributes</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">]))</span>
 
-<span class="k">def</span> <span class="nf">paint</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">paint</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">fg</span> <span class="o">=</span> <span class="n">_FOREGROUND</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="mi">39</span><span class="p">)</span>
     <span class="n">bg</span> <span class="o">=</span> <span class="n">_BACKGROUND</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">background</span><span class="p">,</span> <span class="mi">49</span><span class="p">)</span>
     <span class="n">att</span> <span class="o">=</span> <span class="n">_attributes</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">attribute</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
@@ -86,26 +86,23 @@
     <span class="k">def</span> <span class="nf">print_row</span><span class="p">(</span><span class="n">b</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
             <span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
-            <span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="s1">&#39;{:^8}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
-        <span class="k">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{:^8}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">f</span><span class="p">)),</span> <span class="n">end</span><span class="o">=</span><span class="s1">&#39; &#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
 
-    <span class="n">print_row</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+    <span class="n">print_row</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">colors</span><span class="p">:</span>
         <span class="n">print_row</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>用的时候也很方便：</p>
-<div class="codehilite"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="n">foreground</span><span class="p">,</span> <span class="n">background</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">attribute</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
 <span class="n">p</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>比如输出字体为绿色，背景为黄色的文字：</p>
-<div class="codehilite"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">))</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="n">paint</span><span class="p">(</span><span class="s1">&#39;green&#39;</span><span class="p">,</span> <span class="s1">&#39;yellow&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">(</span><span class="s1">&#39;Hello World&#39;</span><span class="p">))</span>
+</code></pre></div>
 
 <p>可以访问我的<a href="https://github.com/zqqf16/colorit">Github</a>查看完整代码。</p>
 <p>最后，附一张完整的颜色图（<code>python colorit.py</code>）：</p>
@@ -152,7 +149,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0">
 <channel>
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link>https://blog.zorro.im</link>
 	<description>zqqf16 的个人博客</description>
     <language>zh-cn</language>
@@ -14,41 +14,36 @@
 &lt;h2 id=&#34;_2&#34;&gt;编译步骤&lt;/h2&gt;
 &lt;h3 id=&#34;_3&#34;&gt;准备工作&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;安装编译工具&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;brew install automake autoconf libtool
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew install automake autoconf libtool
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;安装依赖库&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;brew install --HEAD libplist usbmuxd
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;brew install --HEAD libplist usbmuxd
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h3 id=&#34;openssl&#34;&gt;准备 OpenSSL&lt;/h3&gt;
 &lt;p&gt;如果不想用 libimobiledevice 的库，而是直接用编译好的可执行文件，OpenSSL 可以省略，用  GnuTLS 代替。详见&lt;a href=&#34;https://github.com/libimobiledevice/libimobiledevice&#34;&gt;官方文档&lt;/a&gt;。&lt;/p&gt;
 &lt;p&gt;用 OpenSSL 的好处是集成到其它 App 时，可以直接用 OpenSSL 的库，GnuTLS 的库怎么用还没研究……&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;下载 OpenSSL 代码&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget https://www.openssl.org/source/openssl-1.0.2t.tar.gz -O openssl.tar.gz
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget https://www.openssl.org/source/openssl-1.0.2t.tar.gz -O openssl.tar.gz
 tar vzxf openssl.tar.gz
 &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; openssl-1.0.2t
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;编译 &lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./Configure darwin64-x86_64-cc
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;./Configure darwin64-x86_64-cc
 make
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;如果需要指定支持的 macOS 最小版本，可以这样：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./Configure darwin64-x86_64-cc -mmacosx-version-min&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;.11
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;./Configure darwin64-x86_64-cc -mmacosx-version-min&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;m&#34;&gt;10&lt;/span&gt;.11
 make
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;这样可以避免集成到 App 时 Xcode 的 warning。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;修改 libssl.pc 文件&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;改成以下内容：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;prefix=/path/to/your/openssl-1.0.2t
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;prefix=/path/to/your/openssl-1.0.2t
 exec_prefix=&lt;span class=&#34;cp&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;prefix&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;}&lt;/span&gt;
 libdir=&lt;span class=&#34;cp&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;exec_prefix&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;}&lt;/span&gt;
 includedir=&lt;span class=&#34;cp&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;prefix&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;}&lt;/span&gt;/include
@@ -60,33 +55,28 @@ Requires.private: libcrypto
 Libs: -L&lt;span class=&#34;cp&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;libdir&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;}&lt;/span&gt; -lssl
 Libs.private: 
 Cflags: -I&lt;span class=&#34;cp&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;includedir&lt;/span&gt;&lt;span class=&#34;cp&#34;&gt;}&lt;/span&gt; 
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;添加 pkg-config 路径&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;PKG_CONFIG_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/your/openssl-1.0.2t
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nb&#34;&gt;export&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;PKG_CONFIG_PATH&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;/path/to/your/openssl-1.0.2t
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;这一步是为了 pkg-config 能够索引到刚才编译的 OpenSSL。&lt;/p&gt;
 &lt;h3 id=&#34;libimobiledevice&#34;&gt;编译 libimobiledevice&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;下载 libimobiledevice 代码&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;wget https://github.com/libimobiledevice/libimobiledevice/archive/master.zip -O libimobiledevice.zip
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;wget https://github.com/libimobiledevice/libimobiledevice/archive/master.zip -O libimobiledevice.zip
 unzip libimobiledevice.zip
 &lt;span class=&#34;nb&#34;&gt;cd&lt;/span&gt; libimobiledevice-master
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;配置 &amp;amp; 编译&lt;/strong&gt;&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;./autogen.sh
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;./autogen.sh
 make
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;如果需要指定 macOS 的最小版本，可以这样：&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;make &lt;span class=&#34;nv&#34;&gt;CFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;-g -O2 -mmacosx-version-min=10.11&amp;#39;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;CXXFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;-g -O2 -mmacosx-version-min=10.11&amp;#39;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;make &lt;span class=&#34;nv&#34;&gt;CFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;-g -O2 -mmacosx-version-min=10.11&amp;#39;&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;CXXFLAGS&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;=&lt;/span&gt;&lt;span class=&#34;s1&#34;&gt;&amp;#39;-g -O2 -mmacosx-version-min=10.11&amp;#39;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2 id=&#34;_4&#34;&gt;集成&lt;/h2&gt;
 &lt;p&gt;libimobiledevice 的库在 &lt;code&gt;libimobiledevice-master/src/.libs&lt;/code&gt; 目录下，比如静态库是 &lt;strong&gt;libimobiledevice.a&lt;/strong&gt;。头文件在 &lt;code&gt;libimobiledevice-master/include&lt;/code&gt; 目录&lt;/p&gt;
@@ -129,10 +119,9 @@ make
 &lt;p&gt;创建挂载点&lt;/p&gt;
 &lt;p&gt;&lt;code&gt;sudo mkdir /Volumes/you_app_name.app&lt;/code&gt;&lt;/p&gt;
 &lt;p&gt;挂载 App 目录&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;mkdir /tmp/you_app_id
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;mkdir /tmp/you_app_id
 ifuse --container you.app.id /tmp/you_app_id
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;code&gt;you.app.id&lt;/code&gt; 可以通过 &lt;code&gt;ideviceinstaller -l&lt;/code&gt; 得到，&lt;code&gt;-o allow_other&lt;/code&gt; 可以让非 root 用户来访问。&lt;/p&gt;
 &lt;p&gt;打开目录&lt;/p&gt;
@@ -206,26 +195,24 @@ ifuse --container you.app.id /tmp/you_app_id
 		<title>两个 Xcode Build Script</title>
 		<link>https://blog.zorro.im/posts/2017-06-26-two-xcode-build-scripts.html</link>
 		<description>&lt;p&gt;检查 Localizable.strings 是否有语法错误&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Checking Localizable.strings ...&amp;quot;&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Checking Localizable.strings ...&amp;quot;&lt;/span&gt;
 plutil -lint &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;SRCROOT&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/path/to/your/Localizable.strings
 
 &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$?&lt;/span&gt; -ne &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
     &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;error: Localizable.strings 有语法错误，请检查错误信息&amp;quot;&lt;/span&gt;
     &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;检查 Assets.car 中是否包含 P3 色域的图片，防止在 iOS 9.x 设备上出现诡异的崩溃问题。&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Checking Assets.car ...&amp;quot;&lt;/span&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Checking Assets.car ...&amp;quot;&lt;/span&gt;
 xcrun --sdk iphoneos assetutil --info &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;CODESIGNING_FOLDER_PATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/Assets.car &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -q &lt;span class=&#34;s2&#34;&gt;&amp;quot;DisplayGamut.*P3&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
 
 &lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$$&lt;/span&gt;? -eq &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
     &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;error: Assets.car 中含有 P3 色域的图片，请检查错误信息&amp;quot;&lt;/span&gt;
     &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
 &lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/pre&gt;&lt;/div&gt;
-
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;-EOF-&lt;/p&gt;</description>
 		<author>zqqf16</author>

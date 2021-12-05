@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -57,15 +57,14 @@
 		<section class="post-content">
 			<p>最近比较清闲，打算研究一下tornado的源码。之前很少接触过网络编程方面的东西，对Epoll只是有个概念上的了解，所以就在网上找了一个别人写的<a href="http://www.cnblogs.com/Bozh/archive/2012/07/22/2603976.html">源码分析</a>来作为入门。</p>
 <p>第一讲是说IOLoop的，也是tornado的核心。程序中主函数通常调用<code>tornado.ioloop.IOLoop.instance().start()</code>来启动IOLoop，但是看了一下IOLoop的实现，start方法是这样的：</p>
-<div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="nf">start</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Starts the I/O loop.</span>
 
 <span class="sd">        The loop will run until one of the callbacks calls `stop()`, which</span>
 <span class="sd">        will make the loop stop after the current event iteration completes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>也就是说<code>IOLoop</code>是个抽象的基类，具体工作是由它的子类负责的。由于是Linux平台，所以应该用<code>Epoll</code>，对应的类是<code>PollIOLoop</code>。<code>PollIOLoop</code>的<code>start</code>方法开始了事件循环。</p>
 <p>问题来了，<code>tornado.ioloop.IOLoop.instance()</code>是怎么返回<code>PollIOLoop</code>实例的呢？刚开始有点想不明白，后来看了一下IOLoop的代码就豁然开朗了。</p>
@@ -74,7 +73,7 @@
 <p>A configurable interface is an (abstract) class whose constructor acts as a factory function for one of its implementation subclasses. The implementation subclass as well as optional keyword arguments to its initializer can be set globally at runtime with <code>configure</code>.</p>
 </blockquote>
 <p><code>Configurable</code>类实现了一个工厂方法，也就是设计模式中的“工厂模式”，看一下<code>__new__</code>函数的实现：</p>
-<div class="codehilite"><pre><span></span>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="codehilite"><pre><span></span><code>    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">base</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">configurable_base</span><span class="p">()</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">{}</span>
         <span class="k">if</span> <span class="bp">cls</span> <span class="ow">is</span> <span class="n">base</span><span class="p">:</span>
@@ -90,22 +89,20 @@
         <span class="c1"># here too.</span>
         <span class="n">instance</span><span class="o">.</span><span class="n">initialize</span><span class="p">(</span><span class="o">**</span><span class="n">args</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">instance</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>当创建一个<code>Configurable</code>类的实例的时候，其实创建的是<code>configurable_class()</code>返回的类的实例。</p>
-<div class="codehilite"><pre><span></span>    <span class="nd">@classmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">configured_class</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Returns the currently configured class.&quot;&quot;&quot;</span>
         <span class="n">base</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">configurable_base</span><span class="p">()</span>
-        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__impl_class</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">cls</span><span class="o">.</span><span class="n">__impl_class</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">base</span><span class="o">.</span><span class="n">__impl_class</span> <span class="o">=</span> <span class="bp">cls</span><span class="o">.</span><span class="n">configurable_default</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">base</span><span class="o">.</span><span class="n">__impl_class</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>最后，就是返回的<code>configurable_default()</code>。此函数在IOLoop中的实现如下：</p>
-<div class="codehilite"><pre><span></span>    <span class="nd">@classmethod</span>
+<div class="codehilite"><pre><span></span><code>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">configurable_default</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">select</span><span class="p">,</span> <span class="s2">&quot;epoll&quot;</span><span class="p">):</span>
             <span class="kn">from</span> <span class="nn">tornado.platform.epoll</span> <span class="kn">import</span> <span class="n">EPollIOLoop</span>
@@ -116,8 +113,7 @@
             <span class="k">return</span> <span class="n">KQueueIOLoop</span>
         <span class="kn">from</span> <span class="nn">tornado.platform.select</span> <span class="kn">import</span> <span class="n">SelectIOLoop</span>
         <span class="k">return</span> <span class="n">SelectIOLoop</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><code>EPollIOLoop</code>是<code>PollIOLoop</code>的子类。至此，这个流程就理清楚了。</p>
 <p>第一天看tornado的代码就收获不少，<strong>最好的学习方式就是看别人的代码</strong>这话一点都不假。</p>
@@ -164,7 +160,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

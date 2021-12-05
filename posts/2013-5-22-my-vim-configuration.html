@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -67,25 +67,22 @@
 <p>添加pathogen插件：</p>
 </li>
 </ul>
-<div class="codehilite"><pre><span></span>git submoudle add git://github.com/tpope/vim-pathogen.git bundle/vim-pathogen
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>git submoudle add git://github.com/tpope/vim-pathogen.git bundle/vim-pathogen
+</code></pre></div>
 
 <ul>
 <li>修改.vimrc，在开头加上  </li>
 </ul>
-<div class="codehilite"><pre><span></span><span class="c">&quot; pathogen</span>
+<div class="codehilite"><pre><span></span><code><span class="c">&quot; pathogen</span>
 runtime bundle<span class="sr">/vim-pathogen/</span>autoload/pathogen.<span class="k">vim</span>
 execute pathogen#infect<span class="p">()</span>
-</pre></div>
-
+</code></pre></div>
 
 <ul>
 <li>以后如果需要增加插件，只需在bundle目录下加一个git的submoudle即可。升级插件可以用</li>
 </ul>
-<div class="codehilite"><pre><span></span>git submodule foreach git pull origin master
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>git submodule foreach git pull origin master
+</code></pre></div>
 
 <ul>
 <li>可以在Github上新建个项目，把.vim目录下的所有内容提交上去，可以做到方便的更新与备份。</li>
@@ -145,7 +142,7 @@ execute pathogen#infect<span class="p">()</span>
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -57,17 +57,16 @@
 		<section class="post-content">
 			<p>经常在各大python论坛上看到有关爬虫的问题，实在是搞不明白这玩意儿除了对做搜索引擎还能有啥用。今天本着好奇的态度，打算试一试。</p>
 <p>一番Google之后，发现了个很NB的库<strong>Requests</strong>，比之前我用过的liburl2等http库简单多了。出于测试的目的，打算抓取一下我的博客。</p>
-<div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- encoding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">requests</span>
 
 <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;http://zqqf16.info&#39;</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
-</pre></div>
-
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">encoding</span><span class="p">)</span>
+</code></pre></div>
 
 <p>打印内容的时候一切正常，但是<code>encoding</code>却显示的是<code>ISO-8859-1</code>。我的页面上明明写着<code>&lt;meta http-equiv="Content-Type" content="text/html;charset=utf-8"&gt;</code>，但结果却不是utf-8，百思不得其解，难道是我的html格式不对？</p>
 <p>为了验证这个问题，我抓取了一下百度的首页，它的encoding显示的是'utf-8'，而他的头部写的格式和我的一样。</p>
@@ -80,9 +79,8 @@
 <p>这我才明白了，原来HTTP头部也有个“Content-Type”字段，requests会先去找HTTP头部的这个字段，如果没有，就调用“charade”来猜测编码。而默认的编码格式正是“ISO-8859-1”。</p>
 <p>用chrome的调试工具看了一下baidu.com的Response Header，有这样一句“Content-Type:text/html;charset=utf-8”。而我的<a href="http://zqqf16.info">zqqf16.info</a>却没有。这就是为什么我的编码格式识别不出来的原因。</p>
 <p>由于我的博客在Github上，没法控制他的HTTP server的行为。为了能让requests识别出UTF-8，我在之前的代码里加了一句，为其指定了编码格式。</p>
-<div class="codehilite"><pre><span></span><span class="n">r</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="n">r</span><span class="o">.</span><span class="n">encoding</span> <span class="o">=</span> <span class="s1">&#39;utf-8&#39;</span>
+</code></pre></div>
 
 <p>问题搞定了，多看看官方文档还是很有帮助滴。</p>
 		</section>
@@ -129,7 +127,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

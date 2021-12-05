@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -65,15 +65,14 @@
 </blockquote>
 <h2 id="_1">缘起</h2>
 <p>在文章 <a href="posts/objective-c-ojbect-1.html">从源码看 Objective-C 的对象模型（一）</a>里曾提到过，clang 改写后的变量定义后面总是会有一些类似于 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code> 这样的代码，例如这样的：</p>
-<div class="codehilite"><pre><span></span><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="n">_class_t</span> <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_ClassOne</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_CLASS_$_ClassOne</span> <span class="bp">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_ClassOne,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
-    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_</span><span class="err">$</span><span class="n">_ClassOne</span><span class="p">,</span>
+    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_$_ClassOne</span><span class="p">,</span>
 <span class="p">};</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>当时由于水平所限，不明白它的作用，后来随着慢慢地了解了一些有关 Mach-O 文件格式，以及一些 Runtime 加载代码，对这块有了更好的理解。</p>
 <h2 id="mach-o">Mach-O</h2>
@@ -84,7 +83,7 @@
 <p>跟 ELF、PE 等文件格式类似，Mach-O 文件内部也分成代码段、数据段等部分，偷一张 Apple 官方的图：</p>
 <p><img alt="Mach-O file format basic structure" src="https://developer.apple.com/library/mac/documentation/DeveloperTools/Conceptual/MachORuntime/art/mach_o_segments.gif" /></p>
 <p>可以用 size 命令来查看一个 Mach-O 文件（还有个图形化的工具叫“<a href="http://sourceforge.net/projects/machoview/">MachOView</a>”）：</p>
-<div class="codehilite"><pre><span></span>$ size -l -m -x <span class="nb">test</span>
+<div class="codehilite"><pre><span></span><code>$ size -l -m -x <span class="nb">test</span>
 Segment __PAGEZERO: 0x100000000 <span class="o">(</span>vmaddr 0x0 fileoff <span class="m">0</span><span class="o">)</span>
 Segment __TEXT: 0x1000 <span class="o">(</span>vmaddr 0x100000000 fileoff <span class="m">0</span><span class="o">)</span>
     Section __text: 0x249 <span class="o">(</span>addr 0x100000c00 offset <span class="m">3072</span><span class="o">)</span>
@@ -113,21 +112,19 @@ Segment __DATA: 0x1000 <span class="o">(</span>vmaddr 0x100001000 fileoff <span 
     total 0x280
 Segment __LINKEDIT: 0x1000 <span class="o">(</span>vmaddr 0x100002000 fileoff <span class="m">8192</span><span class="o">)</span>
 total 0x100003000
-</pre></div>
-
+</code></pre></div>
 
 <p>可以看到，Mach-O 文件里把代码放在了“__TEXT”这个段（Segment）里，数据放在了“__DATA”里，而这两个段里面有分了很多节（Section）。</p>
 <p><em>习惯上都称 Section 为段，为了不至于混淆，下文都用英文单词来表示。</em></p>
 <p>要查看这些 Section 里面的内容，就得用 otool（MachOView）这样的工具了，比如查看“__TEXT”里面的“__cstring”：</p>
-<div class="codehilite"><pre><span></span>$ otool -v -s __TEXT __cstring <span class="nb">test</span>       
+<div class="codehilite"><pre><span></span><code>$ otool -v -s __TEXT __cstring <span class="nb">test</span>       
 test:
 Contents of <span class="o">(</span>__TEXT,__cstring<span class="o">)</span> section
 0x0000000100000edc  Hello, World!
 0x0000000100000eea  Default
 0x0000000100000ef2  name
 0x0000000100000ef7  T@<span class="s2">&quot;NSString&quot;</span>,<span class="p">&amp;</span>,N,V_name
-</pre></div>
-
+</code></pre></div>
 
 <p>这个 Section 里面存放着不可变的 C 语言字符串，也就是代码里的字符串字面量。如果你的程序里以这种方式保存着密码等关键信息，那得小心了，很容易就会被识破。</p>
 <p>好了，再回过头看文章开始的例子 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code>就好理解了，这段代码的作用就是把“OBJC_CLASS_$_ClassOne __attribute__”这个全局变量放在 Mach-O 文件的 “__DATA” Segment 中的 “__objc_data” Section 里。还有很多类似的代码，其目的就是把数据归类存放在不同的 Section 中。</p>
@@ -182,7 +179,7 @@ Contents of <span class="o">(</span>__TEXT,__cstring<span class="o">)</span> sec
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

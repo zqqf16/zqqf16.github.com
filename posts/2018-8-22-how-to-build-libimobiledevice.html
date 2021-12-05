@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -60,41 +60,36 @@
 <h2 id="_2">编译步骤</h2>
 <h3 id="_3">准备工作</h3>
 <p><strong>安装编译工具</strong></p>
-<div class="codehilite"><pre><span></span>brew install automake autoconf libtool
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>brew install automake autoconf libtool
+</code></pre></div>
 
 <p><strong>安装依赖库</strong></p>
-<div class="codehilite"><pre><span></span>brew install --HEAD libplist usbmuxd
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>brew install --HEAD libplist usbmuxd
+</code></pre></div>
 
 <h3 id="openssl">准备 OpenSSL</h3>
 <p>如果不想用 libimobiledevice 的库，而是直接用编译好的可执行文件，OpenSSL 可以省略，用  GnuTLS 代替。详见<a href="https://github.com/libimobiledevice/libimobiledevice">官方文档</a>。</p>
 <p>用 OpenSSL 的好处是集成到其它 App 时，可以直接用 OpenSSL 的库，GnuTLS 的库怎么用还没研究……</p>
 <p><strong>下载 OpenSSL 代码</strong></p>
-<div class="codehilite"><pre><span></span>wget https://www.openssl.org/source/openssl-1.0.2t.tar.gz -O openssl.tar.gz
+<div class="codehilite"><pre><span></span><code>wget https://www.openssl.org/source/openssl-1.0.2t.tar.gz -O openssl.tar.gz
 tar vzxf openssl.tar.gz
 <span class="nb">cd</span> openssl-1.0.2t
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>编译 </strong></p>
-<div class="codehilite"><pre><span></span>./Configure darwin64-x86_64-cc
+<div class="codehilite"><pre><span></span><code>./Configure darwin64-x86_64-cc
 make
-</pre></div>
-
+</code></pre></div>
 
 <p>如果需要指定支持的 macOS 最小版本，可以这样：</p>
-<div class="codehilite"><pre><span></span>./Configure darwin64-x86_64-cc -mmacosx-version-min<span class="o">=</span><span class="m">10</span>.11
+<div class="codehilite"><pre><span></span><code>./Configure darwin64-x86_64-cc -mmacosx-version-min<span class="o">=</span><span class="m">10</span>.11
 make
-</pre></div>
-
+</code></pre></div>
 
 <p>这样可以避免集成到 App 时 Xcode 的 warning。</p>
 <p><strong>修改 libssl.pc 文件</strong></p>
 <p>改成以下内容：</p>
-<div class="codehilite"><pre><span></span>prefix=/path/to/your/openssl-1.0.2t
+<div class="codehilite"><pre><span></span><code>prefix=/path/to/your/openssl-1.0.2t
 exec_prefix=<span class="cp">${</span><span class="n">prefix</span><span class="cp">}</span>
 libdir=<span class="cp">${</span><span class="n">exec_prefix</span><span class="cp">}</span>
 includedir=<span class="cp">${</span><span class="n">prefix</span><span class="cp">}</span>/include
@@ -106,33 +101,28 @@ Requires.private: libcrypto
 Libs: -L<span class="cp">${</span><span class="n">libdir</span><span class="cp">}</span> -lssl
 Libs.private: 
 Cflags: -I<span class="cp">${</span><span class="n">includedir</span><span class="cp">}</span> 
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>添加 pkg-config 路径</strong></p>
-<div class="codehilite"><pre><span></span><span class="nb">export</span> <span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/your/openssl-1.0.2t
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="nb">export</span> <span class="nv">PKG_CONFIG_PATH</span><span class="o">=</span>/path/to/your/openssl-1.0.2t
+</code></pre></div>
 
 <p>这一步是为了 pkg-config 能够索引到刚才编译的 OpenSSL。</p>
 <h3 id="libimobiledevice">编译 libimobiledevice</h3>
 <p><strong>下载 libimobiledevice 代码</strong></p>
-<div class="codehilite"><pre><span></span>wget https://github.com/libimobiledevice/libimobiledevice/archive/master.zip -O libimobiledevice.zip
+<div class="codehilite"><pre><span></span><code>wget https://github.com/libimobiledevice/libimobiledevice/archive/master.zip -O libimobiledevice.zip
 unzip libimobiledevice.zip
 <span class="nb">cd</span> libimobiledevice-master
-</pre></div>
-
+</code></pre></div>
 
 <p><strong>配置 &amp; 编译</strong></p>
-<div class="codehilite"><pre><span></span>./autogen.sh
+<div class="codehilite"><pre><span></span><code>./autogen.sh
 make
-</pre></div>
-
+</code></pre></div>
 
 <p>如果需要指定 macOS 的最小版本，可以这样：</p>
-<div class="codehilite"><pre><span></span>make <span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-g -O2 -mmacosx-version-min=10.11&#39;</span> <span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s1">&#39;-g -O2 -mmacosx-version-min=10.11&#39;</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>make <span class="nv">CFLAGS</span><span class="o">=</span><span class="s1">&#39;-g -O2 -mmacosx-version-min=10.11&#39;</span> <span class="nv">CXXFLAGS</span><span class="o">=</span><span class="s1">&#39;-g -O2 -mmacosx-version-min=10.11&#39;</span>
+</code></pre></div>
 
 <h2 id="_4">集成</h2>
 <p>libimobiledevice 的库在 <code>libimobiledevice-master/src/.libs</code> 目录下，比如静态库是 <strong>libimobiledevice.a</strong>。头文件在 <code>libimobiledevice-master/include</code> 目录</p>
@@ -183,7 +173,7 @@ make
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

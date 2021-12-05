@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -61,7 +61,7 @@
 <p>The kernel stops all processes without specific privileges from writing to flagged files and folders and prevents <strong>code injection</strong> and runtime attachment (like debugging) with respect to flagged processes or processes signed with an Apple private entitlement key</p>
 </blockquote>
 <p>其次，就是 dyld 了，前面说过，ProxyChains 是基于 <strong>DYLD_</strong> 环境变量的，dyld 在链接动态库的时候会进行一些条件判断，并不是每个应用都允许有 DYLD_。</p>
-<div class="codehilite"><pre><span></span><span class="k">switch</span> <span class="p">(</span><span class="n">sRestrictedReason</span><span class="p">)</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">switch</span> <span class="p">(</span><span class="n">sRestrictedReason</span><span class="p">)</span> <span class="p">{</span>
     <span class="k">case</span> <span class="nl">restrictedNot</span><span class="p">:</span>
         <span class="k">break</span><span class="p">;</span>
     <span class="k">case</span> <span class="nl">restrictedBySetGUid</span><span class="p">:</span>
@@ -74,8 +74,7 @@
         <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is code signed with entitlements</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
         <span class="k">break</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><em>注：以上代码来自 <a href="http://www.opensource.apple.com/source/dyld/dyld-353.2.3/src/dyld.cpp">dyld.cpp</a></em></p>
 <p>从上面这段 dyld 注释的 log 相关代码来看，以下三种情况会清空 DYLD_ 环境变量：</p>
@@ -153,7 +152,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

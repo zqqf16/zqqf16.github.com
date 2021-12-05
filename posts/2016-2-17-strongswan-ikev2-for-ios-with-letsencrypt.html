@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -65,22 +65,20 @@
 <p>请参考: <a href="/strongswan-ikev2-for-ios-without-certificate/">用 strongSwan 搭建免证书的 IKEv2 VPN</a>。</p>
 <h4 id="2-lets-encrypt">2. 申请 Let's Encrypt 证书</h4>
 <p>这步超级简单：</p>
-<div class="codehilite"><pre><span></span>user@webserver:~$ git clone https://github.com/letsencrypt/letsencrypt
+<div class="codehilite"><pre><span></span><code>user@webserver:~$ git clone https://github.com/letsencrypt/letsencrypt
 user@webserver:~$ <span class="nb">cd</span> letsencrypt
 user@webserver:~/letsencrypt$ ./letsencrypt-auto certonly --standalone
-</pre></div>
-
+</code></pre></div>
 
 <p>注意：填写的域名必须跟 VPN 服务器地址一致。</p>
 <p>生成的证书位于 /etc/letsencrypt/archive/your.domain/ 目录下，需要拷贝到 strongSwan 目录：</p>
-<div class="codehilite"><pre><span></span>cp /etc/letsencrypt/live/your.domain/fullchain.pem /etc/ipsec.d/certs
+<div class="codehilite"><pre><span></span><code>cp /etc/letsencrypt/live/your.domain/fullchain.pem /etc/ipsec.d/certs
 cp /etc/letsencrypt/live/your.domain/privkey.pem /etc/ipsec.d/private
-</pre></div>
-
+</code></pre></div>
 
 <h4 id="3-etcipsecconf">3. 修改 /etc/ipsec.conf 配置</h4>
 <p>如下：</p>
-<div class="codehilite"><pre><span></span># ipsec.conf - strongSwan IPsec configuration file
+<div class="codehilite"><pre><span></span><code># ipsec.conf - strongSwan IPsec configuration file
 # basic configuration
 config setup
     strictcrlpolicy=no
@@ -102,19 +100,17 @@ conn iOS-IKEv2-cert
     leftsendcert=always
     rightauth=eap-mschapv2
     eap_identity=%identity
-</pre></div>
-
+</code></pre></div>
 
 <p>注意：leftid 需要跟你的域名一致。</p>
 <h4 id="4-etcipsecsecret">4. 修改 /etc/ipsec.secret 文件</h4>
-<div class="codehilite"><pre><span></span>: RSA privkey.pem
+<div class="codehilite"><pre><span></span><code>: RSA privkey.pem
 u1 : EAP &quot;password&quot;
 u2 : EAP &quot;password&quot;
-</pre></div>
-
+</code></pre></div>
 
 <h4 id="5-ip-table">5. 配置 IP Table</h4>
-<div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="c1"># Add ip tables</span>
 
@@ -123,13 +119,11 @@ iptables -A INPUT -p udp --dport <span class="m">4500</span> -j ACCEPT
 <span class="nb">echo</span> <span class="m">1</span> &gt; /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -s <span class="m">10</span>.99.1.0/24 -o eth0 -j MASQUERADE
 iptables -A FORWARD -s <span class="m">10</span>.99.1.0/24 -j ACCEPT
-</pre></div>
-
+</code></pre></div>
 
 <h4 id="6-ipsec">6. 启动 ipsec</h4>
-<div class="codehilite"><pre><span></span>ipsec start
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>ipsec start
+</code></pre></div>
 
 <h2 id="_3">客户端配置</h2>
 <h4 id="1-vpn">1. 添加 VPN 配置</h4>
@@ -183,7 +177,7 @@ iptables -A FORWARD -s <span class="m">10</span>.99.1.0/24 -j ACCEPT
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

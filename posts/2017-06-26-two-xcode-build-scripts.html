@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -56,26 +56,24 @@
 		</header>
 		<section class="post-content">
 			<p>检查 Localizable.strings 是否有语法错误</p>
-<div class="codehilite"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;Checking Localizable.strings ...&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;Checking Localizable.strings ...&quot;</span>
 plutil -lint <span class="si">${</span><span class="nv">SRCROOT</span><span class="si">}</span>/path/to/your/Localizable.strings
 
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$?</span> -ne <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&quot;error: Localizable.strings 有语法错误，请检查错误信息&quot;</span>
     <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>检查 Assets.car 中是否包含 P3 色域的图片，防止在 iOS 9.x 设备上出现诡异的崩溃问题。</p>
-<div class="codehilite"><pre><span></span><span class="nb">echo</span> <span class="s2">&quot;Checking Assets.car ...&quot;</span>
+<div class="codehilite"><pre><span></span><code><span class="nb">echo</span> <span class="s2">&quot;Checking Assets.car ...&quot;</span>
 xcrun --sdk iphoneos assetutil --info <span class="si">${</span><span class="nv">CODESIGNING_FOLDER_PATH</span><span class="si">}</span>/Assets.car <span class="p">|</span> grep -q <span class="s2">&quot;DisplayGamut.*P3&quot;</span> <span class="p">;</span>
 
 <span class="k">if</span> <span class="o">[</span> <span class="nv">$$</span>? -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
     <span class="nb">echo</span> <span class="s2">&quot;error: Assets.car 中含有 P3 色域的图片，请检查错误信息&quot;</span>
     <span class="nb">exit</span> <span class="m">1</span>
 <span class="k">fi</span><span class="p">;</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>-EOF-</p>
 		</section>
@@ -121,7 +119,7 @@ xcrun --sdk iphoneos assetutil --info <span class="si">${</span><span class="nv"
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

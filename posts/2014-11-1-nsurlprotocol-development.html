@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -65,13 +65,12 @@
 <p>用 NSURLPRotocol 来实现全局 HTTP 代理时，需要用自定义的 URLProtocol 来处理所有的 HTTP/HTTPS 请求，然后再用 NSURLSession 或者 CFNetwork 这样支持代理的库把请求通过 HTTP 代理转发出去，并把结果返回给上层调用者。（这个调用者在 NSURLProtocol 里就是<code>client</code>这个属性）</p>
 <h2 id="nsurlsession">为 NSURLSession 设置代理</h2>
 <p>为 NSURLSession 设置代理可以通过为其指定一个 NSURLSessionConfiguration 来实现，比如：</p>
-<div class="codehilite"><pre><span></span><span class="bp">NSURLSessionConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURLSessionConfiguration</span> <span class="n">defaultSessionConfiguration</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="bp">NSURLSessionConfiguration</span> <span class="o">*</span><span class="n">configuration</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURLSessionConfiguration</span> <span class="n">defaultSessionConfiguration</span><span class="p">];</span>
 <span class="n">configuration</span><span class="p">.</span><span class="n">connectionProxyDictionary</span> <span class="o">=</span>
 <span class="l">@{</span><span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nl">kCFStreamPropertyHTTPProxyHost</span><span class="p">:</span> <span class="s">@&quot;127.0.0.1&quot;</span><span class="p">,</span>
   <span class="p">(</span><span class="bp">NSString</span> <span class="o">*</span><span class="p">)</span><span class="nl">kCFStreamPropertyHTTPProxyPort</span><span class="p">:</span> <span class="mi">@8080</span><span class="l">}</span><span class="p">;</span>
 <span class="bp">NSURLSession</span> <span class="o">*</span><span class="n">session</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NSURLSession</span> <span class="nl">sessionWithConfiguration</span><span class="p">:</span><span class="n">configuration</span> <span class="nl">delegate</span><span class="p">:</span><span class="nb">self</span> <span class="nl">delegateQueue</span><span class="p">:[</span><span class="bp">NSOperationQueue</span> <span class="n">currentQueue</span><span class="p">]];</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>这里有几点需要注意：</p>
 <ol>
@@ -137,7 +136,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

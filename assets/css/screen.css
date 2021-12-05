@@ -80,7 +80,7 @@ p {
 }
 
 code, tt, pre {
-    font-family: "Source Code Pro", monospace, sans-serif;
+    font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace;
     white-space: pre-wrap;
     font-size: 0.79rem;
     border: none;

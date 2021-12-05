@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -57,22 +57,21 @@
 		<section class="post-content">
 			<p>近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。</p>
 <p>废话不多说，上代码：</p>
-<div class="codehilite"><pre><span></span>digraph g {
-    graph [ rankdir = &quot;LR&quot; ];
-    node [shape = record];
+<div class="codehilite"><pre><span></span><code><span class="k">digraph</span><span class="w"> </span><span class="nt">g</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">graph</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="na">rankdir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;LR&quot;</span><span class="w"> </span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">node</span><span class="w"> </span><span class="p">[</span><span class="na">shape</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">record</span><span class="p">];</span><span class="w"></span>
 
-    a [
-        label = &quot;&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]&quot;
-    ];
+<span class="w">    </span><span class="nt">a</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="na">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;&lt;f&gt; struct a|&lt;f0&gt; int i|&lt;f1&gt; char str[10]&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">];</span><span class="w"></span>
 
-    b [
-        label = &quot;&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]&quot;
-    ];
+<span class="w">    </span><span class="nt">b</span><span class="w"> </span><span class="p">[</span><span class="w"></span>
+<span class="w">        </span><span class="na">label</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;&lt;f&gt; struct b|&lt;f0&gt; struct a *p|char name[100]&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">];</span><span class="w"></span>
 
-    &quot;b&quot;:f0 -&gt; &quot;a&quot;:f;
-}
-</pre></div>
-
+<span class="w">    </span><span class="nt">&quot;b&quot;</span><span class="p">:</span><span class="nt">f0</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nt">&quot;a&quot;</span><span class="p">:</span><span class="nt">f</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+</code></pre></div>
 
 <p>把上述代码保存到<code>example.dot</code>，然后执行：<code>dot -Tpng example.dot -o example.png</code></p>
 <p>绘出的图如下：
@@ -120,7 +119,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

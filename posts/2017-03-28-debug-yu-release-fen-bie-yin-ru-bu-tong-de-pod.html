@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -59,7 +59,7 @@
 在上家公司，遇到这种情况会做两个静态库，一个叫 xxx.a，另一个叫 xxx_dev.a。开发或者测试的时候手动切换。</p>
 <p>其实，CocoaPods 本身有更好的解决方法。</p>
 <p>假设要做一个叫 Foo 的 pod，以 Framework 的形式分发，可以写两个 Podspec 文件：</p>
-<div class="codehilite"><pre><span></span><span class="c1"># FooDebug.podspec</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># FooDebug.podspec</span>
 
 <span class="no">Pod</span><span class="o">::</span><span class="no">Spec</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
   <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;FooDebug&#39;</span>
@@ -67,10 +67,9 @@
 
   <span class="c1"># ...</span>
 <span class="k">end</span>
-</pre></div>
+</code></pre></div>
 
-
-<div class="codehilite"><pre><span></span><span class="c1"># FooRelease.podspec</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># FooRelease.podspec</span>
 
 <span class="no">Pod</span><span class="o">::</span><span class="no">Spec</span><span class="o">.</span><span class="n">new</span> <span class="k">do</span> <span class="o">|</span><span class="n">s</span><span class="o">|</span>
   <span class="n">s</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;FooRelease&#39;</span>
@@ -78,15 +77,13 @@
 
   <span class="c1"># ...</span>
 <span class="k">end</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>两个不同名字的 Pod，但是 <strong>framework 的名字是一样的</strong>，分别在 Debug 与 Release 目录下。</p>
 <p>在主工程 Bar 的 Podfile 里，这样写：</p>
-<div class="codehilite"><pre><span></span><span class="n">pod</span> <span class="s1">&#39;FooDebug&#39;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://xxx/xxx/foo.git&#39;</span><span class="p">,</span> <span class="ss">:configurations</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Debug&#39;</span><span class="o">]</span>
+<div class="codehilite"><pre><span></span><code><span class="n">pod</span> <span class="s1">&#39;FooDebug&#39;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://xxx/xxx/foo.git&#39;</span><span class="p">,</span> <span class="ss">:configurations</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Debug&#39;</span><span class="o">]</span>
 <span class="n">pod</span> <span class="s1">&#39;FooRelease&#39;</span><span class="p">,</span> <span class="ss">:git</span> <span class="o">=&gt;</span> <span class="s1">&#39;https://xxx/xxx/foo.git&#39;</span><span class="p">,</span> <span class="ss">:configurations</span> <span class="o">=&gt;</span> <span class="o">[</span><span class="s1">&#39;Release&#39;</span><span class="o">]</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>这样，在 Debug 与 Release 下，会分别引用 FooDebug 与 FooRelease 了。</p>
 <p>同时，由于 framework 的名字是相同的，所以在代码里引入头文件时诸如 <code>#include &lt;Foo/Foo.h&gt;</code> 这样的写法不受影响。</p>
@@ -132,7 +129,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

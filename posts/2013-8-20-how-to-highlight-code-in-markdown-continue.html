@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -56,31 +56,27 @@
 		</header>
 		<section class="post-content">
 			<p>之前写过一篇文章（<a href="/posts/how-to-highlight-code-in-markdown.html">高亮Markdown中的代码</a>)，介绍了python-markdown2中高亮代码的方法。后来在使用中我发现了一个<code>fenced code blocks</code>的bug，如果代码中间有空行，它会把换行之后的部分当成嵌套的。生成的文件中会有一堆类似这样的部分：</p>
-<div class="codehilite"><pre><span></span><span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">&gt;</span>class<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nc&quot;</span><span class="p">&gt;</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;k&quot;</span><span class="p">&gt;</span>class<span class="p">&lt;/</span><span class="nt">span</span><span class="p">&gt;</span> <span class="p">&lt;</span><span class="nt">span</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nc&quot;</span><span class="p">&gt;</span>
+</code></pre></div>
 
 <p>后来到其Github上一搜，发现很多人都有类似问题，比如<a href="https://github.com/trentm/python-markdown2/issues/109">这里</a>。也有人给出了<a href="https://github.com/trentm/python-markdown2/pull/117">解决方案</a>。</p>
 <p>但是这个Pull request已经提出4个月了，原作者至今没有通过，而且整个代码也有近1年没有动过了。Clone了一份它的代码，发现如果想自定义扩展的话比较困难。无奈之下从新研究起了曾经被我抛弃的Python-Markdown。结果发现原来它也有很多扩展，而且比Markdown2中的更多。更重要的是提供了扩展的接口，很方便地写自己的扩展。于是就在peanut中替换了markdown2，代码如下：</p>
-<div class="codehilite"><pre><span></span><span class="n">md</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fenced_code&#39;</span><span class="p">,</span> <span class="s1">&#39;codehilite&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">])</span>
+<div class="codehilite"><pre><span></span><code><span class="n">md</span> <span class="o">=</span> <span class="n">markdown</span><span class="o">.</span><span class="n">Markdown</span><span class="p">(</span><span class="n">extensions</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;fenced_code&#39;</span><span class="p">,</span> <span class="s1">&#39;codehilite&#39;</span><span class="p">,</span> <span class="s1">&#39;meta&#39;</span><span class="p">])</span>
 <span class="c1">#do something</span>
 <span class="n">html</span> <span class="o">=</span> <span class="n">md</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="n">content</span><span class="o">.</span><span class="n">strip</span><span class="p">(</span><span class="s1">&#39; </span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">))</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><code>fenced_code</code>用来识别</p>
-<div class="codehilite"><pre><span></span>```python
+<div class="codehilite"><pre><span></span><code>```python
 ```
-</pre></div>
-
+</code></pre></div>
 
 <p>这样的代码段，<code>codehilite</code>用来高亮代码，<code>meta</code>用来识别文章信息，比如：</p>
-<div class="codehilite"><pre><span></span><span class="n">title</span><span class="o">:</span> <span class="err">高亮</span><span class="n">Markdown中的代码</span><span class="err">（续）</span>
+<div class="codehilite"><pre><span></span><code><span class="n">title</span><span class="o">:</span> <span class="err">高亮</span><span class="n">Markdown中的代码</span><span class="err">（续）</span>
 <span class="n">date</span><span class="o">:</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">20</span>
 <span class="n">tag</span><span class="o">:</span> <span class="n">python</span>
      <span class="n">markdown</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>过度完毕，问题搞定~</p>
 		</section>
@@ -126,7 +122,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

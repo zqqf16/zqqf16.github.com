@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -65,18 +65,17 @@
 <p>在之前的理解中，我以为每次创建的 queue 都是一个独立的 queue 实体，管理着它自己的线程池。</p>
 <p>然而并不是这样。</p>
 <p>先来看一下创建 queue 的函数 <code>dispatch_queue_create</code> 代码：</p>
-<div class="codehilite"><pre><span></span><span class="n">dispatch_queue_t</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dispatch_queue_t</span>
 <span class="nf">dispatch_queue_create</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="p">,</span> <span class="n">dispatch_queue_attr_t</span> <span class="n">attr</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">return</span> <span class="n">dispatch_queue_create_with_target</span><span class="p">(</span><span class="n">label</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span>
             <span class="n">DISPATCH_TARGET_QUEUE_DEFAULT</span><span class="p">);</span>
     <span class="c1">// #define DISPATCH_TARGET_QUEUE_DEFAULT NULL</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><code>dispatch_queue_create_with_target</code> 函数定义如下（省略部分代码)：</p>
-<div class="codehilite"><pre><span></span><span class="n">dispatch_queue_t</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dispatch_queue_t</span>
 <span class="nf">dispatch_queue_create_with_target</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">label</span><span class="p">,</span> <span class="n">dispatch_queue_attr_t</span> <span class="n">dqa</span><span class="p">,</span>
         <span class="n">dispatch_queue_t</span> <span class="n">tq</span><span class="p">)</span>
 <span class="p">{</span>
@@ -95,12 +94,11 @@
     <span class="n">_dispatch_object_debug</span><span class="p">(</span><span class="n">dq</span><span class="p">,</span> <span class="s">&quot;%s&quot;</span><span class="p">,</span> <span class="n">__func__</span><span class="p">);</span>
     <span class="k">return</span> <span class="n">_dispatch_introspection_queue_create</span><span class="p">(</span><span class="n">dq</span><span class="p">);</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>可以发现，其实创建自定义 queue 的时候，只不过是从 root queue 列表里找一个相应优先级的 root queue，把它设置成新 queue 的 target queue 而已。在自定义 queue 中执行 block 时实际是在它的 target queue 中执行的。</p>
 <p>自定义 queue 更像是一个 root queue 的 “代理”。</p>
-<p>代码里的 “root queue”，其实就是 GCD 概念里的 <strong>Global Queue</strong>。在初始化的时候，会创建 15 个 global queue，分别是：
+<p>代码里的 “root queue”，其实就是 GCD 概念里的 <strong>Global Queue</strong>。在初始化的时候，会创建 15 个 global queue，分别是：</p>
 <!--
 | 序号   | 名称                                       |
 | ---- | ---------------------------------------- |
@@ -187,7 +185,8 @@
 <tr>
 <td>15</td>
 <td>com.apple.root.user-interactive-qos.overcommit</td>
-</tr></tbody></table></p>
+</tr></tbody></table>
+
 <p>其中：</p>
 <ol>
 <li>＃0 没有使用。</li>
@@ -220,14 +219,14 @@
 <p>所有 queue 的线程池都是统一管理的，在 Mac OS 中，是靠 pthread workqueue 实现的。（pthread workqueue 没找到详细信息，可以参考 <a href="https://people.freebsd.org/~sson/thrworkq/pthread_workqueue.3.txt">FreeBSD 手册</a>。<em>PS：可以用 <code>sysctl kern.wq_max_threads</code> 查看 workqueue 中支持的最大线程数</em>）。这需要 Libc 标准库与 Kernel 的支持。</p>
 <p>所以即使对于 serial queue 来说，它所面对的也是所有的线程池。所以任务是否是并发执行的决定权在 queue 本身。</p>
 <p>来看一下 queue 结构体的定义（不同平台可能有差异，大致如下）：</p>
-<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">dispatch_queue_s</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">dispatch_queue_s</span> <span class="p">{</span>
     <span class="n">DISPATCH_STRUCT_HEADER</span><span class="p">(</span><span class="n">queue</span><span class="p">);</span>
 
     <span class="cm">/* DISPATCH_QUEUE_HEADER */</span>
     <span class="kt">uint32_t</span> <span class="k">volatile</span> <span class="n">dq_running</span><span class="p">;</span>
-    <span class="k">struct</span> <span class="n">dispatch_object_s</span> <span class="o">*</span><span class="k">volatile</span> <span class="n">dq_items_head</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">dispatch_object_s</span> <span class="o">*</span><span class="k">volatile</span> <span class="n">dq_items_head</span><span class="p">;</span>
     <span class="cm">/* LP64 global queue cacheline boundary */</span>
-    <span class="k">struct</span> <span class="n">dispatch_object_s</span> <span class="o">*</span><span class="k">volatile</span> <span class="n">dq_items_tail</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">dispatch_object_s</span> <span class="o">*</span><span class="k">volatile</span> <span class="n">dq_items_tail</span><span class="p">;</span>
     <span class="n">dispatch_queue_t</span> <span class="n">dq_specific_q</span><span class="p">;</span>
     <span class="kt">uint16_t</span> <span class="n">dq_width</span><span class="p">;</span>
     <span class="kt">uint16_t</span> <span class="nl">dq_is_thread_bound</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span>
@@ -241,8 +240,7 @@
 
     <span class="n">DISPATCH_QUEUE_CACHELINE_PADDING</span><span class="p">;</span> <span class="c1">// for static queues only</span>
 <span class="p">};</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>其中 <strong>dq_width</strong> 属性的值就是能够并发执行的最大任务数，concurrent queue 的值为 <code>DISPATCH_QUEUE_WIDTH_MAX</code> （<code>#define DISPATCH_QUEUE_WIDTH_MAX UINT16_MAX</code>），serial queue 的值为 1。</p>
 <p>Queue 会根据自身 dq_width 值的大小来安排任务的执行。</p>
@@ -297,7 +295,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

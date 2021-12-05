@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -73,7 +73,7 @@
 </ol>
 <h2 id="_3">实例、类、元类初探</h2>
 <p>新建一个NSObject的子类，如下：</p>
-<div class="codehilite"><pre><span></span><span class="cm">/* FirstClass.h */</span>
+<div class="codehilite"><pre><span></span><code><span class="cm">/* FirstClass.h */</span>
 <span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
 
 <span class="k">@interface</span> <span class="nc">FirstClass</span> : <span class="bp">NSObject</span>
@@ -88,44 +88,40 @@
 <span class="k">@implementation</span> <span class="nc">FirstClass</span>
 
 <span class="k">@end</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>然后执行<code>clang -rewrite-objc FirstClass.m</code>，这样就会在当前目录生成一个名叫<code>FirstClass.cpp</code>的文件，打开文件（注意，因为包含了<code>Foundation.h</code>，所以生成的cpp文件巨大，可以忽略前1W行）可以看到，FirstClass被改写成了这样：</p>
-<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">objc_object</span> <span class="n">FirstClass</span><span class="p">;</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="k">typedef</span> <span class="k">struct</span> <span class="nc">objc_object</span> <span class="n">FirstClass</span><span class="p">;</span>
+</code></pre></div>
 
 <p>成了<code>objc_object</code>类型的结构体。<code>objc_object</code>的声明如下：</p>
-<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">objc_object</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">objc_object</span> <span class="p">{</span>
     <span class="n">Class</span> <span class="n">isa</span> <span class="p">;</span>
 <span class="p">};</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>也就是说，当我们用<code>FirstClass *fc;</code>这样的形式去声明一个变量的时候，其实这个变量就是一个指向<code>objc_object</code>类型的指针，也就是上面我总结的，他指向的是一个对象。</p>
 <p>接着往下看，会发现以下这样的代码：</p>
-<div class="codehilite"><pre><span></span><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span> <span class="k">struct</span> <span class="n">_class_t</span> <span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_NSObject</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span>
 
-<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="n">_class_t</span> <span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
+<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_METACLASS_$_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_NSObject,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_NSObject,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
-    <span class="o">&amp;</span><span class="n">_OBJC_METACLASS_RO_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">,</span>
+    <span class="o">&amp;</span><span class="n">_OBJC_METACLASS_RO_$_FirstClass</span><span class="p">,</span>
 <span class="p">};</span>
 
-<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span> <span class="k">struct</span> <span class="n">_class_t</span> <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_NSObject</span><span class="p">;</span>
+<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_CLASS_$_NSObject</span><span class="p">;</span>
 
-<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="n">_class_t</span> <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
+<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_CLASS_$_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_FirstClass,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
     <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
-    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">,</span>
+    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_$_FirstClass</span><span class="p">,</span>
 <span class="p">};</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>根据字面意思就可以看明白了，分别定义了两个变量，<code>OBJC_METACLASS_$_FirstClass</code>和<code>OBJC_CLASS_$_FirstClass</code>，前者是元类，后者是类。他们都是<code>_class_t</code>类型的，都是对象。因为是自动改写的，所以变量名都有些奇怪，但并不影响阅读。</p>
 <p>这里简单介绍一下<code>__declspec(dllimport)</code>、<code>__declspec(dllexport)</code> 以及 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code>。前两个分别声明导入和导出函数，一般用于动态链接库，后面的是一个GNU C的扩展，<code>used</code>告诉编译器即使后面没有引用也要编译这段代码，<code>section ("__DATA,__objc_data")</code><s>是说把这段代码编译到<code>__DATA,__objc_data</code>段，而不是默认的代码段。</s>至于为啥要这样，我也不太明白，有待进一步研究。</p>
@@ -137,28 +133,26 @@
 </ol>
 </blockquote>
 <p><code>_class_t</code>的声明如下：</p>
-<div class="codehilite"><pre><span></span><span class="k">struct</span> <span class="n">_class_t</span> <span class="p">{</span>
-    <span class="k">struct</span> <span class="n">_class_t</span> <span class="o">*</span><span class="n">isa</span><span class="p">;</span>
-    <span class="k">struct</span> <span class="n">_class_t</span> <span class="o">*</span><span class="n">superclass</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">_class_t</span> <span class="p">{</span>
+    <span class="k">struct</span> <span class="nc">_class_t</span> <span class="o">*</span><span class="n">isa</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">_class_t</span> <span class="o">*</span><span class="n">superclass</span><span class="p">;</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">cache</span><span class="p">;</span>
     <span class="kt">void</span> <span class="o">*</span><span class="n">vtable</span><span class="p">;</span>
-    <span class="k">struct</span> <span class="n">_class_ro_t</span> <span class="o">*</span><span class="n">ro</span><span class="p">;</span>
+    <span class="k">struct</span> <span class="nc">_class_ro_t</span> <span class="o">*</span><span class="n">ro</span><span class="p">;</span>
 <span class="p">};</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>基本可以当成<code>runtime.h</code>中的<code>objc_class</code>类型。</p>
 <p>后面还有一段代码，定义了一个初始化函数：</p>
-<div class="codehilite"><pre><span></span><span class="k">static</span> <span class="kt">void</span> <span class="n">OBJC_CLASS_SETUP_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">(</span><span class="kt">void</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">.</span><span class="n">isa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_NSObject</span><span class="p">;</span>
-    <span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">.</span><span class="n">superclass</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_NSObject</span><span class="p">;</span>
-    <span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span>
-    <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">.</span><span class="n">isa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">;</span>
-    <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">.</span><span class="n">superclass</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_NSObject</span><span class="p">;</span>
-    <span class="n">OBJC_CLASS_</span><span class="err">$</span><span class="n">_FirstClass</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">static</span> <span class="kt">void</span> <span class="nf">OBJC_CLASS_SETUP_$_FirstClass</span><span class="p">(</span><span class="kt">void</span> <span class="p">)</span> <span class="p">{</span>
+    <span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">isa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span>
+    <span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">superclass</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span>
+    <span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span>
+    <span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">isa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">;</span>
+    <span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">superclass</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_CLASS_$_NSObject</span><span class="p">;</span>
+    <span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>可以看到元类的<code>isa</code>、<code>superclass</code>都指向了NSOBject，而类的<code>isa</code>指向了元类、<code>superclass</code>指向了NSObject。</p>
 <p>看到这就明白了，类对象以及元类对象是编译时就会创建好的。那么实例对象是怎么创建的，实例变量是怎么保存的呢？且看下一篇分解~</p>
@@ -206,7 +200,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

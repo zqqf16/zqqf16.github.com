@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -62,7 +62,7 @@
 <p>由于没 Google 到相似的，所以就自己花时间研究了一下。</p>
 <h2 id="_2">原理</h2>
 <p>首先，看一下 <code>object_setIvar</code> 函数的定义，在 Runtime 源码里的 <a href="http://www.opensource.apple.com/source/objc4/objc4-493.9/runtime/objc-class.m">objc-class.m</a> 文件，如下：</p>
-<div class="codehilite"><pre><span></span><span class="kt">void</span> <span class="nf">object_setIvar</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">Ivar</span> <span class="n">ivar</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">)</span>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span> <span class="nf">object_setIvar</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">Ivar</span> <span class="n">ivar</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">)</span>
 <span class="p">{</span>
     <span class="k">if</span> <span class="p">(</span><span class="n">obj</span>  <span class="o">&amp;&amp;</span>  <span class="n">ivar</span>  <span class="o">&amp;&amp;</span>  <span class="o">!</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">isTaggedPointer</span><span class="p">())</span> <span class="p">{</span>
         <span class="kt">Class</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">_ivar_getClass</span><span class="p">(</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">ISA</span><span class="p">(),</span> <span class="n">ivar</span><span class="p">);</span>
@@ -91,8 +91,7 @@
 <span class="cp">#endif</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>在调试的时候发现 <code>class_getWeakIvarLayout</code> 以及 <code>class_getIvarLayout</code> 返回值都是<code>""</code>。</p>
 <p>首先可以排除掉 <code>objc_storeStrong(location, value);</code>，因为这个函数会增加引用计数。
@@ -100,7 +99,7 @@
 进而可以排除掉 <code>objc_storeWeak(location, value);</code>。</p>
 <p>所以，这个函数最终会执行到 <code>*location = value;</code>，直接对指针赋值，整个过程并没有涉及到内存管理。</p>
 <p>至于为什么会这样的关键就在 <code>_class_usesAutomaticRetainRelease</code> 这个函数了，看一下它的定义：</p>
-<div class="codehilite"><pre><span></span><span class="cm">/***********************************************************************</span>
+<div class="codehilite"><pre><span></span><code><span class="cm">/***********************************************************************</span>
 <span class="cm"> * _class_usesAutomaticRetainRelease</span>
 <span class="cm"> * Returns YES if class was compiled with -fobjc-arc</span>
 <span class="cm"> **********************************************************************/</span>
@@ -108,21 +107,19 @@
 <span class="p">{</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">cls</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">ro</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">RO_IS_ARR</span><span class="p">)</span> <span class="o">?</span> <span class="nb">YES</span> <span class="o">:</span> <span class="nb">NO</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>其中 <code>RO_IS_ARR</code> 宏定义如下：</p>
-<div class="codehilite"><pre><span></span><span class="c1">// class compiled with -fobjc-arc (automatic retain/release)</span>
+<div class="codehilite"><pre><span></span><code><span class="c1">// class compiled with -fobjc-arc (automatic retain/release)</span>
 <span class="cp">#define RO_IS_ARR             (1&lt;&lt;7)   </span><span class="c1">// 0x80</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>从函数的注释可以看出来此函数是用来判断这个类是否是在开启 ARC 的情况下编译的。</p>
 <p>而且我搜索了 <code>objc_allocateClassPair</code> 函数定义以及整个 Runtime 代码，发现没有一个地方设置了这个 flag。
 也就是说在运行时创建的类肯定没有这个 flag。</p>
 <p>为了进一步验证，得找到设置这个 flag 的地方，因此我又去翻了一下 clang 的源码（还顺便复习了当年 Vim＋Ctags＋Cscope 的各种用法￣▽￣" ），
 在 CGObjCMac.cpp 这个文件中发现了这么一段：</p>
-<div class="codehilite"><pre><span></span><span class="n">llvm</span><span class="o">::</span><span class="n">GlobalVariable</span> <span class="o">*</span> <span class="n">CGObjCNonFragileABIMac</span><span class="o">::</span><span class="n">BuildClassRoTInitializer</span><span class="p">(</span>
+<div class="codehilite"><pre><span></span><code><span class="n">llvm</span><span class="o">::</span><span class="n">GlobalVariable</span> <span class="o">*</span> <span class="nf">CGObjCNonFragileABIMac::BuildClassRoTInitializer</span><span class="p">(</span>
   <span class="kt">unsigned</span> <span class="n">flags</span><span class="p">,</span>
   <span class="kt">unsigned</span> <span class="n">InstanceStart</span><span class="p">,</span>
   <span class="kt">unsigned</span> <span class="n">InstanceSize</span><span class="p">,</span>
@@ -132,8 +129,7 @@
 
   <span class="k">if</span> <span class="p">(</span><span class="n">CGM</span><span class="p">.</span><span class="n">getLangOpts</span><span class="p">().</span><span class="n">ObjCAutoRefCount</span><span class="p">)</span>
     <span class="n">flags</span> <span class="o">|=</span> <span class="n">NonFragileABI_Class_CompiledByARC</span><span class="p">;</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><em>注：当开启 <code>-fobjc-arc</code> 选项时，<code>CGM.getLangOpts().ObjCAutoRefCount</code> 返回的是 true，而且 <code>NonFragileABI_Class_CompiledByARC</code> 的值就是 0x80。</em></p>
 <p>也就是说当 ARC 开启的时候，clang 会给类设上 0x80 这个 flag。</p>
@@ -197,7 +193,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

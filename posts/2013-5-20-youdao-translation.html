@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -58,9 +58,8 @@
 			<p>像我这种英语比较差劲的人来说，一个好点的翻译工具十分重要。Linux下哪个用着都不顺手，每次都用在线的google翻译。介于google经常性的抽风，此方案十分不靠谱，于是乎就像自己写个。</p>
 <p>一次偶然的机会，发现了有道这个靠谱的工具提供了十分方便的API可供调用，就花了一点时间，写了个Python版的~。</p>
 <p>有道的数据接口如下：</p>
-<div class="codehilite"><pre><span></span>http://fanyi.youdao.com/openapi.do?keyfrom=<span class="p">&lt;</span><span class="nt">keyfrom</span><span class="p">&gt;</span><span class="err">&amp;</span>key=<span class="p">&lt;</span><span class="nt">key</span><span class="p">&gt;</span><span class="err">&amp;</span>type=data<span class="err">&amp;</span>doctype=<span class="p">&lt;</span><span class="nt">doctype</span><span class="p">&gt;</span><span class="err">&amp;</span>version=1.1<span class="err">&amp;</span>q=要翻译的文本
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>http://fanyi.youdao.com/openapi.do?keyfrom=<span class="p">&lt;</span><span class="nt">keyfrom</span><span class="p">&gt;</span><span class="err">&amp;</span>key=<span class="p">&lt;</span><span class="nt">key</span><span class="p">&gt;</span><span class="err">&amp;</span>type=data<span class="err">&amp;</span>doctype=<span class="p">&lt;</span><span class="nt">doctype</span><span class="p">&gt;</span><span class="err">&amp;</span>version=1.1<span class="err">&amp;</span>q=要翻译的文本
+</code></pre></div>
 
 <blockquote>
 <p>版本：1.1，请求方式：get，编码方式：utf-8<br />
@@ -79,7 +78,7 @@ errorCode：<br />
 </blockquote>
 <p>详见<a href="http://fanyi.youdao.com/openapi?path=data-mode">官网</a></p>
 <p>Python实现的代码如下：</p>
-<div class="codehilite"><pre><span></span><span class="ch">#!/usr/bin/env python</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/usr/bin/env python</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
 <span class="kn">import</span> <span class="nn">urllib2</span>
@@ -96,18 +95,18 @@ errorCode：<br />
     <span class="n">result_json</span> <span class="o">=</span> <span class="n">opener</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">url_utf</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
     <span class="n">result</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">result_json</span><span class="p">)</span>
 <span class="k">except</span><span class="p">:</span>
-    <span class="nb">exit</span><span class="p">()</span>
+    <span class="n">exit</span><span class="p">()</span>
 
 <span class="k">for</span> <span class="n">tran</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;translation&#39;</span><span class="p">]:</span>
-    <span class="k">print</span> <span class="n">green</span> <span class="o">%</span> <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;翻译&#39;</span><span class="p">,</span> <span class="n">tran</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="n">green</span> <span class="o">%</span> <span class="p">(</span><span class="sa">u</span><span class="s1">&#39;翻译&#39;</span><span class="p">,</span> <span class="n">tran</span><span class="p">)</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="k">print</span> <span class="sa">u</span><span class="s1">&#39;读音: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;basic&#39;</span><span class="p">][</span><span class="s1">&#39;phonetic&#39;</span><span class="p">]</span>
+    <span class="nb">print</span> <span class="sa">u</span><span class="s1">&#39;读音: &#39;</span> <span class="o">+</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;basic&#39;</span><span class="p">][</span><span class="s1">&#39;phonetic&#39;</span><span class="p">]</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">pass</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="k">for</span> <span class="n">explain</span> <span class="ow">in</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;basic&#39;</span><span class="p">][</span><span class="s1">&#39;explains&#39;</span><span class="p">]:</span>
-        <span class="k">print</span> <span class="sa">u</span><span class="s1">&#39;解释: &#39;</span> <span class="o">+</span> <span class="n">explain</span>
+        <span class="nb">print</span> <span class="sa">u</span><span class="s1">&#39;解释: &#39;</span> <span class="o">+</span> <span class="n">explain</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">pass</span>
 
@@ -116,11 +115,10 @@ errorCode：<br />
         <span class="n">value_str</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">web</span><span class="p">[</span><span class="s1">&#39;value&#39;</span><span class="p">]:</span>
             <span class="n">value_str</span> <span class="o">+=</span> <span class="n">value</span> <span class="o">+</span> <span class="s1">&#39;, &#39;</span>
-        <span class="k">print</span> <span class="sa">u</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="n">web</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;] &#39;</span> <span class="o">+</span> <span class="n">value_str</span>
+        <span class="nb">print</span> <span class="sa">u</span><span class="s1">&#39;[&#39;</span> <span class="o">+</span> <span class="n">web</span><span class="p">[</span><span class="s1">&#39;key&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;] &#39;</span> <span class="o">+</span> <span class="n">value_str</span>
 <span class="k">except</span><span class="p">:</span>
     <span class="k">pass</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>或见<a href="https://gist.github.com/zqqf16/5610235">Gist</a></p>
 <p>把上面的脚本命名为“t”，放在<code>~/bin</code>下，需要翻译的时候打开终端输入<code>t 文本</code>即可~</p>
@@ -168,7 +166,7 @@ errorCode：<br />
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -64,7 +64,7 @@
 <h3 id="1-strongswan">1. 安装 strongSwan</h3>
 <p>我是在 Ubuntu 下安装的，如果图省事，可以直接 <code>apt-get install strongSwan</code> 搞定，源里的版本已经是 5.x 了，不算太旧。</p>
 <p>如果想安装最新的，可以自行下载编译。</p>
-<div class="codehilite"><pre><span></span><span class="c1"># Download strongSwan</span>
+<div class="codehilite"><pre><span></span><code><span class="c1"># Download strongSwan</span>
 wget https://download.strongswan.org/strongswan-5.3.3.tar.gz
 
 <span class="c1"># Extract and uncompress</span>
@@ -79,34 +79,32 @@ tar -vzxf strongswan-5.3.3.tar.gz
 
 <span class="c1"># Make &amp; install</span>
 make <span class="o">&amp;&amp;</span> make install
-</pre></div>
-
+</code></pre></div>
 
 <h3 id="2-strongswan">2. strongSwan 配置</h3>
 <p>编辑 /etc/ipsec.conf</p>
-<div class="codehilite"><pre><span></span># ipsec.conf - strongSwan IPsec configuration file
-# basic configuration
-config setup
-    strictcrlpolicy=no
-    uniqueids = no
+<div class="codehilite"><pre><span></span><code># <span class="nv">ipsec</span>.<span class="nv">conf</span> <span class="o">-</span> <span class="nv">strongSwan</span> <span class="nv">IPsec</span> <span class="nv">configuration</span> <span class="nv">file</span>
+# <span class="nv">basic</span> <span class="nv">configuration</span>
+<span class="nv">config</span> <span class="nv">setup</span>
+    <span class="nv">strictcrlpolicy</span><span class="o">=</span><span class="nv">no</span>
+    <span class="nv">uniqueids</span> <span class="o">=</span> <span class="nv">no</span>
 
-# IKEv2 for iOS
-conn iOS-IKEV2
-    auto=add
-    dpdaction=clear
-    keyexchange=ikev2
-    #left
-    left=%any
-    leftsubnet=0.0.0.0/0
-    leftauth=psk
-    leftid=im.zorro.ipsec.server
-    #right
-    right=%any
-    rightsourceip=10.99.1.0/24
-    rightauth=eap-mschapv2
-    rightid=im.zorro.ipsec.client
-</pre></div>
-
+# <span class="nv">IKEv2</span> <span class="k">for</span> <span class="nv">iOS</span>
+<span class="nv">conn</span> <span class="nv">iOS</span><span class="o">-</span><span class="nv">IKEV2</span>
+    <span class="nv">auto</span><span class="o">=</span><span class="nv">add</span>
+    <span class="nv">dpdaction</span><span class="o">=</span><span class="nv">clear</span>
+    <span class="nv">keyexchange</span><span class="o">=</span><span class="nv">ikev2</span>
+    #<span class="nv">left</span>
+    <span class="nv">left</span><span class="o">=%</span><span class="nv">any</span>
+    <span class="nv">leftsubnet</span><span class="o">=</span><span class="mi">0</span>.<span class="mi">0</span>.<span class="mi">0</span>.<span class="mi">0</span><span class="o">/</span><span class="mi">0</span>
+    <span class="nv">leftauth</span><span class="o">=</span><span class="nv">psk</span>
+    <span class="nv">leftid</span><span class="o">=</span><span class="nv">im</span>.<span class="nv">zorro</span>.<span class="nv">ipsec</span>.<span class="nv">server</span>
+    #<span class="nv">right</span>
+    <span class="nv">right</span><span class="o">=%</span><span class="nv">any</span>
+    <span class="nv">rightsourceip</span><span class="o">=</span><span class="mi">10</span>.<span class="mi">99</span>.<span class="mi">1</span>.<span class="mi">0</span><span class="o">/</span><span class="mi">24</span>
+    <span class="nv">rightauth</span><span class="o">=</span><span class="nv">eap</span><span class="o">-</span><span class="nv">mschapv2</span>
+    <span class="nv">rightid</span><span class="o">=</span><span class="nv">im</span>.<span class="nv">zorro</span>.<span class="nv">ipsec</span>.<span class="nv">client</span>
+</code></pre></div>
 
 <p>需要注意的点是 <code>leftauth=psk</code> 与 <code>rightauth=eap-mschapv2</code>，分别对应着 iOS／OS X 中的“设备鉴定”与“EAP 鉴定”。</p>
 <p>“rightauth” 的方法有很多，比如 “eap-md5” 这样的，iOS 不一定能支持，有时间的可以多尝试几个～</p>
@@ -115,16 +113,15 @@ conn iOS-IKEV2
 <p><code>leftid</code> 与 <code>rightid</code> 分别对应着<strong>远程标识符</strong>（RemoteIdentifier）和<strong>局部标识符</strong>（LocalIdentifier），随便选个顺眼的即可。</p>
 <h3 id="3-psk">3. PSK 与用户名密码</h3>
 <p>编辑 /etc/ipsec.secrets</p>
-<div class="codehilite"><pre><span></span>: PSK yourpresharedkey
+<div class="codehilite"><pre><span></span><code>: PSK yourpresharedkey
 u1 : EAP &quot;password&quot;
 u2 : EAP &quot;password&quot;
-</pre></div>
-
+</code></pre></div>
 
 <p><code>: PSK yourpresharedkey</code> 这行要填预共享密钥，下面的 u1、u2 是添加的两个用户。</p>
 <h3 id="4-ip-table">4. 配置 IP Table</h3>
 <p>执行以下代码：</p>
-<div class="codehilite"><pre><span></span><span class="ch">#!/bin/bash</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 
 <span class="c1"># Add ip tables</span>
 
@@ -133,24 +130,22 @@ iptables -A INPUT -p udp --dport <span class="m">4500</span> -j ACCEPT
 <span class="nb">echo</span> <span class="m">1</span> &gt; /proc/sys/net/ipv4/ip_forward
 iptables -t nat -A POSTROUTING -s <span class="m">10</span>.99.1.0/24 -o eth0 -j MASQUERADE
 iptables -A FORWARD -s <span class="m">10</span>.99.1.0/24 -j ACCEPT
-</pre></div>
-
+</code></pre></div>
 
 <p>注意：<strong>网段要跟 ipsec.conf 里配置的一致</strong>。</p>
 <h3 id="5-dns">5. 配置 DNS</h3>
 <p>编辑 /etc/strongswan.conf</p>
-<div class="codehilite"><pre><span></span>charon {
-        load_modular = yes
-        dns1 = 8.8.8.8
-        dns2 = 8.8.4.4
-        plugins {
-                include strongswan.d/charon/*.conf
-        }
-}
+<div class="codehilite"><pre><span></span><code><span class="n">charon</span> <span class="p">{</span>
+        <span class="n">load_modular</span> <span class="o">=</span> <span class="n">yes</span>
+        <span class="n">dns1</span> <span class="o">=</span> <span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span>
+        <span class="n">dns2</span> <span class="o">=</span> <span class="mf">8.8</span><span class="o">.</span><span class="mf">4.4</span>
+        <span class="n">plugins</span> <span class="p">{</span>
+                <span class="n">include</span> <span class="n">strongswan</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">charon</span><span class="o">/*.</span><span class="n">conf</span>
+        <span class="p">}</span>
+<span class="p">}</span>
 
-include strongswan.d/*.conf
-</pre></div>
-
+<span class="n">include</span> <span class="n">strongswan</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">conf</span>
+</code></pre></div>
 
 <h3 id="6-strongswan">6. 启动 strongSwan</h3>
 <p>启动：<code>ipsec start</code></p>
@@ -167,7 +162,7 @@ include strongswan.d/*.conf
 </ul>
 <p><em><s>PS：我用 Apple Configurator 2，可能是 Beta 的缘故，编辑的时候总是提示有错误，却死活找不着错误的地方……</s>已更新</em></p>
 <p>如果没有 Apple Configurator，可以手工编辑下面的文件：</p>
-<div class="codehilite"><pre><span></span><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="cp">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span>
 <span class="cp">&lt;!DOCTYPE plist PUBLIC &quot;-//Apple//DTD PLIST 1.0//EN&quot; &quot;http://www.apple.com/DTDs/PropertyList-1.0.dtd&quot;&gt;</span>
 <span class="nt">&lt;plist</span> <span class="na">version=</span><span class="s">&quot;1.0&quot;</span><span class="nt">&gt;</span>
 <span class="nt">&lt;dict&gt;</span>
@@ -273,8 +268,7 @@ include strongswan.d/*.conf
     <span class="nt">&lt;integer&gt;</span>1<span class="nt">&lt;/integer&gt;</span>
 <span class="nt">&lt;/dict&gt;</span>
 <span class="nt">&lt;/plist&gt;</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>保存成 .mobileconfig 格式，发到手机里安装就可以了。</p>
 <h2 id="_4">参考链接</h2>
@@ -325,7 +319,7 @@ include strongswan.d/*.conf
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

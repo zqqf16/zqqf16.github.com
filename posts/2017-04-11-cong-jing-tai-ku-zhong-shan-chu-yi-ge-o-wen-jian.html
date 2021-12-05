@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -57,7 +57,7 @@
 		<section class="post-content">
 			<p><a href="https://blog.zorro.im/how_to_create_a_static_library/">开发一个合格的 iOS SDK</a>里写过，有些 SDK 开发得不够规范，把一些第三方的库打包到自己的库里。比如见过很多把 OpenSSL 包进去的，SDK A 包一个 OpenSSL，SDK B 也包一个 OpenSSL，链接的时候就发现符号冲突了。</p>
 <p>这时不得不对这些库“动手术”，把冲突的内容删掉。于是也就有了这个脚本，还加了对 Fat file 的判断。</p>
-<div class="codehilite"><pre><span></span><span class="ch">#!/bin/sh</span>
+<div class="codehilite"><pre><span></span><code><span class="ch">#!/bin/sh</span>
 
 <span class="c1"># Remove an object from a static library.</span>
 
@@ -78,7 +78,7 @@
 
 EXTRACT_FAT<span class="o">(){</span>
     <span class="nv">SUBS</span><span class="o">=</span><span class="s2">&quot;&quot;</span>
-    <span class="k">for</span> ARCH in <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$LIB_INFO</span> <span class="p">|</span> sed -n -e <span class="s1">&#39;s/Architectures in the fat file:.*are: \(.*\)/\1/p&#39;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
+    <span class="k">for</span> ARCH <span class="k">in</span> <span class="sb">`</span><span class="nb">echo</span> <span class="nv">$LIB_INFO</span> <span class="p">|</span> sed -n -e <span class="s1">&#39;s/Architectures in the fat file:.*are: \(.*\)/\1/p&#39;</span><span class="sb">`</span><span class="p">;</span> <span class="k">do</span>
         <span class="nv">SUB</span><span class="o">=</span><span class="si">${</span><span class="nv">1</span><span class="si">}</span>_<span class="si">${</span><span class="nv">ARCH</span><span class="si">}</span>.a
         lipo -thin <span class="si">${</span><span class="nv">ARCH</span><span class="si">}</span> <span class="si">${</span><span class="nv">1</span><span class="si">}</span> -output <span class="si">${</span><span class="nv">SUB</span><span class="si">}</span>
         EXTRACT <span class="si">${</span><span class="nv">SUB</span><span class="si">}</span> <span class="si">${</span><span class="nv">2</span><span class="si">}</span>
@@ -99,8 +99,7 @@ EXTRACT<span class="o">(){</span>
 <span class="k">else</span>
     EXTRACT <span class="si">${</span><span class="nv">LIB_SRC</span><span class="si">}</span> <span class="si">${</span><span class="nv">OBJ</span><span class="si">}</span>
 <span class="k">fi</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>或者，移步 Gist：<a href="https://gist.github.com/zqqf16/1eb6649a68aeb1ee27fabd8a05ea8f1d">https://gist.github.com/zqqf16/1eb6649a68aeb1ee27fabd8a05ea8f1d</a></p>
 		</section>
@@ -146,7 +145,7 @@ EXTRACT<span class="o">(){</span>
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

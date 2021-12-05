@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -70,20 +70,18 @@
 <p>比一颗2450纽扣电池大不了多少~</p>
 <p>接下来就是尝试应用开发了。</p>
 <p>首先，创建一个应用，需要依赖<code>CoreLocation.framework</code>。并且在 View Controller 的实现文件里加上：</p>
-<div class="codehilite"><pre><span></span><span class="cp">#import &lt;CoreLocation/CoreLocation.h&gt;</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="cp">#import &lt;CoreLocation/CoreLocation.h&gt;</span>
+</code></pre></div>
 
 <p>然后加上两个 Property：</p>
-<div class="codehilite"><pre><span></span><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">CLBeaconRegion</span> <span class="o">*</span><span class="n">beaconRegion</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">CLBeaconRegion</span> <span class="o">*</span><span class="n">beaconRegion</span><span class="p">;</span>
 <span class="k">@property</span> <span class="p">(</span><span class="k">nonatomic</span><span class="p">,</span> <span class="k">strong</span><span class="p">)</span> <span class="bp">CLLocationManager</span> <span class="o">*</span><span class="n">locationManager</span><span class="p">;</span>
-</pre></div>
-
+</code></pre></div>
 
 <p><code>beaconRegion</code> 用来定义一个 Beacon，iOS 的 iBeacon API 中，应用只能探测已知 UUID 的 iBeacon 基站。要想探测周围所有基站，就得用底层的 Bluetooth 库或者 iBeacon 基站厂商提供的 SDK。
 <code>localtionManager</code> 用来进行实际的探测工作。</p>
 <p>接下来定义 Beacon 初始化方法：</p>
-<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initBeacon</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">initBeacon</span> <span class="p">{</span>
     <span class="bp">NSUUID</span> <span class="o">*</span><span class="n">uuid</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSUUID</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithUUIDString</span><span class="p">:</span><span class="s">@&quot;E2C56DB5-DFFB-48D2-B060-D0F5A71096E0&quot;</span><span class="p">];</span>
     <span class="nb">self</span><span class="p">.</span><span class="n">beaconRegion</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">CLBeaconRegion</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithProximityUUID</span><span class="p">:</span><span class="n">uuid</span> <span class="nl">identifier</span><span class="p">:</span><span class="s">@&quot;E2C56DB5-DFFB-48D2-B060-D0F5A71096E0&quot;</span><span class="p">];</span>
 
@@ -98,23 +96,21 @@
         <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">locationManager</span> <span class="n">requestAlwaysAuthorization</span><span class="p">];</span>
     <span class="p">}</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>这段代码首先初始化了一个 Beacon Region，UUID、Major 以及 Minor 是我通过四月兄弟提供的 APP 获取的， 这里因厂商而异。</p>
 <p>接着初始化了 Location Manager，把 Delegate 设置成当前 View Controller。（需要实现<code>CLLocationManagerDelegate</code>协议）</p>
 <p>这里有一点需要说明，在 iOS 8中，使用 Location Manager 需要申请授权，也就是调用<code>- (void)requestAlwaysAuthorization</code>这个方法，这是 iOS 8 新加的。
 同时，需要在 Info.plist 里加上两个 Key：</p>
-<div class="codehilite"><pre><span></span>NSLocationWhenInUseUsageDescription
+<div class="codehilite"><pre><span></span><code>NSLocationWhenInUseUsageDescription
 NSLocationAlwaysUsageDescription
-</pre></div>
-
+</code></pre></div>
 
 <p>这样，在程序第一次运行的时候，会有这样的提示：</p>
 <p><img alt="" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/IMG_0795.PNG?x-oss-process=style/jpg" /></p>
 <p>我之前没有注意到这一点，导致死活探测不到基站...</p>
 <p>初始化完成之后，我们需要处理事件，也就是实现<code>CLLocationManagerDelegate</code>协议。主要代码如下：</p>
-<div class="codehilite"><pre><span></span><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didEnterRegion:</span><span class="p">(</span><span class="bp">CLRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">locationManager:</span><span class="p">(</span><span class="bp">CLLocationManager</span> <span class="o">*</span><span class="p">)</span><span class="nv">manager</span> <span class="nf">didEnterRegion:</span><span class="p">(</span><span class="bp">CLRegion</span> <span class="o">*</span><span class="p">)</span><span class="nv">region</span> <span class="p">{</span>
     <span class="p">[</span><span class="nb">self</span><span class="p">.</span><span class="n">locationManager</span> <span class="nl">startRangingBeaconsInRegion</span><span class="p">:</span><span class="nb">self</span><span class="p">.</span><span class="n">beaconRegion</span><span class="p">];</span>
 <span class="p">}</span>
 
@@ -142,8 +138,7 @@ NSLocationAlwaysUsageDescription
 
     <span class="n">_proximity</span><span class="p">.</span><span class="n">text</span> <span class="o">=</span> <span class="l">@[</span><span class="s">@&quot;Unknow&quot;</span><span class="p">,</span> <span class="s">@&quot;Immediate&quot;</span><span class="p">,</span> <span class="s">@&quot;Near&quot;</span><span class="p">,</span> <span class="s">@&quot;Far&quot;</span><span class="l">]</span><span class="p">[</span><span class="n">beacon</span><span class="p">.</span><span class="n">proximity</span><span class="p">];</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>其中<code>locationManager: didRangeBeacons: inRegion:</code> 方法在每次 iOS 探测之后都会被调用，频率大约是每秒一次。此方法会得到探测到的基站信息，里面包括了 UUID、Major、Minor、以及 Proximity 和 rssi 等。</p>
 <p>Proximity 代表了与基站的距离，由于2.4G 信号也不怎么靠谱，容易受干扰，所以测出来的距离不是那么准确。Apple 用了四个值代表距离，分别是 Immediate、Near、Far、Unknow，距离依次递减。根据我的测试，在1m 以内基本上就是 Immediate，1米到3米就是 Near。</p>
@@ -202,7 +197,7 @@ NSLocationAlwaysUsageDescription
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

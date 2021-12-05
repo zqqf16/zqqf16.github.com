@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -66,9 +66,8 @@
 <p>这样做的后果就是代码耦合度大增，逻辑混乱。一个 View Controller 的实现文件轻轻松松达到3、4百行。</p>
 <p>这样的问题大牛们早就遇到了，他们弄出了 MVVM 的概念来解决这个问题，有关 MVVM 的介绍可以参考 Objc.io 上的这篇文章 <a href="http://www.objc.io/issue-13/mvvm.html">Introduction to MVVM</a> ，大多数认都应该看过了吧~ 这里我就不再详细介绍了，只谈谈自己的理解。</p>
 <p>所谓的 MVVM，就是在 View Controller 与 Model 之间加了一个叫 “View Model” 的层。把 iOS 中原本的 View 与 View Controller 合并到一个新的 “View”。</p>
-<div class="codehilite"><pre><span></span>View | View Controller  &lt;--------&gt; View Model &lt;--------&gt; Model
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="n">View</span> <span class="o">|</span> <span class="n">View</span> <span class="n">Controller</span>  <span class="o">&lt;--------&gt;</span> <span class="n">View</span> <span class="n">Model</span> <span class="o">&lt;--------&gt;</span> <span class="n">Model</span>
+</code></pre></div>
 
 <p>新的 View 层负责所有的显示与用户交互之类的工作，而其它的，那些原本属于 View Controller 的工作全部交由 View Model 曾来处理，View 的工作能省则省。</p>
 <p>例如，如果要显示用户的全名，而 Model 里却分别存储着用户的名与姓，那么把姓名合在一起的工作交给 View Model 来做，View 只负责显示。</p>
@@ -152,7 +151,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

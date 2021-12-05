@@ -2,7 +2,7 @@
 site:
 
     # Site title
-    title: 穷折腾
+    title: 一个木匠
 
     # Site logo
     logo: https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/favicon.png?x-oss-process=style/jpg
@@ -44,7 +44,7 @@ author:
         - name: Twitter
           url: http://twitter.com/zqqf16
           icon: twitter
-    bio: 不会写代码的钳工不是好木匠
+    bio: 一边写代码，一边做木匠
     location: Beijing
 
 # Path configurations

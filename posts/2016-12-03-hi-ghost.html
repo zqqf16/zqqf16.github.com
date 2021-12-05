@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -63,21 +63,19 @@
 <h4 id="peanut-ghost">附：Peanut -&gt; Ghost 迁移方法</h4>
 <p><strong>上传文章</strong></p>
 <p>进入原博客根目录，执行:    </p>
-<div class="codehilite"><pre><span></span>peanut ghost http://your_ghost.domain username password
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>peanut ghost http://your_ghost.domain username password
+</code></pre></div>
 
 <p>会将本地 Markdown 文件上传到 Ghost。</p>
 <p>PS：由于目前 Ghost api 还处在 0.1 版本，文档还不怎么全，暂时会丢失所有 tag。</p>
 <p><strong>添加 Nginx rewrite 规则</strong></p>
-<div class="codehilite"><pre><span></span><span class="k">location</span> <span class="s">/posts/</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">location</span> <span class="s">/posts/</span> <span class="p">{</span>
     <span class="kn">rewrite</span> <span class="s">&#39;^/posts/(.*)\.html</span><span class="nv">$&#39;</span> <span class="s">/</span><span class="nv">$1/</span> <span class="s">permanent</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="k">location</span> <span class="s">/rss.html</span> <span class="p">{</span>
     <span class="kn">rewrite</span> <span class="s">&#39;^/rss.html</span><span class="nv">$&#39;</span> <span class="s">/rss/</span> <span class="s">permanent</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>Done</p>
 		</section>
@@ -122,7 +120,7 @@
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>

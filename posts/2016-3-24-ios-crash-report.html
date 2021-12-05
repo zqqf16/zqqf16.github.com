@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <meta name="description" content="zqqf16 的个人博客">
-    <title>穷折腾</title>
+    <title>一个木匠</title>
     <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
     <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
@@ -36,7 +36,7 @@
 <body class="">
 	<header class="main-header">
 		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">穷折腾</a></h1>
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
 			<h2 class="blog-description">zqqf16 的个人博客</h2>
 		</div>
 <div class="nav">
@@ -60,23 +60,21 @@
 <p>最近在做与 Crash report 相关的工作，趁机整理一下遇到的问题。</p>
 <h2 id="_2">加载地址</h2>
 <p>在符号化 Crash report 的过程中，如果用 atos，具体的命令是这样的：</p>
-<div class="codehilite"><pre><span></span>atos <span class="o">[</span>-o executable<span class="o">]</span> <span class="o">[</span>-l loadAddress<span class="o">]</span> <span class="o">[</span>-arch architecture<span class="o">]</span> <span class="o">[</span>address ...<span class="o">]</span>
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code>atos <span class="o">[</span>-o executable<span class="o">]</span> <span class="o">[</span>-l loadAddress<span class="o">]</span> <span class="o">[</span>-arch architecture<span class="o">]</span> <span class="o">[</span>address ...<span class="o">]</span>
+</code></pre></div>
 
 <p>iOS 为了防止破解保系统序安全，程序每次执行时的加载地址是随机的。应该从哪找这个加载地址呢？</p>
 <p>正常的做法是从 Crash report 中的 <strong>Binary Images</strong> 这个段中来找，比如：</p>
-<div class="codehilite"><pre><span></span>Binary Images:
-0x100058000 - 0x10006bfff TheElements arm64 &lt;77b672e2b9f53b0f95adbc4f68cb80d6&gt; /var/mobile/Containers/Bundle/Application/CB86658C-F349-4C7A-B73B-CE3B4502D5A4/TheElements.app/TheElements
-...
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="n">Binary</span> <span class="n">Images</span><span class="p">:</span>
+<span class="mh">0x100058000</span> <span class="o">-</span> <span class="mh">0x10006bfff</span> <span class="n">TheElements</span> <span class="n">arm64</span> <span class="o">&lt;</span><span class="mi">77</span><span class="n">b672e2b9f53b0f95adbc4f68cb80d6</span><span class="o">&gt;</span> <span class="o">/</span><span class="k">var</span><span class="o">/</span><span class="n">mobile</span><span class="o">/</span><span class="n">Containers</span><span class="o">/</span><span class="n">Bundle</span><span class="o">/</span><span class="n">Application</span><span class="o">/</span><span class="n">CB86658C</span><span class="o">-</span><span class="n">F349</span><span class="o">-</span><span class="mi">4</span><span class="n">C7A</span><span class="o">-</span><span class="n">B73B</span><span class="o">-</span><span class="n">CE3B4502D5A4</span><span class="o">/</span><span class="n">TheElements</span><span class="o">.</span><span class="n">app</span><span class="o">/</span><span class="n">TheElements</span>
+<span class="o">...</span>
+</code></pre></div>
 
 <p><em>注：例子来源于 Apple 官方文档，下同。</em></p>
 <p>意思就是从 0x100058000 到 0x10006bfff 这段地址空间是 “TheElements” 这个二进制镜像的，所以应用程序的加载地址就是 <strong>0x100058000</strong>。</p>
 <p>上述情况是针对 iOS 系统产生的 Crash report，由于我们自己收集的 report 中并没有 “Binary Images”，所以这个方法就失效了，只能另辟蹊径。</p>
 <p>先看一下堆栈：（再精简的 Crash report 也应该有堆栈吧……）</p>
-<div class="codehilite"><pre><span></span><span class="mi">0</span>   <span class="n">TheElements</span>               <span class="mh">0x00000001000effdc</span> <span class="mh">0x1000e4000</span> <span class="o">+</span> <span class="mi">49116</span>
+<div class="codehilite"><pre><span></span><code><span class="mi">0</span>   <span class="n">TheElements</span>               <span class="mh">0x00000001000effdc</span> <span class="mh">0x1000e4000</span> <span class="o">+</span> <span class="mi">49116</span>
 <span class="mi">1</span>   <span class="n">UIKit</span>                     <span class="mh">0x000000018ca5c2ec</span> <span class="o">-</span><span class="p">[</span><span class="n">UIViewAnimationState</span> <span class="nl">sendDelegateAnimationDidStop</span><span class="p">:</span><span class="nl">finished</span><span class="p">:]</span> <span class="o">+</span> <span class="mi">184</span>
 <span class="mi">2</span>   <span class="n">UIKit</span>                     <span class="mh">0x000000018ca5c1f4</span> <span class="o">-</span><span class="p">[</span><span class="n">UIViewAnimationState</span> <span class="nl">animationDidStop</span><span class="p">:</span><span class="nl">finished</span><span class="p">:]</span> <span class="o">+</span> <span class="mi">100</span>
 <span class="mi">3</span>   <span class="n">QuartzCore</span>                <span class="mh">0x000000018c380f60</span> <span class="n">CA</span><span class="o">::</span><span class="n">Layer</span><span class="o">::</span><span class="n">run_animation_callbacks</span><span class="p">(</span><span class="kt">void</span><span class="o">*</span><span class="p">)</span> <span class="o">+</span> <span class="mi">292</span>
@@ -89,24 +87,22 @@
 <span class="mi">10</span>  <span class="n">UIKit</span>                     <span class="mh">0x000000018ca8aaa0</span> <span class="n">UIApplicationMain</span> <span class="o">+</span> <span class="mi">1484</span>
 <span class="mi">11</span>  <span class="n">TheElements</span>               <span class="mh">0x00000001000e9800</span> <span class="mh">0x1000e4000</span> <span class="o">+</span> <span class="mi">22528</span>
 <span class="mi">12</span>  <span class="n">libdyld</span><span class="p">.</span><span class="n">dylib</span>             <span class="mh">0x0000000198fe2a04</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">0</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>注意包含 “TheElements” 的条目，后面的偏移量全都是 <code>0x1000e4000 + XXX</code> 的形式，这个 “0x1000e4000” 就是 “TheElements” 的加载地址。</p>
 <p>网上能搜到的资料基本上就到此为止了，但是在实践中发现了一个问题：上面的 Crash report 是在 release 版本中产生的，没有包涵任何的调试符号，如果是在 Debug 模式下，也就是包含了调试符号之后，生成的 Crash Report 是这样的：</p>
-<div class="codehilite"><pre><span></span>...
+<div class="codehilite"><pre><span></span><code>...
 24  GraphicsServices          0x18fa2b6fc GSEventRunModal + 168
 25  UIKit                     0x18add2fac UIApplicationMain + 1488
 26  TheElements               0x1000fd2f4 main (main.m:55)
 27  libdyld.dylib             0x198176a08 start + 4
-</pre></div>
-
+</code></pre></div>
 
 <p>不再是“加载地址＋偏移量”的模式了，变成了“符号＋偏移量”，无法从这样的堆栈信息里找到加载地址。</p>
 <p>那么为什么会出现这样的行为呢？</p>
 <p>很遗憾，水平有限，没搜到官方的文档说明，只能从源码入手了。</p>
 <p>在 iOS 中，常用的获取堆栈的方法是 <code>[NSThread callStackReturnAddresses]</code>，在<a href="https://developer.apple.com/library/mac/documentation/Cocoa/Reference/Foundation/Classes/NSThread_Class/#//apple_ref/occ/clm/NSThread/callStackSymbols">官方文档</a>里说这个方法返回的堆栈信息跟 <code>backtrace_symbols</code> 函数一样，这个函数的实现在 Libc 的 <a href="http://opensource.apple.com/source/Libc/Libc-1082.20.4/gen/backtrace.c">gen/backtrace.c</a> 文件内，关键代码如下：</p>
-<div class="codehilite"><pre><span></span><span class="c1">// ...</span>
+<div class="codehilite"><pre><span></span><code><span class="c1">// ...</span>
 <span class="k">if</span> <span class="p">(</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">dli_sname</span><span class="p">)</span> <span class="p">{</span>
     <span class="n">symbol</span> <span class="o">=</span> <span class="n">info</span><span class="o">-&gt;</span><span class="n">dli_sname</span><span class="p">;</span>
     <span class="n">symbol_offset</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">addr</span> <span class="o">-</span> <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">info</span><span class="o">-&gt;</span><span class="n">dli_saddr</span><span class="p">;</span>
@@ -120,28 +116,26 @@
     <span class="n">symbol_offset</span> <span class="o">=</span> <span class="p">(</span><span class="kt">uintptr_t</span><span class="p">)</span><span class="n">addr</span><span class="p">;</span>
 <span class="p">}</span>
 <span class="c1">// ...</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>这段代码在判断堆栈地址显示的的格式，其中，<code>info</code> 是 <code>Dl_info</code> 类型的，定义在 dlfcn.h 文件内：</p>
-<div class="codehilite"><pre><span></span><span class="k">typedef</span> <span class="k">struct</span> <span class="n">dl_info</span> <span class="p">{</span>
+<div class="codehilite"><pre><span></span><code><span class="k">typedef</span> <span class="k">struct</span> <span class="nc">dl_info</span> <span class="p">{</span>
     <span class="k">const</span> <span class="kt">char</span>      <span class="o">*</span><span class="n">dli_fname</span><span class="p">;</span>     <span class="cm">/* Pathname of shared object */</span>
     <span class="kt">void</span>            <span class="o">*</span><span class="n">dli_fbase</span><span class="p">;</span>     <span class="cm">/* Base address of shared object */</span>
     <span class="k">const</span> <span class="kt">char</span>      <span class="o">*</span><span class="n">dli_sname</span><span class="p">;</span>     <span class="cm">/* Name of nearest symbol */</span>
     <span class="kt">void</span>            <span class="o">*</span><span class="n">dli_saddr</span><span class="p">;</span>     <span class="cm">/* Address of nearest symbol */</span>
 <span class="p">}</span> <span class="n">Dl_info</span><span class="p">;</span>
-</pre></div>
-
+</code></pre></div>
 
 <p>因此上面的代码就好理解了，当 <code>dli_sname</code> （也就是最近的符号）存在的时候，就用 “最近的符号＋与最近符号的偏移量” 这种格式，当 <code>dli_sname</code> 不存在时（也就是在非 Debug 模式下），就用 “二进制加载地址＋与加载地址偏移量” 的格式。</p>
 <p>至此，上面的问题就有了答案。</p>
 <p>仅凭堆栈信息，是不能够在 Debug 模式下取得加载地址的， 需要在 Crash report 增加额外的字段，获取加载地址的方法如下：</p>
-<div class="codehilite"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;mach-o/dyld.h&gt;</span><span class="cp"></span>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;mach-o/dyld.h&gt;</span><span class="cp"></span>
 
 <span class="kt">uintptr_t</span> <span class="nf">get_load_address</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">const</span> <span class="k">struct</span> <span class="n">mach_header</span> <span class="o">*</span><span class="n">exe_header</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
+    <span class="k">const</span> <span class="k">struct</span> <span class="nc">mach_header</span> <span class="o">*</span><span class="n">exe_header</span> <span class="o">=</span> <span class="nb">NULL</span><span class="p">;</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">_dyld_image_count</span><span class="p">();</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">const</span> <span class="k">struct</span> <span class="n">mach_header</span> <span class="o">*</span><span class="n">header</span> <span class="o">=</span> <span class="n">_dyld_get_image_header</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
+        <span class="k">const</span> <span class="k">struct</span> <span class="nc">mach_header</span> <span class="o">*</span><span class="n">header</span> <span class="o">=</span> <span class="n">_dyld_get_image_header</span><span class="p">(</span><span class="n">i</span><span class="p">);</span>
         <span class="k">if</span> <span class="p">(</span><span class="n">header</span><span class="o">-&gt;</span><span class="n">filetype</span> <span class="o">==</span> <span class="n">MH_EXECUTE</span><span class="p">)</span> <span class="p">{</span>
             <span class="n">exe_header</span> <span class="o">=</span> <span class="n">header</span><span class="p">;</span>
             <span class="k">break</span><span class="p">;</span>
@@ -150,12 +144,11 @@
 
     <span class="k">return</span> <span class="n">exe_header</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2 id="dsym">dSYM 文件</h2>
 <p>符号化 Crash report 另一个关键点是要找到对应的 dSYM 文件，这个 dSYM 文件其实就是编译时，给编译器加 <code>-g</code> 选项产生的带有调试符号的二进制文件（在 OS X／iOS 上也就是 Mach-O 文件）。可以用 file 以及 otool 命令查看一下：</p>
-<div class="codehilite"><pre><span></span>~<span class="p">|</span>⇒ file Test 
+<div class="codehilite"><pre><span></span><code>~<span class="p">|</span>⇒ file Test 
 Test: Mach-O <span class="m">64</span>-bit dSYM companion file x86_64
 
 ~<span class="p">|</span>⇒ otool -hV Test 
@@ -163,29 +156,27 @@ Test:
 Mach header
       magic cputype cpusubtype  caps    filetype ncmds sizeofcmds      flags
 MH_MAGIC_64  X86_64        ALL  0x00        DSYM     <span class="m">7</span>       <span class="m">4408</span> 0x00000000
-</pre></div>
-
+</code></pre></div>
 
 <p>用 <code>otool -lV</code> 命令可以看到里面有一些叫 “__DWARF” 的段，里面就是各种调试信息。现在的 OS X／iOS  系统中调试信息是用一个叫 “DWARF” 的格式存储的，这是一个调试文件格式的标准，详见<a href="http://dwarfstd.org">http://dwarfstd.org</a> 。</p>
 <h2 id="uuid">UUID</h2>
 <p>可执行文件与 dSYM 文件是通过 UUID 来关联的，在 Mach-O 文件的 Load Command 结构里有个叫 “uuid_command” 的字段，用来存储这个二进制文件的 UUID，在编译时设定，与他对应的 dSYM 文件具有相同的 UUID。</p>
 <p>可以用 otool 或者 dwarfdump 命令查看，比如：</p>
-<div class="codehilite"><pre><span></span>~<span class="p">|</span>⇒ dwarfdump -u Test
+<div class="codehilite"><pre><span></span><code>~<span class="p">|</span>⇒ dwarfdump -u Test
 UUID: DBEC12D1-9A61-33DF-BC39-E2ED2CB1D8F1 <span class="o">(</span>x86_64<span class="o">)</span> Test
 ~<span class="p">|</span>⇒ otool -lV Test <span class="p">|</span> grep uuid    
     uuid DBEC12D1-9A61-33DF-BC39-E2ED2CB1D8F1
-</pre></div>
-
+</code></pre></div>
 
 <p>当然，也可以在程序运行中通过代码获取，比如：(代码来源于<a href="http://stackoverflow.com/a/10121277/2978270">http://stackoverflow.com/a/10121277/2978270</a>)</p>
-<div class="codehilite"><pre><span></span><span class="cp">#import &lt;mach-o/ldsyms.h&gt;</span>
+<div class="codehilite"><pre><span></span><code><span class="cp">#import &lt;mach-o/ldsyms.h&gt;</span>
 
 <span class="n">NSString</span> <span class="o">*</span><span class="nf">executableUUID</span><span class="p">()</span>
 <span class="p">{</span>
     <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">command</span> <span class="o">=</span> <span class="p">(</span><span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="p">)(</span><span class="o">&amp;</span><span class="n">_mh_execute_header</span> <span class="o">+</span> <span class="mi">1</span><span class="p">);</span>
     <span class="k">for</span> <span class="p">(</span><span class="kt">uint32_t</span> <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">idx</span> <span class="o">&lt;</span> <span class="n">_mh_execute_header</span><span class="p">.</span><span class="n">ncmds</span><span class="p">;</span> <span class="o">++</span><span class="n">idx</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">if</span> <span class="p">(((</span><span class="k">const</span> <span class="k">struct</span> <span class="n">load_command</span> <span class="o">*</span><span class="p">)</span><span class="n">command</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">cmd</span> <span class="o">==</span> <span class="n">LC_UUID</span><span class="p">)</span> <span class="p">{</span>
-            <span class="n">command</span> <span class="o">+=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="n">load_command</span><span class="p">);</span>
+        <span class="k">if</span> <span class="p">(((</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">load_command</span> <span class="o">*</span><span class="p">)</span><span class="n">command</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">cmd</span> <span class="o">==</span> <span class="n">LC_UUID</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">command</span> <span class="o">+=</span> <span class="k">sizeof</span><span class="p">(</span><span class="k">struct</span> <span class="nc">load_command</span><span class="p">);</span>
             <span class="k">return</span> <span class="p">[</span><span class="n">NSString</span> <span class="nl">stringWithFormat</span><span class="p">:</span><span class="err">@</span><span class="s">&quot;%02X%02X%02X%02X-%02X%02X-%02X%02X-%02X%02X-%02X%02X%02X%02X%02X%02X&quot;</span><span class="p">,</span>
                     <span class="n">command</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span>
                     <span class="n">command</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">5</span><span class="p">],</span>
@@ -193,20 +184,18 @@ UUID: DBEC12D1-9A61-33DF-BC39-E2ED2CB1D8F1 <span class="o">(</span>x86_64<span c
                     <span class="n">command</span><span class="p">[</span><span class="mi">8</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">9</span><span class="p">],</span>
                     <span class="n">command</span><span class="p">[</span><span class="mi">10</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">11</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">12</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">13</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">14</span><span class="p">],</span> <span class="n">command</span><span class="p">[</span><span class="mi">15</span><span class="p">]];</span>
         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-            <span class="n">command</span> <span class="o">+=</span> <span class="p">((</span><span class="k">const</span> <span class="k">struct</span> <span class="n">load_command</span> <span class="o">*</span><span class="p">)</span><span class="n">command</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">cmdsize</span><span class="p">;</span>
+            <span class="n">command</span> <span class="o">+=</span> <span class="p">((</span><span class="k">const</span> <span class="k">struct</span> <span class="nc">load_command</span> <span class="o">*</span><span class="p">)</span><span class="n">command</span><span class="p">)</span><span class="o">-&gt;</span><span class="n">cmdsize</span><span class="p">;</span>
         <span class="p">}</span>
     <span class="p">}</span>
     <span class="k">return</span> <span class="n">nil</span><span class="p">;</span>
 <span class="p">}</span>
-</pre></div>
-
+</code></pre></div>
 
 <h2 id="_3">更新</h2>
 <p>根据 Apple 员工写的一篇文章《<a href="http://wiki.dwarfstd.org/index.php?title=Apple's_%22Lazy%22_DWARF_Scheme">Apple's "Lazy" DWARF Scheme</a>》来看，链接时，会调用一个叫 <strong>dsymutil</strong> 的工具，把 .o 文件里的调试信息提取出到 dSYM 文件里，并且把 dSYM 文件的 UUID 设置成跟编译结果的 Mach-O 文件一致，方便查找。</p>
 <p>也可以手工生成 dSYM 文件：</p>
-<div class="codehilite"><pre><span></span><span class="nv">$dsymutil</span> YourAPP -o YourAPP.dSYM 
-</pre></div>
-
+<div class="codehilite"><pre><span></span><code><span class="nv">$dsymutil</span> YourAPP -o YourAPP.dSYM 
+</code></pre></div>
 
 <p>当然，前提是 YourAPP 中有调试符号。</p>
 <h2 id="_4">最后</h2>
@@ -261,7 +250,7 @@ UUID: DBEC12D1-9A61-33DF-BC39-E2ED2CB1D8F1 <span class="o">(</span>x86_64<span c
         <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
         <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
         <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 穷折腾</section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
         <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
     </footer>
 </body>
