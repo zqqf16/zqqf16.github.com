@@ -84,15 +84,15 @@
 <p><strong>XMLHTTPRequest</strong></p>
 <p>尝试了一把RESTful，但由于原生的HTML Form不支持DELETE方法，我又不想引入JQuery这样的牛刀。经过一番搜索，找着了XMLHTTPRequest。就照着网上的例子画了个瓢~</p>
 <div class="codehilite"><pre><span></span><code><span class="kd">function</span> <span class="nx">delete_entry</span><span class="p">(</span><span class="nx">id</span><span class="p">)</span> <span class="p">{</span>
-        <span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">FormData</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">form</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">FormData</span><span class="p">();</span>
         <span class="nx">form</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">,</span> <span class="nx">id</span><span class="p">);</span>
 
-        <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
+        <span class="kd">var</span> <span class="nx">xhr</span> <span class="o">=</span> <span class="ow">new</span> <span class="nx">XMLHttpRequest</span><span class="p">();</span>
         <span class="nx">xhr</span><span class="p">.</span><span class="nx">open</span><span class="p">(</span><span class="s2">&quot;DELETE&quot;</span><span class="p">,</span> <span class="s2">&quot;/c/&quot;</span><span class="o">+</span><span class="nx">id</span><span class="p">,</span> <span class="kc">true</span><span class="p">);</span>
         <span class="nx">xhr</span><span class="p">.</span><span class="nx">responseType</span> <span class="o">=</span> <span class="s2">&quot;json&quot;</span><span class="p">;</span>
         <span class="nx">xhr</span><span class="p">.</span><span class="nx">onload</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="p">{</span>
                 <span class="k">if</span> <span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="mf">200</span><span class="p">)</span> <span class="p">{</span>
-                        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nx">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
+                        <span class="kd">var</span> <span class="nx">data</span> <span class="o">=</span> <span class="nb">JSON</span><span class="p">.</span><span class="nx">parse</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">response</span><span class="p">);</span>
                         <span class="k">if</span> <span class="p">(</span><span class="nx">data</span><span class="p">.</span><span class="nx">status</span> <span class="o">==</span> <span class="s1">&#39;success&#39;</span><span class="p">){</span>
                                 <span class="nb">window</span><span class="p">.</span><span class="nx">location</span><span class="p">.</span><span class="nx">reload</span><span class="p">();</span>
                         <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>

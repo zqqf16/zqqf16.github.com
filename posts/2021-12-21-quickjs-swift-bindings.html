@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta name="description" content="zqqf16 的个人博客">
+    <title>一个木匠</title>
+    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+    <script type="text/javascript">
+    	$.bigfoot();
+    </script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'UA-41282906-2');
+</script>
+
+<link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
+</head>
+<body class="">
+	<header class="main-header">
+		<div class="main-header-content">
+			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
+			<h2 class="blog-description">zqqf16 的个人博客</h2>
+		</div>
+<div class="nav">
+		<a class="nav-link" role="presentation" href="/">Home</a>
+		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>	</header>
+
+<main class="content" role="main">
+	<article class="post ">
+		<header class="post-header">
+			<h2 class="post-title">在 Swift 中使用 QuickJS</h2>
+			<section class="post-meta">
+				<time class="post-date" datetime="2021-12-21">2021-12-21</time>
+			</section>
+		</header>
+		<section class="post-content">
+			<h2 id="_1">前言</h2>
+<p>去年用 Swift 写了一个处理日志的 macOS app，其中有个比较核心的功能，可以导入自定义脚本来过滤或者分析日志。
+一开始选择的脚本语言是 Python，并且用 <a href="https://github.com/pvieito/PythonKit">PythonKit</a> 实现了 Swift 与 Python 的集成。</p>
+<p>但是，PythonKit <a href="https://github.com/pvieito/PythonKit/blob/839ef68d9fe5c85ab212272fffbe54e229374d5c/PythonKit/PythonLibrary.swift#L98">加载 Python 库</a>的版本会跟当前系统相关。
+比如，如果我的默认Pyhton版本是2.7，那么在我电脑上被加载的是2.7，而其他人电脑上可能就是3.x，这样就会导致处理日志的脚本做不到100%兼容各种环境。</p>
+<p>因此决定引入 Javascript 作为替代的脚本语言，JS 引擎选择了一直想尝试的 <a href="https://bellard.org/quickjs/">QuickJS</a>。</p>
+<h2 id="_2">集成</h2>
+<p>QuickJS 的代码非常精悍，如果作为库来使用，核心的 C 文件只有5个(<code>quickjs.c</code>、<code>quickjs-libc.c</code>、<code>libregexp.c</code>、<code>libunicode.c</code>、<code>cutils.c</code>)，而且绝大多数代码都集中在<code>quickjs.c</code>、<code>quickjs-libc.c</code>这两个文件里。</p>
+<p>编译条件也极其简单，不像传统的 C 语言工程，需要 <code>./configure</code> 或者安装一大堆依赖。把这几个文件拖到 Xcode 工程里，直接 Run 就能编过。</p>
+<h2 id="_3">简单使用</h2>
+<p>启动一个 QuickJS 引擎步骤非常简单，大致分成以下几步：</p>
+<ol>
+<li>创建一个 <strong>Runtime</strong>：<code>JS_NewRuntime</code></li>
+<li>创建一个 <strong>Context</strong>：<code>JS_NewContext</code></li>
+<li>执行 JS 代码：<code>JS_Eval</code></li>
+</ol>
+<p>详细的例子可以参考 <a href="https://github.com/bellard/quickjs/blob/master/qjsc.c">qjsc.c</a> 或者其它 demo。</p>
+<h2 id="_4">封装</h2>
+<p>为了使上层使用起来更方便，我做了一个 Swift Package，把 C 语言接口包装成了更 Swift 的方式，代码在：https://github.com/zqqf16/QuickJS-Swift。</p>
+<p>调用者只需要在你的 <code>Package.swift</code> 文件里加上</p>
+<div class="codehilite"><pre><span></span><code><span class="p">.</span><span class="n">package</span><span class="p">(</span><span class="n">url</span><span class="p">:</span> <span class="s">&quot;https://github.com/zqqf16/QuickJS-Swift.git&quot;</span><span class="p">,</span> <span class="p">.</span><span class="n">branch</span><span class="p">(</span><span class="s">&quot;master&quot;</span><span class="p">)),</span>
+</code></pre></div>
+
+<p>就可以了。</p>
+<h3 id="swift-js">Swift 调用 JS 代码</h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">import</span> <span class="nc">QuickJS</span>
+
+<span class="kd">let</span> <span class="nv">runtime</span> <span class="p">=</span> <span class="n">JSRuntime</span><span class="p">()</span><span class="o">!</span>
+<span class="kd">let</span> <span class="nv">context</span> <span class="p">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">createContext</span><span class="p">()</span><span class="o">!</span>
+
+<span class="kd">let</span> <span class="nv">jsCode</span> <span class="p">=</span> <span class="s">&quot;var i = 10; i;&quot;</span>
+<span class="kd">let</span> <span class="nv">result</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">eval</span><span class="p">(</span><span class="n">jsCode</span><span class="p">).</span><span class="n">int</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Result is </span><span class="si">\(</span><span class="n">result</span><span class="p">!</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span> <span class="c1">//10</span>
+</code></pre></div>
+
+<h3 id="swift-module">用 Swift 实现一个 Module</h3>
+<div class="codehilite"><pre><span></span><code><span class="kd">import</span> <span class="nc">QuickJS</span>
+
+<span class="kd">let</span> <span class="nv">runtime</span> <span class="p">=</span> <span class="n">JSRuntime</span><span class="p">()</span><span class="o">!</span>
+<span class="kd">let</span> <span class="nv">context</span> <span class="p">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">createContext</span><span class="p">()</span><span class="o">!</span>
+
+<span class="c1">// Create a module named &quot;Magic&quot; with two functions &quot;getMagic&quot; and &quot;getMagic2&quot;</span>
+<span class="n">context</span><span class="p">.</span><span class="n">module</span><span class="p">(</span><span class="s">&quot;Magic&quot;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">JSModuleFunction</span><span class="p">(</span><span class="s">&quot;getMagic&quot;</span><span class="p">,</span> <span class="n">argc</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">context</span><span class="p">,</span> <span class="n">this</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span> <span class="k">in</span>
+        <span class="k">return</span> <span class="mi">10</span>
+    <span class="p">}</span>
+    <span class="n">JSModuleFunction</span><span class="p">(</span><span class="s">&quot;getMagic2&quot;</span><span class="p">,</span> <span class="n">argc</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span> <span class="n">context</span><span class="p">,</span> <span class="n">this</span><span class="p">,</span> <span class="n">argc</span><span class="p">,</span> <span class="n">argv</span> <span class="k">in</span>
+        <span class="k">return</span> <span class="mi">20</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">let</span> <span class="nv">getMagic</span> <span class="p">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">&quot;</span><span class="n">use</span> <span class="n">strict</span><span class="s">&quot;;</span>
+<span class="s">import { getMagic, getMagic2 } from &#39;swift&#39;</span>
+<span class="s">globalThis.magic = getMagic();</span>
+<span class="s">globalThis.magic2 = getMagic2();</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="n">context</span><span class="p">.</span><span class="n">eval</span><span class="p">(</span><span class="n">getMagic</span><span class="p">,</span> <span class="n">type</span><span class="p">:</span> <span class="p">.</span><span class="n">module</span><span class="p">)</span>
+
+<span class="kd">let</span> <span class="nv">magic</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">eval</span><span class="p">(</span><span class="s">&quot;magic;&quot;</span><span class="p">).</span><span class="n">int</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Magic is </span><span class="si">\(</span><span class="n">magic</span><span class="p">!</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span> <span class="c1">//10</span>
+
+<span class="kd">let</span> <span class="nv">magic2</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">eval</span><span class="p">(</span><span class="s">&quot;magic2;&quot;</span><span class="p">).</span><span class="n">int</span>
+<span class="bp">print</span><span class="p">(</span><span class="s">&quot;Magic2 is </span><span class="si">\(</span><span class="n">magic2</span><span class="p">!</span><span class="si">)</span><span class="s">&quot;</span><span class="p">)</span> <span class="c1">//20</span>
+</code></pre></div>
+
+<h2 id="runloop">Runloop</h2>
+<p>在 Nodejs 或者其它实现（比如 <a href="https://github.com/saghul/txiki.js">txiki</a>）里，异步 IO 都是通过 <code>libuv</code> 来处理的，既然用了 Swift，就打算用 NSRunloop 了。</p>
+<p>参考了一下 txiki 代码，把 runloop 实现成了一个 <a href="https://github.com/zqqf16/QuickJS-Swift/blob/master/Sources/QuickJS/JSRunloop.swift">module</a></p>
+<p>核心的原理很简单，就是 JS 在调用 <code>setTimeout</code> 等方法时，Swift 创建一个 NSTimer 插到 runloop 中，timer 触发的时候再去调用 JS 的 callback 代码。</p>
+<p>使用：</p>
+<div class="codehilite"><pre><span></span><code><span class="kd">let</span> <span class="nv">runtime</span> <span class="p">=</span> <span class="n">JSRuntime</span><span class="p">()</span><span class="o">!</span>
+<span class="kd">let</span> <span class="nv">context</span> <span class="p">=</span> <span class="n">runtime</span><span class="p">.</span><span class="n">createContext</span><span class="p">()</span><span class="o">!</span>
+<span class="n">context</span><span class="p">.</span><span class="n">enableRunloop</span><span class="p">()</span>
+
+<span class="kd">let</span> <span class="nv">jsCode</span> <span class="p">=</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">&quot;</span><span class="n">use</span> <span class="n">strict</span><span class="s">&quot;;</span>
+<span class="s">import * as rl from &quot;</span><span class="n">Runloop</span><span class="s">&quot;;</span>
+<span class="s">rl.setTimeout(function(){ console.log(&quot;</span><span class="n">Hello</span> <span class="n">Runloop</span><span class="s">&quot;); }, 3000);</span>
+<span class="s">&quot;&quot;&quot;</span>
+
+<span class="kd">let</span> <span class="nv">_</span> <span class="p">=</span> <span class="n">context</span><span class="p">.</span><span class="n">eval</span><span class="p">(</span><span class="n">jsCode</span><span class="p">,</span> <span class="n">type</span><span class="p">:</span> <span class="p">.</span><span class="n">module</span><span class="p">)</span>
+
+<span class="c1">// waiting for 3 seconds</span>
+<span class="c1">// Hello Runloop</span>
+</code></pre></div>
+
+<p>目前还是在demo阶段，只支持 <code>setTimeout</code> 一个方法😂</p>
+<ul>
+<li>待续 -</li>
+</ul>
+		</section>
+		<footer class="post-footer">
+			<section class="tags post-meta">
+					Tagged 
+					<a href="/tags/swift/"> swift </a>
+					<a href="/tags/quickjs/"> quickjs </a>
+			</section>
+			<section class="share" hidden="true">
+                <h4>Share this post</h4>
+                <a class="icon-twitter" href="https://twitter.com/share?text=在 Swift 中使用 QuickJS&amp;url=https://blog.zorro.im/posts/2021-12-21-quickjs-swift-bindings.html"
+                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2021-12-21-quickjs-swift-bindings.html"
+                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+                    <span class="hidden"></span>
+                </a>
+                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2021-12-21-quickjs-swift-bindings.html"
+                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+                    <span class="hidden"></span>
+                </a>
+            </section>
+		</footer>
+<footer class="post comments">
+  <div id="disqus_thread"></div>
+  <script type="text/javascript">
+  (function() {
+  var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+  dsq.src = '//' + 'zqqf16' + '.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+  })();
+  </script>
+  <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</footer>	</article>
+</main>
+
+    
+    <footer class="site-footer">
+        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
+        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
+        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
+        <section class="copyright">&copy; 2018 一个木匠</section>
+        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+    </footer>
+</body>
+</html>

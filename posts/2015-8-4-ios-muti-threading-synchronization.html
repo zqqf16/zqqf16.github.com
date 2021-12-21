@@ -74,85 +74,85 @@
 <li><code>pthread_mutex_destroy</code> 销毁锁</li>
 </ul>
 <p>例子：</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
 
-<span class="n">pthread_mutex_t</span> <span class="n">mutex</span><span class="p">;</span>
-<span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="n">pthread_mutex_t</span><span class="w"> </span><span class="n">mutex</span><span class="p">;</span><span class="w"></span>
+<span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="nf">mutiThreadMethod</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">mutiThreadMethod</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
 
-    <span class="c1">// Do something</span>
+<span class="w">    </span><span class="c1">// Do something</span>
 
-    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="nf">destroyLock</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">destroyLock</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <h3 id="12-synchronized">1.2 @synchronized</h3>
 <p>@synchronized 应该是用起来最简单的方式了，例如：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mutiThreadMethod2</span>
-<span class="p">{</span>
-    <span class="k">@synchronized</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span> <span class="p">{</span>
-        <span class="c1">// Do something</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mutiThreadMethod2</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">@synchronized</span><span class="p">(</span><span class="nb">self</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Do something</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>用 clang 改写一下就可以发现，其实编译器为这个语法糖做了很多工作，大致如下：</p>
 <div class="codehilite"><pre><span></span><code><span class="c1">//...</span>
 
-<span class="n">objc_sync_enter</span>
-<span class="n">objc_exception_try_enter</span>
-<span class="n">setjmp</span>
-<span class="n">objc_exception_extract</span>
+<span class="n">objc_sync_enter</span><span class="w"></span>
+<span class="n">objc_exception_try_enter</span><span class="w"></span>
+<span class="n">setjmp</span><span class="w"></span>
+<span class="n">objc_exception_extract</span><span class="w"></span>
 
 <span class="c1">// Do something</span>
 
-<span class="n">objc_exception_try_exit</span>
-<span class="n">objc_sync_exit</span>
+<span class="n">objc_exception_try_exit</span><span class="w"></span>
+<span class="n">objc_sync_exit</span><span class="w"></span>
 <span class="c1">// ...</span>
-<span class="n">objc_exception_throw</span>
+<span class="n">objc_exception_throw</span><span class="w"></span>
 <span class="c1">// ...</span>
 </code></pre></div>
 
 <p>可以看到做了很多与锁有关的操作，其性能不如 POSIX 方式，尽管后者难看些。</p>
 <h3 id="13-nslock">1.3 NSLock</h3>
-<div class="codehilite"><pre><span></span><code><span class="bp">NSLock</span> <span class="o">*</span><span class="n">lock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="bp">NSLock</span><span class="w"> </span><span class="o">*</span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSLock</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
 
 <span class="c1">// ...</span>
 
-<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mutiThreadMethod3</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">([</span><span class="n">lock</span> <span class="n">tryLock</span><span class="p">])</span> <span class="p">{</span>
-        <span class="c1">// Do something</span>
-        <span class="c1">// ...</span>
-        <span class="p">[</span><span class="n">lock</span> <span class="n">unlock</span><span class="p">];</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<span class="p">-</span> <span class="p">(</span><span class="kt">void</span><span class="p">)</span><span class="nf">mutiThreadMethod3</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">lock</span><span class="w"> </span><span class="n">tryLock</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// Do something</span>
+<span class="w">        </span><span class="c1">// ...</span>
+<span class="w">        </span><span class="p">[</span><span class="n">lock</span><span class="w"> </span><span class="n">unlock</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="2-recursive-lock">2. 递归锁（Recursive Lock）</h2>
 <p>递归锁是互斥锁的变体，它允许一个线程在释放它之前多次获取它，并且只有在释放相同次数之后其它线程才能获取它。</p>
-<div class="codehilite"><pre><span></span><code><span class="bp">NSRecursiveLock</span> <span class="o">*</span><span class="n">theLock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSRecursiveLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="bp">NSRecursiveLock</span><span class="w"> </span><span class="o">*</span><span class="n">theLock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSRecursiveLock</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="nf">MyRecursiveFunction</span><span class="p">(</span><span class="kt">int</span> <span class="n">value</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="p">[</span><span class="n">theLock</span> <span class="n">lock</span><span class="p">];</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">value</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">{</span>
-        <span class="o">--</span><span class="n">value</span><span class="p">;</span>
-        <span class="n">MyRecursiveFunction</span><span class="p">(</span><span class="n">value</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="p">[</span><span class="n">theLock</span> <span class="n">unlock</span><span class="p">];</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">MyRecursiveFunction</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">theLock</span><span class="w"> </span><span class="n">lock</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="o">--</span><span class="n">value</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">MyRecursiveFunction</span><span class="p">(</span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">theLock</span><span class="w"> </span><span class="n">unlock</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">MyRecursiveFunction</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span>
+<span class="n">MyRecursiveFunction</span><span class="p">(</span><span class="mi">5</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="3-read-write-lock">3. 读写锁（Read-write Lock）</h2>
@@ -169,24 +169,24 @@
 <li><code>pthread_rwlock_destroy</code> 销毁锁</li>
 </ul>
 <p>例子：</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
 
-<span class="n">pthread_rwlock_t</span> <span class="n">rwlock</span><span class="p">;</span>
-<span class="n">pthread_rwlock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="n">pthread_rwlock_t</span><span class="w"> </span><span class="n">rwlock</span><span class="p">;</span><span class="w"></span>
+<span class="n">pthread_rwlock_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="nf">mutiThreadWritting</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>
-    <span class="c1">// write</span>
-    <span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">mutiThreadWritting</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_rwlock_wrlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// write</span>
+<span class="w">    </span><span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="nf">mutiThreadReadding</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">pthread_rwlock_rdlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>
-    <span class="c1">// read</span>
-    <span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">mutiThreadReadding</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_rwlock_rdlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// read</span>
+<span class="w">    </span><span class="n">pthread_rwlock_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">rwlock</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="4-spin-lock">4. 自旋锁（Spin Lock）</h2>
@@ -194,28 +194,28 @@
 <p>它的优点是效率高，不用进行线程切换。缺点是如果一个线程霸占锁的时间过长，自旋会消耗 CPU 资源。</p>
 <div class="codehilite"><pre><span></span><code><span class="cp">#import &lt;libkern/OSAtomic.h&gt;</span>
 
-<span class="k">static</span> <span class="n">OSSpinLock</span> <span class="n">lock</span> <span class="o">=</span> <span class="n">OS_SPINLOCK_INIT</span><span class="p">;</span>
+<span class="k">static</span><span class="w"> </span><span class="n">OSSpinLock</span><span class="w"> </span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">OS_SPINLOCK_INIT</span><span class="p">;</span><span class="w"></span>
 
-<span class="kt">void</span> <span class="n">mutiThreadMethod4</span>
-<span class="p">{</span>
-    <span class="n">OSSpinLockLock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
-    <span class="c1">// Do something</span>
-    <span class="n">OSSpinLockUnlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="kt">void</span><span class="w"> </span><span class="n">mutiThreadMethod4</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">OSSpinLockLock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Do something</span>
+<span class="w">    </span><span class="n">OSSpinLockUnlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="5-distributed-lock">5. 分布锁（Distributed Lock）</h2>
 <p>严格来说，分布锁是进程间同步的工具，有点像 Unix 下的各种 lock 文件，比如 apt-get 的 “/var/lib/apt/lists/lock”。</p>
 <p>它并不强制进程休眠，只是起到告知的作用。具体如何处理资源被占，完全由进程自己决定。</p>
 <p>iOS 上几本用不上分布锁，在 OS X 中，可以用 <strong>NSDistributedLock</strong> 实现：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">NSDistributedLock</span> <span class="o">*</span><span class="n">lock</span> <span class="o">=</span> <span class="p">[</span><span class="n">NSDistributedLock</span> <span class="nl">lockWithPath</span><span class="p">:</span><span class="n">path</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="n">NSDistributedLock</span><span class="w"> </span><span class="o">*</span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">NSDistributedLock</span><span class="w"> </span><span class="nl">lockWithPath</span><span class="p">:</span><span class="n">path</span><span class="p">];</span><span class="w"></span>
 
 <span class="c1">// ...</span>
 
-<span class="k">if</span> <span class="p">([</span><span class="n">lock</span> <span class="n">tryLock</span><span class="p">])</span> <span class="p">{</span>
-    <span class="c1">// Do something</span>
-    <span class="p">[</span><span class="n">lock</span> <span class="n">unlock</span><span class="p">];</span>
-<span class="p">}</span>
+<span class="k">if</span><span class="w"> </span><span class="p">([</span><span class="n">lock</span><span class="w"> </span><span class="n">tryLock</span><span class="p">])</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Do something</span>
+<span class="w">    </span><span class="p">[</span><span class="n">lock</span><span class="w"> </span><span class="n">unlock</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>或者，可以直接通过写 lock 文件的方式来实现。</p>
@@ -234,86 +234,86 @@
 <li><code>pthread_cond_destroy</code> 销毁</li>
 </ul>
 <p>例子：</p>
-<div class="codehilite"><pre><span></span><code><span class="cp">#include</span> <span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
+<div class="codehilite"><pre><span></span><code><span class="cp">#include</span><span class="w"> </span><span class="cpf">&lt;pthread.h&gt;</span><span class="cp"></span>
 
-<span class="k">static</span> <span class="n">pthread_mutex_t</span> <span class="n">mutex</span><span class="p">;</span>
-<span class="k">static</span> <span class="n">pthread_cond_t</span> <span class="n">condition</span><span class="p">;</span>
-
-<span class="c1">// ...</span>
-
-<span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
-<span class="n">pthread_cond_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">);</span>
+<span class="k">static</span><span class="w"> </span><span class="n">pthread_mutex_t</span><span class="w"> </span><span class="n">mutex</span><span class="p">;</span><span class="w"></span>
+<span class="k">static</span><span class="w"> </span><span class="n">pthread_cond_t</span><span class="w"> </span><span class="n">condition</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">// ...</span>
 
-<span class="kt">void</span> <span class="nf">waitCondition</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-    <span class="k">while</span> <span class="p">(</span><span class="n">value</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">,</span> <span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="kt">void</span> <span class="nf">triggerCondition</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-
-    <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span><span class="p">;</span>
-
-    <span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-    <span class="n">pthread_cond_broadcast</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">);</span>
-<span class="p">}</span>
+<span class="n">pthread_mutex_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
+<span class="n">pthread_cond_init</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">// ...</span>
 
-<span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span>
-<span class="n">pthread_cond_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">);</span>
+<span class="kt">void</span><span class="w"> </span><span class="nf">waitCondition</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">value</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">pthread_cond_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="kt">void</span><span class="w"> </span><span class="nf">triggerCondition</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_mutex_lock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+
+<span class="w">    </span><span class="n">pthread_mutex_unlock</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="w">    </span><span class="n">pthread_cond_broadcast</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">);</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+
+<span class="c1">// ...</span>
+
+<span class="n">pthread_mutex_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">mutex</span><span class="p">);</span><span class="w"></span>
+<span class="n">pthread_cond_destroy</span><span class="p">(</span><span class="o">&amp;</span><span class="n">condition</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 
 <h3 id="62-nscondition">6.2 NSCondition</h3>
 <p>例子摘自 <a href="https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/Multithreading/ThreadSafety/ThreadSafety.html">Threading Programming Guide</a></p>
-<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">lock</span><span class="p">];</span>
-<span class="k">while</span> <span class="p">(</span><span class="n">timeToDoWork</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">)</span>
-    <span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">wait</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">cocoaCondition</span><span class="w"> </span><span class="n">lock</span><span class="p">];</span><span class="w"></span>
+<span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="n">timeToDoWork</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">cocoaCondition</span><span class="w"> </span><span class="n">wait</span><span class="p">];</span><span class="w"></span>
 
-<span class="n">timeToDoWork</span><span class="o">--</span><span class="p">;</span>
+<span class="n">timeToDoWork</span><span class="o">--</span><span class="p">;</span><span class="w"></span>
 
 <span class="c1">// Do real work here.</span>
 
-<span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">unlock</span><span class="p">];</span>
+<span class="p">[</span><span class="n">cocoaCondition</span><span class="w"> </span><span class="n">unlock</span><span class="p">];</span><span class="w"></span>
 </code></pre></div>
 
 <p>发送信号：</p>
-<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">lock</span><span class="p">];</span>
-<span class="n">timeToDoWork</span><span class="o">++</span><span class="p">;</span>
-<span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">signal</span><span class="p">];</span>
-<span class="p">[</span><span class="n">cocoaCondition</span> <span class="n">unlock</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">cocoaCondition</span><span class="w"> </span><span class="n">lock</span><span class="p">];</span><span class="w"></span>
+<span class="n">timeToDoWork</span><span class="o">++</span><span class="p">;</span><span class="w"></span>
+<span class="p">[</span><span class="n">cocoaCondition</span><span class="w"> </span><span class="n">signal</span><span class="p">];</span><span class="w"></span>
+<span class="p">[</span><span class="n">cocoaCondition</span><span class="w"> </span><span class="n">unlock</span><span class="p">];</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="7-nsconditionlock">7. NSConditionLock</h2>
 <p>NSConditionLock 跟 NSCondition 类似，但是实现机制是不一样的，所以单独列了出来。</p>
 <p>例子：</p>
 <p>生产者</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">id</span> <span class="n">condLock</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NSConditionLock</span> <span class="n">alloc</span><span class="p">]</span> <span class="nl">initWithCondition</span><span class="p">:</span><span class="n">NO_DATA</span><span class="p">];</span>
+<div class="codehilite"><pre><span></span><code><span class="kt">id</span><span class="w"> </span><span class="n">condLock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSConditionLock</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="nl">initWithCondition</span><span class="p">:</span><span class="n">NO_DATA</span><span class="p">];</span><span class="w"></span>
 
-<span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="p">[</span><span class="n">condLock</span> <span class="n">lock</span><span class="p">];</span>
-    <span class="c1">// Add data to the queue.</span>
-    <span class="p">[</span><span class="n">condLock</span> <span class="nl">unlockWithCondition</span><span class="p">:</span><span class="n">HAS_DATA</span><span class="p">];</span>
-<span class="p">}</span>
+<span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="n">lock</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Add data to the queue.</span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="nl">unlockWithCondition</span><span class="p">:</span><span class="n">HAS_DATA</span><span class="p">];</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>消费者</p>
-<div class="codehilite"><pre><span></span><code><span class="k">while</span> <span class="p">(</span><span class="nb">true</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="p">[</span><span class="n">condLock</span> <span class="nl">lockWhenCondition</span><span class="p">:</span><span class="n">HAS_DATA</span><span class="p">];</span>
-    <span class="c1">// Remove data from the queue.</span>
-    <span class="p">[</span><span class="n">condLock</span> <span class="nl">unlockWithCondition</span><span class="p">:(</span><span class="n">isEmpty</span> <span class="o">?</span> <span class="nl">NO_DATA</span> <span class="p">:</span> <span class="n">HAS_DATA</span><span class="p">)];</span>
+<div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="nl">lockWhenCondition</span><span class="p">:</span><span class="n">HAS_DATA</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="c1">// Remove data from the queue.</span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="nl">unlockWithCondition</span><span class="p">:(</span><span class="n">isEmpty</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nl">NO_DATA</span> <span class="p">:</span><span class="w"> </span><span class="n">HAS_DATA</span><span class="p">)];</span><span class="w"></span>
 
-    <span class="c1">// Process the data locally.</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="c1">// Process the data locally.</span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="8-semaphore">8. 信号量（Semaphore）</h2>
@@ -336,13 +336,13 @@
 <li><code>dispatch_semaphore_wait</code>等待信号（信号量减一，P 操作）</li>
 </ul>
 <p>例子：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dispatch_semaphore_t</span> <span class="n">semaphore</span> <span class="o">=</span> <span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dispatch_semaphore_t</span><span class="w"> </span><span class="n">semaphore</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">dispatch_semaphore_create</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span><span class="w"></span>
 
 <span class="c1">// ...</span>
 
-<span class="n">dispatch_semaphore_wait</span><span class="p">(</span><span class="n">semaphore</span><span class="p">,</span> <span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span>
+<span class="n">dispatch_semaphore_wait</span><span class="p">(</span><span class="n">semaphore</span><span class="p">,</span><span class="w"> </span><span class="n">DISPATCH_TIME_FOREVER</span><span class="p">);</span><span class="w"></span>
 <span class="c1">// Do something</span>
-<span class="n">dispatch_semaphore_signal</span><span class="p">(</span><span class="n">semaphore</span><span class="p">);</span>
+<span class="n">dispatch_semaphore_signal</span><span class="p">(</span><span class="n">semaphore</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="9-barrier">9. 栅栏／屏障（Barrier）</h2>
@@ -357,33 +357,33 @@
 <h3 id="92-dispatch-barrier">9.2 Dispatch Barrier</h3>
 <p>Dispatch Barrier 的概念跟 POSIX 类似，不同的是它是针对于 GCD 异步任务的。它可以让在它之前提交的异步任务都执行完成之后再执行。</p>
 <p>例子：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span> <span class="n">block1</span><span class="p">);</span>
-<span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span> <span class="n">block2</span><span class="p">);</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span><span class="w"> </span><span class="n">block1</span><span class="p">);</span><span class="w"></span>
+<span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span><span class="w"> </span><span class="n">block2</span><span class="p">);</span><span class="w"></span>
 <span class="c1">// block3 会在 block1 和 block2 执行完成之后再执行</span>
-<span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span> <span class="n">block3</span><span class="p">);</span>
+<span class="n">dispatch_barrier_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span><span class="w"> </span><span class="n">block3</span><span class="p">);</span><span class="w"></span>
 <span class="c1">// block4 和 block5 会在 block3 之后执行</span>
-<span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span> <span class="n">block4</span><span class="p">);</span>
-<span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span> <span class="n">block5</span><span class="p">);</span>
+<span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span><span class="w"> </span><span class="n">block4</span><span class="p">);</span><span class="w"></span>
+<span class="n">dispatch_async</span><span class="p">(</span><span class="n">async_queue</span><span class="p">,</span><span class="w"> </span><span class="n">block5</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 
 <h2 id="_1">后记</h2>
 <p><strong>锁</strong> 这个东西可谓 “小用怡情，滥用伤身”，用的时候一不小心就会有各种各样的问题，比如死锁，我曾经就这样写过：</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">void</span> <span class="nf">func</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">LOCK</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">func</span><span class="p">()</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">LOCK</span><span class="p">;</span><span class="w"></span>
 
-    <span class="c1">//...</span>
+<span class="w">    </span><span class="c1">//...</span>
 
-    <span class="k">if</span> <span class="p">(</span><span class="n">someCondition</span><span class="p">)</span> <span class="p">{</span>
-        <span class="k">return</span><span class="p">;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">someCondition</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">UNLOCK</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="n">UNLOCK</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>在 iOS 中，很多时候都可以用 GCD 的串行队列来避免使用锁：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span> <span class="n">block</span><span class="p">);</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dispatch_async</span><span class="p">(</span><span class="n">serialQueue</span><span class="p">,</span><span class="w"> </span><span class="n">block</span><span class="p">);</span><span class="w"></span>
 </code></pre></div>
 
 <p>因为串行队列中的任务一次只能执行一个，所以就不存在资源的竞争，还能有效的避免死锁问题。</p>
@@ -396,15 +396,15 @@
 <p>在 A 处于临界区时，B 线程试图加锁，发生竞争，等待 A 结束，需要等待 0~102ms。</p>
 <p>及时用了超级 NB 的锁，加解锁只需 0.0000000001ms，对于 B 来说也无济于事。</p>
 <p>我曾见过一个横跨了几百行代码的锁，类似于这样：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">LOCK</span>
+<div class="codehilite"><pre><span></span><code><span class="n">LOCK</span><span class="w"></span>
 
 <span class="c1">// 中间省略几百行</span>
 
-<span class="n">x</span> <span class="o">=</span> <span class="n">y</span><span class="p">;</span> <span class="c1">// 真正需要加锁的代码</span>
+<span class="n">x</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">y</span><span class="p">;</span><span class="w"> </span><span class="c1">// 真正需要加锁的代码</span>
 
 <span class="c1">// 又省略几百行</span>
 
-<span class="n">UNLOCK</span>
+<span class="n">UNLOCK</span><span class="w"></span>
 </code></pre></div>
 
 <p>写代码的同学还特意用了信号量，感觉能提高效率……</p>

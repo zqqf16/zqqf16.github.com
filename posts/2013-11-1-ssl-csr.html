@@ -84,21 +84,21 @@
 </code></pre></div>
 
 <p>打开z.key文件，可以看到私钥，类似这样的：</p>
-<div class="codehilite"><pre><span></span><code><span class="o">-----</span><span class="kr">BEGIN</span> <span class="n">ENCRYPTED</span> <span class="n">PRIVATE</span> <span class="n">KEY</span><span class="o">-----</span>
-<span class="n">MIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDgQIj6V2J4snMfMCAggA</span>
-<span class="n">MBQGCCqGSIb3DQMHBAgCsEw8GV7nDASCBMhm0VvIGGreMAjQne7gx56nv85HLl</span><span class="o">/</span><span class="n">T</span>
-<span class="n">e0TWboN4PGlq4lmaWJSE9iYolz</span><span class="p">.....</span>
-<span class="p">.....</span>
-<span class="o">-----</span><span class="kr">END</span> <span class="n">ENCRYPTED</span> <span class="n">PRIVATE</span> <span class="n">KEY</span><span class="o">-----</span>
+<div class="codehilite"><pre><span></span><code><span class="gh">-----BEGIN ENCRYPTED PRIVATE KEY-----</span><span class="w"></span>
+<span class="s">MIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDgQIj6V2J4snMfMCAggA</span><span class="w"></span>
+<span class="s">MBQGCCqGSIb3DQMHBAgCsEw8GV7nDASCBMhm0VvIGGreMAjQne7gx56nv85HLl/T</span><span class="w"></span>
+<span class="s">e0TWboN4PGlq4lmaWJSE9iYolz.....</span><span class="w"></span>
+<span class="s">.....</span><span class="w"></span>
+<span class="gh">-----END ENCRYPTED PRIVATE KEY-----</span><span class="w"></span>
 </code></pre></div>
 
 <p>这是用PEM(Privacy Enhanced Mail)格式存储的，内容用Base64编码过。同样的，z.csr文件也是类似的格式：</p>
-<div class="codehilite"><pre><span></span><code><span class="o">-----</span><span class="kr">BEGIN</span> <span class="n">CERTIFICATE</span> <span class="n">REQUEST</span><span class="o">-----</span>
-<span class="n">MIIC4jCCAcoCAQAwgYUxCzAJBgNVBAYTAkNOMRAwDgYDVQQIDAdCZWlKaW5nMRAw</span>
-<span class="n">DgYDVQQHDAdCZWlKaW5nMQ0wCwYDVQQKDARaenp6MQwwCgYDVQQLDANkZXYxFDAS</span>
-<span class="n">BgNVBAMMC3pxcWYxNi5p</span><span class="p">.....</span>
-<span class="p">....</span>
-<span class="o">-----</span><span class="kr">END</span> <span class="n">CERTIFICATE</span> <span class="n">REQUEST</span><span class="o">-----</span>
+<div class="codehilite"><pre><span></span><code><span class="gh">-----BEGIN CERTIFICATE REQUEST-----</span><span class="w"></span>
+<span class="s">MIIC4jCCAcoCAQAwgYUxCzAJBgNVBAYTAkNOMRAwDgYDVQQIDAdCZWlKaW5nMRAw</span><span class="w"></span>
+<span class="s">DgYDVQQHDAdCZWlKaW5nMQ0wCwYDVQQKDARaenp6MQwwCgYDVQQLDANkZXYxFDAS</span><span class="w"></span>
+<span class="s">BgNVBAMMC3pxcWYxNi5p.....</span><span class="w"></span>
+<span class="s">....</span><span class="w"></span>
+<span class="gh">-----END CERTIFICATE REQUEST-----</span><span class="w"></span>
 </code></pre></div>
 
 <p>如果想看CSR的内容可以用</p>

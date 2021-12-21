@@ -62,35 +62,35 @@
 <p>由于没 Google 到相似的，所以就自己花时间研究了一下。</p>
 <h2 id="_2">原理</h2>
 <p>首先，看一下 <code>object_setIvar</code> 函数的定义，在 Runtime 源码里的 <a href="http://www.opensource.apple.com/source/objc4/objc4-493.9/runtime/objc-class.m">objc-class.m</a> 文件，如下：</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">void</span> <span class="nf">object_setIvar</span><span class="p">(</span><span class="kt">id</span> <span class="n">obj</span><span class="p">,</span> <span class="n">Ivar</span> <span class="n">ivar</span><span class="p">,</span> <span class="kt">id</span> <span class="n">value</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">obj</span>  <span class="o">&amp;&amp;</span>  <span class="n">ivar</span>  <span class="o">&amp;&amp;</span>  <span class="o">!</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">isTaggedPointer</span><span class="p">())</span> <span class="p">{</span>
-        <span class="kt">Class</span> <span class="n">cls</span> <span class="o">=</span> <span class="n">_ivar_getClass</span><span class="p">(</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">ISA</span><span class="p">(),</span> <span class="n">ivar</span><span class="p">);</span>
-        <span class="kt">ptrdiff_t</span> <span class="n">ivar_offset</span> <span class="o">=</span> <span class="n">ivar_getOffset</span><span class="p">(</span><span class="n">ivar</span><span class="p">);</span>
-        <span class="kt">id</span> <span class="o">*</span><span class="n">location</span> <span class="o">=</span> <span class="p">(</span><span class="kt">id</span> <span class="o">*</span><span class="p">)((</span><span class="kt">char</span> <span class="o">*</span><span class="p">)</span><span class="n">obj</span> <span class="o">+</span> <span class="n">ivar_offset</span><span class="p">);</span>
-        <span class="c1">// if this ivar is a member of an ARR compiled class, then issue the correct barrier according to the layout.</span>
-        <span class="k">if</span> <span class="p">(</span><span class="n">_class_usesAutomaticRetainRelease</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span> <span class="p">{</span>
-            <span class="c1">// for ARR, layout strings are relative to the instance start.</span>
-            <span class="kt">uint32_t</span> <span class="n">instanceStart</span> <span class="o">=</span> <span class="n">_class_getInstanceStart</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
-            <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">weak_layout</span> <span class="o">=</span> <span class="n">class_getWeakIvarLayout</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">weak_layout</span> <span class="o">&amp;&amp;</span> <span class="n">is_scanned_offset</span><span class="p">(</span><span class="n">ivar_offset</span> <span class="o">-</span> <span class="n">instanceStart</span><span class="p">,</span> <span class="n">weak_layout</span><span class="p">))</span> <span class="p">{</span>
-                <span class="c1">// use the weak system to write to this variable.</span>
-                <span class="n">objc_storeWeak</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
-                <span class="k">return</span><span class="p">;</span>
-            <span class="p">}</span>
-            <span class="k">const</span> <span class="kt">uint8_t</span> <span class="o">*</span><span class="n">strong_layout</span> <span class="o">=</span> <span class="n">class_getIvarLayout</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span>
-            <span class="k">if</span> <span class="p">(</span><span class="n">strong_layout</span> <span class="o">&amp;&amp;</span> <span class="n">is_scanned_offset</span><span class="p">(</span><span class="n">ivar_offset</span> <span class="o">-</span> <span class="n">instanceStart</span><span class="p">,</span> <span class="n">strong_layout</span><span class="p">))</span> <span class="p">{</span>
-                <span class="n">objc_storeStrong</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
-                <span class="k">return</span><span class="p">;</span>
-            <span class="p">}</span>
-        <span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="kt">void</span><span class="w"> </span><span class="nf">object_setIvar</span><span class="p">(</span><span class="kt">id</span><span class="w"> </span><span class="n">obj</span><span class="p">,</span><span class="w"> </span><span class="n">Ivar</span><span class="w"> </span><span class="n">ivar</span><span class="p">,</span><span class="w"> </span><span class="kt">id</span><span class="w"> </span><span class="n">value</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">obj</span><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w">  </span><span class="n">ivar</span><span class="w">  </span><span class="o">&amp;&amp;</span><span class="w">  </span><span class="o">!</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">isTaggedPointer</span><span class="p">())</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="kt">Class</span><span class="w"> </span><span class="n">cls</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_ivar_getClass</span><span class="p">(</span><span class="n">obj</span><span class="o">-&gt;</span><span class="n">ISA</span><span class="p">(),</span><span class="w"> </span><span class="n">ivar</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">ptrdiff_t</span><span class="w"> </span><span class="n">ivar_offset</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ivar_getOffset</span><span class="p">(</span><span class="n">ivar</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="kt">id</span><span class="w"> </span><span class="o">*</span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">(</span><span class="kt">id</span><span class="w"> </span><span class="o">*</span><span class="p">)((</span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">obj</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">ivar_offset</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="c1">// if this ivar is a member of an ARR compiled class, then issue the correct barrier according to the layout.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">_class_usesAutomaticRetainRelease</span><span class="p">(</span><span class="n">cls</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">            </span><span class="c1">// for ARR, layout strings are relative to the instance start.</span>
+<span class="w">            </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">instanceStart</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">_class_getInstanceStart</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">weak_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">class_getWeakIvarLayout</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">weak_layout</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_scanned_offset</span><span class="p">(</span><span class="n">ivar_offset</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">instanceStart</span><span class="p">,</span><span class="w"> </span><span class="n">weak_layout</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="c1">// use the weak system to write to this variable.</span>
+<span class="w">                </span><span class="n">objc_storeWeak</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">            </span><span class="k">const</span><span class="w"> </span><span class="kt">uint8_t</span><span class="w"> </span><span class="o">*</span><span class="n">strong_layout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">class_getIvarLayout</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span><span class="w"></span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">strong_layout</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="n">is_scanned_offset</span><span class="p">(</span><span class="n">ivar_offset</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">instanceStart</span><span class="p">,</span><span class="w"> </span><span class="n">strong_layout</span><span class="p">))</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">objc_storeStrong</span><span class="p">(</span><span class="n">location</span><span class="p">,</span><span class="w"> </span><span class="n">value</span><span class="p">);</span><span class="w"></span>
+<span class="w">                </span><span class="k">return</span><span class="p">;</span><span class="w"></span>
+<span class="w">            </span><span class="p">}</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
 <span class="cp">#if SUPPORT_GC</span>
-        <span class="c1">// Never go here.</span>
+<span class="w">        </span><span class="c1">// Never go here.</span>
 <span class="cp">#else</span>
-        <span class="o">*</span><span class="n">location</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+<span class="w">        </span><span class="o">*</span><span class="n">location</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">value</span><span class="p">;</span><span class="w"></span>
 <span class="cp">#endif</span>
-    <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>在调试的时候发现 <code>class_getWeakIvarLayout</code> 以及 <code>class_getIvarLayout</code> 返回值都是<code>""</code>。</p>
@@ -102,11 +102,11 @@
 <div class="codehilite"><pre><span></span><code><span class="cm">/***********************************************************************</span>
 <span class="cm"> * _class_usesAutomaticRetainRelease</span>
 <span class="cm"> * Returns YES if class was compiled with -fobjc-arc</span>
-<span class="cm"> **********************************************************************/</span>
-<span class="kt">BOOL</span> <span class="nf">_class_usesAutomaticRetainRelease</span><span class="p">(</span><span class="kt">Class</span> <span class="n">cls</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">cls</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">ro</span><span class="o">-&gt;</span><span class="n">flags</span> <span class="o">&amp;</span> <span class="n">RO_IS_ARR</span><span class="p">)</span> <span class="o">?</span> <span class="nb">YES</span> <span class="o">:</span> <span class="nb">NO</span><span class="p">;</span>
-<span class="p">}</span>
+<span class="cm"> **********************************************************************/</span><span class="w"></span>
+<span class="kt">BOOL</span><span class="w"> </span><span class="nf">_class_usesAutomaticRetainRelease</span><span class="p">(</span><span class="kt">Class</span><span class="w"> </span><span class="n">cls</span><span class="p">)</span><span class="w"></span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="n">cls</span><span class="o">-&gt;</span><span class="n">data</span><span class="p">()</span><span class="o">-&gt;</span><span class="n">ro</span><span class="o">-&gt;</span><span class="n">flags</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">RO_IS_ARR</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nb">YES</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>其中 <code>RO_IS_ARR</code> 宏定义如下：</p>
@@ -119,16 +119,16 @@
 也就是说在运行时创建的类肯定没有这个 flag。</p>
 <p>为了进一步验证，得找到设置这个 flag 的地方，因此我又去翻了一下 clang 的源码（还顺便复习了当年 Vim＋Ctags＋Cscope 的各种用法￣▽￣" ），
 在 CGObjCMac.cpp 这个文件中发现了这么一段：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">llvm</span><span class="o">::</span><span class="n">GlobalVariable</span> <span class="o">*</span> <span class="nf">CGObjCNonFragileABIMac::BuildClassRoTInitializer</span><span class="p">(</span>
-  <span class="kt">unsigned</span> <span class="n">flags</span><span class="p">,</span>
-  <span class="kt">unsigned</span> <span class="n">InstanceStart</span><span class="p">,</span>
-  <span class="kt">unsigned</span> <span class="n">InstanceSize</span><span class="p">,</span>
-  <span class="k">const</span> <span class="n">ObjCImplementationDecl</span> <span class="o">*</span><span class="n">ID</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">std</span><span class="o">::</span><span class="n">string</span> <span class="n">ClassName</span> <span class="o">=</span> <span class="n">ID</span><span class="o">-&gt;</span><span class="n">getObjCRuntimeNameAsString</span><span class="p">();</span>
-  <span class="n">llvm</span><span class="o">::</span><span class="n">Constant</span> <span class="o">*</span><span class="n">Values</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span> <span class="c1">// 11 for 64bit targets!</span>
+<div class="codehilite"><pre><span></span><code><span class="n">llvm</span><span class="o">::</span><span class="n">GlobalVariable</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="nf">CGObjCNonFragileABIMac::BuildClassRoTInitializer</span><span class="p">(</span><span class="w"></span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">flags</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">InstanceStart</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="kt">unsigned</span><span class="w"> </span><span class="n">InstanceSize</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="k">const</span><span class="w"> </span><span class="n">ObjCImplementationDecl</span><span class="w"> </span><span class="o">*</span><span class="n">ID</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">std</span><span class="o">::</span><span class="n">string</span><span class="w"> </span><span class="n">ClassName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ID</span><span class="o">-&gt;</span><span class="n">getObjCRuntimeNameAsString</span><span class="p">();</span><span class="w"></span>
+<span class="w">  </span><span class="n">llvm</span><span class="o">::</span><span class="n">Constant</span><span class="w"> </span><span class="o">*</span><span class="n">Values</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span><span class="w"> </span><span class="c1">// 11 for 64bit targets!</span>
 
-  <span class="k">if</span> <span class="p">(</span><span class="n">CGM</span><span class="p">.</span><span class="n">getLangOpts</span><span class="p">().</span><span class="n">ObjCAutoRefCount</span><span class="p">)</span>
-    <span class="n">flags</span> <span class="o">|=</span> <span class="n">NonFragileABI_Class_CompiledByARC</span><span class="p">;</span>
+<span class="w">  </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">CGM</span><span class="p">.</span><span class="n">getLangOpts</span><span class="p">().</span><span class="n">ObjCAutoRefCount</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="n">flags</span><span class="w"> </span><span class="o">|=</span><span class="w"> </span><span class="n">NonFragileABI_Class_CompiledByARC</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p><em>注：当开启 <code>-fobjc-arc</code> 选项时，<code>CGM.getLangOpts().ObjCAutoRefCount</code> 返回的是 true，而且 <code>NonFragileABI_Class_CompiledByARC</code> 的值就是 0x80。</em></p>

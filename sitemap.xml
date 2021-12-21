@@ -1,5 +1,10 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 	<url>
+		<loc>https://blog.zorro.im/posts/2021-12-21-quickjs-swift-bindings.html</loc>
+		<lastmod>2021-12-21</lastmod>
+		<changefreq>monthly</changefreq>
+	</url>
+	<url>
 		<loc>https://blog.zorro.im/posts/2018-8-22-how-to-build-libimobiledevice.html</loc>
 		<lastmod>2018-08-22</lastmod>
 		<changefreq>monthly</changefreq>

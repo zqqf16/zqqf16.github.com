@@ -73,54 +73,54 @@
 </ol>
 <h2 id="_3">实例、类、元类初探</h2>
 <p>新建一个NSObject的子类，如下：</p>
-<div class="codehilite"><pre><span></span><code><span class="cm">/* FirstClass.h */</span>
+<div class="codehilite"><pre><span></span><code><span class="cm">/* FirstClass.h */</span><span class="w"></span>
 <span class="cp">#import &lt;Foundation/Foundation.h&gt;</span>
 
 <span class="k">@interface</span> <span class="nc">FirstClass</span> : <span class="bp">NSObject</span>
-<span class="p">{</span>
-    <span class="bp">NSString</span> <span class="o">*</span><span class="n">className</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="k">@end</span>
+<span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">className</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">@end</span><span class="w"></span>
 
-<span class="cm">/* FirstClass.m */</span>
+<span class="cm">/* FirstClass.m */</span><span class="w"></span>
 <span class="cp">#import &quot;FirstClass.h&quot;</span>
 
-<span class="k">@implementation</span> <span class="nc">FirstClass</span>
+<span class="k">@implementation</span> <span class="nc">FirstClass</span><span class="w"></span>
 
-<span class="k">@end</span>
+<span class="k">@end</span><span class="w"></span>
 </code></pre></div>
 
 <p>然后执行<code>clang -rewrite-objc FirstClass.m</code>，这样就会在当前目录生成一个名叫<code>FirstClass.cpp</code>的文件，打开文件（注意，因为包含了<code>Foundation.h</code>，所以生成的cpp文件巨大，可以忽略前1W行）可以看到，FirstClass被改写成了这样：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">typedef</span> <span class="k">struct</span> <span class="nc">objc_object</span> <span class="n">FirstClass</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span> <span class="nc">objc_object</span><span class="w"> </span><span class="n">FirstClass</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p>成了<code>objc_object</code>类型的结构体。<code>objc_object</code>的声明如下：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">objc_object</span> <span class="p">{</span>
-    <span class="n">Class</span> <span class="n">isa</span> <span class="p">;</span>
-<span class="p">};</span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">objc_object</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">Class</span><span class="w"> </span><span class="n">isa</span><span class="w"> </span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>也就是说，当我们用<code>FirstClass *fc;</code>这样的形式去声明一个变量的时候，其实这个变量就是一个指向<code>objc_object</code>类型的指针，也就是上面我总结的，他指向的是一个对象。</p>
 <p>接着往下看，会发现以下这样的代码：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span>
+<div class="codehilite"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span><span class="w"></span>
 
-<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_METACLASS_$_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_NSObject,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_NSObject,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
-    <span class="o">&amp;</span><span class="n">_OBJC_METACLASS_RO_$_FirstClass</span><span class="p">,</span>
-<span class="p">};</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="w"> </span><span class="n">__attribute__</span><span class="w"> </span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// &amp;OBJC_METACLASS_$_NSObject,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// &amp;OBJC_METACLASS_$_NSObject,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// (void *)&amp;_objc_empty_cache,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="n">_OBJC_METACLASS_RO_$_FirstClass</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 
-<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_CLASS_$_NSObject</span><span class="p">;</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllimport</span><span class="p">)</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="n">OBJC_CLASS_$_NSObject</span><span class="p">;</span><span class="w"></span>
 
-<span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_CLASS_$_FirstClass</span> <span class="n">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_FirstClass,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
-    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_$_FirstClass</span><span class="p">,</span>
-<span class="p">};</span>
+<span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="n">OBJC_CLASS_$_FirstClass</span><span class="w"> </span><span class="n">__attribute__</span><span class="w"> </span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// &amp;OBJC_METACLASS_$_FirstClass,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// (void *)&amp;_objc_empty_cache,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_$_FirstClass</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>根据字面意思就可以看明白了，分别定义了两个变量，<code>OBJC_METACLASS_$_FirstClass</code>和<code>OBJC_CLASS_$_FirstClass</code>，前者是元类，后者是类。他们都是<code>_class_t</code>类型的，都是对象。因为是自动改写的，所以变量名都有些奇怪，但并不影响阅读。</p>
@@ -133,25 +133,25 @@
 </ol>
 </blockquote>
 <p><code>_class_t</code>的声明如下：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">_class_t</span> <span class="p">{</span>
-    <span class="k">struct</span> <span class="nc">_class_t</span> <span class="o">*</span><span class="n">isa</span><span class="p">;</span>
-    <span class="k">struct</span> <span class="nc">_class_t</span> <span class="o">*</span><span class="n">superclass</span><span class="p">;</span>
-    <span class="kt">void</span> <span class="o">*</span><span class="n">cache</span><span class="p">;</span>
-    <span class="kt">void</span> <span class="o">*</span><span class="n">vtable</span><span class="p">;</span>
-    <span class="k">struct</span> <span class="nc">_class_ro_t</span> <span class="o">*</span><span class="n">ro</span><span class="p">;</span>
-<span class="p">};</span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="o">*</span><span class="n">isa</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="o">*</span><span class="n">superclass</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">cache</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">void</span><span class="w"> </span><span class="o">*</span><span class="n">vtable</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span> <span class="nc">_class_ro_t</span><span class="w"> </span><span class="o">*</span><span class="n">ro</span><span class="p">;</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>基本可以当成<code>runtime.h</code>中的<code>objc_class</code>类型。</p>
 <p>后面还有一段代码，定义了一个初始化函数：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">static</span> <span class="kt">void</span> <span class="nf">OBJC_CLASS_SETUP_$_FirstClass</span><span class="p">(</span><span class="kt">void</span> <span class="p">)</span> <span class="p">{</span>
-    <span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">isa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span>
-    <span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">superclass</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span>
-    <span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span>
-    <span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">isa</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">;</span>
-    <span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">superclass</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">OBJC_CLASS_$_NSObject</span><span class="p">;</span>
-    <span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">cache</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="k">static</span><span class="w"> </span><span class="kt">void</span><span class="w"> </span><span class="nf">OBJC_CLASS_SETUP_$_FirstClass</span><span class="p">(</span><span class="kt">void</span><span class="w"> </span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">isa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">superclass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_NSObject</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">.</span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">isa</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">OBJC_METACLASS_$_FirstClass</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">superclass</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">OBJC_CLASS_$_NSObject</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="n">OBJC_CLASS_$_FirstClass</span><span class="p">.</span><span class="n">cache</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="o">&amp;</span><span class="n">_objc_empty_cache</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>可以看到元类的<code>isa</code>、<code>superclass</code>都指向了NSOBject，而类的<code>isa</code>指向了元类、<code>superclass</code>指向了NSObject。</p>

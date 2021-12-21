@@ -7,6 +7,105 @@
     <language>zh-cn</language>
     <generator>Peanut</generator>
     <item>
+		<title>在 Swift 中使用 QuickJS</title>
+		<link>https://blog.zorro.im/posts/2021-12-21-quickjs-swift-bindings.html</link>
+		<description>&lt;h2 id=&#34;_1&#34;&gt;前言&lt;/h2&gt;
+&lt;p&gt;去年用 Swift 写了一个处理日志的 macOS app，其中有个比较核心的功能，可以导入自定义脚本来过滤或者分析日志。
+一开始选择的脚本语言是 Python，并且用 &lt;a href=&#34;https://github.com/pvieito/PythonKit&#34;&gt;PythonKit&lt;/a&gt; 实现了 Swift 与 Python 的集成。&lt;/p&gt;
+&lt;p&gt;但是，PythonKit &lt;a href=&#34;https://github.com/pvieito/PythonKit/blob/839ef68d9fe5c85ab212272fffbe54e229374d5c/PythonKit/PythonLibrary.swift#L98&#34;&gt;加载 Python 库&lt;/a&gt;的版本会跟当前系统相关。
+比如，如果我的默认Pyhton版本是2.7，那么在我电脑上被加载的是2.7，而其他人电脑上可能就是3.x，这样就会导致处理日志的脚本做不到100%兼容各种环境。&lt;/p&gt;
+&lt;p&gt;因此决定引入 Javascript 作为替代的脚本语言，JS 引擎选择了一直想尝试的 &lt;a href=&#34;https://bellard.org/quickjs/&#34;&gt;QuickJS&lt;/a&gt;。&lt;/p&gt;
+&lt;h2 id=&#34;_2&#34;&gt;集成&lt;/h2&gt;
+&lt;p&gt;QuickJS 的代码非常精悍，如果作为库来使用，核心的 C 文件只有5个(&lt;code&gt;quickjs.c&lt;/code&gt;、&lt;code&gt;quickjs-libc.c&lt;/code&gt;、&lt;code&gt;libregexp.c&lt;/code&gt;、&lt;code&gt;libunicode.c&lt;/code&gt;、&lt;code&gt;cutils.c&lt;/code&gt;)，而且绝大多数代码都集中在&lt;code&gt;quickjs.c&lt;/code&gt;、&lt;code&gt;quickjs-libc.c&lt;/code&gt;这两个文件里。&lt;/p&gt;
+&lt;p&gt;编译条件也极其简单，不像传统的 C 语言工程，需要 &lt;code&gt;./configure&lt;/code&gt; 或者安装一大堆依赖。把这几个文件拖到 Xcode 工程里，直接 Run 就能编过。&lt;/p&gt;
+&lt;h2 id=&#34;_3&#34;&gt;简单使用&lt;/h2&gt;
+&lt;p&gt;启动一个 QuickJS 引擎步骤非常简单，大致分成以下几步：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;创建一个 &lt;strong&gt;Runtime&lt;/strong&gt;：&lt;code&gt;JS_NewRuntime&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;创建一个 &lt;strong&gt;Context&lt;/strong&gt;：&lt;code&gt;JS_NewContext&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;执行 JS 代码：&lt;code&gt;JS_Eval&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;详细的例子可以参考 &lt;a href=&#34;https://github.com/bellard/quickjs/blob/master/qjsc.c&#34;&gt;qjsc.c&lt;/a&gt; 或者其它 demo。&lt;/p&gt;
+&lt;h2 id=&#34;_4&#34;&gt;封装&lt;/h2&gt;
+&lt;p&gt;为了使上层使用起来更方便，我做了一个 Swift Package，把 C 语言接口包装成了更 Swift 的方式，代码在：https://github.com/zqqf16/QuickJS-Swift。&lt;/p&gt;
+&lt;p&gt;调用者只需要在你的 &lt;code&gt;Package.swift&lt;/code&gt; 文件里加上&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;package&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;url&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;https://github.com/zqqf16/QuickJS-Swift.git&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;branch&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;master&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)),&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;就可以了。&lt;/p&gt;
+&lt;h3 id=&#34;swift-js&#34;&gt;Swift 调用 JS 代码&lt;/h3&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;kd&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;QuickJS&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;runtime&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;JSRuntime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;context&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;createContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;jsCode&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;var i = 10; i;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;result&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsCode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;int&lt;/span&gt;
+&lt;span class=&#34;bp&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Result is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;\(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;result&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//10&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&#34;swift-module&#34;&gt;用 Swift 实现一个 Module&lt;/h3&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;kd&#34;&gt;import&lt;/span&gt; &lt;span class=&#34;nc&#34;&gt;QuickJS&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;runtime&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;JSRuntime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;context&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;createContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// Create a module named &amp;quot;Magic&amp;quot; with two functions &amp;quot;getMagic&amp;quot; and &amp;quot;getMagic2&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Magic&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;JSModuleFunction&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;getMagic&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;argc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;argc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;argv&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;in&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;10&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+    &lt;span class=&#34;n&#34;&gt;JSModuleFunction&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;getMagic2&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;argc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;0&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;{&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;this&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;argc&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;argv&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;in&lt;/span&gt;
+        &lt;span class=&#34;k&#34;&gt;return&lt;/span&gt; &lt;span class=&#34;mi&#34;&gt;20&lt;/span&gt;
+    &lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+&lt;span class=&#34;p&#34;&gt;}&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;getMagic&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;use&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strict&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;;&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;import { getMagic, getMagic2 } from &amp;#39;swift&amp;#39;&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;globalThis.magic = getMagic();&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;globalThis.magic2 = getMagic2();&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;getMagic&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;magic&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;magic;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;int&lt;/span&gt;
+&lt;span class=&#34;bp&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Magic is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;\(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;magic&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//10&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;magic2&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;magic2;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;).&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;int&lt;/span&gt;
+&lt;span class=&#34;bp&#34;&gt;print&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;Magic2 is &lt;/span&gt;&lt;span class=&#34;si&#34;&gt;\(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;magic2&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;!&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;)&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt; &lt;span class=&#34;c1&#34;&gt;//20&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&#34;runloop&#34;&gt;Runloop&lt;/h2&gt;
+&lt;p&gt;在 Nodejs 或者其它实现（比如 &lt;a href=&#34;https://github.com/saghul/txiki.js&#34;&gt;txiki&lt;/a&gt;）里，异步 IO 都是通过 &lt;code&gt;libuv&lt;/code&gt; 来处理的，既然用了 Swift，就打算用 NSRunloop 了。&lt;/p&gt;
+&lt;p&gt;参考了一下 txiki 代码，把 runloop 实现成了一个 &lt;a href=&#34;https://github.com/zqqf16/QuickJS-Swift/blob/master/Sources/QuickJS/JSRunloop.swift&#34;&gt;module&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;核心的原理很简单，就是 JS 在调用 &lt;code&gt;setTimeout&lt;/code&gt; 等方法时，Swift 创建一个 NSTimer 插到 runloop 中，timer 触发的时候再去调用 JS 的 callback 代码。&lt;/p&gt;
+&lt;p&gt;使用：&lt;/p&gt;
+&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;runtime&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;JSRuntime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;context&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;runtime&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;createContext&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;&lt;span class=&#34;o&#34;&gt;!&lt;/span&gt;
+&lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;enableRunloop&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;()&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;jsCode&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;&amp;quot;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;use&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;strict&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;;&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;import * as rl from &amp;quot;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Runloop&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;;&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;rl.setTimeout(function(){ console.log(&amp;quot;&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;Hello&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;Runloop&lt;/span&gt;&lt;span class=&#34;s&#34;&gt;&amp;quot;); }, 3000);&lt;/span&gt;
+&lt;span class=&#34;s&#34;&gt;&amp;quot;&amp;quot;&amp;quot;&lt;/span&gt;
+
+&lt;span class=&#34;kd&#34;&gt;let&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;_&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;=&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;context&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;eval&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;(&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;jsCode&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;,&lt;/span&gt; &lt;span class=&#34;n&#34;&gt;type&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;:&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;.&lt;/span&gt;&lt;span class=&#34;n&#34;&gt;module&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;)&lt;/span&gt;
+
+&lt;span class=&#34;c1&#34;&gt;// waiting for 3 seconds&lt;/span&gt;
+&lt;span class=&#34;c1&#34;&gt;// Hello Runloop&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;目前还是在demo阶段，只支持 &lt;code&gt;setTimeout&lt;/code&gt; 一个方法😂&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;待续 -&lt;/li&gt;
+&lt;/ul&gt;</description>
+		<author>zqqf16</author>
+		<copyright></copyright>
+		<pubDate>Tue, 21 Dec 2021 00:00:00 +0800</pubDate>
+    </item>
+    <item>
 		<title>在 macOS 上编译 libimobiledevice</title>
 		<link>https://blog.zorro.im/posts/2018-8-22-how-to-build-libimobiledevice.html</link>
 		<description>&lt;h2 id=&#34;_1&#34;&gt;前言&lt;/h2&gt;
@@ -190,34 +289,6 @@ ifuse --container you.app.id /tmp/you_app_id
 		<author>zqqf16</author>
 		<copyright></copyright>
 		<pubDate>Thu, 12 Oct 2017 00:00:00 +0800</pubDate>
-    </item>
-    <item>
-		<title>两个 Xcode Build Script</title>
-		<link>https://blog.zorro.im/posts/2017-06-26-two-xcode-build-scripts.html</link>
-		<description>&lt;p&gt;检查 Localizable.strings 是否有语法错误&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Checking Localizable.strings ...&amp;quot;&lt;/span&gt;
-plutil -lint &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;SRCROOT&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/path/to/your/Localizable.strings
-
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$?&lt;/span&gt; -ne &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
-    &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;error: Localizable.strings 有语法错误，请检查错误信息&amp;quot;&lt;/span&gt;
-    &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;检查 Assets.car 中是否包含 P3 色域的图片，防止在 iOS 9.x 设备上出现诡异的崩溃问题。&lt;/p&gt;
-&lt;div class=&#34;codehilite&#34;&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;Checking Assets.car ...&amp;quot;&lt;/span&gt;
-xcrun --sdk iphoneos assetutil --info &lt;span class=&#34;si&#34;&gt;${&lt;/span&gt;&lt;span class=&#34;nv&#34;&gt;CODESIGNING_FOLDER_PATH&lt;/span&gt;&lt;span class=&#34;si&#34;&gt;}&lt;/span&gt;/Assets.car &lt;span class=&#34;p&#34;&gt;|&lt;/span&gt; grep -q &lt;span class=&#34;s2&#34;&gt;&amp;quot;DisplayGamut.*P3&amp;quot;&lt;/span&gt; &lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-
-&lt;span class=&#34;k&#34;&gt;if&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;[&lt;/span&gt; &lt;span class=&#34;nv&#34;&gt;$$&lt;/span&gt;? -eq &lt;span class=&#34;m&#34;&gt;0&lt;/span&gt; &lt;span class=&#34;o&#34;&gt;]&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt; &lt;span class=&#34;k&#34;&gt;then&lt;/span&gt;
-    &lt;span class=&#34;nb&#34;&gt;echo&lt;/span&gt; &lt;span class=&#34;s2&#34;&gt;&amp;quot;error: Assets.car 中含有 P3 色域的图片，请检查错误信息&amp;quot;&lt;/span&gt;
-    &lt;span class=&#34;nb&#34;&gt;exit&lt;/span&gt; &lt;span class=&#34;m&#34;&gt;1&lt;/span&gt;
-&lt;span class=&#34;k&#34;&gt;fi&lt;/span&gt;&lt;span class=&#34;p&#34;&gt;;&lt;/span&gt;
-&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;-EOF-&lt;/p&gt;</description>
-		<author>zqqf16</author>
-		<copyright></copyright>
-		<pubDate>Mon, 26 Jun 2017 00:00:00 +0800</pubDate>
     </item>
 </channel>
 </rss>
