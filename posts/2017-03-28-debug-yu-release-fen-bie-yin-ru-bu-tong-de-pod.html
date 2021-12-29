@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="description" content="zqqf16 的个人博客">
-    <title>一个木匠</title>
-    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
-    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
-    <script type="text/javascript">
-    	$.bigfoot();
-    </script>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="zqqf16">
+<meta name="description" content="zqqf16 的个人博客">
+
+  <title>Debug 与 Release 分别引入不同的 Pod</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700"
+    rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+  <script type="text/javascript">
+    $.bigfoot();
+  </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
 <script>
@@ -33,29 +37,30 @@
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
 </head>
+
 <body class="">
-	<header class="main-header">
-		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
-			<h2 class="blog-description">zqqf16 的个人博客</h2>
-		</div>
+  <header class="main-header">
+    <div class="main-header-content">
+      <h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
+      <h2 class="blog-description">zqqf16 的个人博客</h2>
+    </div>
 <div class="nav">
-		<a class="nav-link" role="presentation" href="/">Home</a>
-		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
-		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
-		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
-</div>	</header>
+  <a class="nav-link" role="presentation" href="/">Home</a>
+  <a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+  <a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+  <a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>  </header>
 
 <main class="content" role="main">
-	<article class="post ">
-		<header class="post-header">
-			<h2 class="post-title">Debug 与 Release 分别引入不同的 Pod</h2>
-			<section class="post-meta">
-				<time class="post-date" datetime="2017-03-28">2017-03-28</time>
-			</section>
-		</header>
-		<section class="post-content">
-			<p>有时候会碰到这样的情况，一个以二进制形式分发的 Pod，需要区分 Debug 与 Release 环境，比如 Debug 不加密、Release 加密。
+  <article class="post ">
+    <header class="post-header">
+      <h2 class="post-title">Debug 与 Release 分别引入不同的 Pod</h2>
+      <section class="post-meta">
+        <time class="post-date" datetime="2017-03-28">2017-03-28</time>
+      </section>
+    </header>
+    <section class="post-content">
+      <p>有时候会碰到这样的情况，一个以二进制形式分发的 Pod，需要区分 Debug 与 Release 环境，比如 Debug 不加密、Release 加密。
 在上家公司，遇到这种情况会做两个静态库，一个叫 xxx.a，另一个叫 xxx_dev.a。开发或者测试的时候手动切换。</p>
 <p>其实，CocoaPods 本身有更好的解决方法。</p>
 <p>假设要做一个叫 Foo 的 pod，以 Framework 的形式分发，可以写两个 Podspec 文件：</p>
@@ -87,28 +92,28 @@
 
 <p>这样，在 Debug 与 Release 下，会分别引用 FooDebug 与 FooRelease 了。</p>
 <p>同时，由于 framework 的名字是相同的，所以在代码里引入头文件时诸如 <code>#include &lt;Foo/Foo.h&gt;</code> 这样的写法不受影响。</p>
-		</section>
-		<footer class="post-footer">
-			<section class="tags post-meta">
-					Tagged 
-					<a href="/tags/Xcode-Tips/"> Xcode Tips </a>
-			</section>
-			<section class="share" hidden="true">
-                <h4>Share this post</h4>
-                <a class="icon-twitter" href="https://twitter.com/share?text=Debug 与 Release 分别引入不同的 Pod&amp;url=https://blog.zorro.im/posts/2017-03-28-debug-yu-release-fen-bie-yin-ru-bu-tong-de-pod.html"
-                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    <span class="hidden"></span>
-                </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2017-03-28-debug-yu-release-fen-bie-yin-ru-bu-tong-de-pod.html"
-                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    <span class="hidden"></span>
-                </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2017-03-28-debug-yu-release-fen-bie-yin-ru-bu-tong-de-pod.html"
-                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-                    <span class="hidden"></span>
-                </a>
-            </section>
-		</footer>
+    </section>
+    <footer class="post-footer">
+      <section class="tags post-meta">
+        Tagged 
+        <a href="/tags/Xcode-Tips/"> Xcode Tips </a>
+      </section>
+      <section class="share" hidden="true">
+        <h4>Share this post</h4>
+        <a class="icon-twitter" href="https://twitter.com/share?text=Debug 与 Release 分别引入不同的 Pod&amp;url=https://blog.zorro.im/posts/2017-03-28-debug-yu-release-fen-bie-yin-ru-bu-tong-de-pod.html"
+          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <span class="hidden"></span>
+        </a>
+        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2017-03-28-debug-yu-release-fen-bie-yin-ru-bu-tong-de-pod.html"
+          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <span class="hidden"></span>
+        </a>
+        <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2017-03-28-debug-yu-release-fen-bie-yin-ru-bu-tong-de-pod.html"
+          onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <span class="hidden"></span>
+        </a>
+      </section>
+    </footer>
 <footer class="post comments">
   <div id="disqus_thread"></div>
   <script type="text/javascript">
@@ -120,17 +125,22 @@
   </script>
   <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</footer>	</article>
+</footer>  </article>
 </main>
 
-    
-    <footer class="site-footer">
-        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
-        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
-        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
-        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 一个木匠</section>
-        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
-    </footer>
+
+  <footer class="site-footer">
+    <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+    <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a>
+    </section>
+    <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a>
+    </section>
+    <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a>
+    </section>
+    <section class="copyright">&copy; 2018 一个木匠</section>
+    <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford.
+      Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+  </footer>
 </body>
+
 </html>

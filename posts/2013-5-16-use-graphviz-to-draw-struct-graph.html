@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <meta name="description" content="zqqf16 的个人博客">
-    <title>一个木匠</title>
-    <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
-    <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
-    <link href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700" rel="stylesheet">
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
-    <script type="text/javascript">
-    	$.bigfoot();
-    </script>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="author" content="zqqf16">
+<meta name="description" content="zqqf16 的个人博客">
+
+  <title>用Graphviz画数据结构图</title>
+  <link rel="stylesheet" type="text/css" href="/assets/css/normalize.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/icons.css" />
+  <link rel="stylesheet" type="text/css" href="/assets/css/screen.css" />
+  <link
+    href="https://fonts.googleapis.com/css?family=Bree+Serif|Lato:100,100i,300,300i,400,400i,700,700i|Source+Code+Pro:300,400,500,700"
+    rel="stylesheet">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <script type="text/javascript" src="/assets/bigfoot/bigfoot.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/assets/bigfoot/bigfoot-number.css" />
+  <script type="text/javascript">
+    $.bigfoot();
+  </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
 <script>
@@ -33,29 +37,30 @@
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
 </head>
+
 <body class="">
-	<header class="main-header">
-		<div class="main-header-content">
-			<h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
-			<h2 class="blog-description">zqqf16 的个人博客</h2>
-		</div>
+  <header class="main-header">
+    <div class="main-header-content">
+      <h1 class="blog-title"><a href="https://blog.zorro.im">一个木匠</a></h1>
+      <h2 class="blog-description">zqqf16 的个人博客</h2>
+    </div>
 <div class="nav">
-		<a class="nav-link" role="presentation" href="/">Home</a>
-		<a class="nav-link" role="presentation" href="/archive.html">Archive</a>
-		<a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
-		<a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
-</div>	</header>
+  <a class="nav-link" role="presentation" href="/">Home</a>
+  <a class="nav-link" role="presentation" href="/archive.html">Archive</a>
+  <a class="nav-link" role="presentation" href="/posts/2013-4-25-about.html">About</a>
+  <a class="nav-link" role="presentation" href="/rss.xml">RSS</a>
+</div>  </header>
 
 <main class="content" role="main">
-	<article class="post ">
-		<header class="post-header">
-			<h2 class="post-title">用Graphviz画数据结构图</h2>
-			<section class="post-meta">
-				<time class="post-date" datetime="2013-05-16">2013-05-16</time>
-			</section>
-		</header>
-		<section class="post-content">
-			<p>近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。</p>
+  <article class="post ">
+    <header class="post-header">
+      <h2 class="post-title">用Graphviz画数据结构图</h2>
+      <section class="post-meta">
+        <time class="post-date" datetime="2013-05-16">2013-05-16</time>
+      </section>
+    </header>
+    <section class="post-content">
+      <p>近来上班研究前人代码，数据结构很是个复杂。笔和纸基本满足不了要求，所以研究了一下用Graphviz这个利器绘制数据结构图。</p>
 <p>废话不多说，上代码：</p>
 <div class="codehilite"><pre><span></span><code><span class="k">digraph</span><span class="w"> </span><span class="nt">g</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">graph</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="na">rankdir</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s2">&quot;LR&quot;</span><span class="w"> </span><span class="p">];</span><span class="w"></span>
@@ -77,28 +82,28 @@
 <p>绘出的图如下：
 <img alt="graph" src="https://z_blog.oss-cn-hangzhou.aliyuncs.com/blog/graphviz.png?x-oss-process=style/jpg" /></p>
 <p>更多实例，请参考<a href="http://www.graphviz.org/Gallery.php">Graphviz官网</a></p>
-		</section>
-		<footer class="post-footer">
-			<section class="tags post-meta">
-					Tagged 
-					<a href="/tags/graphviz/"> graphviz </a>
-			</section>
-			<section class="share" hidden="true">
-                <h4>Share this post</h4>
-                <a class="icon-twitter" href="https://twitter.com/share?text=用Graphviz画数据结构图&amp;url=https://blog.zorro.im/posts/2013-5-16-use-graphviz-to-draw-struct-graph.html"
-                    onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
-                    <span class="hidden"></span>
-                </a>
-                <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-5-16-use-graphviz-to-draw-struct-graph.html"
-                    onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
-                    <span class="hidden"></span>
-                </a>
-                <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-5-16-use-graphviz-to-draw-struct-graph.html"
-                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
-                    <span class="hidden"></span>
-                </a>
-            </section>
-		</footer>
+    </section>
+    <footer class="post-footer">
+      <section class="tags post-meta">
+        Tagged 
+        <a href="/tags/graphviz/"> graphviz </a>
+      </section>
+      <section class="share" hidden="true">
+        <h4>Share this post</h4>
+        <a class="icon-twitter" href="https://twitter.com/share?text=用Graphviz画数据结构图&amp;url=https://blog.zorro.im/posts/2013-5-16-use-graphviz-to-draw-struct-graph.html"
+          onclick="window.open(this.href, 'twitter-share', 'width=550,height=235');return false;">
+          <span class="hidden"></span>
+        </a>
+        <a class="icon-facebook" href="https://www.facebook.com/sharer/sharer.php?u=https://blog.zorro.im/posts/2013-5-16-use-graphviz-to-draw-struct-graph.html"
+          onclick="window.open(this.href, 'facebook-share','width=580,height=296');return false;">
+          <span class="hidden"></span>
+        </a>
+        <a class="icon-google-plus" href="https://plus.google.com/share?url=https://blog.zorro.im/posts/2013-5-16-use-graphviz-to-draw-struct-graph.html"
+          onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530');return false;">
+          <span class="hidden"></span>
+        </a>
+      </section>
+    </footer>
 <footer class="post comments">
   <div id="disqus_thread"></div>
   <script type="text/javascript">
@@ -110,17 +115,22 @@
   </script>
   <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-</footer>	</article>
+</footer>  </article>
 </main>
 
-    
-    <footer class="site-footer">
-        <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
-        <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a></section>
-        <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a></section>
-        <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a></section>
-        <section class="copyright">&copy; 2018 一个木匠</section>
-        <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford. Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
-    </footer>
+
+  <footer class="site-footer">
+    <section class="rss"><a class="subscribe-button icon-feed" href="https://blog.zorro.im/rss.xml"></a></section>
+    <section class="Github"><a class="icon-github" href="https://github.com/zqqf16"> Github</a>
+    </section>
+    <section class="Weibo"><a class="icon-weibo" href="http://weibo.com/zqqf16"> Weibo</a>
+    </section>
+    <section class="Twitter"><a class="icon-twitter" href="http://twitter.com/zqqf16"> Twitter</a>
+    </section>
+    <section class="copyright">&copy; 2018 一个木匠</section>
+    <section class="poweredby"><a href="http://thedarkroast.com/arabica">Arabica</a> theme by Sean Lunsford.
+      Published with <a href="https://github.com/zqqf16/peanut">Peanut</a>.</section>
+  </footer>
 </body>
+
 </html>
