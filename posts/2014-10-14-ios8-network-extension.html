@@ -82,57 +82,57 @@
 <p><strong>加载系统配置</strong></p>
 <p>这步很重要，初次操作 NE 时一定别忘了先加载，否则将会出现一些莫名其妙的问题。</p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// init VPN manager</span>
-<span class="nb">self</span><span class="p">.</span><span class="n">vpnManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NEVPNManager</span><span class="w"> </span><span class="n">sharedManager</span><span class="p">];</span><span class="w"></span>
+<span class="nb">self</span><span class="p">.</span><span class="n">vpnManager</span> <span class="o">=</span> <span class="p">[</span><span class="bp">NEVPNManager</span> <span class="n">sharedManager</span><span class="p">];</span>
 
 <span class="c1">// load config from perference</span>
-<span class="p">[</span><span class="n">_vpnManager</span><span class="w"> </span><span class="nl">loadFromPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="c1">// Do something</span>
-<span class="p">}];</span><span class="w"></span>
+<span class="p">[</span><span class="n">_vpnManager</span> <span class="nl">loadFromPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Do something</span>
+<span class="p">}];</span>
 </code></pre></div>
 
 <p>这里需要说明一下，NE 需要给系统安装一个配置文件（类似于 mobileconfig）才能工作，应用在退出后可以在系统设置的 VPN 选项中手动开启 VPN。这个配置文件和 NEVPNManager 是不会自动同步的，也就是说每次操作 NEVPNManager，都必须先从配置文件加载内容，如果做了修改，一定要记得保存。</p>
 <p>而且，如果手动在系统设置里面把配置文件删除，NEVPNManager 的内容还是会存在的。所以，每次启动 VPN 之前都应该加载一下配置，确保配置文件存在。</p>
 <p><strong>添加或修改 IPSec 或 IKEv2 配置信息（以 IPSec 为例）</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="c1">// config IPSec protocol</span>
-<span class="bp">NEVPNProtocolIPSec</span><span class="w"> </span><span class="o">*</span><span class="n">p</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NEVPNProtocolIPSec</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">init</span><span class="p">];</span><span class="w"></span>
-<span class="n">p</span><span class="p">.</span><span class="n">username</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;[Your username]&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="n">p</span><span class="p">.</span><span class="n">serverAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;[Your server address]&quot;</span><span class="p">;;</span><span class="w"></span>
+<span class="bp">NEVPNProtocolIPSec</span> <span class="o">*</span><span class="n">p</span> <span class="o">=</span> <span class="p">[[</span><span class="bp">NEVPNProtocolIPSec</span> <span class="n">alloc</span><span class="p">]</span> <span class="n">init</span><span class="p">];</span>
+<span class="n">p</span><span class="p">.</span><span class="n">username</span> <span class="o">=</span> <span class="s">@&quot;[Your username]&quot;</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">serverAddress</span> <span class="o">=</span> <span class="s">@&quot;[Your server address]&quot;</span><span class="p">;;</span>
 
 <span class="c1">// get password persistent reference from keychain</span>
-<span class="n">p</span><span class="p">.</span><span class="n">passwordReference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;VPN_PASSWORD&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">p</span><span class="p">.</span><span class="n">passwordReference</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;VPN_PASSWORD&quot;</span><span class="p">];</span>
 
 <span class="c1">// PSK</span>
-<span class="n">p</span><span class="p">.</span><span class="n">authenticationMethod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NEVPNIKEAuthenticationMethodSharedSecret</span><span class="p">;</span><span class="w"></span>
-<span class="n">p</span><span class="p">.</span><span class="n">sharedSecretReference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;PSK&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">p</span><span class="p">.</span><span class="n">authenticationMethod</span> <span class="o">=</span> <span class="n">NEVPNIKEAuthenticationMethodSharedSecret</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">sharedSecretReference</span> <span class="o">=</span> <span class="p">[</span><span class="nb">self</span> <span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;PSK&quot;</span><span class="p">];</span>
 
 <span class="cm">/*</span>
 <span class="cm">// certificate</span>
 <span class="cm">p.identityData = [NSData dataWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@&quot;client&quot; ofType:@&quot;p12&quot;]];</span>
 <span class="cm">p.identityDataPassword = @&quot;[Your certificate import password]&quot;;</span>
-<span class="cm">*/</span><span class="w"></span>
+<span class="cm">*/</span>
 
-<span class="n">p</span><span class="p">.</span><span class="n">localIdentifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;[VPN local identifier]&quot;</span><span class="p">;</span><span class="w"></span>
-<span class="n">p</span><span class="p">.</span><span class="n">remoteIdentifier</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;[VPN remote identifier]&quot;</span><span class="p">;</span><span class="w"></span>
+<span class="n">p</span><span class="p">.</span><span class="n">localIdentifier</span> <span class="o">=</span> <span class="s">@&quot;[VPN local identifier]&quot;</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">remoteIdentifier</span> <span class="o">=</span> <span class="s">@&quot;[VPN remote identifier]&quot;</span><span class="p">;</span>
 
-<span class="n">p</span><span class="p">.</span><span class="n">useExtendedAuthentication</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">YES</span><span class="p">;</span><span class="w"></span>
-<span class="n">p</span><span class="p">.</span><span class="n">disconnectOnSleep</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">NO</span><span class="p">;</span><span class="w"></span>
+<span class="n">p</span><span class="p">.</span><span class="n">useExtendedAuthentication</span> <span class="o">=</span> <span class="nb">YES</span><span class="p">;</span>
+<span class="n">p</span><span class="p">.</span><span class="n">disconnectOnSleep</span> <span class="o">=</span> <span class="nb">NO</span><span class="p">;</span>
 </code></pre></div>
 
 <p>上面的代码应该放到<code>loadFromPreferencesWithCompletionHandler</code>的 block 中执行，这样可以确保系统配置已经加载完成。</p>
 <p>IPSec 协议里的密码以及预共享密钥都需要是一个 KeyChain 中密码的永久引用（persistent reference）。</p>
 <p>如果用证书来作为 IKE 的认证方式，而且 Server 端用的是自签发证书，则需要手工将 CA 导入到 iOS 设备。目前 Apple 还没提供添加授信证书的方法。</p>
 <p><strong>保存配置</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">_vpnManager</span><span class="w"> </span><span class="nl">saveToPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Save config failed [%@]&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span><span class="w"></span>
-<span class="p">}];</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">_vpnManager</span> <span class="nl">saveToPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span> <span class="o">*</span><span class="n">error</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Save config failed [%@]&quot;</span><span class="p">,</span> <span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}];</span>
 </code></pre></div>
 
 <p><strong>启动 VPN</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">startError</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">_vpnManager</span><span class="p">.</span><span class="n">connection</span><span class="w"> </span><span class="nl">startVPNTunnelAndReturnError</span><span class="p">:</span><span class="o">&amp;</span><span class="n">startError</span><span class="p">];</span><span class="w"></span>
-<span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">startError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">&quot;Start VPN failed: [%@]&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">startError</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span><span class="w"></span>
-<span class="p">}</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="bp">NSError</span> <span class="o">*</span><span class="n">startError</span><span class="p">;</span>
+<span class="p">[</span><span class="n">_vpnManager</span><span class="p">.</span><span class="n">connection</span> <span class="nl">startVPNTunnelAndReturnError</span><span class="p">:</span><span class="o">&amp;</span><span class="n">startError</span><span class="p">];</span>
+<span class="k">if</span> <span class="p">(</span><span class="n">startError</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">NSLog</span><span class="p">(</span><span class="s">&quot;Start VPN failed: [%@]&quot;</span><span class="p">,</span> <span class="n">startError</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <p>根据目前的测试结果来看，<code>startVPNTunnelAndReturnError</code>只会在配置有误的时候才会返回 Error。其他时候，比如协议协商失败、连接超时等系统都会直接弹出对话框。</p>

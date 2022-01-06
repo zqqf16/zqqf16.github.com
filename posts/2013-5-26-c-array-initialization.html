@@ -67,25 +67,25 @@
     </header>
     <section class="post-content">
       <p>记得刚工作的时候，每次用字符串数组都是小心翼翼。当时基本都是这样：</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span><span class="w"></span>
-<span class="n">memset</span><span class="p">(</span><span class="n">str</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">src</span><span class="p">));</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">32</span><span class="p">];</span>
+<span class="n">memset</span><span class="p">(</span><span class="n">str</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">src</span><span class="p">));</span>
 </code></pre></div>
 
 <p>那时颇为自豪，自认为很少有菜鸟能像我这样注意这些问题。直到后来有一次代码review，在一老鸟面前班门弄斧，结果被他指出来了，说我这样会浪费一次函数调用，直接<code>char str[32] = {0}</code>更好。刚开始我还以为这是一种特殊语句，是把数组的每个元素都赋0。</p>
 <p>有一次我想把数组全初始化成1，就直接<code>int list[4] = {1}</code>。结果进引起了一个bug，害得我花了很长时间才找到问题所在——list中除了第一个是1,其它的都是0。于是我决定好好研究一下，争取不再犯这样的错误。</p>
 <p>其实，这玩意很简单，简单到不能再简单了，以至于研究完了我都觉得羞愧了。。。</p>
 <p>首先，看下面的语句：</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">&#39;0&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;1&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;2&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;3&#39;</span><span class="p">};</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">,</span> <span class="sc">&#39;2&#39;</span><span class="p">,</span> <span class="sc">&#39;3&#39;</span><span class="p">};</span>
 </code></pre></div>
 
 <p>这是标准的数组初始化方法，字符串数组的每个元素都被赋上初始值（大括号内的个数等于数组长度）。</p>
 <p>当大括号内的值小于数组长度的时候，比如：</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">char</span><span class="w"> </span><span class="n">str</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="sc">&#39;0&#39;</span><span class="p">,</span><span class="w"> </span><span class="sc">&#39;1&#39;</span><span class="p">};</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kt">char</span> <span class="n">str</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="sc">&#39;0&#39;</span><span class="p">,</span> <span class="sc">&#39;1&#39;</span><span class="p">};</span>
 </code></pre></div>
 
 <p>str[0]和str[1]会被赋上相应的初始值，而剩下的元素会被初始化成0。这基本是没本C语言书里面都会讲到的。</p>
 <p>所以，反过来再看看之前的例子：</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">int</span><span class="w"> </span><span class="n">list</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="mi">1</span><span class="p">};</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kt">int</span> <span class="n">list</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">};</span>
 </code></pre></div>
 
 <p>就是把第一个元素赋1，其他的元素都被初始化成0。</p>
