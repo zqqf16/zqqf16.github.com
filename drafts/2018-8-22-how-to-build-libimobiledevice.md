@@ -8,6 +8,10 @@ tags:
 excerpt: 编译 libimobiledevice 以及静态库，修复 OpenSSL could not be found 问题。
 ---
 
+## 2022-03-24 更新
+
+最近重新编译了一次，发现之前写的教程已经不适用了，最新的编译方法可参考这个脚本：[SYM/build.sh](https://github.com/zqqf16/SYM/blob/master/SYM/Device/build.sh)，或者直接用我编译好的静态库：[SYM/libimobiledevice](https://github.com/zqqf16/SYM/tree/master/SYM/Device/libimobiledevice)
+
 ## 前言
 
 最近给 [SYM](http://github.com/zqqf16/SYM) 添加了一个新功能：可以直接导入 iOS 设备上的崩溃日志，这个功能是通过 libimobiledevice 实现的。编译静态库的过程中踩了一些坑，在这里记录一下。

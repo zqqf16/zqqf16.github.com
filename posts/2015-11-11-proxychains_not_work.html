@@ -72,19 +72,19 @@
 <p>The kernel stops all processes without specific privileges from writing to flagged files and folders and prevents <strong>code injection</strong> and runtime attachment (like debugging) with respect to flagged processes or processes signed with an Apple private entitlement key</p>
 </blockquote>
 <p>其次，就是 dyld 了，前面说过，ProxyChains 是基于 <strong>DYLD_</strong> 环境变量的，dyld 在链接动态库的时候会进行一些条件判断，并不是每个应用都允许有 DYLD_。</p>
-<div class="codehilite"><pre><span></span><code><span class="k">switch</span> <span class="p">(</span><span class="n">sRestrictedReason</span><span class="p">)</span> <span class="p">{</span>
-    <span class="k">case</span> <span class="nl">restrictedNot</span><span class="p">:</span>
-        <span class="k">break</span><span class="p">;</span>
-    <span class="k">case</span> <span class="nl">restrictedBySetGUid</span><span class="p">:</span>
-        <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is setuid or setgid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
-    <span class="k">case</span> <span class="nl">restrictedBySegment</span><span class="p">:</span>
-        <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) has __RESTRICT/__restrict section</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
-    <span class="k">case</span> <span class="nl">restrictedByEntitlements</span><span class="p">:</span>
-        <span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is code signed with entitlements</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span> <span class="n">sExecPath</span><span class="p">);</span>
-        <span class="k">break</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="k">switch</span><span class="w"> </span><span class="p">(</span><span class="n">sRestrictedReason</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">restrictedNot</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">restrictedBySetGUid</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is setuid or setgid</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sExecPath</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">restrictedBySegment</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) has __RESTRICT/__restrict section</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sExecPath</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">case</span><span class="w"> </span><span class="nl">restrictedByEntitlements</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="n">dyld</span><span class="o">::</span><span class="n">log</span><span class="p">(</span><span class="s">&quot;main executable (%s) is code signed with entitlements</span><span class="se">\n</span><span class="s">&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">sExecPath</span><span class="p">);</span><span class="w"></span>
+<span class="w">        </span><span class="k">break</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p><em>注：以上代码来自 <a href="http://www.opensource.apple.com/source/dyld/dyld-353.2.3/src/dyld.cpp">dyld.cpp</a></em></p>

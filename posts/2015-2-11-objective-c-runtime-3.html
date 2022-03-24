@@ -76,13 +76,13 @@
 </blockquote>
 <h2 id="_1">缘起</h2>
 <p>在文章 <a href="posts/objective-c-ojbect-1.html">从源码看 Objective-C 的对象模型（一）</a>里曾提到过，clang 改写后的变量定义后面总是会有一些类似于 <code>__attribute__ ((used, section ("__DATA,__objc_data")))</code> 这样的代码，例如这样的：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">extern</span> <span class="s">&quot;C&quot;</span> <span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span> <span class="k">struct</span> <span class="nc">_class_t</span> <span class="n">OBJC_CLASS_$_ClassOne</span> <span class="bp">__attribute__</span> <span class="p">((</span><span class="n">used</span><span class="p">,</span> <span class="n">section</span> <span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span> <span class="o">=</span> <span class="p">{</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_METACLASS_$_ClassOne,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// (void *)&amp;_objc_empty_cache,</span>
-    <span class="mi">0</span><span class="p">,</span> <span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
-    <span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_$_ClassOne</span><span class="p">,</span>
-<span class="p">};</span>
+<div class="codehilite"><pre><span></span><code><span class="k">extern</span><span class="w"> </span><span class="s">&quot;C&quot;</span><span class="w"> </span><span class="kr">__declspec</span><span class="p">(</span><span class="n">dllexport</span><span class="p">)</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_class_t</span><span class="w"> </span><span class="n">OBJC_CLASS_$_ClassOne</span><span class="w"> </span><span class="bp">__attribute__</span><span class="w"> </span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;__DATA,__objc_data&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// &amp;OBJC_METACLASS_$_ClassOne,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// &amp;OBJC_CLASS_$_NSObject,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// (void *)&amp;_objc_empty_cache,</span>
+<span class="w">    </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="c1">// unused, was (void *)&amp;_objc_empty_vtable,</span>
+<span class="w">    </span><span class="o">&amp;</span><span class="n">_OBJC_CLASS_RO_$_ClassOne</span><span class="p">,</span><span class="w"></span>
+<span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>当时由于水平所限，不明白它的作用，后来随着慢慢地了解了一些有关 Mach-O 文件格式，以及一些 Runtime 加载代码，对这块有了更好的理解。</p>

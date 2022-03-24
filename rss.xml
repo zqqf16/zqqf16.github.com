@@ -166,7 +166,9 @@
     <item>
 		<title>在 macOS 上编译 libimobiledevice</title>
 		<link>https://blog.zorro.im/posts/2018-8-22-how-to-build-libimobiledevice.html</link>
-		<description>&lt;h2 id=&#34;_1&#34;&gt;前言&lt;/h2&gt;
+		<description>&lt;h2 id=&#34;2022-03-24&#34;&gt;2022-03-24 更新&lt;/h2&gt;
+&lt;p&gt;最近重新编译了一次，发现之前写的教程已经不适用了，最新的编译方法可参考这个脚本：&lt;a href=&#34;https://github.com/zqqf16/SYM/blob/master/SYM/Device/build.sh&#34;&gt;SYM/build.sh&lt;/a&gt;，或者直接用我编译好的静态库：&lt;a href=&#34;https://github.com/zqqf16/SYM/tree/master/SYM/Device/libimobiledevice&#34;&gt;SYM/libimobiledevice&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;_1&#34;&gt;前言&lt;/h2&gt;
 &lt;p&gt;最近给 &lt;a href=&#34;http://github.com/zqqf16/SYM&#34;&gt;SYM&lt;/a&gt; 添加了一个新功能：可以直接导入 iOS 设备上的崩溃日志，这个功能是通过 libimobiledevice 实现的。编译静态库的过程中踩了一些坑，在这里记录一下。&lt;/p&gt;
 &lt;h2 id=&#34;_2&#34;&gt;编译步骤&lt;/h2&gt;
 &lt;h3 id=&#34;_3&#34;&gt;准备工作&lt;/h3&gt;
