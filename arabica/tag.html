@@ -1,10 +1,13 @@
 {% extends "default.html" %}
+
+{% block title %}{{tag.title}}{% endblock %}
+
 {% block body %}
 
 <main class="content" role="main">
 
   <img src="{{feature_image}}" class="tag-image"></img>
-  <h2 class="tag-title">{{tag.name}}</h2>
+  <h2 class="tag-title">{{tag.title}}</h2>
 
   <div class="extra-pagination">
     {% include 'pagination.html' %}
