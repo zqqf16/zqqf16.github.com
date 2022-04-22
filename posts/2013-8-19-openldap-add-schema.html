@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -129,36 +129,36 @@
 <li>
 <p>文件<code>cn=config/cn=schema/cn={0}test.ldif</code>就是生成的‘ldif’文件，编辑此文件：</p>
 <p>将</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">={</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span>
-<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
-<span class="n">cn</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dn</span><span class="o">:</span><span class="w"> </span><span class="n">cn</span><span class="o">={</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span><span class="w"></span>
+<span class="n">objectClass</span><span class="o">:</span><span class="w"> </span><span class="n">olcSchemaConfig</span><span class="w"></span>
+<span class="n">cn</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">test</span><span class="w"></span>
 </code></pre></div>
 
 <p>修改为</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span>
-<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
-<span class="n">cn</span><span class="o">:</span> <span class="n">test</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dn</span><span class="o">:</span><span class="w"> </span><span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span><span class="w"></span>
+<span class="n">objectClass</span><span class="o">:</span><span class="w"> </span><span class="n">olcSchemaConfig</span><span class="w"></span>
+<span class="n">cn</span><span class="o">:</span><span class="w"> </span><span class="n">test</span><span class="w"></span>
 </code></pre></div>
 
 <p>删除以下几行：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">structuralObjectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
-<span class="n">entryUUID</span><span class="o">:</span> <span class="mi">9530</span><span class="n">cb4a</span><span class="o">-</span><span class="mi">9845</span><span class="o">-</span><span class="mi">1032</span><span class="o">-</span><span class="mi">9</span><span class="n">b5c</span><span class="o">-</span><span class="mi">15</span><span class="n">d9e32663bc</span>
-<span class="n">creatorsName</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
-<span class="n">createTimestamp</span><span class="o">:</span> <span class="mi">20130813092213</span><span class="n">Z</span>
-<span class="n">entryCSN</span><span class="o">:</span> <span class="mf">20130813092213.368308</span><span class="n">Z</span><span class="err">#</span><span class="mi">000000</span><span class="err">#</span><span class="mi">000</span><span class="err">#</span><span class="mi">000000</span>
-<span class="n">modifiersName</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">config</span>
-<span class="n">modifyTimestamp</span><span class="o">:</span> <span class="mi">20130813092213</span><span class="n">Z</span>
+<div class="codehilite"><pre><span></span><code><span class="n">structuralObjectClass</span><span class="o">:</span><span class="w"> </span><span class="n">olcSchemaConfig</span><span class="w"></span>
+<span class="n">entryUUID</span><span class="o">:</span><span class="w"> </span><span class="mi">9530</span><span class="n">cb4a</span><span class="o">-</span><span class="mi">9845</span><span class="o">-</span><span class="mi">1032</span><span class="o">-</span><span class="mi">9</span><span class="n">b5c</span><span class="o">-</span><span class="mi">15</span><span class="n">d9e32663bc</span><span class="w"></span>
+<span class="n">creatorsName</span><span class="o">:</span><span class="w"> </span><span class="n">cn</span><span class="o">=</span><span class="n">config</span><span class="w"></span>
+<span class="n">createTimestamp</span><span class="o">:</span><span class="w"> </span><span class="mi">20130813092213</span><span class="n">Z</span><span class="w"></span>
+<span class="n">entryCSN</span><span class="o">:</span><span class="w"> </span><span class="mf">20130813092213.368308</span><span class="n">Z</span><span class="err">#</span><span class="mi">000000</span><span class="err">#</span><span class="mi">000</span><span class="err">#</span><span class="mi">000000</span><span class="w"></span>
+<span class="n">modifiersName</span><span class="o">:</span><span class="w"> </span><span class="n">cn</span><span class="o">=</span><span class="n">config</span><span class="w"></span>
+<span class="n">modifyTimestamp</span><span class="o">:</span><span class="w"> </span><span class="mi">20130813092213</span><span class="n">Z</span><span class="w"></span>
 </code></pre></div>
 
 <p>最终文件变为</p>
-<div class="codehilite"><pre><span></span><code><span class="n">dn</span><span class="o">:</span> <span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span>
-<span class="n">objectClass</span><span class="o">:</span> <span class="n">olcSchemaConfig</span>
-<span class="n">cn</span><span class="o">:</span> <span class="n">test</span>
-<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">testOID</span> <span class="mf">1.1</span><span class="o">.</span><span class="mf">1.1</span>
-<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">1</span><span class="o">}</span><span class="n">testAttr</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">1</span>
-<span class="n">olcObjectIdentifier</span><span class="o">:</span> <span class="o">{</span><span class="mi">2</span><span class="o">}</span><span class="n">testObject</span> <span class="n">testOID</span><span class="o">:</span><span class="mi">2</span>
-<span class="n">olcAttributeTypes</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}(</span> <span class="n">testAttr</span> <span class="n">NAME</span> <span class="s1">&#39;testattr&#39;</span> <span class="n">DESC</span> <span class="s1">&#39;Test attribute&#39;</span> <span class="n">E</span>    <span class="n">QUALIT</span> <span class="n">Y</span> <span class="n">caseIgnoreMatch</span> <span class="n">SYNTAX</span> <span class="mf">1.3</span><span class="o">.</span><span class="mf">6.1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">.</span><span class="mf">1466.115</span><span class="o">.</span><span class="mf">121.1</span><span class="o">.</span><span class="mi">15</span> <span class="o">)</span>
-<span class="n">olcObjectClasses</span><span class="o">:</span> <span class="o">{</span><span class="mi">0</span><span class="o">}(</span> <span class="n">testObject</span> <span class="n">NAME</span> <span class="s1">&#39;testObject&#39;</span> <span class="n">DESC</span> <span class="s1">&#39;Just for test&#39;</span>     <span class="n">AUXILIARY</span> <span class="n">MAY</span> <span class="n">testattr</span> <span class="o">)</span>
+<div class="codehilite"><pre><span></span><code><span class="n">dn</span><span class="o">:</span><span class="w"> </span><span class="n">cn</span><span class="o">=</span><span class="n">test</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">schema</span><span class="o">,</span><span class="n">cn</span><span class="o">=</span><span class="n">config</span><span class="w"></span>
+<span class="n">objectClass</span><span class="o">:</span><span class="w"> </span><span class="n">olcSchemaConfig</span><span class="w"></span>
+<span class="n">cn</span><span class="o">:</span><span class="w"> </span><span class="n">test</span><span class="w"></span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="mi">0</span><span class="o">}</span><span class="n">testOID</span><span class="w"> </span><span class="mf">1.1</span><span class="o">.</span><span class="mf">1.1</span><span class="w"></span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="mi">1</span><span class="o">}</span><span class="n">testAttr</span><span class="w"> </span><span class="n">testOID</span><span class="o">:</span><span class="mi">1</span><span class="w"></span>
+<span class="n">olcObjectIdentifier</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="mi">2</span><span class="o">}</span><span class="n">testObject</span><span class="w"> </span><span class="n">testOID</span><span class="o">:</span><span class="mi">2</span><span class="w"></span>
+<span class="n">olcAttributeTypes</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="mi">0</span><span class="o">}(</span><span class="w"> </span><span class="n">testAttr</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="s1">&#39;testattr&#39;</span><span class="w"> </span><span class="n">DESC</span><span class="w"> </span><span class="s1">&#39;Test attribute&#39;</span><span class="w"> </span><span class="n">E</span><span class="w">    </span><span class="n">QUALIT</span><span class="w"> </span><span class="n">Y</span><span class="w"> </span><span class="n">caseIgnoreMatch</span><span class="w"> </span><span class="n">SYNTAX</span><span class="w"> </span><span class="mf">1.3</span><span class="o">.</span><span class="mf">6.1</span><span class="o">.</span><span class="mf">4.1</span><span class="o">.</span><span class="mf">1466.115</span><span class="o">.</span><span class="mf">121.1</span><span class="o">.</span><span class="mi">15</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
+<span class="n">olcObjectClasses</span><span class="o">:</span><span class="w"> </span><span class="o">{</span><span class="mi">0</span><span class="o">}(</span><span class="w"> </span><span class="n">testObject</span><span class="w"> </span><span class="n">NAME</span><span class="w"> </span><span class="s1">&#39;testObject&#39;</span><span class="w"> </span><span class="n">DESC</span><span class="w"> </span><span class="s1">&#39;Just for test&#39;</span><span class="w">     </span><span class="n">AUXILIARY</span><span class="w"> </span><span class="n">MAY</span><span class="w"> </span><span class="n">testattr</span><span class="w"> </span><span class="o">)</span><span class="w"></span>
 </code></pre></div>
 
 </li>

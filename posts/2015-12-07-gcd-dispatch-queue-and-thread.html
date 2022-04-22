@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -230,17 +230,17 @@
 <p>所有 queue 的线程池都是统一管理的，在 Mac OS 中，是靠 pthread workqueue 实现的。（pthread workqueue 没找到详细信息，可以参考 <a href="https://people.freebsd.org/~sson/thrworkq/pthread_workqueue.3.txt">FreeBSD 手册</a>。<em>PS：可以用 <code>sysctl kern.wq_max_threads</code> 查看 workqueue 中支持的最大线程数</em>）。这需要 Libc 标准库与 Kernel 的支持。</p>
 <p>所以即使对于 serial queue 来说，它所面对的也是所有的线程池。所以任务是否是并发执行的决定权在 queue 本身。</p>
 <p>来看一下 queue 结构体的定义（不同平台可能有差异，大致如下）：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">dispatch_queue_s</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">dispatch_queue_s</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">DISPATCH_STRUCT_HEADER</span><span class="p">(</span><span class="n">queue</span><span class="p">);</span><span class="w"></span>
 
 <span class="w">    </span><span class="cm">/* DISPATCH_QUEUE_HEADER */</span><span class="w"></span>
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="n">dq_running</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">struct</span> <span class="nc">dispatch_object_s</span><span class="w"> </span><span class="o">*</span><span class="k">volatile</span><span class="w"> </span><span class="n">dq_items_head</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dispatch_object_s</span><span class="w"> </span><span class="o">*</span><span class="k">volatile</span><span class="w"> </span><span class="n">dq_items_head</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="cm">/* LP64 global queue cacheline boundary */</span><span class="w"></span>
-<span class="w">    </span><span class="k">struct</span> <span class="nc">dispatch_object_s</span><span class="w"> </span><span class="o">*</span><span class="k">volatile</span><span class="w"> </span><span class="n">dq_items_tail</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">dispatch_object_s</span><span class="w"> </span><span class="o">*</span><span class="k">volatile</span><span class="w"> </span><span class="n">dq_items_tail</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">dispatch_queue_t</span><span class="w"> </span><span class="n">dq_specific_q</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">dq_width</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="nl">dq_is_thread_bound</span><span class="p">:</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="kt">uint16_t</span><span class="w"> </span><span class="n">dq_is_thread_bound</span><span class="o">:</span><span class="mi">1</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kt">uint32_t</span><span class="w"> </span><span class="k">volatile</span><span class="w"> </span><span class="n">dq_override</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">pthread_priority_t</span><span class="w"> </span><span class="n">dq_priority</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">mach_port_t</span><span class="w"> </span><span class="n">dq_thread</span><span class="p">;</span><span class="w"></span>

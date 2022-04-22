@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -103,11 +103,11 @@
 
 <span class="cp">#ifdef __LP64__</span>
 <span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="kt">uint64_t</span><span class="w"> </span><span class="n">RCTExportValue</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span> <span class="nc">section_64</span><span class="w"> </span><span class="n">RCTExportSection</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">section_64</span><span class="w"> </span><span class="n">RCTExportSection</span><span class="p">;</span><span class="w"></span>
 <span class="cp">#define RCTGetSectByNameFromHeader getsectbynamefromheader_64</span>
 <span class="cp">#else</span>
 <span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"> </span><span class="n">RCTExportValue</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span> <span class="nc">section</span><span class="w"> </span><span class="n">RCTExportSection</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">section</span><span class="w"> </span><span class="n">RCTExportSection</span><span class="p">;</span><span class="w"></span>
 <span class="cp">#define RCTGetSectByNameFromHeader getsectbynamefromheader</span>
 <span class="cp">#endif</span>
 
@@ -119,7 +119,7 @@
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 
 <span class="w">    </span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="n">classes</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RCTBridgeModuleClassesByModuleID</span><span class="p">();</span><span class="w"></span>
-<span class="w">    </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">methodsByModuleClassName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="nl">dictionaryWithCapacity</span><span class="p">:[</span><span class="n">classes</span><span class="w"> </span><span class="n">count</span><span class="p">]];</span><span class="w"></span>
+<span class="w">    </span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="o">*</span><span class="n">methodsByModuleClassName</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSMutableDictionary</span><span class="w"> </span><span class="n">dictionaryWithCapacity</span><span class="o">:</span><span class="p">[</span><span class="n">classes</span><span class="w"> </span><span class="n">count</span><span class="p">]];</span><span class="w"></span>
 
 <span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="p">(</span><span class="n">RCTExportValue</span><span class="w"> </span><span class="n">addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">section</span><span class="o">-&gt;</span><span class="n">offset</span><span class="p">;</span><span class="w"></span>
 <span class="w">         </span><span class="n">addr</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">section</span><span class="o">-&gt;</span><span class="n">offset</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">section</span><span class="o">-&gt;</span><span class="n">size</span><span class="p">;</span><span class="w"></span>
@@ -130,17 +130,17 @@
 
 <span class="w">      </span><span class="c1">// Create method</span>
 <span class="w">      </span><span class="n">RCTModuleMethod</span><span class="w"> </span><span class="o">*</span><span class="n">moduleMethod</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">        </span><span class="p">[[</span><span class="n">RCTModuleMethod</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="nl">initWithMethodName</span><span class="p">:</span><span class="l">@(</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="l">)</span><span class="w"></span>
+<span class="w">        </span><span class="p">[[</span><span class="n">RCTModuleMethod</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithMethodName</span><span class="o">:</span><span class="l">@(</span><span class="n">entries</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="l">)</span><span class="w"></span>
 <span class="w">                                       </span><span class="nl">JSMethodName</span><span class="p">:</span><span class="n">strlen</span><span class="p">(</span><span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="l">@(</span><span class="n">entries</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="l">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nb">nil</span><span class="p">];</span><span class="w"></span>
 
 <span class="w">      </span><span class="c1">// Cache method</span>
 <span class="w">      </span><span class="bp">NSArray</span><span class="w"> </span><span class="o">*</span><span class="n">methods</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">methodsByModuleClassName</span><span class="p">[</span><span class="n">moduleMethod</span><span class="p">.</span><span class="n">moduleClassName</span><span class="p">];</span><span class="w"></span>
 <span class="w">      </span><span class="n">methodsByModuleClassName</span><span class="p">[</span><span class="n">moduleMethod</span><span class="p">.</span><span class="n">moduleClassName</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="w">        </span><span class="n">methods</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">[</span><span class="n">methods</span><span class="w"> </span><span class="nl">arrayByAddingObject</span><span class="p">:</span><span class="n">moduleMethod</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="l">@[</span><span class="n">moduleMethod</span><span class="l">]</span><span class="p">;</span><span class="w"></span>
+<span class="w">        </span><span class="n">methods</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">[</span><span class="n">methods</span><span class="w"> </span><span class="n">arrayByAddingObject</span><span class="o">:</span><span class="n">moduleMethod</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="l">@[</span><span class="n">moduleMethod</span><span class="l">]</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-<span class="w">    </span><span class="n">methodsByModuleID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">RCTSparseArray</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="nl">initWithCapacity</span><span class="p">:[</span><span class="n">classes</span><span class="w"> </span><span class="n">count</span><span class="p">]];</span><span class="w"></span>
-<span class="w">    </span><span class="p">[</span><span class="n">classes</span><span class="w"> </span><span class="nl">enumerateObjectsUsingBlock</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="kt">Class</span><span class="w"> </span><span class="n">moduleClass</span><span class="p">,</span><span class="w"> </span><span class="n">NSUInteger</span><span class="w"> </span><span class="n">moduleID</span><span class="p">,</span><span class="w"> </span><span class="kt">BOOL</span><span class="w"> </span><span class="o">*</span><span class="n">stop</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">methodsByModuleID</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="n">RCTSparseArray</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithCapacity</span><span class="o">:</span><span class="p">[</span><span class="n">classes</span><span class="w"> </span><span class="n">count</span><span class="p">]];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">classes</span><span class="w"> </span><span class="n">enumerateObjectsUsingBlock</span><span class="o">:^</span><span class="p">(</span><span class="kt">Class</span><span class="w"> </span><span class="n">moduleClass</span><span class="p">,</span><span class="w"> </span><span class="n">NSUInteger</span><span class="w"> </span><span class="n">moduleID</span><span class="p">,</span><span class="w"> </span><span class="kt">BOOL</span><span class="w"> </span><span class="o">*</span><span class="n">stop</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">      </span><span class="n">methodsByModuleID</span><span class="p">[</span><span class="n">moduleID</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">methodsByModuleClassName</span><span class="p">[</span><span class="n">NSStringFromClass</span><span class="p">(</span><span class="n">moduleClass</span><span class="p">)];</span><span class="w"></span>
 <span class="w">    </span><span class="p">}];</span><span class="w"></span>
 <span class="w">  </span><span class="p">});</span><span class="w"></span>

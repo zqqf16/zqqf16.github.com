@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -219,7 +219,7 @@
 <p>严格来说，分布锁是进程间同步的工具，有点像 Unix 下的各种 lock 文件，比如 apt-get 的 “/var/lib/apt/lists/lock”。</p>
 <p>它并不强制进程休眠，只是起到告知的作用。具体如何处理资源被占，完全由进程自己决定。</p>
 <p>iOS 上几本用不上分布锁，在 OS X 中，可以用 <strong>NSDistributedLock</strong> 实现：</p>
-<div class="codehilite"><pre><span></span><code><span class="n">NSDistributedLock</span><span class="w"> </span><span class="o">*</span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">NSDistributedLock</span><span class="w"> </span><span class="nl">lockWithPath</span><span class="p">:</span><span class="n">path</span><span class="p">];</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="n">NSDistributedLock</span><span class="w"> </span><span class="o">*</span><span class="n">lock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="n">NSDistributedLock</span><span class="w"> </span><span class="n">lockWithPath</span><span class="o">:</span><span class="n">path</span><span class="p">];</span><span class="w"></span>
 
 <span class="c1">// ...</span>
 
@@ -306,22 +306,22 @@
 <p>NSConditionLock 跟 NSCondition 类似，但是实现机制是不一样的，所以单独列了出来。</p>
 <p>例子：</p>
 <p>生产者</p>
-<div class="codehilite"><pre><span></span><code><span class="kt">id</span><span class="w"> </span><span class="n">condLock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSConditionLock</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="nl">initWithCondition</span><span class="p">:</span><span class="n">NO_DATA</span><span class="p">];</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="kt">id</span><span class="w"> </span><span class="n">condLock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[[</span><span class="bp">NSConditionLock</span><span class="w"> </span><span class="n">alloc</span><span class="p">]</span><span class="w"> </span><span class="n">initWithCondition</span><span class="o">:</span><span class="n">NO_DATA</span><span class="p">];</span><span class="w"></span>
 
 <span class="k">while</span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
 <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="n">lock</span><span class="p">];</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Add data to the queue.</span>
-<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="nl">unlockWithCondition</span><span class="p">:</span><span class="n">HAS_DATA</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="n">unlockWithCondition</span><span class="o">:</span><span class="n">HAS_DATA</span><span class="p">];</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>消费者</p>
 <div class="codehilite"><pre><span></span><code><span class="k">while</span><span class="w"> </span><span class="p">(</span><span class="nb">true</span><span class="p">)</span><span class="w"></span>
 <span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="nl">lockWhenCondition</span><span class="p">:</span><span class="n">HAS_DATA</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="n">lockWhenCondition</span><span class="o">:</span><span class="n">HAS_DATA</span><span class="p">];</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Remove data from the queue.</span>
-<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="nl">unlockWithCondition</span><span class="p">:(</span><span class="n">isEmpty</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nl">NO_DATA</span> <span class="p">:</span><span class="w"> </span><span class="n">HAS_DATA</span><span class="p">)];</span><span class="w"></span>
+<span class="w">    </span><span class="p">[</span><span class="n">condLock</span><span class="w"> </span><span class="n">unlockWithCondition</span><span class="o">:</span><span class="p">(</span><span class="n">isEmpty</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="n">NO_DATA</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="n">HAS_DATA</span><span class="p">)];</span><span class="w"></span>
 
 <span class="w">    </span><span class="c1">// Process the data locally.</span>
 <span class="p">}</span><span class="w"></span>

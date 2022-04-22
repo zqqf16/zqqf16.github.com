@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -85,7 +85,7 @@
 <span class="nb">self</span><span class="p">.</span><span class="n">vpnManager</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NEVPNManager</span><span class="w"> </span><span class="n">sharedManager</span><span class="p">];</span><span class="w"></span>
 
 <span class="c1">// load config from perference</span>
-<span class="p">[</span><span class="n">_vpnManager</span><span class="w"> </span><span class="nl">loadFromPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="p">[</span><span class="n">_vpnManager</span><span class="w"> </span><span class="n">loadFromPreferencesWithCompletionHandler</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="c1">// Do something</span>
 <span class="p">}];</span><span class="w"></span>
 </code></pre></div>
@@ -99,11 +99,11 @@
 <span class="n">p</span><span class="p">.</span><span class="n">serverAddress</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">@&quot;[Your server address]&quot;</span><span class="p">;;</span><span class="w"></span>
 
 <span class="c1">// get password persistent reference from keychain</span>
-<span class="n">p</span><span class="p">.</span><span class="n">passwordReference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;VPN_PASSWORD&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">p</span><span class="p">.</span><span class="n">passwordReference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">searchKeychainCopyMatching</span><span class="o">:</span><span class="s">@&quot;VPN_PASSWORD&quot;</span><span class="p">];</span><span class="w"></span>
 
 <span class="c1">// PSK</span>
 <span class="n">p</span><span class="p">.</span><span class="n">authenticationMethod</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">NEVPNIKEAuthenticationMethodSharedSecret</span><span class="p">;</span><span class="w"></span>
-<span class="n">p</span><span class="p">.</span><span class="n">sharedSecretReference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="nl">searchKeychainCopyMatching</span><span class="p">:</span><span class="s">@&quot;PSK&quot;</span><span class="p">];</span><span class="w"></span>
+<span class="n">p</span><span class="p">.</span><span class="n">sharedSecretReference</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="nb">self</span><span class="w"> </span><span class="n">searchKeychainCopyMatching</span><span class="o">:</span><span class="s">@&quot;PSK&quot;</span><span class="p">];</span><span class="w"></span>
 
 <span class="cm">/*</span>
 <span class="cm">// certificate</span>
@@ -122,14 +122,14 @@
 <p>IPSec 协议里的密码以及预共享密钥都需要是一个 KeyChain 中密码的永久引用（persistent reference）。</p>
 <p>如果用证书来作为 IKE 的认证方式，而且 Server 端用的是自签发证书，则需要手工将 CA 导入到 iOS 设备。目前 Apple 还没提供添加授信证书的方法。</p>
 <p><strong>保存配置</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">_vpnManager</span><span class="w"> </span><span class="nl">saveToPreferencesWithCompletionHandler</span><span class="p">:</span><span class="o">^</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="p">[</span><span class="n">_vpnManager</span><span class="w"> </span><span class="n">saveToPreferencesWithCompletionHandler</span><span class="o">:^</span><span class="p">(</span><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">error</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">        </span><span class="n">NSLog</span><span class="p">(</span><span class="s">@&quot;Save config failed [%@]&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">error</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span><span class="w"></span>
 <span class="p">}];</span><span class="w"></span>
 </code></pre></div>
 
 <p><strong>启动 VPN</strong></p>
 <div class="codehilite"><pre><span></span><code><span class="bp">NSError</span><span class="w"> </span><span class="o">*</span><span class="n">startError</span><span class="p">;</span><span class="w"></span>
-<span class="p">[</span><span class="n">_vpnManager</span><span class="p">.</span><span class="n">connection</span><span class="w"> </span><span class="nl">startVPNTunnelAndReturnError</span><span class="p">:</span><span class="o">&amp;</span><span class="n">startError</span><span class="p">];</span><span class="w"></span>
+<span class="p">[</span><span class="n">_vpnManager</span><span class="p">.</span><span class="n">connection</span><span class="w"> </span><span class="n">startVPNTunnelAndReturnError</span><span class="o">:&amp;</span><span class="n">startError</span><span class="p">];</span><span class="w"></span>
 <span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">startError</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">NSLog</span><span class="p">(</span><span class="s">&quot;Start VPN failed: [%@]&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">startError</span><span class="p">.</span><span class="n">localizedDescription</span><span class="p">);</span><span class="w"></span>
 <span class="p">}</span><span class="w"></span>

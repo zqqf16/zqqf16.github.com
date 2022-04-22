@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -113,46 +113,46 @@
 <p>可以看到在运行时self的实例变量“className”是在实例对象的结构体里的。</p>
 <h2 id="_3">二、编译时期的声明与定义</h2>
 <p>看Clang改写过的这段代码，其中有这样的描述：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">FirstClass_IMPL</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
-<span class="w">    </span><span class="k">struct</span> <span class="nc">NSObject_IMPL</span><span class="w"> </span><span class="n">NSObject_IVARS</span><span class="p">;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">FirstClass_IMPL</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">NSObject_IMPL</span><span class="w"> </span><span class="n">NSObject_IVARS</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="n">NSString</span><span class="w"> </span><span class="o">*</span><span class="n">className</span><span class="p">;</span><span class="w"></span>
 <span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>其中，NSObject_IMPL是这样声明的：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">NSObject_IMPL</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">NSObject_IMPL</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">Class</span><span class="w"> </span><span class="n">isa</span><span class="p">;</span><span class="w"></span>
 <span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>正好和上面lldb输出的信息吻合。但是有一点需要说明一下，<code>FirstClass_IMPL</code>貌似只是个内部结构（几乎没起什么作用，可能只是为了标明一下FirstClass的结构？）。而且在上一篇文章里可以看到，<code>FirstClass</code>是这样被声明的：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span> <span class="nc">objc_object</span><span class="w"> </span><span class="n">FirstClass</span><span class="p">;</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">typedef</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">objc_object</span><span class="w"> </span><span class="n">FirstClass</span><span class="p">;</span><span class="w"></span>
 </code></pre></div>
 
 <p>在声明中，FirstClass只是个<code>objc_object</code>类型（里面只有<code>isa</code>）的结构体，也就是说在它的声明里并没有提及<code>className</code>成员变量。那么最终是怎么变成Runtime里面所描述的那样的呢？</p>
 <p>为了弄懂这个问题，需要先回顾一下类对象的结构，<code>_class_t</code>中有个<code>_class_ro_t</code>类型的成员<code>ro</code>(Runtime代码里还有个叫<code>_class_wo_t</code>的结构，“r”和“w”没有搜索到准确的意思，好像是编译期间指定了的叫“r”，Runtime能够改变的叫“w”)，它是这样声明的：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">_class_ro_t</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">_class_ro_t</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">flags</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">instanceStart</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">instanceSize</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">reserved</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">ivarLayout</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_method_list_t</span><span class="w"> </span><span class="o">*</span><span class="n">baseMethods</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_objc_protocol_list</span><span class="w"> </span><span class="o">*</span><span class="n">baseProtocols</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_ivar_list_t</span><span class="w"> </span><span class="o">*</span><span class="n">ivars</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_method_list_t</span><span class="w"> </span><span class="o">*</span><span class="n">baseMethods</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_objc_protocol_list</span><span class="w"> </span><span class="o">*</span><span class="n">baseProtocols</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_ivar_list_t</span><span class="w"> </span><span class="o">*</span><span class="n">ivars</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">weakIvarLayout</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span> <span class="nc">_prop_list_t</span><span class="w"> </span><span class="o">*</span><span class="n">properties</span><span class="p">;</span><span class="w"></span>
+<span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="nc">_prop_list_t</span><span class="w"> </span><span class="o">*</span><span class="n">properties</span><span class="p">;</span><span class="w"></span>
 <span class="p">};</span><span class="w"></span>
 </code></pre></div>
 
 <p>通过阅读代码可以知道，这其中名叫的<code>ivars</code>（instance vars?）就存放着实例变量的信息。也就是说，实例变量的信息存放在类对象里。</p>
 <p><code>_ivar_list_t</code>的声明与<code>FirstClass</code>中的<code>ivars</code>定义如下：</p>
 <div class="codehilite"><pre><span></span><code><span class="p">{</span><span class="o">%</span><span class="w"> </span><span class="n">raw</span><span class="w"> </span><span class="o">%</span><span class="p">}</span><span class="w"></span>
-<span class="k">static</span><span class="w"> </span><span class="k">struct</span> <span class="cm">/*_ivar_list_t*/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="k">static</span><span class="w"> </span><span class="k">struct</span><span class="w"> </span><span class="cm">/*_ivar_list_t*/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">entsize</span><span class="p">;</span><span class="w">  </span><span class="c1">// sizeof(struct _prop_t)</span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">count</span><span class="p">;</span><span class="w"></span>
-<span class="w">    </span><span class="k">struct</span> <span class="nc">_ivar_t</span><span class="w"> </span><span class="n">ivar_list</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
+<span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">_ivar_t</span><span class="w"> </span><span class="n">ivar_list</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span><span class="w"></span>
 <span class="p">}</span><span class="w"> </span><span class="n">_OBJC_$_INSTANCE_VARIABLES_FirstClass</span><span class="w"> </span><span class="n">__attribute__</span><span class="w"> </span><span class="p">((</span><span class="n">used</span><span class="p">,</span><span class="w"> </span><span class="n">section</span><span class="w"> </span><span class="p">(</span><span class="s">&quot;__DATA,__objc_const&quot;</span><span class="p">)))</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="k">sizeof</span><span class="p">(</span><span class="n">_ivar_t</span><span class="p">),</span><span class="w"></span>
 <span class="w">    </span><span class="mi">1</span><span class="p">,</span><span class="w"></span>
@@ -162,7 +162,7 @@
 </code></pre></div>
 
 <p><code>_ivar_t</code>的声明：</p>
-<div class="codehilite"><pre><span></span><code><span class="k">struct</span> <span class="nc">_ivar_t</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<div class="codehilite"><pre><span></span><code><span class="k">struct</span><span class="w"> </span><span class="nc">_ivar_t</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="o">*</span><span class="n">offset</span><span class="p">;</span><span class="w">  </span><span class="c1">// pointer to ivar offset location</span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">name</span><span class="p">;</span><span class="w"></span>
 <span class="w">    </span><span class="k">const</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">type</span><span class="p">;</span><span class="w"></span>
@@ -185,7 +185,7 @@
 <span class="p">}</span><span class="w"></span>
 
 <span class="k">static</span><span class="w"> </span><span class="kt">uint32_t</span><span class="w"></span>
-<span class="n">instanceSize</span><span class="p">(</span><span class="k">struct</span> <span class="nc">class_t</span><span class="w"> </span><span class="o">*</span><span class="n">cls</span><span class="p">)</span><span class="w"></span>
+<span class="n">instanceSize</span><span class="p">(</span><span class="k">struct</span><span class="w"> </span><span class="nc">class_t</span><span class="w"> </span><span class="o">*</span><span class="n">cls</span><span class="p">)</span><span class="w"></span>
 <span class="p">{</span><span class="w"></span>
 <span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">cls</span><span class="p">);</span><span class="w"></span>
 <span class="w">    </span><span class="n">assert</span><span class="p">(</span><span class="n">isRealized</span><span class="p">(</span><span class="n">cls</span><span class="p">));</span><span class="w"></span>

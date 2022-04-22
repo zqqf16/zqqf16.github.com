@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -80,12 +80,12 @@
 <p>会将本地 Markdown 文件上传到 Ghost。</p>
 <p>PS：由于目前 Ghost api 还处在 0.1 版本，文档还不怎么全，暂时会丢失所有 tag。</p>
 <p><strong>添加 Nginx rewrite 规则</strong></p>
-<div class="codehilite"><pre><span></span><code><span class="k">location</span> <span class="s">/posts/</span> <span class="p">{</span>
-    <span class="kn">rewrite</span> <span class="s">&#39;^/posts/(.*)\.html</span><span class="nv">$&#39;</span> <span class="s">/</span><span class="nv">$1/</span> <span class="s">permanent</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="k">location</span> <span class="s">/rss.html</span> <span class="p">{</span>
-    <span class="kn">rewrite</span> <span class="s">&#39;^/rss.html</span><span class="nv">$&#39;</span> <span class="s">/rss/</span> <span class="s">permanent</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="k">location</span><span class="w"> </span><span class="s">/posts/</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">rewrite</span><span class="w"> </span><span class="s">&#39;^/posts/(.*)\.html</span><span class="nv">$&#39;</span><span class="w"> </span><span class="s">/</span><span class="nv">$1/</span><span class="w"> </span><span class="s">permanent</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
+<span class="k">location</span><span class="w"> </span><span class="s">/rss.html</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="kn">rewrite</span><span class="w"> </span><span class="s">&#39;^/rss.html</span><span class="nv">$&#39;</span><span class="w"> </span><span class="s">/rss/</span><span class="w"> </span><span class="s">permanent</span><span class="p">;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <p>Done</p>

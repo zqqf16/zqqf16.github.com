@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -146,16 +146,16 @@ iptables -A FORWARD -s <span class="m">10</span>.99.1.0/24 -j ACCEPT
 <p>注意：<strong>网段要跟 ipsec.conf 里配置的一致</strong>。</p>
 <h3 id="5-dns">5. 配置 DNS</h3>
 <p>编辑 /etc/strongswan.conf</p>
-<div class="codehilite"><pre><span></span><code><span class="n">charon</span> <span class="p">{</span>
-        <span class="n">load_modular</span> <span class="o">=</span> <span class="n">yes</span>
-        <span class="n">dns1</span> <span class="o">=</span> <span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span>
-        <span class="n">dns2</span> <span class="o">=</span> <span class="mf">8.8</span><span class="o">.</span><span class="mf">4.4</span>
-        <span class="n">plugins</span> <span class="p">{</span>
-                <span class="n">include</span> <span class="n">strongswan</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">charon</span><span class="o">/*.</span><span class="n">conf</span>
-        <span class="p">}</span>
-<span class="p">}</span>
+<div class="codehilite"><pre><span></span><code><span class="n">charon</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">load_modular</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">yes</span><span class="w"></span>
+<span class="w">        </span><span class="n">dns1</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8.8</span><span class="o">.</span><span class="mf">8.8</span><span class="w"></span>
+<span class="w">        </span><span class="n">dns2</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">8.8</span><span class="o">.</span><span class="mf">4.4</span><span class="w"></span>
+<span class="w">        </span><span class="n">plugins</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">                </span><span class="n">include</span><span class="w"> </span><span class="n">strongswan</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">charon</span><span class="o">/*.</span><span class="n">conf</span><span class="w"></span>
+<span class="w">        </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">include</span> <span class="n">strongswan</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">conf</span>
+<span class="n">include</span><span class="w"> </span><span class="n">strongswan</span><span class="o">.</span><span class="n">d</span><span class="o">/*.</span><span class="n">conf</span><span class="w"></span>
 </code></pre></div>
 
 <h3 id="6-strongswan">6. 启动 strongSwan</h3>

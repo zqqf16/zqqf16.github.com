@@ -33,12 +33,12 @@
     $.bigfoot();
   </script>
 <!-- Global site tag (gtag.js) - Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=UA-41282906-2"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-T9466SST5K"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'UA-41282906-2');
+  gtag('config', 'G-T9466SST5K');
 </script>
 
 <link rel="stylesheet" type="text/css" href="/assets/css/pygments.css" />
@@ -78,9 +78,9 @@
 <p>为 NSURLSession 设置代理可以通过为其指定一个 NSURLSessionConfiguration 来实现，比如：</p>
 <div class="codehilite"><pre><span></span><code><span class="bp">NSURLSessionConfiguration</span><span class="w"> </span><span class="o">*</span><span class="n">configuration</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSURLSessionConfiguration</span><span class="w"> </span><span class="n">defaultSessionConfiguration</span><span class="p">];</span><span class="w"></span>
 <span class="n">configuration</span><span class="p">.</span><span class="n">connectionProxyDictionary</span><span class="w"> </span><span class="o">=</span><span class="w"></span>
-<span class="l">@{</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nl">kCFStreamPropertyHTTPProxyHost</span><span class="p">:</span><span class="w"> </span><span class="s">@&quot;127.0.0.1&quot;</span><span class="p">,</span><span class="w"></span>
-<span class="w">  </span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="nl">kCFStreamPropertyHTTPProxyPort</span><span class="p">:</span><span class="w"> </span><span class="mi">@8080</span><span class="l">}</span><span class="p">;</span><span class="w"></span>
-<span class="bp">NSURLSession</span><span class="w"> </span><span class="o">*</span><span class="n">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSURLSession</span><span class="w"> </span><span class="nl">sessionWithConfiguration</span><span class="p">:</span><span class="n">configuration</span><span class="w"> </span><span class="nl">delegate</span><span class="p">:</span><span class="nb">self</span><span class="w"> </span><span class="nl">delegateQueue</span><span class="p">:[</span><span class="bp">NSOperationQueue</span><span class="w"> </span><span class="n">currentQueue</span><span class="p">]];</span><span class="w"></span>
+<span class="l">@{</span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">kCFStreamPropertyHTTPProxyHost</span><span class="o">:</span><span class="w"> </span><span class="s">@&quot;127.0.0.1&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">  </span><span class="p">(</span><span class="bp">NSString</span><span class="w"> </span><span class="o">*</span><span class="p">)</span><span class="n">kCFStreamPropertyHTTPProxyPort</span><span class="o">:</span><span class="w"> </span><span class="mi">@8080</span><span class="l">}</span><span class="p">;</span><span class="w"></span>
+<span class="bp">NSURLSession</span><span class="w"> </span><span class="o">*</span><span class="n">session</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[</span><span class="bp">NSURLSession</span><span class="w"> </span><span class="n">sessionWithConfiguration</span><span class="o">:</span><span class="n">configuration</span><span class="w"> </span><span class="n">delegate</span><span class="o">:</span><span class="nb">self</span><span class="w"> </span><span class="n">delegateQueue</span><span class="o">:</span><span class="p">[</span><span class="bp">NSOperationQueue</span><span class="w"> </span><span class="n">currentQueue</span><span class="p">]];</span><span class="w"></span>
 </code></pre></div>
 
 <p>这里有几点需要注意：</p>
